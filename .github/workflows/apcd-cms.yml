@@ -8,6 +8,9 @@ on:
 jobs:
   build_commit:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apcd-cms
     steps:
       - uses: actions/checkout@v2
       - name: Get shortsha
@@ -21,24 +24,17 @@ jobs:
         run: |
           echo $SHORTSHA
         env: 
-          SHORTSHA: ${{ steps.vars.outputs.sha_short }}     
-      - uses: mr-smithers-excellent/docker-build-push@v3
-        name: Build & push commit tagged Docker image
-        working-directory: apcd-cms
+          SHORTSHA: ${{ steps.vars.outputs.sha_short }}
+      - uses: docker/setup-buildx-action@v2
+        name: Setup Docker Builds
+      - uses: docker/login-action@v2
+        name: Log in to docker
         with:
-          image: wmatacc/apcd-cms
-          tag: ${{ steps.vars.outputs.sha_short }}   
-          registry: docker.io
-          dockerfile: Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: mr-smithers-excellent/docker-build-push@v3
+      - uses: docker/build-push-action@v3
         name: Build & push commit tagged Docker image
-        working-directory: apcd-cms
         with:
-          image: wmatacc/apcd-cms
-          tag: latest   
-          registry: docker.io
-          dockerfile: Dockerfile
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          context: apcd-cms
+          push: true
+          tags: wmatacc/apcd-cms:${{ steps.vars.outputs.sha_short }}
