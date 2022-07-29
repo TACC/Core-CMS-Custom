@@ -1,0 +1,47 @@
+name: APCD CMS Builds 
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '/apcd-cms/*'
+
+defaults:
+  run:
+    shell: bash
+    working-directory: apcd-cms
+
+jobs:
+  build_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get shortsha
+        id: vars
+        run: |
+          if [ -z "$EVENT_SHA" ]; then SHORT_SHA=${GITHUB_SHA::8}; else SHORT_SHA=${EVENT_SHA::8}; fi
+          echo ::set-output name=sha_short::${SHORT_SHA}
+        env:
+          EVENT_SHA: ${{ github.event.client_payload.sha }} 
+      - name: Print shortsha
+        run: |
+          echo $SHORTSHA
+        env: 
+          SHORTSHA: ${{ steps.vars.outputs.sha_short }}     
+      - uses: mr-smithers-excellent/docker-build-push@v3
+        name: Build & push commit tagged Docker image
+        with:
+          image: wmatacc/apcd-cms
+          tag: ${{ steps.vars.outputs.sha_short }}   
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: mr-smithers-excellent/docker-build-push@v3
+        name: Build & push commit tagged Docker image
+        with:
+          image: wmatacc/apcd-cms
+          tag: latest   
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
