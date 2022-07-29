@@ -5,11 +5,6 @@ on:
     paths:
       - 'apcd-cms/**'
 
-defaults:
-  run:
-    shell: bash
-    working-directory: apcd-cms
-
 jobs:
   build_commit:
     runs-on: ubuntu-latest
@@ -29,6 +24,7 @@ jobs:
           SHORTSHA: ${{ steps.vars.outputs.sha_short }}     
       - uses: mr-smithers-excellent/docker-build-push@v3
         name: Build & push commit tagged Docker image
+        working-directory: apcd-cms
         with:
           image: wmatacc/apcd-cms
           tag: ${{ steps.vars.outputs.sha_short }}   
@@ -38,6 +34,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: mr-smithers-excellent/docker-build-push@v3
         name: Build & push commit tagged Docker image
+        working-directory: apcd-cms
         with:
           image: wmatacc/apcd-cms
           tag: latest   
