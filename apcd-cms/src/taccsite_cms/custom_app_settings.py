@@ -1,3 +1,3 @@
-CUSTOM_APPS = ['apps.custom_example']
+CUSTOM_APPS = []
 CUSTOM_MIDDLEWARE = []
-STATICFILES_DIRS = ()
+STATICFILES_DIRS = ('apcd-cms',)

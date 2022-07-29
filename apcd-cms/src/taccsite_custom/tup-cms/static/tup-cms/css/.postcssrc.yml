@@ -1,5 +1,0 @@
-# Merged on top of TACC/Core-CMS base config
-plugins:
-  postcss-env-function:
-    importFrom:
-      - 'node_modules/@tacc/core-styles/source/_themes/default.json'
