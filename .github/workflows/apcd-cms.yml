@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '/apcd-cms/*'
+      - 'apcd-cms/**'
 
 defaults:
   run:
