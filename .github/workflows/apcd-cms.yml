@@ -37,4 +37,4 @@ jobs:
         with:
           context: apcd-cms
           push: true
-          tags: wmatacc/apcd-cms:${{ steps.vars.outputs.sha_short }}
+          tags: taccwma/apcd-cms:${{ steps.vars.outputs.sha_short }}
