@@ -23,4 +23,4 @@ When porting a downstream CMS project from [Core CMS Resources](https://github.c
 
 ## Automatic Builds
 
-Automatic builds should occur on pushes to the `apcd-cms` directory
+Automatic builds should occur on pushes to the `apcd-cms` directory.
