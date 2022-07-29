@@ -2,8 +2,8 @@ name: APCD CMS Builds
 on:
   push:
     branches: [ main ]
-#    paths:
-#      - 'apcd-cms/**'
+    paths:
+      - 'apcd-cms/**'
 
 jobs:
   build_commit:
