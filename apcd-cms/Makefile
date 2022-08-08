@@ -9,11 +9,11 @@ DOCKER_IMAGE_BRANCH := $(DOCKERHUB_REPO):$(shell git describe --exact-match --ta
 
 #.PHONY: build
 build:
-	docker-compose -f ./server/conf/docker/docker-compose.dev.yml build
+	docker-compose -f docker-compose.dev.yml build
 
 .PHONY: build-full
 build-full:
-	docker build -t $(DOCKER_IMAGE) --target production -f ./server/conf/docker/Dockerfile .
+	docker build -t $(DOCKER_IMAGE) --target production -f Dockerfile .
 	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE_BRANCH) # Note: Currently broken for branches with slashes
 
 .PHONY: publish
@@ -28,12 +28,12 @@ publish-latest:
 
 .PHONY: start
 start:
-	docker-compose -f local/docker/docker-compose-dev.all.debug.yml up
+	docker-compose -f docker-compose.dev.yml up
 
 .PHONY: stop
 stop:
-	docker-compose -f local/docker/docker-compose-dev.all.debug.yml down
+	docker-compose -f docker-compose.dev.yml down
 
 .PHONY: stop-full
 stop-v:
-	docker-compose -f local/docker/docker-compose-dev.all.debug.yml down -v
+	docker-compose -f docker-compose.dev.yml down -v
