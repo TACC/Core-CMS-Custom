@@ -23,15 +23,17 @@ CMS_TEMPLATES = (
 
 LOGO = [
     "tacc",
-    "apcd-cms/img/org_logos/tacc-white.png",
+    "site_cms/img/org_logos/portal.png",
+    # "apcd-cms/img/org_logos/apcd.png", # when we have one
     "",
     "/",
     "_self",
-    "APCD: All Player Claims Database",
+    "APCD: All-Payer Claims Database",
     "anonymous",
     "True"
 ]
 
 FAVICON = {
     "img_file_src": "apcd-cms/img/org_logos/favicon.ico"
+    # "img_file_src": "apcd-cms/img/org_logos/favicon.ico" # when we have one
 }
