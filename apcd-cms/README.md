@@ -1,4 +1,4 @@
-# tup-cms
+# apcd-cms
 
 An extension of the [Core CMS](https://github.com/TACC/Core-CMS) project
 
