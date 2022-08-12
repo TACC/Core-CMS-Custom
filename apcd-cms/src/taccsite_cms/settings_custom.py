@@ -37,3 +37,10 @@ FAVICON = {
     "img_file_src": "apcd-cms/img/org_logos/favicon.ico"
     # "img_file_src": "apcd-cms/img/org_logos/favicon.ico" # when we have one
 }
+
+########################
+# DJANGO (EMAIL)
+########################
+
+EMAIL_HOST = "relay.tacc.utexas.edu"
+DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
