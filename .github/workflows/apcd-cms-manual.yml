@@ -1,4 +1,4 @@
-name: APCD CMS Builds 
+name: APCD CMS Builds (Manual)
 on:
   workflow_dispatch:
 
