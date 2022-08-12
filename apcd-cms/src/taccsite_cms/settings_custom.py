@@ -43,4 +43,4 @@ FAVICON = {
 ########################
 
 EMAIL_HOST = "relay.tacc.utexas.edu"
-DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
+DEFAULT_FROM_EMAIL = "no-reply@apcd-qa.tacc.utexas.edu"
