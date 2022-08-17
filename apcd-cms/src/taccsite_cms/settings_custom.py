@@ -34,8 +34,8 @@ LOGO = [
 ]
 
 FAVICON = {
-    "img_file_src": "apcd-cms/img/org_logos/favicon.ico"
-    # "img_file_src": "apcd-cms/img/org_logos/favicon.ico" # when we have one
+    "img_file_src": "site_cms/img/favicons/favicon.ico"
+    # "img_file_src": "apcd-cms/img/favicons/favicon.ico" # when we have one
 }
 
 ########################
