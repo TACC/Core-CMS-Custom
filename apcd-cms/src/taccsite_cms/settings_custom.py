@@ -40,5 +40,7 @@ FAVICON = {
 # DJANGO (EMAIL)
 ########################
 
-EMAIL_HOST = "relay.tacc.utexas.edu"
+# Set on server, NOT here
+# https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/_settings/email.py
+# EMAIL_HOST = "..."
 DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
