@@ -42,6 +42,6 @@ FAVICON = {
 
 # Set on server, NOT here
 # https://confluence.tacc.utexas.edu/x/coR9E
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "..."
 # EMAIL_HOST = "..."
-DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
+# DEFAULT_FROM_EMAIL = "..."
