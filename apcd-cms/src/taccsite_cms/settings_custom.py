@@ -41,6 +41,7 @@ FAVICON = {
 ########################
 
 # Set on server, NOT here
-# https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/_settings/email.py
+# https://confluence.tacc.utexas.edu/x/coR9E
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_HOST = "..."
 DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
