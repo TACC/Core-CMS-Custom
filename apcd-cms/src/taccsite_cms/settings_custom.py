@@ -40,5 +40,8 @@ FAVICON = {
 # DJANGO (EMAIL)
 ########################
 
-EMAIL_HOST = "relay.tacc.utexas.edu"
-DEFAULT_FROM_EMAIL = "no-reply@txapcd.org"
+# Set on server, NOT here
+# https://confluence.tacc.utexas.edu/x/coR9E
+# EMAIL_BACKEND = "..."
+# EMAIL_HOST = "..."
+# DEFAULT_FROM_EMAIL = "..."
