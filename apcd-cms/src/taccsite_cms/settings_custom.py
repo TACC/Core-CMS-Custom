@@ -11,7 +11,7 @@ CMS_TEMPLATES = (
     ('standard.html', 'Standard'),
     ('fullwidth.html', 'Full Width'),
     ('guide.html', 'Guide'),
-    ('guides/getting_started.html', 'Guide: Getting Started'),
+    ('guides/getting_started.tam.html', 'Guide: Getting Started'),
     ('guides/data_transfer.html', 'Guide: Data Transfer'),
     ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
     ('guides/portal_technology.html', 'Guide: Portal Technology Stack')
@@ -23,8 +23,7 @@ CMS_TEMPLATES = (
 
 LOGO = [
     "tacc",
-    "site_cms/img/org_logos/portal.png",
-    # "apcd-cms/img/org_logos/apcd.png", # when we have one
+    "apcd-cms/img/org_logos/apcd-white.png",
     "",
     "/",
     "_self",
@@ -34,6 +33,15 @@ LOGO = [
 ]
 
 FAVICON = {
-    "img_file_src": "apcd-cms/img/org_logos/favicon.ico"
-    # "img_file_src": "apcd-cms/img/org_logos/favicon.ico" # when we have one
+    "img_file_src": "apcd-cms/img/favicons/favicon.ico"
 }
+
+########################
+# DJANGO (EMAIL)
+########################
+
+# Set on server, NOT here
+# https://confluence.tacc.utexas.edu/x/coR9E
+# EMAIL_BACKEND = "..."
+# EMAIL_HOST = "..."
+# DEFAULT_FROM_EMAIL = "..."
