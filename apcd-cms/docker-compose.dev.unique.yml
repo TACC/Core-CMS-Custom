@@ -1,0 +1,38 @@
+# To isolate APCD CMS development into its own database and volumes
+
+# NOTE: The extends keyword is NOT in Compose version v3, but IS in latest spec
+# SEE: https://docs.docker.com/compose/extends/#extending-services
+# SEE: https://github.com/moby/moby/issues/31101#issuecomment-922378041
+# version: "3"
+services:
+  cms:
+    extends:
+      file: ./docker-compose.dev.yml
+      service: cms
+    container_name: apcd_cms
+    hostname: apcd_cms
+
+  postgres:
+    extends:
+      file: ./docker-compose.dev.yml
+      service: postgres
+    hostname: apcd_cms_postgres
+    container_name: apcd_cms_postgres
+    volumes:
+      - apcd_cms_postgres_data:/var/lib/postgresql/data
+
+  elasticsearch:
+    extends:
+      file: ./docker-compose.dev.yml
+      service: elasticsearch
+    container_name: apcd_cms_elasticsearch
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - apcd_cms_es_data:/usr/share/elasticsearch/data
+
+volumes:
+  apcd_cms_postgres_data:
+  apcd_cms_es_data:
+
+networks:
+  core_cms_net:
