@@ -23,6 +23,11 @@ docker-compose -f docker-compose.dev.unique.yml build
 docker-compose -f docker-compose.dev.unique.yml up
 ```
 
+## Running Custom App on a Custom CMS
+
+- Update `custom_app_settings.py` with relevant content from [TACC/Core-CMS:`/taccsite_cms/custom_app_settings.example.py`](https://github.com/TACC/Core-CMS/blob/1d88c35/taccsite_cms/custom_app_settings.example.py).
+- Update `urls_custom.py` with relevant content from [TACC/Core-CMS:`/taccsite_cms/urls_custom.example.py`](https://github.com/TACC/Core-CMS/blob/1d88c35/taccsite_cms/urls_custom.example.py).
+
 ## Porting from Core CMS Resources
 
 When porting a downstream CMS project from [Core CMS Resources](https://github.com/tacc/core-cms-resources), the contents of a specific project's custom assets should be copied to [`./src/taccsite_custom`](./src/taccsite_custom/). The `settings_custom.py` from this directory should be moved to [`./src/taccsite_cms`](./src/taccsite_cms/) since that is where the file would be placed during a CMS build process from Jenkins.
