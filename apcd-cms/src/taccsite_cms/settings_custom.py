@@ -2,6 +2,9 @@
 # TACC WMA CMS SITE:
 # *.APCD.TACC.UTEXAS.EDU
 
+import logging
+print('SETTINGS_CUSTOM.PY, print()')
+logging.info('SETTINGS_CUSTOM.PY, logging.info()')
 
 ########################
 # DJANGO CMS SETTINGS
