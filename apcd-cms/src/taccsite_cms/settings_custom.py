@@ -3,8 +3,9 @@
 # *.APCD.TACC.UTEXAS.EDU
 
 import logging
+logger = logging.getLogger(__name__)
 print('SETTINGS_CUSTOM.PY, print()')
-logging.info('SETTINGS_CUSTOM.PY, logging.info()')
+logger.info('SETTINGS_CUSTOM.PY, logging.info()')
 
 ########################
 # DJANGO CMS SETTINGS
