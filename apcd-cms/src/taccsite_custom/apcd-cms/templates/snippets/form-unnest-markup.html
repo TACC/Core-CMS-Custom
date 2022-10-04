@@ -1,0 +1,55 @@
+
+PROBABLY NOT UP TO DATE
+
+<script id="form-unnest-markup" type="module">
+    /* RFE: Provide this feature in a Core CMS module script */
+    /* Move hack markup, from a wrapper, outside the wrapper's parent */
+    const wrappers = document.querySelectorAll('[data-script="unnest-markup"]');
+    [ ...wrappers ].forEach( wrapper => {
+        const fragment = document.createDocumentFragment();
+        const targetRel = wrapper.dataset.targetRel;
+        const targetPos = wrapper.dataset.targetPos;
+        let target;
+
+        /* To move wrapper children to a target until wrapper is empty */
+        while ( wrapper.hasChildNodes() ) {
+            target = getTarget( targetRel, wrapper );
+
+            console.debug({ wrapper, wrapper_childNodes: wrapper.childNodes });
+
+            if ( targetPos === 'before' ) {
+                target.before( ...wrapper.childNodes );
+            } else {
+                target.after( ...wrapper.childNodes );
+            }
+        }
+
+        /* To flag wrapper as emptied */
+        wrapper.dataset.emptied = true;
+
+        /* To convert empty wrapper to a comment */
+        const comment = document.createComment( wrapper.outerHTML );
+        wrapper.after( comment );
+        wrapper.parentNode.removeChild( wrapper );
+    });
+
+    function getTarget( relationship, wrapper ) {
+        let target;
+
+        /* To translate keyword to DOM traversal */
+        switch ( relationship ) {
+            case 'grandparent':
+                target = wrapper.parentNode.parentNode;
+                break;
+
+            case 'parent':
+            default:
+                target = wrapper.parentNode;
+                break;
+        }
+
+        console.debug({ target });
+
+        return target;
+    }
+</script>
