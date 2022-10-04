@@ -2,6 +2,9 @@ import logging
 
 from django.apps import AppConfig
 
+print('Loaded FormIntercepterConfig "ready()"')
+logging.info('Loaded FormIntercepterConfig "ready()"')
+
 class FormIntercepterConfig(AppConfig):
     name = 'form_intercepter'
 
