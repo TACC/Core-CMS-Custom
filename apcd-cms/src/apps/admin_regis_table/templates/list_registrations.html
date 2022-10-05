@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .registration-table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    column-width: auto;
+  }
+  .registration-table th, td {
+      padding-left: 5px;
+      padding-right: 5px;
+  }
+  .page-text {
+    text-indent: 30px;
+  }
+  #myModal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+<h1 class="page-text">List Registrations</h1>
+<p class="page-text">This is a list of all registrations for review. Click on the View button to see the entire submitted form.</p>
+<table class="registration-table">
+    <thead>
+        <tr>
+            {% for k in header %}
+            <th>{{k}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rows %}
+            <tr>
+                <td>{{r.biz_name}}</td>
+                <td>{{r.type}}</td>
+                <td>{{r.location}}</td>
+                <td>{{r.files_type}}</td>
+                <td>{{r.sub_method}}</td>
+                <td>{{r.reg_status}}</td>
+                <td><a href='' data-toggle="modal" data-target="#myModal">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">View Registration</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{modal_content}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{%endblock %}
