@@ -4,8 +4,7 @@
 
 import logging
 logger = logging.getLogger(__name__)
-print('SETTINGS_CUSTOM.PY, print()')
-logger.critical('SETTINGS_CUSTOM.PY, logging.critical()')
+print('SETTINGS_CUSTOM.PY')
 
 ########################
 # DJANGO CMS SETTINGS
