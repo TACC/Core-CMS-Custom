@@ -5,7 +5,7 @@ from django.apps import AppConfig
 logger = logging.getLogger(__name__)
 
 print('LOADED CUSTOMEXAMPLECONFIG, print()')
-logger.info('LOADED CUSTOMEXAMPLECONFIG, logging.info()')
+logger.critical('LOADED CUSTOMEXAMPLECONFIG, logging.info()')
 
 class CustomExampleConfig(AppConfig):
     name = 'custom_example'
