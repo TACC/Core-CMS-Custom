@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <h3>Submission Form</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        Give us your name plz.
+        <input type="text" name="user-name">
+        <button type="submit" name="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
