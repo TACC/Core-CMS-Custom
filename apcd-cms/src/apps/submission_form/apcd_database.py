@@ -191,11 +191,11 @@ def get_registration_entities():
 def create_registration_entity(form, reg_id):
     values = (
         reg_id,
-        form['total_claims_value'],
-        form['claims_encounters_volume'],
-        form['license_number'],
-        form['naic_company_code'],
-        form['total_covered_lives'],
+        set_int(form['total_claims_value']),
+        set_int(form['claims_encounters_volume']),
+        set_int(form['license_number']),
+        set_int(form['naic_company_code']),
+        set_int(form['total_covered_lives']),
         form['entity_name'],
         form['fein']
     )
@@ -360,3 +360,7 @@ def acceptable_contact(form, iteration):
         'contact_email_{}'.format(iteration)
     ]
     return all(key in form and form[key] for key in contact_keys)
+
+def set_int(value):
+    if len(value):
+        return int(value)
