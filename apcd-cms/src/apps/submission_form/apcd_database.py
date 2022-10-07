@@ -137,7 +137,6 @@ def create_registration(form):
             form['state'][:2],
             form['zip_code']
         )
-        print(values)
         cur.execute(operation, values)
         conn.commit()
         return cur.fetchone()[0]
@@ -225,7 +224,6 @@ def create_registration_entity(form, reg_id):
         fein
     ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-    print(values)
     cur = None
     conn = None
     try:
@@ -315,7 +313,7 @@ def create_registration_contact(form, reg_id):
         contact_phone,
         contact_email
     ) VALUES (%s,%s,%s,%s,%s,%s)"""
-    print(values)
+
     cur = None
     conn = None
     try:
