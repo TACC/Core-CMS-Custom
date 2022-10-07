@@ -22,9 +22,8 @@ class SubmissionFormView(View):
         form = request.POST.copy()
 
         reg_id = apcd_database.create_registration(form)
-        for iteration in range(1,6):
-            apcd_database.create_registration_contact(form, reg_id, iteration)
-            apcd_database.create_registration_entity(form, reg_id, iteration)
+        apcd_database.create_registration_contact(form, reg_id)
+        apcd_database.create_registration_entity(form, reg_id)
 
         template = loader.get_template('submission_form/submission_success.html')
         return HttpResponse(template.render({}, request))
