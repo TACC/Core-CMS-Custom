@@ -85,13 +85,13 @@
         width: 100%;
       }
       ul:is([id^="types_of_files"], [id^="submit_methods"])
-        li:has(input[value="Yes"]) {
+        li:has(input[value="true"]) {
         flex-basis: 20ch;
       }
 
       /* To align "No (such files)" */
       ul:is([id^="types_of_files"], [id^="submit_methods"])
-        li:has(input[value="No"]) {
+        li:has(input[value="false"]) {
         font-style: italic;
       }
     </style>
@@ -196,7 +196,7 @@
                     ><input
                       type="radio"
                       name="on-behalf-of"
-                      value="Self"
+                      value="true"
                       class="radioselect"
                       required=""
                       id="on-behalf-of_0"
@@ -209,7 +209,7 @@
                     ><input
                       type="radio"
                       name="on-behalf-of"
-                      value="Other"
+                      value="false"
                       class="radioselect"
                       required=""
                       id="on-behalf-of_1"
@@ -497,7 +497,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_eligibility_enrollment"
-                        value="Yes"
+                        value="true"
                         class="radioselect"
                         required=""
                         id="types_of_files_eligibility_enrollment_0"
@@ -510,7 +510,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_eligibility_enrollment"
-                        value="No"
+                        value="false"
                         class="radioselect"
                         required=""
                         id="types_of_files_eligibility_enrollment_1"
@@ -535,7 +535,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_provider"
-                        value="Yes"
+                        value="true"
                         class="radioselect"
                         required=""
                         id="types_of_files_provider_0"
@@ -547,7 +547,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_provider"
-                        value="No"
+                        value="false"
                         class="radioselect"
                         required=""
                         id="types_of_files_provider_1"
@@ -573,7 +573,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_medical"
-                        value="Yes"
+                        value="true"
                         class="radioselect"
                         required=""
                         id="types_of_files_medical_0"
@@ -585,7 +585,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_medical"
-                        value="No"
+                        value="false"
                         class="radioselect"
                         required=""
                         id="types_of_files_medical_1"
@@ -611,7 +611,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_pharmacy"
-                        value="Yes"
+                        value="true"
                         class="radioselect"
                         required=""
                         id="types_of_files_pharmacy_0"
@@ -623,7 +623,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_pharmacy"
-                        value="No"
+                        value="false"
                         class="radioselect"
                         required=""
                         id="types_of_files_pharmacy_1"
@@ -649,7 +649,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_dental"
-                        value="Yes"
+                        value="true"
                         class="radioselect"
                         required=""
                         id="types_of_files_dental_0"
@@ -661,7 +661,7 @@
                       ><input
                         type="radio"
                         name="types_of_files_dental"
-                        value="No"
+                        value="false"
                         class="radioselect"
                         required=""
                         id="types_of_files_dental_1"
@@ -762,124 +762,54 @@
               </div>
             </div>
 
+            <!-- submission_method -->
             <div class="js-wrapElements-wrapper js-submit-methods--wrapper">
               <div
                 class="field-wrapper radioselect required js-wrapElements-starter"
-                id="submit_methods_sftp_0--wrapper"
+                id="submission_method_0--wrapper"
               >
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="submit_methods_sftp_0">
-                  SFTP⁵<span class="asterisk">*</span>
-                </label>
-
-                <ul id="submit_methods_sftp" class="radioselect">
+                <ul id="submission_method" class="radioselect">
                   <li>
-                    <label for="submit_methods_sftp_0"
+                    <label for="submission_method_0"
                       ><input
                         type="radio"
-                        name="submit_methods_sftp"
-                        value="Yes"
+                        name="submission_method"
+                        value="SFTP"
                         class="radioselect"
                         required=""
-                        id="submit_methods_sftp_0"
+                        id="submission_method_0"
                         checked=""
                       />SFTP⁵</label
                     >
                   </li>
                   <li>
-                    <label for="submit_methods_sftp_1"
+                    <label for="submission_method_0"
                       ><input
                         type="radio"
-                        name="submit_methods_sftp"
-                        value="No"
+                        name="submission_method"
+                        value="HTTPS"
                         class="radioselect"
                         required=""
-                        id="submit_methods_sftp_1"
-                      />Not using this method</label
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="submit_methods_https_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="submit_methods_https_0">
-                  HTTPS⁶**<span class="asterisk">*</span>
-                </label>
-
-                <ul id="submit_methods_https" class="radioselect">
-                  <li>
-                    <label for="submit_methods_https_0"
-                      ><input
-                        type="radio"
-                        name="submit_methods_https"
-                        value="Yes"
-                        class="radioselect"
-                        required=""
-                        id="submit_methods_https_0"
+                        id="submission_method_0"
                         checked=""
                       />HTTPS⁶**</label
                     >
                   </li>
                   <li>
-                    <label for="submit_methods_https_1"
+                    <label for="submission_method_0"
                       ><input
                         type="radio"
-                        name="submit_methods_https"
-                        value="No"
+                        name="submission_method"
+                        value="Encrypted USB Drive"
                         class="radioselect"
                         required=""
-                        id="submit_methods_https_1"
-                      />Not using this method</label
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="submit_methods_usb_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="submit_methods_usb_0">
-                  Encrypted USB⁷ drive***<span class="asterisk">*</span>
-                </label>
-
-                <ul id="submit_methods_usb" class="radioselect">
-                  <li>
-                    <label for="submit_methods_usb_0"
-                      ><input
-                        type="radio"
-                        name="submit_methods_usb"
-                        value="Yes"
-                        class="radioselect"
-                        required=""
-                        id="submit_methods_usb_0"
+                        id="submission_method_0"
                       />Encrypted USB⁷ drive***</label
                     >
                   </li>
-                  <li>
-                    <label for="submit_methods_usb_1"
-                      ><input
-                        type="radio"
-                        name="submit_methods_usb"
-                        value="No"
-                        class="radioselect"
-                        required=""
-                        id="submit_methods_usb_1"
-                        checked=""
-                      />Not using this method</label
-                    >
-                  </li>
                 </ul>
-
-                <div id="help-text-submit_methods_usb" class="help-text">
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-                </div>
               </div>
             </div>
             <hr />
@@ -895,23 +825,23 @@
 
             <div
               class="field-wrapper textinput required"
-              id="entity_number_code--wrapper"
+              id="entity_name--wrapper"
             >
               <div class="field-errors" style="display: none"></div>
 
-              <label for="entity_number_code">
+              <label for="entity_name">
                 Name<span class="asterisk">*</span>
               </label>
 
               <input
                 type="text"
-                name="entity_number_code"
+                name="entity_name"
                 required=""
                 class="textinput"
-                id="entity_number_code"
+                id="entity_name"
               />
 
-              <div id="help-text-entity_number_code" class="help-text">
+              <div id="help-text-entity_name" class="help-text">
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
@@ -1094,20 +1024,20 @@
 
             <div
               class="field-wrapper textinput"
-              id="entity_number_code_2--wrapper"
+              id="entity_name_2--wrapper"
             >
               <div class="field-errors" style="display: none"></div>
 
-              <label for="entity_number_code_2"> Name </label>
+              <label for="entity_name_2"> Name </label>
 
               <input
                 type="text"
-                name="entity_number_code_2"
+                name="entity_name_2"
                 class="textinput"
-                id="entity_number_code_2"
+                id="entity_name_2"
               />
 
-              <div id="help-text-entity_number_code_2" class="help-text">
+              <div id="help-text-entity_name_2" class="help-text">
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
@@ -1290,20 +1220,20 @@
 
             <div
               class="field-wrapper textinput"
-              id="entity_number_code_3--wrapper"
+              id="entity_name_3--wrapper"
             >
               <div class="field-errors" style="display: none"></div>
 
-              <label for="entity_number_code_3"> Name </label>
+              <label for="entity_name_3"> Name </label>
 
               <input
                 type="text"
-                name="entity_number_code_3"
+                name="entity_name_3"
                 class="textinput"
-                id="entity_number_code_3"
+                id="entity_name_3"
               />
 
-              <div id="help-text-entity_number_code_3" class="help-text">
+              <div id="help-text-entity_name_3" class="help-text">
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
@@ -1486,20 +1416,20 @@
 
             <div
               class="field-wrapper textinput"
-              id="entity_number_code_4--wrapper"
+              id="entity_name_4--wrapper"
             >
               <div class="field-errors" style="display: none"></div>
 
-              <label for="entity_number_code_4"> Name </label>
+              <label for="entity_name_4"> Name </label>
 
               <input
                 type="text"
-                name="entity_number_code_4"
+                name="entity_name_4"
                 class="textinput"
-                id="entity_number_code_4"
+                id="entity_name_4"
               />
 
-              <div id="help-text-entity_number_code_4" class="help-text">
+              <div id="help-text-entity_name_4" class="help-text">
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
@@ -1684,20 +1614,20 @@
 
             <div
               class="field-wrapper textinput"
-              id="entity_number_code_5--wrapper"
+              id="entity_name_5--wrapper"
             >
               <div class="field-errors" style="display: none"></div>
 
-              <label for="entity_number_code_5"> Name </label>
+              <label for="entity_name_5"> Name </label>
 
               <input
                 type="text"
-                name="entity_number_code_5"
+                name="entity_name_5"
                 class="textinput"
-                id="entity_number_code_5"
+                id="entity_name_5"
               />
 
-              <div id="help-text-entity_number_code_5" class="help-text">
+              <div id="help-text-entity_name_5" class="help-text">
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
@@ -1900,17 +1830,17 @@
                   id="contact_type"
                 />
               </div>
-              <div class="field-wrapper textinput required" id="name--wrapper">
+              <div class="field-wrapper textinput required" id="contact_name--wrapper">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="name"> Name<span class="asterisk">*</span> </label>
+                <label for="contact_name"> Name<span class="asterisk">*</span> </label>
 
                 <input
                   type="text"
-                  name="name"
+                  name="contact_name"
                   required=""
                   class="textinput"
-                  id="name"
+                  id="contact_name"
                 />
               </div>
               <div
@@ -2013,16 +1943,16 @@
                   id="contact_type_2"
                 />
               </div>
-              <div class="field-wrapper textinput" id="contact_name--wrapper">
+              <div class="field-wrapper textinput" id="contact_name_2--wrapper">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="contact_name"> Name </label>
+                <label for="contact_name_2"> Name </label>
 
                 <input
                   type="text"
-                  name="contact_name"
+                  name="contact_name_2"
                   class="textinput"
-                  id="contact_name"
+                  id="contact_name_2"
                 />
               </div>
               <div
@@ -2119,16 +2049,16 @@
                   id="contact_type_3"
                 />
               </div>
-              <div class="field-wrapper textinput" id="contact_name_2--wrapper">
+              <div class="field-wrapper textinput" id="contact_name_3--wrapper">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="contact_name_2"> Name </label>
+                <label for="contact_name_3"> Name </label>
 
                 <input
                   type="text"
-                  name="contact_name_2"
+                  name="contact_name_3"
                   class="textinput"
-                  id="contact_name_2"
+                  id="contact_name_3"
                 />
               </div>
               <div
@@ -2229,19 +2159,19 @@
               </div>
               <div
                 class="field-wrapper textinput"
-                id="contact_name_3--wrapper"
+                id="contact_name_4--wrapper"
               >
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="contact_name_3">
+                <label for="contact_name_4">
                   Name
                 </label>
 
                 <input
                   type="text"
-                  name="contact_name_3"
+                  name="contact_name_4"
                   class="textinput"
-                  id="contact_name_3"
+                  id="contact_name_4"
                 />
               </div>
               <div
@@ -2338,16 +2268,16 @@
                   id="contact_type_5"
                 />
               </div>
-              <div class="field-wrapper textinput" id="contact_name_4--wrapper">
+              <div class="field-wrapper textinput" id="contact_name_5--wrapper">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="contact_name_4"> Name </label>
+                <label for="contact_name_5"> Name </label>
 
                 <input
                   type="text"
-                  name="contact_name_4"
+                  name="contact_name_5"
                   class="textinput"
-                  id="contact_name_4"
+                  id="contact_name_5"
                 />
               </div>
               <div
@@ -2422,70 +2352,6 @@
                 </label>
               </div>
             </div>
-			<!-- RECAPTCHA -->
-            <!-- <div
-              class="field-wrapper recaptchav2checkbox required"
-              id="recaptcha_oj1Zr0VW--wrapper"
-            >
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="recaptcha_oj1Zr0VW">
-                Are you a robot?<span class="asterisk">*</span>
-              </label>
-
-              <script src="https://www.google.com/recaptcha/api.js"></script>
-              <script type="text/javascript">
-                // Submit function to be called, after reCAPTCHA was successful.
-                var onSubmit_b5f0ccbbef464375b38760b5ce9fc1d9 = function (
-                  token
-                ) {
-                  console.log(
-                    "reCAPTCHA validated for 'data-widget-uuid=\"b5f0ccbbef464375b38760b5ce9fc1d9\"'"
-                  );
-                };
-              </script>
-
-              <div
-                class="g-recaptcha"
-                data-sitekey="6Ld-aIwgAAAAAHnUQQQ537JpPyTuYuaFmMjj_wsL"
-                required=""
-                id="recaptcha_oj1Zr0VW"
-                data-widget-uuid="b5f0ccbbef464375b38760b5ce9fc1d9"
-                data-callback="onSubmit_b5f0ccbbef464375b38760b5ce9fc1d9"
-                data-size="normal"
-              >
-                <div style="width: 304px; height: 78px">
-                  <div>
-                    <iframe
-                      title="reCAPTCHA"
-                      src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6Ld-aIwgAAAAAHnUQQQ537JpPyTuYuaFmMjj_wsL&amp;co=aHR0cHM6Ly9hcGNkLXFhLnRhY2MudXRleGFzLmVkdTo0NDM.&amp;hl=en&amp;v=a9s0j4pCVT6gaTEkLiFbtZPH&amp;size=normal&amp;cb=pxt7a93wmsut"
-                      width="304"
-                      height="78"
-                      role="presentation"
-                      name="a-t4nxfcw0s25k"
-                      frameborder="0"
-                      scrolling="no"
-                      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
-                    ></iframe>
-                  </div>
-                  <textarea
-                    id="g-recaptcha-response"
-                    name="g-recaptcha-response"
-                    class="g-recaptcha-response"
-                    style="
-                      width: 250px;
-                      height: 40px;
-                      border: 1px solid rgb(193, 193, 193);
-                      margin: 10px 25px;
-                      padding: 0px;
-                      resize: none;
-                      display: none;
-                    "
-                  ></textarea>
-                </div>
-                <iframe style="display: none"></iframe>
-              </div>
-            </div> -->
 
             <input
               type="hidden"
@@ -2705,15 +2571,15 @@
       elementsWrappers.forEach((elementsWrapper) => {
         elementsWrapper.classList.add("js-types-of-files--wrapper");
 
-        /* Replace text of "Yes" radiobox with label text */
+        /* Replace text of "true" radiobox with label text */
         const fieldWrappers = elementsWrapper.querySelectorAll(
           ".js-types-of-files--wrapper .field-wrapper"
         );
         [...fieldWrappers].forEach((wrapper) => {
           const label = wrapper.querySelector("label");
           const labelTextSansChildText = label.childNodes[0].nodeValue.trim();
-          const yesInputs = wrapper.querySelectorAll('input[value="Yes"]');
-          const noInputs = wrapper.querySelectorAll('input[value="No"]');
+          const yesInputs = wrapper.querySelectorAll('input[value="true"]');
+          const noInputs = wrapper.querySelectorAll('input[value="false"]');
 
           [...yesInputs].forEach((input) => {
             const inputText = input.nextSibling;
@@ -2758,7 +2624,7 @@
       const startWith = '.field-wrapper[id^="submit_methods_sftp"]';
       const endBefore = `
 			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="name"]
+			.field-wrapper[id^="contact_name"]
 		`;
       const wrapWith = "div";
       const wrapStarter = true;
@@ -2772,15 +2638,15 @@
       elementsWrappers.forEach((elementsWrapper) => {
         elementsWrapper.classList.add("js-submit-methods--wrapper");
 
-        /* Replace text of "Yes" radiobox with label text */
+        /* Replace text of "true" radiobox with label text */
         const fieldWrappers = elementsWrapper.querySelectorAll(
           ".js-submit-methods--wrapper .field-wrapper"
         );
         [...fieldWrappers].forEach((wrapper) => {
           const label = wrapper.querySelector("label");
           const labelTextSansChildText = label.childNodes[0].nodeValue.trim();
-          const yesInputs = wrapper.querySelectorAll('input[value="Yes"]');
-          const noInputs = wrapper.querySelectorAll('input[value="No"]');
+          const yesInputs = wrapper.querySelectorAll('input[value="true"]');
+          const noInputs = wrapper.querySelectorAll('input[value="false"]');
 
           [...yesInputs].forEach((input) => {
             const inputText = input.nextSibling;
