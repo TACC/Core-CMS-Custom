@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-This page will contain the submission forms...
-<div>
-    <h3>Submission Form</h3>
-    <div>
-        Your submission was successful.
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Request to Submit</h1>
+            <hr style="margin-top: 10px" />
+        </div>
     </div>
+    <div>
+        Your submission was successful!
+    </div>
+    <form class="button-wrapper submit" action="/workbench/dashboard" method="GET">
+        <button class="form-button" type="submit">Go to Dashboard</button>
+    </form>
 </div>
 {% endblock %}
