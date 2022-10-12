@@ -38,6 +38,13 @@ cd custom-project-dir
 make start
 ```
 
+The `Makefile` commands assume shared CMS databases. To use a unique database:
+
+```bash
+docker-compose -f docker-compose.dev.unique.yml build
+docker-compose -f docker-compose.dev.unique.yml up
+```
+
 ### Running Custom App on a Custom CMS
 
 - Update `custom_app_settings.py` with relevant content from [TACC/Core-CMS:`/taccsite_cms/custom_app_settings.example.py`](https://github.com/TACC/Core-CMS/blob/1d88c35/taccsite_cms/custom_app_settings.example.py).
