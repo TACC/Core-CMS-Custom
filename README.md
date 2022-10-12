@@ -11,9 +11,9 @@ Extensions of the [Core CMS] project
 
 ## Architecture
 
-- [`./src/apps`](./src/apps/): Contains any additional Django applications
-- [`./src/taccsite_cms`](./src/taccsite_cms/): Contains settings files which specify additional apps, static files and middleware to load on top of Core CMS, along with standard Core CMS settings files
-- [`./src/taccsite_custom`](./src/taccsite_custom/): Contains static assets and templates, organized in the way that Django CMS expects them before imported via `python manage.py collectstatic`.
+- [`.../src/apps`](./src/apps/): Contains any additional Django applications
+- [`.../src/taccsite_cms`](./src/taccsite_cms/): Contains settings files which specify additional apps, static files and middleware to load on top of Core CMS, along with standard Core CMS settings files
+- [`.../src/taccsite_custom`](./src/taccsite_custom/): Contains static assets and templates, organized in the way that Django CMS expects them before imported via `python manage.py collectstatic`.
 
 ## Local Development Setup
 
