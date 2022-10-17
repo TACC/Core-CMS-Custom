@@ -142,7 +142,7 @@ def create_registration(form):
         return cur.fetchone()[0]
 
     except Exception as error:
-        logger.error(error)
+        return error
 
     finally:
         if cur is not None:
@@ -204,11 +204,11 @@ def create_registration_entity(form, reg_id, iteration):
             return
         values = (
             reg_id,
-            form['total_claims_value_{}'.format(iteration)],
-            form['claims_encounters_volume_{}'.format(iteration)],
-            form['license_number_{}'.format(iteration)],
-            form['naic_company_code_{}'.format(iteration)],
-            form['total_covered_lives_{}'.format(iteration)],
+            set_int(form['total_claims_value_{}'.format(iteration)]),
+            set_int(form['claims_encounters_volume_{}'.format(iteration)]),
+            set_int(form['license_number_{}'.format(iteration)]),
+            set_int(form['naic_company_code_{}'.format(iteration)]),
+            set_int(form['total_covered_lives_{}'.format(iteration)]),
             form['entity_name_{}'.format(iteration)],
             form['fein_{}'.format(iteration)]
         )
@@ -240,7 +240,7 @@ def create_registration_entity(form, reg_id, iteration):
         conn.commit()
 
     except Exception as error:
-        logger.error(error)
+        return error
 
     finally:
         if cur is not None:
@@ -265,7 +265,7 @@ def get_registration_contacts():
                 registration_contacts.registration_contact_id,
                 registration_contacts.registration_id,
                 registration_contacts.notify_flag,
-                registration_contacts.contact_role,
+                registration_contacts.contact_type,
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
@@ -308,7 +308,7 @@ def create_registration_contact(form, reg_id, iteration):
     operation = """INSERT INTO registration_contacts(
         registration_id,
         notify_flag,
-        contact_role,
+        contact_type,
         contact_name,
         contact_phone,
         contact_email
@@ -330,7 +330,7 @@ def create_registration_contact(form, reg_id, iteration):
         conn.commit()
 
     except Exception as error:
-        logger.error(error)
+        return error
 
     finally:
         if cur is not None:

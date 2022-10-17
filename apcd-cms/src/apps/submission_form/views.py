@@ -16,6 +16,21 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
+"""
+[pid: 56|app: 0|req: 2/2] 129.114.2.252 () {64 vars in 2172 bytes} [Mon Oct 17 16:24:45 2022] GET /register/request-to-submit/ => generated 110096 bytes in 163 msecs (HTTP/2.0 200) 8 headers in 436 bytes (1 switches on core 5)
+column "contact_role" of relation "registration_contacts" does not exist
+LINE 4:         contact_role,
+                ^
+
+column "contact_role" of relation "registration_contacts" does not exist
+LINE 4:         contact_role,
+                ^
+
+invalid input syntax for type integer: ""
+LINE 10:     ) VALUES (28,'444','4','','44444','4','Wes Bomar','')
+"""
+
+
 class SubmissionFormView(View):
     def get(self, request):
         if (request.user.is_authenticated):
