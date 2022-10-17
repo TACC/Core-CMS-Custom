@@ -142,6 +142,7 @@ def create_registration(form):
         return cur.fetchone()[0]
 
     except Exception as error:
+        logger.error(error)
         return error
 
     finally:
@@ -240,6 +241,7 @@ def create_registration_entity(form, reg_id, iteration):
         conn.commit()
 
     except Exception as error:
+        logger.error(error)
         return error
 
     finally:
@@ -330,6 +332,7 @@ def create_registration_contact(form, reg_id, iteration):
         conn.commit()
 
     except Exception as error:
+        logger.error(error)
         return error
 
     finally:
