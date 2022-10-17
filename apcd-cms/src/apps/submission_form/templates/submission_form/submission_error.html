@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Request to Submit</h1>
+            <hr style="margin-top: 10px" />
+        </div>
+    </div>
+    <div class="c-message c-message--error">
+        There was an error when attempting to store your registration!
+        Please submit a ticket.
+    </div>
+    <form class="button-wrapper submit" action="/workbench/dashboard" method="GET">
+        <button class="form-button" type="submit">Go to Dashboard</button>
+    </form>
+</div>
+<style id="tup-175-css-alerts-messages-ui-pattern">
+    /*
+    Message
+    Inform user about a temporary status.
+    - .c-message--info - neither positive nor negative
+    - .c-message--success - a positive status
+    - .c-message--warning - a minor negative status
+    - .c-message--danger - a major negative status
+    Reference:
+    - https://getbootstrap.com/docs/4.0/components/alerts/
+    Styleguide Components.Message
+    */
+    /* @import url('../settings/color.css'); *//* ineffectual as live code, also settings are already available */
+    
+    /* Base */
+    
+    .c-message {
+      padding: 15px 20px;
+      border: var(--global-border--thick);
+      font-size: var(--global-font-size--small);
+    }
+    
+    /* Elements */
+    
+    .c-message a {
+      color: inherit;
+    }
+    
+    /* Modifiers */
+    
+    .c-message--info {
+      color: var(--global-color-info--dark);
+      background-color: var(--global-color-info--light);
+      border-color: var(--global-color-info--normal);
+    }
+    .c-message--success {
+      color: var(--global-color-success--dark);
+      background-color: var(--global-color-success--weak);
+      border-color: var(--global-color-success--normal);
+    }
+    .c-message--warning {
+      color: var(--global-color-warning--dark);
+      background-color: var(--global-color-warning--weak);
+      border-color: var(--global-color-warning--normal);
+    }
+    .c-message--error {
+      color: var(--global-color-danger--dark);
+      background-color: var(--global-color-danger--weak);
+      border-color: var(--global-color-danger--normal);
+    }
+    </style>
+{% endblock %}

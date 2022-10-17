@@ -188,7 +188,7 @@ def get_registration_entities():
             conn.close()
 
 
-def create_registration_entity(form, reg_id):
+def create_registration_entity(form, reg_id, iteration):
     values = (
         reg_id,
         set_int(form['total_claims_value']),
@@ -199,19 +199,19 @@ def create_registration_entity(form, reg_id):
         form['entity_name'],
         form['fein']
     )
-    # if iteration > 1:
-    #     if not acceptable_entity(form, iteration):
-    #         return
-    #     values = (
-    #         reg_id,
-    #         form['total_claims_value_{}'.format(iteration)],
-    #         form['claims_encounters_volume_{}'.format(iteration)],
-    #         form['license_number_{}'.format(iteration)],
-    #         form['naic_company_code_{}'.format(iteration)],
-    #         form['total_covered_lives_{}'.format(iteration)],
-    #         form['entity_name_{}'.format(iteration)],
-    #         form['fein_{}'.format(iteration)]
-    #     )
+    if iteration > 1:
+        if not acceptable_entity(form, iteration):
+            return
+        values = (
+            reg_id,
+            form['total_claims_value_{}'.format(iteration)],
+            form['claims_encounters_volume_{}'.format(iteration)],
+            form['license_number_{}'.format(iteration)],
+            form['naic_company_code_{}'.format(iteration)],
+            form['total_covered_lives_{}'.format(iteration)],
+            form['entity_name_{}'.format(iteration)],
+            form['fein_{}'.format(iteration)]
+        )
 
     operation = """INSERT INTO registration_entities(
         registration_id,
@@ -284,7 +284,7 @@ def get_registration_contacts():
             conn.close()
 
 
-def create_registration_contact(form, reg_id):
+def create_registration_contact(form, reg_id, iteration):
     values = (
         reg_id,
         True if 'contact_notifications' in form else False,
@@ -293,17 +293,17 @@ def create_registration_contact(form, reg_id):
         re.sub("[^0-9]", "", form['contact_phone']),
         form['contact_email']
     )
-    # if iteration > 1:
-    #     if not acceptable_contact(form, iteration):
-    #         return
-    #     values = (
-    #         reg_id,
-    #         True if 'contact_notifications_{}'.format(iteration) in form else False,
-    #         form['contact_type_{}'.format(iteration)],
-    #         form['contact_name_{}'.format(iteration)],
-    #         re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
-    #         form['contact_email_{}'.format(iteration)]
-    #     )
+    if iteration > 1:
+        if not acceptable_contact(form, iteration):
+            return
+        values = (
+            reg_id,
+            True if 'contact_notifications_{}'.format(iteration) in form else False,
+            form['contact_type_{}'.format(iteration)],
+            form['contact_name_{}'.format(iteration)],
+            re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
+            form['contact_email_{}'.format(iteration)]
+        )
 
     operation = """INSERT INTO registration_contacts(
         registration_id,
@@ -340,26 +340,33 @@ def create_registration_contact(form, reg_id):
 
 
 def acceptable_entity(form, iteration):
-    entity_keys = [
+    required_keys = [
         'total_claims_value_{}'.format(iteration),
         'claims_encounters_volume_{}'.format(iteration),
-        'license_number_{}'.format(iteration),
-        'naic_company_code_{}'.format(iteration),
         'total_covered_lives_{}'.format(iteration),
-        'entity_name_{}'.format(iteration),
+        'entity_name_{}'.format(iteration)
+    ]
+    requires_one = [
+        'naic_company_code_{}'.format(iteration),
+        'license_number_{}'.format(iteration),
         'fein_{}'.format(iteration)
     ]
-    return all(key in form and form[key] for key in entity_keys)
+    if all(key in form and form[key] for key in required_keys):
+        return next(
+            (True for key in requires_one if key),
+            False
+        )
+    return False
 
 
 def acceptable_contact(form, iteration):
-    contact_keys = [
+    required_keys = [
         'contact_type_{}'.format(iteration),
         'contact_name_{}'.format(iteration),
         'contact_phone_{}'.format(iteration),
         'contact_email_{}'.format(iteration)
     ]
-    return all(key in form and form[key] for key in contact_keys)
+    return all(key in form and form[key] for key in required_keys)
 
 def set_int(value):
     if len(value):
