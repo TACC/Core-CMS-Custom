@@ -10,16 +10,15 @@ import rt
 
 logger = logging.getLogger(__name__)
 
-RT_HOST = settings.RT_HOST
-RT_UN = settings.RT_UN
-RT_PW = settings.RT_PW
-RT_QUEUE = settings.RT_QUEUE
+RT_HOST = getattr(settings, 'RT_HOST', '')
+RT_UN = getattr(settings, 'RT_UN', '')
+RT_PW = getattr(settings, 'RT_PW', '')
+RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
 class SubmissionFormView(View):
     def get(self, request):
         if (request.user.is_authenticated):
-            # template = loader.get_template('submission_form/submission_error.html')
             template = loader.get_template('submission_form/submission_form.html')
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect('/')
@@ -73,8 +72,11 @@ class SubmissionFormView(View):
             template = loader.get_template('submission_form/submission_success.html')
             response = HttpResponse(template.render({}, request))
 
-        tracker.create_ticket(subject=subject,
-            problem_description=description,
-            requestor=email)
+        tracker.create_ticket(
+            Queue=RT_QUEUE,
+            Subject=subject,
+            Text=description,
+            Requestors=email
+        )
         
         return response
