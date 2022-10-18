@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic import View
 from requests.auth import HTTPBasicAuth
-import json
 import logging
 import rt
 
@@ -81,7 +80,7 @@ class SubmissionFormView(View):
                 if hasattr(err_msg, 'pgerror'):
                     description += "{}\n".format(err_msg.pgerror)
                 else:
-                    description += json.dumps(err_msg)
+                    description += str(err_msg)
             response = HttpResponseRedirect('/error/page/goes/here')
         else:
             template = loader.get_template('submission_form/submission_success.html')
