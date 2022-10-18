@@ -35,16 +35,16 @@ class SubmissionFormView(View):
             return HttpResponseRedirect('/')
 
         reg_resp = apcd_database.create_registration(form)
-        if not hasattr(reg_resp, 'pgerror') and type(reg_resp) == int:
+        if not _err_msg(reg_resp) and type(reg_resp) == int:
             for iteration in range(1,6):
                 contact_resp = apcd_database.create_registration_contact(form, reg_resp, iteration)
                 entity_resp = apcd_database.create_registration_entity(form, reg_resp, iteration)
-                if hasattr(contact_resp, 'pgerror'):
-                    errors.append(contact_resp)
-                if hasattr(entity_resp, 'pgerror'):
-                    errors.append(contact_resp)
+                if _err_msg(contact_resp):
+                    errors.append(_err_msg(contact_resp))
+                if _err_msg(entity_resp):
+                    errors.append(_err_msg(entity_resp))
         else:
-            errors.append(reg_resp)
+            errors.append(_err_msg(reg_resp))
 
         # ===> Create Ticket
         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
@@ -61,10 +61,7 @@ class SubmissionFormView(View):
             subject = "(ERROR): TX-APCD Portal Registration"
             description += "Error(s):\n"
             for err_msg in errors:
-                if hasattr(err_msg, 'pgerror'):
-                    description += "{}\n".format(err_msg.pgerror)
-                else:
-                    description += str(err_msg)
+                description += "{}\n".format(err_msg)
             response = HttpResponseRedirect('/error/page/goes/here')
         else:
             template = loader.get_template('submission_form/submission_success.html')
@@ -78,3 +75,11 @@ class SubmissionFormView(View):
         )
         
         return response
+
+
+def _err_msg(resp):
+    if hasattr(resp, 'pgerror'):
+        return resp.pgerror
+    if isinstance(resp, Exception):
+        return str(resp)
+    return None
