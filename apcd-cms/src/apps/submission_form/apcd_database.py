@@ -192,17 +192,8 @@ def get_registration_entities():
 def create_registration_entity(form, reg_id, iteration):
     cur = None
     conn = None
+    values = ()
     try:
-        values = (
-            reg_id,
-            _set_int(form['total_claims_value']),
-            _set_int(form['claims_encounters_volume']),
-            _set_int(form['license_number']),
-            _set_int(form['naic_company_code']),
-            _set_int(form['total_covered_lives']),
-            form['entity_name'],
-            form['fein']
-        )
         if iteration > 1:
             if not _acceptable_entity(form, iteration):
                 return
@@ -215,6 +206,17 @@ def create_registration_entity(form, reg_id, iteration):
                 _set_int(form['total_covered_lives_{}'.format(iteration)]),
                 form['entity_name_{}'.format(iteration)],
                 form['fein_{}'.format(iteration)]
+            )
+        else:
+            values = (
+                reg_id,
+                _set_int(form['total_claims_value']),
+                _set_int(form['claims_encounters_volume']),
+                _set_int(form['license_number']),
+                _set_int(form['naic_company_code']),
+                _set_int(form['total_covered_lives']),
+                form['entity_name'],
+                form['fein']
             )
 
         operation = """INSERT INTO registration_entities(
@@ -289,15 +291,8 @@ def get_registration_contacts():
 def create_registration_contact(form, reg_id, iteration):
     cur = None
     conn = None
+    values = ()
     try:
-        values = (
-            reg_id,
-            True if 'contact_notifications' in form else False,
-            form['contact_type'],
-            form['contact_name'],
-            re.sub("[^0-9]", "", form['contact_phone']),
-            form['contact_email']
-        )
         if iteration > 1:
             if not _acceptable_contact(form, iteration):
                 return
@@ -308,6 +303,15 @@ def create_registration_contact(form, reg_id, iteration):
                 form['contact_name_{}'.format(iteration)],
                 re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
                 form['contact_email_{}'.format(iteration)]
+            )
+        else:
+            values = (
+                reg_id,
+                True if 'contact_notifications' in form else False,
+                form['contact_type'],
+                form['contact_name'],
+                re.sub("[^0-9]", "", form['contact_phone']),
+                form['contact_email']
             )
 
         operation = """INSERT INTO registration_contacts(
