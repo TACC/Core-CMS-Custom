@@ -14,6 +14,7 @@ RT_UN = getattr(settings, 'RT_UN', '')
 RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
+
 class SubmissionFormView(View):
     def get(self, request):
         if (request.user.is_authenticated):
