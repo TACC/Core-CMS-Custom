@@ -1,18 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
+  .container {
+    margin-left: 44.5px;
+    margin-right: 44.5px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
   .registration-table {
-    margin-left: auto;
     margin-right: auto;
     text-align: center;
     column-width: auto;
   }
   .registration-table th, td {
-      padding-left: 5px;
-      padding-right: 5px;
+    text-align: left;
+    vertical-align: top;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 40px;
+    border-collapse: collapse;
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid rgba(0,0,0,1);
+    white-space: nowrap;
+  }
+  .registration-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .registration-table tr:nth-child(even) td {
+    background: 0% 0% no-repeat padding-box;
+    background-color: rgba(198, 198, 198, 0.1);
+    border-right: rgba(198, 198, 198, 0.1);
+    border-left: rgba(198, 198, 198, 0.1);
+  }
+  .registration-table tr:nth-child(even) td:first-child {
+    border-left: 1px solid #fff;
+  }
+  .registration-table tr:nth-child(even) td:last-child {
+    border-right: 1px solid #fff;
+  }
+  .no-bullets {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .no-bullets li:not(:first-child) {
+    margin: 5px 0;
   }
   .page-text {
-    text-indent: 30px;
+    margin-top: 27px;
+    margin-bottom: 27px;
   }
   #myModal {
     width: 700px;
@@ -30,8 +72,11 @@
     overflow-y: auto !important;
   }
 </style>
+<div class="container">
 <h1 class="page-text">List Registrations</h1>
+<hr style="margin-top: 10px">
 <p class="page-text">This is a list of all registrations for review. Click on the View button to see the entire submitted form.</p>
+<hr style="margin-top: 10px">
 <table class="registration-table">
     <thead>
         <tr>
@@ -46,9 +91,17 @@
                 <td>{{r.biz_name}}</td>
                 <td>{{r.type}}</td>
                 <td>{{r.location}}</td>
-                <td>{{r.files_type}}</td>
                 <td>{{r.sub_method}}</td>
                 <td>{{r.reg_status}}</td>
+                <td>
+                  <ul class='no-bullets'>
+                    {% for file_type in r.files_type %}
+                      {% if file_type != None %}
+                        <li>{{file_type}}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </td>
                 <td><!--<a href='' data-toggle="modal" data-target="#myModal">View</a>-->
                 </td>
             </tr>
@@ -395,5 +448,6 @@
     </div>
 
   </div>
+</div>
 </div>
 {%endblock %}
