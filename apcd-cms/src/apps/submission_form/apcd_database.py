@@ -128,12 +128,12 @@ def create_registration(form):
             True if 'types_of_files_pharmacy' in form else False,
             True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            form['submission_method'],
+            _clean_value(form['submission_method']),
             None,
-            form['type'],
-            form['business-name'],
-            form['mailing-address'],
-            form['city'],
+            _clean_value(form['type']),
+            _clean_value(form['business-name']),
+            _clean_value(form['mailing-address']),
+            _clean_value(form['city']),
             form['state'][:2],
             form['zip_code']
         )
@@ -204,8 +204,8 @@ def create_registration_entity(form, reg_id, iteration):
                 _set_int(form['license_number_{}'.format(iteration)]),
                 _set_int(form['naic_company_code_{}'.format(iteration)]),
                 _set_int(form['total_covered_lives_{}'.format(iteration)]),
-                form['entity_name_{}'.format(iteration)],
-                form['fein_{}'.format(iteration)]
+                _clean_value(form['entity_name_{}'.format(iteration)]),
+                _clean_value(form['fein_{}'.format(iteration)])
             )
         else:
             values = (
@@ -215,8 +215,8 @@ def create_registration_entity(form, reg_id, iteration):
                 _set_int(form['license_number']),
                 _set_int(form['naic_company_code']),
                 _set_int(form['total_covered_lives']),
-                form['entity_name'],
-                form['fein']
+                _clean_value(form['entity_name']),
+                _clean_value(form['fein'])
             )
 
         operation = """INSERT INTO registration_entities(
@@ -299,19 +299,19 @@ def create_registration_contact(form, reg_id, iteration):
             values = (
                 reg_id,
                 True if 'contact_notifications_{}'.format(iteration) in form else False,
-                form['contact_type_{}'.format(iteration)],
-                form['contact_name_{}'.format(iteration)],
+                _clean_value(form['contact_type_{}'.format(iteration)]),
+                _clean_value(form['contact_name_{}'.format(iteration)]),
                 re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
-                form['contact_email_{}'.format(iteration)]
+                _clean_email(form['contact_email_{}'.format(iteration)])
             )
         else:
             values = (
                 reg_id,
                 True if 'contact_notifications' in form else False,
-                form['contact_type'],
-                form['contact_name'],
+                _clean_value(form['contact_type']),
+                _clean_value(form['contact_name']),
                 re.sub("[^0-9]", "", form['contact_phone']),
-                form['contact_email']
+                _clean_email(form['contact_email'])
             )
 
         operation = """INSERT INTO registration_contacts(
@@ -375,6 +375,17 @@ def _acceptable_contact(form, iteration):
     ]
     return all(key in form and form[key] for key in required_keys)
 
+
+def _clean_email(email):
+    pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
+    result = pattern.match(email)
+    return result.string if result else None
+
+
+def _clean_value(value):
+    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
+
+
 def _set_int(value):
     if len(value):
-        return int(value)
+        return int(float(value))
