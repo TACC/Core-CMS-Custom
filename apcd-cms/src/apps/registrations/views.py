@@ -1,4 +1,4 @@
-from apps.submission_form import apcd_database
+from apps.utils import apcd_database
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader

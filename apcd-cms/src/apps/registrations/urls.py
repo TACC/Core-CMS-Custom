@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import SubmissionFormView
+from apps.registrations.views import SubmissionFormView
 
-app_name = 'apcd'
+app_name = 'register'
 urlpatterns = [
     path('request-to-submit/', SubmissionFormView.as_view(), name='index')
 ]

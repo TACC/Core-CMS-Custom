@@ -1,20 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Request to Submit</h1>
-            <hr style="margin-top: 10px" />
-        </div>
-    </div>
-    <div class="c-message c-message--error">
-        There was an error when attempting to store your registration!
-        Please submit a ticket.
-    </div>
-    <form class="button-wrapper submit" action="/workbench/dashboard" method="GET">
-        <button class="form-button" type="submit">Go to Dashboard</button>
-    </form>
-</div>
 <style id="tup-175-css-alerts-messages-ui-pattern">
     /*
     Message
@@ -65,5 +48,4 @@
       background-color: var(--global-color-danger--weak);
       border-color: var(--global-color-danger--normal);
     }
-    </style>
-{% endblock %}
+</style>
