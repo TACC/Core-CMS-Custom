@@ -1,77 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_table.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_admin_modal.css' %}" type="text/css">
+
 <style>
-  .container {
-    margin-left: 44.5px;
-    margin-right: 44.5px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-  .registration-table {
-    margin-right: auto;
-    text-align: center;
-    column-width: auto;
-  }
-  .registration-table th, td {
-    text-align: left;
-    vertical-align: top;
-    letter-spacing: 0px;
-    color: #484848;
-    opacity: 1;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 40px;
-    border-collapse: collapse;
-    border-right: 1px solid #fff;
-    border-left: 1px solid #fff;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid rgba(0,0,0,1);
-    white-space: nowrap;
-  }
-  .registration-table td {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-  }
-  .registration-table tr:nth-child(even) td {
-    background: 0% 0% no-repeat padding-box;
-    background-color: rgba(198, 198, 198, 0.1);
-    border-right: rgba(198, 198, 198, 0.1);
-    border-left: rgba(198, 198, 198, 0.1);
-  }
-  .registration-table tr:nth-child(even) td:first-child {
-    border-left: 1px solid #fff;
-  }
-  .registration-table tr:nth-child(even) td:last-child {
-    border-right: 1px solid #fff;
-  }
-  .no-bullets {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  .no-bullets li:not(:first-child) {
-    margin: 5px 0;
-  }
   .page-text {
     margin-top: 27px;
     margin-bottom: 27px;
   }
-  #myModal {
-    width: 700px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .modal {
-    height: 500px;
-    overflow-y: clip !important;
-  }
-  .modal-body {
-    height: 50vh;
-    overflow-y: auto !important;
-  }
 </style>
+
 <div class="container">
 <h1 class="page-text">List Registrations</h1>
 <hr style="margin-top: 10px">

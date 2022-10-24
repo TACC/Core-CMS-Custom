@@ -1,0 +1,45 @@
+.registration-table {
+    margin-right: auto;
+    text-align: center;
+    column-width: auto;
+}
+.registration-table th, td {
+    text-align: left;
+    vertical-align: top;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 40px;
+    border-collapse: collapse;
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid rgba(0,0,0,1);
+white-space: nowrap;
+}
+.registration-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.registration-table tr:nth-child(even) td {
+    background: 0% 0% no-repeat padding-box;
+    background-color: rgba(198, 198, 198, 0.1);
+    border-right: rgba(198, 198, 198, 0.1);
+    border-left: rgba(198, 198, 198, 0.1);
+}
+.registration-table tr:nth-child(even) td:first-child {
+    border-left: 1px solid #fff;
+}
+.registration-table tr:nth-child(even) td:last-child {
+    border-right: 1px solid #fff;
+}
+.no-bullets {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.no-bullets li:not(:first-child) {
+    margin: 5px 0;
+}
