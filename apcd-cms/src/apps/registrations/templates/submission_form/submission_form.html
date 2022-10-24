@@ -679,81 +679,6 @@
                 At least one of the following must be selected.
               </div>
             </div>
-
-            <!-- <div class="field-wrapper checkboxselectmultiple" id="--wrapper">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="">
-                Types of Files to Submit (Multi-Checkbox) (Broken if Required)
-              </label>
-
-              <ul id="types_of_files__hidden" class="checkboxselectmultiple">
-                <li>
-                  <label for="types_of_files__hidden_0"
-                    ><input
-                      type="checkbox"
-                      name="types_of_files__hidden"
-                      value="Eligibility/Enrollment"
-                      class="checkboxselectmultiple"
-                      id="types_of_files__hidden_0"
-                    />
-                    Eligibility/Enrollment</label
-                  >
-                </li>
-                <li>
-                  <label for="types_of_files__hidden_1"
-                    ><input
-                      type="checkbox"
-                      name="types_of_files__hidden"
-                      value="Provider"
-                      class="checkboxselectmultiple"
-                      id="types_of_files__hidden_1"
-                    />
-                    Provider</label
-                  >
-                </li>
-                <li>
-                  <label for="types_of_files__hidden_2"
-                    ><input
-                      type="checkbox"
-                      name="types_of_files__hidden"
-                      value="Medical"
-                      class="checkboxselectmultiple"
-                      id="types_of_files__hidden_2"
-                    />
-                    Medical</label
-                  >
-                </li>
-                <li>
-                  <label for="types_of_files__hidden_3"
-                    ><input
-                      type="checkbox"
-                      name="types_of_files__hidden"
-                      value="Pharmacy"
-                      class="checkboxselectmultiple"
-                      id="types_of_files__hidden_3"
-                    />
-                    Pharmacy</label
-                  >
-                </li>
-                <li>
-                  <label for="types_of_files__hidden_4"
-                    ><input
-                      type="checkbox"
-                      name="types_of_files__hidden"
-                      value="Dental"
-                      class="checkboxselectmultiple"
-                      id="types_of_files__hidden_4"
-                    />
-                    Dental</label
-                  >
-                </li>
-              </ul>
-
-              <div id="help-text-types_of_files__hidden" class="help-text">
-              </div>
-            </div> -->
-
             <!-- submission_method -->
             <div class="js-wrapElements-wrapper js-submit-methods--wrapper">
               <div
@@ -806,10 +731,9 @@
             <hr />
             <h4>
               Entity Being Registered
-              <small
-                >(If single company, enter the same organization as
-                above.)</small
-              >
+              <small>
+                (If single company, enter the same organization as above.
+              </small>
             </h4>
             <div
               class="field-wrapper textinput required"
@@ -1010,9 +934,20 @@
                 <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
+            <!-- additional contacts rendered here... -->
+            <h4 id="entity_header_2" style="display:none">Entity Information 2</h4>
+            <div id="entity_block_2"></div>
+            <h4 id="entity_header_3" style="display:none">Entity Information 3</h4>
+            <div id="entity_block_3"></div>
+            <h4 id="entity_header_4" style="display:none">Entity Information 4</h4>
+            <div id="entity_block_4"></div>
+            <h4 id="entity_header_5" style="display:none">Entity Information 5</h4>
+            <div id="entity_block_5"></div>
+            <button class="c-button c-button--primary" id="entity-add-btn" type="button">+ Add Another Entity</button>
+            <button class="c-button c-button--secondary" id="entity-drop-btn" type="button">- Remove Last Entity</button>
             <hr />
             <h4>Contact Information</h4>
-            <div class="js-wrapElements-wrapper js-contact--wrapper">
+            <div class="js-wrapElements-wrapper js-contact--wrapper" id="contact_1">
               <div
                 class="field-wrapper textinput required js-wrapElements-starter"
                 id="contact_type--wrapper"
@@ -1126,6 +1061,17 @@
                 </div>
               </div>
             </div>
+            <!-- additional contacts rendered here... -->
+            <h4 id="contact_header_2" style="display:none">Contact Information 2</h4>
+            <div id="contact_block_2" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <h4 id="contact_header_3" style="display:none">Contact Information 3</h4>
+            <div id="contact_block_3" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <h4 id="contact_header_4" style="display:none">Contact Information 4</h4>
+            <div id="contact_block_4" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <h4 id="contact_header_5" style="display:none">Contact Information 5</h4>
+            <div id="contact_block_5" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <button class="c-button c-button--primary" id="contact-add-btn" type="button">+ Add Another Contact</button>
+            <button class="c-button c-button--secondary" id="contact-drop-btn" type="button">- Remove Last Contact</button>
             <div class="button-wrapper submit">
               <button class="form-button" type="submit" value="Submit">
                 Submit
@@ -1153,6 +1099,325 @@
     </aside>
   </div>
   <aside>
+    <script id="form-add-remove-entity" type="module">
+      const addEntityBtn = document.getElementById("entity-add-btn");
+      const dropEntityBtn = document.getElementById("entity-drop-btn");
+      const btnStatus = (() => {
+        addEntityBtn.disabled = ( entities == 5 ? true : false );
+        dropEntityBtn.disabled = ( entities == 1 ? true : false );
+      });
+      let entities = 1;
+      btnStatus();
+      
+      addEntityBtn.addEventListener("click", () => {
+        if (entities < 5) entities += 1;
+        let entityBlock = document.getElementById(`entity_block_${entities}`);
+        document.getElementById(`entity_header_${entities}`).style.display = 'block';
+        entityBlock.innerHTML = `
+        <div class="field-wrapper textinput required" id="entity_name_${entities}--wrapper">
+          <div class="field-errors" style="display: none"></div>
+          <label for="entity_name_${entities}"> Name<span class="asterisk">*</span> </label>
+          <input
+            type="text"
+            name="entity_name_${entities}"
+            required=""
+            class="textinput"
+            id="entity_name_${entities}"
+          />
+          <div id="help-text-entity_name_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper required">
+          <label>
+            Number/Code<span class="asterisk">*</span>
+          </label>
+          <div class="help-text">
+            Provide all available identifiers. At least one of the following is
+            required.
+          </div>
+        </div>
+        <div
+          class="js-wrapElements-wrapper js-entity-id--wrapper o-grid o-grid--col-auto-count"
+        >
+          <div
+            class="field-wrapper textinput js-wrapElements-starter"
+            id="fein_${entities}--wrapper"
+          >
+            <div class="field-errors" style="display: none"></div>
+            <label for="fein_${entities}"> FEIN² </label>
+            <input
+              type="text"
+              name="fein_${entities}"
+              placeholder="12-3456789"
+              class="textinput"
+              id="fein_${entities}"
+              inputmode="numeric"
+              minlength="10"
+              maxlength="10"
+              pattern="\\d{2}-\\d{7}"
+              required=""
+            />
+            <div id="help-text-fein_${entities}" class="help-text">
+              Enter in format <samp>12-3456789</samp>.
+            </div>
+          </div>
+          <div class="field-wrapper textinput" id="license_number_${entities}--wrapper">
+            <div class="field-errors" style="display: none"></div>
+            <label for="license_number_${entities}"> License Number </label>
+            <input
+              type="text"
+              name="license_number_${entities}"
+              placeholder="1234567890"
+              class="textinput"
+              id="license_number_${entities}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="10"
+              pattern="\\d{5}|\\d{10}"
+              required=""
+            />
+            <div id="help-text-license_number_${entities}" class="help-text">
+              Enter a 5 or 10 digit number.
+            </div>
+          </div>
+          <div class="field-wrapper textinput" id="naic_company_code_${entities}--wrapper">
+            <div class="field-errors" style="display: none"></div>
+            <label for="naic_company_code_${entities}"> NAIC³ Company Code </label>
+            <input
+              type="text"
+              name="naic_company_code_${entities}"
+              placeholder="12345"
+              class="textinput"
+              id="naic_company_code_${entities}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="5"
+              pattern="\\d+"
+              required=""
+            />
+            <div id="help-text-naic_company_code_${entities}" class="help-text">
+              Enter a 5 digit number.
+            </div>
+          </div>
+        </div>
+        <h6>
+          Coverage Estimates
+          <small>(Inclusive of all claims as of December 31 of previous year.)</small>
+        </h6>
+        <div
+          class="field-wrapper numberinput required"
+          id="total_covered_lives_${entities}--wrapper"
+        >
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_covered_lives_${entities}">
+            Total Covered Lives<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="total_covered_lives_${entities}"
+            required=""
+            class="integerfield"
+            id="total_covered_lives_${entities}"
+            inputmode="numeric"
+            min="1"
+            step="1"
+          />
+          <div id="help-text-total_covered_lives_${entities}" class="help-text">
+          </div>
+        </div>
+        <div
+          class="field-wrapper numberinput required"
+          id="claims_encounters_volume_${entities}--wrapper"
+        >
+          <div class="field-errors" style="display: none"></div>
+          <label for="claims_encounters_volume_${entities}">
+            Claims and Encounters Volume<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="claims_encounters_volume_${entities}"
+            required=""
+            class="integerfield"
+            id="claims_encounters_volume_${entities}"
+            inputmode="numeric"
+            min="1"
+          />
+          <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
+          </div>
+        </div>
+        <div
+          class="field-wrapper numberinput required js-prepend--field-wrapper"
+          id="total_claims_value_${entities}--wrapper"
+        >
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_claims_value_${entities}">
+            Total Claims Value (USD⁴)<span class="asterisk">*</span>
+          </label>
+          <span class="js-prepend--span" data-text="$">$</span>
+          <input
+            type="number"
+            name="total_claims_value_${entities}"
+            required=""
+            class="integerfield js-prepend--input"
+            id="total_claims_value_${entities}"
+            inputmode="numeric"
+            step="0.01"
+            min="0.01"
+          />
+          <div id="help-text-total_claims_value_${entities}" class="help-text">
+          </div>
+        </div>
+        `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=fein_${entities}],
+            input[name=license_number_${entities}],
+            input[name=naic_company_code_${entities}]
+          `)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
+
+      dropEntityBtn.addEventListener("click", () => {
+        document.getElementById(`entity_header_${entities}`).style.display = 'none';
+        let entityBlock = document.getElementById(`entity_block_${entities}`);
+        entityBlock.innerHTML = '';
+        if (entities > 1) entities -= 1;
+        btnStatus();
+      });
+    </script>
+  
+    <script id="form-add-remove-contact" type="module">
+      const addContactBtn = document.getElementById("contact-add-btn");
+      const dropContactBtn = document.getElementById("contact-drop-btn");
+      const btnStatus = (() => {
+        addContactBtn.disabled = ( contacts == 5 ? true : false );
+        dropContactBtn.disabled = ( contacts == 1 ? true : false );
+      });
+      let contacts = 1;
+      btnStatus();
+
+      addContactBtn.addEventListener("click", () => {
+        if (contacts < 5) contacts += 1;
+        let contactBlock = document.getElementById(`contact_block_${contacts}`);
+        document.getElementById(`contact_header_${contacts}`).style.display = 'block';
+        contactBlock.innerHTML = `
+          <div id="contact_${contacts}">
+            <div
+              class="field-wrapper textinput required js-wrapElements-starter"
+              id="contact_type_${contacts}--wrapper"
+            >
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_type_${contacts}"> Role<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_type_${contacts}"
+                required=""
+                class="textinput"
+                id="contact_type_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper textinput required" id="contact_name_${contacts}--wrapper">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_name_${contacts}"> Name<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_name_${contacts}"
+                required=""
+                class="textinput"
+                id="contact_name_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper telephoneinput" id="contact_phone_${contacts}--wrapper">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_phone_${contacts}"> Phone<span class="asterisk">*</span> </label>
+              <input
+                type="tel"
+                name="contact_phone_${contacts}"
+                required=""
+                class="telephoneinput"
+                id="contact_phone_${contacts}"
+                inputmode="tel"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+              />
+              <div id="help-text-contact_phone_${contacts}" class="help-text">
+                <details>
+                  <summary>
+                    <a
+                      href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                      target="_blank"
+                      >North American Numbering Plan</a
+                    >
+                    e.g. <samp>123 456-7890</samp>…
+                  </summary>
+                  <ul>
+                    <li><samp>123-456-7890</samp></li>
+                    <li><samp>(123) 456-7890</samp></li>
+                    <li><samp>123 456 7890</samp></li>
+                    <li><samp>123.456.7890</samp></li>
+                    <li><samp>+1 (123) 456-7890</samp></li>
+                  </ul>
+                </details>
+              </div>
+            </div>
+            <div class="field-wrapper emailinput required" id="contact_email_${contacts}--wrapper">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_email_${contacts}"> Email<span class="asterisk">*</span> </label>
+              <input
+                type="email"
+                name="contact_email_${contacts}"
+                autocomplete="email"
+                required=""
+                class="emailinput"
+                id="contact_email_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper checkboxinput" id="contact_notifications_${contacts}--wrapper">
+              <div class="field-errors" style="display: none"></div>
+              <input
+                type="checkbox"
+                name="contact_notifications_${contacts}"
+                class="booleanfield"
+                id="contact_notifications_${contacts}"
+              />
+              <label for="contact_notifications_${contacts}">
+                Select to receive system notifications
+              </label>
+              <div id="help-text-contact_notifications_${contacts}" class="help-text">
+              </div>
+            </div>
+          </div>
+        `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=types_of_files_eligibility_enrollment_${contacts}],
+            input[name=types_of_files_provider_${contacts}],
+            input[name=types_of_files_medical_${contacts}],
+            input[name=types_of_files_pharmacy_${contacts}],
+            input[name=types_of_files_dental_${contacts}]
+          `)
+        );  
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.checked));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
+
+      dropContactBtn.addEventListener("click", () => {
+        document.getElementById(`contact_header_${contacts}`).style.display = 'none';
+        let contactBlock = document.getElementById(`contact_block_${contacts}`);
+        contactBlock.innerHTML = '';
+        if (contacts > 1) contacts -= 1;
+        btnStatus();
+      });
+    </script>
     <script id="form-unnest-markup" type="module">
       /* RFE: Provide this feature in a Core CMS module script */
       /* Move hack markup, from a wrapper, outside the wrapper's parent */
@@ -1505,8 +1770,8 @@
         input[name=types_of_files_dental]`)
       );
       const inputListener = e => {
-      inputs.filter(i => i !== e.target)
-            .forEach(i => (i.required = !e.target.checked));
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.checked));
       };
 
       inputs.forEach(i => i.addEventListener('input', inputListener));
@@ -1517,8 +1782,8 @@
         document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
       );
       const inputListener = e => {
-      inputs.filter(i => i !== e.target)
-            .forEach(i => (i.required = !e.target.value.length));
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.value.length));
       };
 
       inputs.forEach(i => i.addEventListener('input', inputListener));

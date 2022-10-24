@@ -128,12 +128,12 @@ def create_registration(form):
             True if 'types_of_files_pharmacy' in form else False,
             True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            form['submission_method'],
+            _clean_value(form['submission_method']),
             None,
-            form['type'],
-            form['business-name'],
-            form['mailing-address'],
-            form['city'],
+            _clean_value(form['type']),
+            _clean_value(form['business-name']),
+            _clean_value(form['mailing-address']),
+            _clean_value(form['city']),
             form['state'][:2],
             form['zip_code']
         )
@@ -143,6 +143,7 @@ def create_registration(form):
 
     except Exception as error:
         logger.error(error)
+        return error
 
     finally:
         if cur is not None:
@@ -188,45 +189,47 @@ def get_registration_entities():
             conn.close()
 
 
-def create_registration_entity(form, reg_id):
-    values = (
-        reg_id,
-        set_int(form['total_claims_value']),
-        set_int(form['claims_encounters_volume']),
-        set_int(form['license_number']),
-        set_int(form['naic_company_code']),
-        set_int(form['total_covered_lives']),
-        form['entity_name'],
-        form['fein']
-    )
-    # if iteration > 1:
-    #     if not acceptable_entity(form, iteration):
-    #         return
-    #     values = (
-    #         reg_id,
-    #         form['total_claims_value_{}'.format(iteration)],
-    #         form['claims_encounters_volume_{}'.format(iteration)],
-    #         form['license_number_{}'.format(iteration)],
-    #         form['naic_company_code_{}'.format(iteration)],
-    #         form['total_covered_lives_{}'.format(iteration)],
-    #         form['entity_name_{}'.format(iteration)],
-    #         form['fein_{}'.format(iteration)]
-    #     )
-
-    operation = """INSERT INTO registration_entities(
-        registration_id,
-        total_claims_value,
-        claims_and_encounters_volume,
-        license_number,
-        naic_company_code,
-        total_covered_lives,
-        entity_name,
-        fein
-    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
-
+def create_registration_entity(form, reg_id, iteration):
     cur = None
     conn = None
+    values = ()
     try:
+        if iteration > 1:
+            if not _acceptable_entity(form, iteration):
+                return
+            values = (
+                reg_id,
+                _set_int(form['total_claims_value_{}'.format(iteration)]),
+                _set_int(form['claims_encounters_volume_{}'.format(iteration)]),
+                _set_int(form['license_number_{}'.format(iteration)]),
+                _set_int(form['naic_company_code_{}'.format(iteration)]),
+                _set_int(form['total_covered_lives_{}'.format(iteration)]),
+                _clean_value(form['entity_name_{}'.format(iteration)]),
+                _clean_value(form['fein_{}'.format(iteration)])
+            )
+        else:
+            values = (
+                reg_id,
+                _set_int(form['total_claims_value']),
+                _set_int(form['claims_encounters_volume']),
+                _set_int(form['license_number']),
+                _set_int(form['naic_company_code']),
+                _set_int(form['total_covered_lives']),
+                _clean_value(form['entity_name']),
+                _clean_value(form['fein'])
+            )
+
+        operation = """INSERT INTO registration_entities(
+            registration_id,
+            total_claims_value,
+            claims_and_encounters_volume,
+            license_number,
+            naic_company_code,
+            total_covered_lives,
+            entity_name,
+            fein
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+
         conn = psycopg2.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
@@ -241,6 +244,7 @@ def create_registration_entity(form, reg_id):
 
     except Exception as error:
         logger.error(error)
+        return error
 
     finally:
         if cur is not None:
@@ -265,7 +269,7 @@ def get_registration_contacts():
                 registration_contacts.registration_contact_id,
                 registration_contacts.registration_id,
                 registration_contacts.notify_flag,
-                registration_contacts.contact_role,
+                registration_contacts.contact_type,
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
@@ -284,39 +288,41 @@ def get_registration_contacts():
             conn.close()
 
 
-def create_registration_contact(form, reg_id):
-    values = (
-        reg_id,
-        True if 'contact_notifications' in form else False,
-        form['contact_type'],
-        form['contact_name'],
-        re.sub("[^0-9]", "", form['contact_phone']),
-        form['contact_email']
-    )
-    # if iteration > 1:
-    #     if not acceptable_contact(form, iteration):
-    #         return
-    #     values = (
-    #         reg_id,
-    #         True if 'contact_notifications_{}'.format(iteration) in form else False,
-    #         form['contact_type_{}'.format(iteration)],
-    #         form['contact_name_{}'.format(iteration)],
-    #         re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
-    #         form['contact_email_{}'.format(iteration)]
-    #     )
-
-    operation = """INSERT INTO registration_contacts(
-        registration_id,
-        notify_flag,
-        contact_role,
-        contact_name,
-        contact_phone,
-        contact_email
-    ) VALUES (%s,%s,%s,%s,%s,%s)"""
-
+def create_registration_contact(form, reg_id, iteration):
     cur = None
     conn = None
+    values = ()
     try:
+        if iteration > 1:
+            if not _acceptable_contact(form, iteration):
+                return
+            values = (
+                reg_id,
+                True if 'contact_notifications_{}'.format(iteration) in form else False,
+                _clean_value(form['contact_type_{}'.format(iteration)]),
+                _clean_value(form['contact_name_{}'.format(iteration)]),
+                re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
+                _clean_email(form['contact_email_{}'.format(iteration)])
+            )
+        else:
+            values = (
+                reg_id,
+                True if 'contact_notifications' in form else False,
+                _clean_value(form['contact_type']),
+                _clean_value(form['contact_name']),
+                re.sub("[^0-9]", "", form['contact_phone']),
+                _clean_email(form['contact_email'])
+            )
+
+        operation = """INSERT INTO registration_contacts(
+            registration_id,
+            notify_flag,
+            contact_type,
+            contact_name,
+            contact_phone,
+            contact_email
+        ) VALUES (%s,%s,%s,%s,%s,%s)"""
+
         conn = psycopg2.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
@@ -331,6 +337,7 @@ def create_registration_contact(form, reg_id):
 
     except Exception as error:
         logger.error(error)
+        return error
 
     finally:
         if cur is not None:
@@ -339,28 +346,46 @@ def create_registration_contact(form, reg_id):
             conn.close()
 
 
-def acceptable_entity(form, iteration):
-    entity_keys = [
+def _acceptable_entity(form, iteration):
+    required_keys = [
         'total_claims_value_{}'.format(iteration),
         'claims_encounters_volume_{}'.format(iteration),
-        'license_number_{}'.format(iteration),
-        'naic_company_code_{}'.format(iteration),
         'total_covered_lives_{}'.format(iteration),
-        'entity_name_{}'.format(iteration),
+        'entity_name_{}'.format(iteration)
+    ]
+    requires_one = [
+        'naic_company_code_{}'.format(iteration),
+        'license_number_{}'.format(iteration),
         'fein_{}'.format(iteration)
     ]
-    return all(key in form and form[key] for key in entity_keys)
+    if all(key in form and form[key] for key in required_keys):
+        return next(
+            (True for key in requires_one if key),
+            False
+        )
+    return False
 
 
-def acceptable_contact(form, iteration):
-    contact_keys = [
+def _acceptable_contact(form, iteration):
+    required_keys = [
         'contact_type_{}'.format(iteration),
         'contact_name_{}'.format(iteration),
         'contact_phone_{}'.format(iteration),
         'contact_email_{}'.format(iteration)
     ]
-    return all(key in form and form[key] for key in contact_keys)
+    return all(key in form and form[key] for key in required_keys)
 
-def set_int(value):
+
+def _clean_email(email):
+    pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
+    result = pattern.match(email)
+    return result.string if result else None
+
+
+def _clean_value(value):
+    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
+
+
+def _set_int(value):
     if len(value):
-        return int(value)
+        return int(float(value))
