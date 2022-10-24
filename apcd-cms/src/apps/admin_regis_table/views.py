@@ -1,6 +1,5 @@
 from django.views.generic.base import TemplateView
-from apps.submission_form.apcd_database import get_registrations
-import datetime
+from apps.utils.apcd_database import get_registrations
 
 
 class RegistrationsTable(TemplateView):
