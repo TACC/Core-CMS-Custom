@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.template import loader
 from django.views.generic.base import TemplateView
-from ..submission_form.apcd_database import get_registrations
+from apps.utils.apcd_database import get_registrations
 
 
 class RegistrationsTable(TemplateView):
