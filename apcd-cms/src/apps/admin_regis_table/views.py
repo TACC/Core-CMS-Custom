@@ -11,49 +11,6 @@ class RegistrationsTable(TemplateView):
         actions = 'View'
         registrations_content = get_registrations()
 
-        # placeholder...
-        '''registrations_content = [
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'SFTP',                             #submission_method
-                'active',                           #registration_status
-                'insurance carrier',                #org_type
-                'Golden Rule Insurance Company',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            ),
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'SFTP',                             #submission_method
-                'active',                           #registration_status
-                'insurance carrier',                #org_type
-                'Golden Rule Insurance Company',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            )
-        ]'''
 
         def _set_registration(reg):
             return {
