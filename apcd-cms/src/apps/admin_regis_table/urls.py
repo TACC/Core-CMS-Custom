@@ -1,7 +1,7 @@
-from django.urls import re_path
-from .views import RegistrationsTable
+from django.urls import path
+from apps.admin_regis_table.views import RegistrationsTable
 
-app_name = 'admin_regis_table'
+app_name = 'administration'
 urlpatterns = [
-    re_path(r'^list-registration-requests/$', RegistrationsTable.as_view(), name='ListRegis'),
+    path('list-registration-requests/', RegistrationsTable.as_view()),
 ]
