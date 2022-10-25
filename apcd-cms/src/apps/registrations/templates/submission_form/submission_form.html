@@ -201,7 +201,7 @@
                 <option value="Insurance Carrier">Insurance Carrier</option>
 
                 <option value="Plan Administrator">
-                  Plan Administrator (TPA/ASO)
+                  Plan Administrator¹ (TPA/ASO)
                 </option>
 
                 <option value="PBM">
@@ -660,7 +660,7 @@
                         required=""
                         id="submission_method_sftp"
                         checked=""
-                      />SFTP⁵</label
+                      /><span>SFTP<sup>2</sup></span></label
                     >
                   </li>
                   <li>
@@ -672,7 +672,7 @@
                         class="radioselect"
                         required=""
                         id="submission_method_https"
-                      />HTTPS⁶**</label
+                      /><span>HTTPS<sup>3</sup>**</span></label
                     >
                   </li>
                   <li>
@@ -684,7 +684,7 @@
                         class="radioselect"
                         required=""
                         id="submission_method_usb"
-                      />Encrypted USB⁷ drive***</label
+                      /><span>Encrypted USB<sup>4</sup> drive***</span></label
                     >
                   </li>
                 </ul>
@@ -739,7 +739,7 @@
               >
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="fein"> FEIN² </label>
+                <label for="fein"> FEIN<sup>5</sup> </label>
 
                 <input
                   type="text"
@@ -787,7 +787,7 @@
               >
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="naic_company_code"> NAIC³ Company Code </label>
+                <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
 
                 <input
                   type="text"
@@ -876,7 +876,7 @@
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_claims_value">
-                Total Claims Value (USD⁴)<span class="asterisk">*</span>
+                Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
               </label>
 
               <span class="js-prepend--span" data-text="$">$</span
@@ -1110,7 +1110,7 @@
             id="fein_${entities}--wrapper"
           >
             <div class="field-errors" style="display: none"></div>
-            <label for="fein_${entities}"> FEIN² </label>
+            <label for="fein_${entities}"> FEIN<sup>5</sup> </label>
             <input
               type="text"
               name="fein_${entities}"
@@ -1148,7 +1148,7 @@
           </div>
           <div class="field-wrapper textinput" id="naic_company_code_${entities}--wrapper">
             <div class="field-errors" style="display: none"></div>
-            <label for="naic_company_code_${entities}"> NAIC³ Company Code </label>
+            <label for="naic_company_code_${entities}"> NAIC<sup>6</sup> Company Code </label>
             <input
               type="text"
               name="naic_company_code_${entities}"
@@ -1217,7 +1217,7 @@
         >
           <div class="field-errors" style="display: none"></div>
           <label for="total_claims_value_${entities}">
-            Total Claims Value (USD⁴)<span class="asterisk">*</span>
+            Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
           </label>
           <span class="js-prepend--span" data-text="$">$</span>
           <input
@@ -1958,12 +1958,12 @@
     <p>
       <small
         >¹ Third Party Administrator / Administrative Services Only (TPA/ASO)<br />
-        ² Federal Employer Identification Number (FEIN)<br />
-        ³ National Association of Insurance Commissioners (NAIC)<br />
-        ⁴ United States Dollar (USD)<br />
-        ⁵ Secure File Transfer Protocol (SFTP)<br />
-        ⁶ Hypertext Transfer Protocol Secure (HTTPS)<br />
-        ⁷ Universal Serial Bus (USB)</small
+        ² Secure File Transfer Protocol (SFTP)<br />
+        ³ Hypertext Transfer Protocol Secure (HTTPS)<br />
+        ⁴ Universal Serial Bus (USB)<br />
+        ⁵ Federal Employer Identification Number (FEIN)<br />
+        ⁶ National Association of Insurance Commissioners (NAIC)<br />
+        ⁷ United States Dollar (USD)</small
       >
     </p>
     <hr />
