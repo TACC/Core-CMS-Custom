@@ -1,37 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
+
+<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_table.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_admin_modal.css' %}" type="text/css">
+
 <style>
-  .registration-table {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    column-width: auto;
-  }
-  .registration-table th, td {
-      padding-left: 5px;
-      padding-right: 5px;
-  }
   .page-text {
-    text-indent: 30px;
-  }
-  #myModal {
-    width: 700px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .modal {
-    height: 500px;
-    overflow-y: clip !important;
-  }
-  .modal-body {
-    height: 50vh;
-    overflow-y: auto !important;
+    margin-top: 27px;
+    margin-bottom: 27px;
   }
 </style>
+
+<div class="container">
 <h1 class="page-text">List Registrations</h1>
-<p class="page-text">This is a list of all registrations for review. Click on the View button to see the entire submitted form.</p>
+<hr style="margin-top: 10px">
+<p class="page-text">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
+<hr style="margin-top: 10px">
 <table class="registration-table">
     <thead>
         <tr>
@@ -46,10 +32,22 @@
                 <td>{{r.biz_name}}</td>
                 <td>{{r.type}}</td>
                 <td>{{r.location}}</td>
-                <td>{{r.files_type}}</td>
                 <td>{{r.sub_method}}</td>
                 <td>{{r.reg_status}}</td>
-                <td><!--<a href='' data-toggle="modal" data-target="#myModal">View</a>-->
+                <td>
+                  <ul class='no-bullets'>
+                    {% for file_type in r.files_type %}
+                      {% if file_type != None %}
+                        <li>{{file_type}}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </td>
+                <td>
+                  {# FAQ: So cell "has layout" on narrow screen layout #}
+                  &nbsp;
+                  {# FAQ: Action functionality not available yet #}
+                  {# <a href='' data-toggle="modal" data-target="#myModal">View</a> #}
                 </td>
             </tr>
         {% endfor %}
@@ -395,5 +393,6 @@
     </div>
 
   </div>
+</div>
 </div>
 {%endblock %}
