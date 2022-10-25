@@ -63,7 +63,8 @@ class SubmissionFormView(View):
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            response = HttpResponseRedirect('/error/page/goes/here')
+            template = loader.get_template('submission_form/submission_error.html')
+            response = HttpResponse(template.render({}, request))
         else:
             template = loader.get_template('submission_form/submission_success.html')
             response = HttpResponse(template.render({}, request))
