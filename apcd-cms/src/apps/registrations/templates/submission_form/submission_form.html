@@ -1,43 +1,12 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
-  <nav class="s-breadcrumbs">
-    <ol itemscope="" itemtype="https://schema.org/BreadcrumbList">
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <a href="/" itemprop="item">
-          <span itemprop="name">Home</span>
-        </a>
+  {% include "nav_cms_breadcrumbs.html" %}
 
-        <meta itemprop="position" content="1" />
-      </li>
 
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <a href="/register/" itemprop="item">
-          <span itemprop="name">Register</span>
-        </a>
 
-        <meta itemprop="position" content="2" />
-      </li>
-
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <span itemprop="name">Request To Submit</span>
-
-        <meta itemprop="position" content="3" />
-      </li>
-    </ol>
-  </nav>
-
+  {# Styles #}
+  {# WARNING: Some (not all) are from snippets and should be moved to Core #}
+  {# TODO: FP-1905: Clean out styles moved to Core #}
   <aside>
     <style id="form-css-request-submit--extra-form-text">
       /* To show within what specified context certain content is relevant */
@@ -140,16 +109,9 @@
     </style>
   </aside>
 
-  <div class="row">
-    <div class="col">
       <h1>Request to Submit</h1>
+      <hr />
 
-      <hr style="margin-top: 10px" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
       <p style="margin-bottom: 30px">
         This form should be completed and submitted to register as a data
         submitter. Please review the
@@ -157,7 +119,7 @@
           href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
           target="_blank"
           >Data Submission Guide</a
-        >&nbsp;for details about completing and submitting this form, paying
+        > for details about completing and submitting this form, paying
         special attention to the schedule of submissions including test files,
         historical files, and monthly files.
       </p>
@@ -166,7 +128,7 @@
 
       <!--suppress ALL -->
 
-      <div class="forms" id="">
+      <div class="forms">
         <div class="description">
           <h4>Organization</h4>
         </div>
@@ -1083,8 +1045,9 @@
           <p>Thank you for your request.</p>
         </div>
       </div>
-    </div>
-  </div>
+
+  {# Hidden links for future pages #}
+  {# TODO: Allow this template to render CMS admin-entered markup #}
   <div hidden="">
     <aside class="row">
       <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
@@ -1098,6 +1061,9 @@
       </div>
     </aside>
   </div>
+
+  {# Scripts #}
+  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
   <aside>
     <script id="form-add-remove-entity" type="module">
       const addEntityBtn = document.getElementById("entity-add-btn");
@@ -1985,6 +1951,8 @@
       }
     </style>
   </aside>
+
+  {# Footnotes #}
   <div class="o-section o-section--style-light">
     <hr />
     <p>
@@ -1992,13 +1960,12 @@
         >¹ Third Party Administrator / Administrative Services Only (TPA/ASO)<br />
         ² Federal Employer Identification Number (FEIN)<br />
         ³ National Association of Insurance Commissioners (NAIC)<br />
-        ⁴ United States Dollar&nbsp;(USD)<br />
+        ⁴ United States Dollar (USD)<br />
         ⁵ Secure File Transfer Protocol (SFTP)<br />
         ⁶ Hypertext Transfer Protocol Secure (HTTPS)<br />
         ⁷ Universal Serial Bus (USB)</small
       >
     </p>
-
     <hr />
     <p>
       <small
