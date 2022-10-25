@@ -2,7 +2,6 @@
     --cell-padding: 5px;
 
     width: 100%;
-    table-layout: fixed;
 }
 .registration-table th, td {
     text-align: left;
