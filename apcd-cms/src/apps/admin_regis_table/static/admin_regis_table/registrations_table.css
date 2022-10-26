@@ -10,10 +10,7 @@
     letter-spacing: 0px;
     color: #484848;
     opacity: 1;
-    padding-top: var(--cell-padding);
-    padding-bottom: var(--cell-padding);
-    padding-left: 10px;
-    padding-right: 40px;
+    padding: var(--cell-padding);
     border-collapse: collapse;
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
