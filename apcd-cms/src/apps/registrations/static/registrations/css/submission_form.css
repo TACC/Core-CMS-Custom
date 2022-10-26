@@ -1,0 +1,33 @@
+/* Field Widths */
+
+/* for an Entity*/
+input[name^="fein"],
+input[name^="license_number"],
+input[name^="naic_company_code"],
+/* for an Organization */
+input[name^="zip_code"] {
+    width: 10ch;
+    box-sizing: content-box;
+}
+select[name^="state"] {
+    --length: 2ch;
+    --ui-buffer: 2.5ch; /* to make room for dropdown arrows */
+
+    width: calc( var(--length) + var(--ui-buffer) );
+    box-sizing: content-box;
+}
+/* for a Contact */
+input[name^="contact_phone"] {
+    width: 17ch;
+    box-sizing: content-box;
+}
+
+/* Field Layouts */
+
+/* To make "Types of Files" take up less vertical space */
+ul:is([id^="types_of_files"], [id^="submit_methods"]) {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    row-gap: 0.5em;
+}
