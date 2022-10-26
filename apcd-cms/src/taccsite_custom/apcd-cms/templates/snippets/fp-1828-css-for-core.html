@@ -1,0 +1,96 @@
+{# FP-1828: Integrate these into Core #}
+<style id="table-css--miscellaneous">
+    caption {
+        font-size: var(--global-font-size--small);
+        text-align: unset; /* undo Bootstrap _reboot.css */
+    }
+</style>
+<style id="form-css--required-fields">
+    .field-wrapper.required > label {
+        font-weight: var(--bold);
+    }
+    .field-wrapper.required > label .asterisk {
+        font-weight: var(--regular);
+    }
+
+    /* TODO: In Core, make these NOT be an override e.g. use .asterisk:not(…) */
+    .asterisk--important {
+        color: darkgoldenrod /* var(--global-color-warning--dark) */;
+    }
+    .asterisk--important::after {
+        content: '(important)'; /* override site.css `.asterisk::after` */
+    }
+</style>
+
+{# FP-1828: Add this to Core #}
+<style id="form-css--input-tweak">
+    input:not([type=time], [type=date], [type=checkbox], [type=radio]), select, textarea {
+        max-width: 50ch;
+    }
+</style>
+
+{# FP-1828: Integrate this into Core #}
+<style id="form-css--label-tweak">
+    /* TODO: In Core, make these NOT be an override e.g. use label:not(…) */
+    li > label:only-child {
+        margin-bottom: unset; /* undo site.css (forms.css) label */
+    }
+</style>
+
+{# FP-1828: Integrate this into Core #}
+<style id="form-css--multi-field-labels">
+    .help-text .field-wrapper:first-child label {
+        /* To mimic .field-wrapper `margin-bottom: 2rem` */
+        /* IDEA: Change .field-wrapper margin to be on top except for first */
+        margin-top: 2rem;
+    }
+
+    /* for now: */
+    label + .help-text {
+        margin-top: unset; /* undo site.css :not(ul) + .help-text margin-top */
+    }
+    /*
+    /* but in Core, change this: */
+    /*
+    :not(ul) + .help-text {
+        margin-top: 0.3em; /* mimic Bootstrap _reboot.css label { margin-bottom } *\/
+    }
+    *//* to this: */
+    /* FAQ: Adequate space is beneath lists of inputs and labels */
+    /*
+    :not(ul, label + .help-text) + .help-text {
+        margin-top: 0.3em; /* mimic Bootstrap _reboot.css label margin-bottom *\/
+    }
+    */
+
+    .help-text .field-wrapper:last-of-type {
+        /* IDEA: Change .field-wrapper margin to be on top except for first */
+        margin-bottom: unset; /* undo site.css .field-wrapper margin-bottom */
+    }
+</style>
+
+{# FP-1828: Integrate this into Core #}
+<style id="form-css--help-text-headings">
+    /* To make help text not constrained by .field-wrapper layout */
+    .field-wrapper:not(.checkboxinput) .help-text {
+        align-self: stretch;
+    }
+    /* Tp prevent help text font-style from affecting any tags */
+    /* FAQ: Help text can contain inline elements like <samp> */
+    /* FAQ: Help text is abused (allowed) to add headings between form fields */
+    .help-text > :not(details, a) {
+        font-style: initial;
+    }
+</style>
+
+{# TODO: Integrate this into Core #}
+{# HELP: For forms and/or guides and/or docs? #}
+{# IDEA: Also make standard for <kbd> (currently uses Bootstrap) #}
+<style id="form-css--monospace">
+    form samp {
+        padding: 0.2rem 0.4rem; /* copied from Bootstrap _code.scss */
+        font-size: smaller;     /* similar to Bootstrap _code.scss */
+        border: var(--global-border--normal);
+        border-radius: 0.4rem;   /* similar to Bootstrap _code.scss */
+    }
+</style>
