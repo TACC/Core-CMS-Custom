@@ -850,12 +850,9 @@
             <button class="c-button c-button--primary" id="entity-add-btn" type="button">+ Add Another Entity</button>
             <button class="c-button c-button--secondary" id="entity-drop-btn" type="button">- Remove Last Entity</button>
             <hr />
-            <h4>Contact Information</h4>
-            <div class="js-wrapElements-wrapper js-contact--wrapper" id="contact_1">
-              <div
-                class="field-wrapper textinput required js-wrapElements-starter"
-                id="contact_type--wrapper"
-              >
+            <h4 id="contact_header_1">Contact Information</h4>
+            <div id="contact_block_1">
+              <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_type">
@@ -870,7 +867,7 @@
                   id="contact_type"
                 />
               </div>
-              <div class="field-wrapper textinput required" id="contact_name--wrapper">
+              <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_name"> Name<span class="asterisk">*</span> </label>
@@ -883,10 +880,7 @@
                   id="contact_name"
                 />
               </div>
-              <div
-                class="field-wrapper telephoneinput"
-                id="contact_phone--wrapper"
-              >
+              <div class="field-wrapper telephoneinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_phone">
@@ -924,10 +918,7 @@
                   <!-- More HTML5 validation is added via JavaScript based on the "Custom Field Name" value. -->
                 </div>
               </div>
-              <div
-                class="field-wrapper emailinput required"
-                id="contact_email--wrapper"
-              >
+              <div class="field-wrapper emailinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_email">
@@ -943,10 +934,7 @@
                   id="contact_email"
                 />
               </div>
-              <div
-                class="field-wrapper checkboxinput"
-                id="contact_notifications--wrapper"
-              >
+              <div class="field-wrapper checkboxinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <input
@@ -967,13 +955,13 @@
             </div>
             <!-- additional contacts rendered here... -->
             <h4 id="contact_header_2" style="display:none">Contact Information 2</h4>
-            <div id="contact_block_2" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_2"></div>
             <h4 id="contact_header_3" style="display:none">Contact Information 3</h4>
-            <div id="contact_block_3" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_3"></div>
             <h4 id="contact_header_4" style="display:none">Contact Information 4</h4>
-            <div id="contact_block_4" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_4"></div>
             <h4 id="contact_header_5" style="display:none">Contact Information 5</h4>
-            <div id="contact_block_5" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_5"></div>
             <button class="c-button c-button--primary" id="contact-add-btn" type="button">+ Add Another Contact</button>
             <button class="c-button c-button--secondary" id="contact-drop-btn" type="button">- Remove Last Contact</button>
             <div class="button-wrapper submit">
@@ -1211,10 +1199,7 @@
         let contactBlock = document.getElementById(`contact_block_${contacts}`);
         document.getElementById(`contact_header_${contacts}`).style.display = 'block';
         contactBlock.innerHTML = `
-            <div
-              class="field-wrapper textinput required js-wrapElements-starter"
-              id="contact_type_${contacts}--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_type_${contacts}"> Role<span class="asterisk">*</span> </label>
               <input
@@ -1225,7 +1210,7 @@
                 id="contact_type_${contacts}"
               />
             </div>
-            <div class="field-wrapper textinput required" id="contact_name_${contacts}--wrapper">
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_name_${contacts}"> Name<span class="asterisk">*</span> </label>
               <input
@@ -1236,7 +1221,7 @@
                 id="contact_name_${contacts}"
               />
             </div>
-            <div class="field-wrapper telephoneinput" id="contact_phone_${contacts}--wrapper">
+            <div class="field-wrapper telephoneinput">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_phone_${contacts}"> Phone<span class="asterisk">*</span> </label>
               <input
@@ -1268,7 +1253,7 @@
                 </details>
               </div>
             </div>
-            <div class="field-wrapper emailinput required" id="contact_email_${contacts}--wrapper">
+            <div class="field-wrapper emailinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_email_${contacts}"> Email<span class="asterisk">*</span> </label>
               <input
@@ -1280,7 +1265,7 @@
                 id="contact_email_${contacts}"
               />
             </div>
-            <div class="field-wrapper checkboxinput" id="contact_notifications_${contacts}--wrapper">
+            <div class="field-wrapper checkboxinput">
               <div class="field-errors" style="display: none"></div>
               <input
                 type="checkbox"
@@ -1582,7 +1567,7 @@
 
     <!-- <script id="form-wrap-contact-fields--js" ...> removed (because it duplicated markup) -->
     <style id="form-wrap-contact-fields--css">
-      .js-contact--wrapper {
+      [id^="contact_block_"] {
         --max-col-width: 50ch;
 
         /* Expectations
