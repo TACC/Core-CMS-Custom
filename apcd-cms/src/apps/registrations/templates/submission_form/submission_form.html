@@ -639,10 +639,7 @@
                 (If single company, enter the same organization as above.
               </small>
             </h4>
-            <div
-              class="field-wrapper textinput required"
-              id="entity_name--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="entity_name">
@@ -672,13 +669,8 @@
               </div>
             </div>
 
-            <div
-              class="js-wrapElements-wrapper js-entity-id--wrapper o-grid o-grid--col-auto-count"
-            >
-              <div
-                class="field-wrapper textinput js-wrapElements-starter"
-                id="fein--wrapper"
-              >
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="fein"> FEIN<sup>5</sup> </label>
@@ -700,7 +692,7 @@
                   Enter in format <samp>12-3456789</samp>.
                 </div>
               </div>
-              <div class="field-wrapper textinput" id="license_number--wrapper">
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="license_number"> License Number </label>
@@ -723,10 +715,7 @@
                   <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
                 </div>
               </div>
-              <div
-                class="field-wrapper textinput"
-                id="naic_company_code--wrapper"
-              >
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
@@ -760,10 +749,7 @@
               >
             </h6>
 
-            <div
-              class="field-wrapper numberinput required"
-              id="total_covered_lives--wrapper"
-            >
+            <div class="field-wrapper numberinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_covered_lives">
@@ -786,10 +772,7 @@
               </div>
             </div>
 
-            <div
-              class="field-wrapper numberinput required"
-              id="claims_encounters_volume--wrapper"
-            >
+            <div class="field-wrapper numberinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="claims_encounters_volume">
@@ -811,10 +794,7 @@
               </div>
             </div>
 
-            <div
-              class="field-wrapper numberinput required js-prepend--field-wrapper"
-              id="total_claims_value--wrapper"
-            >
+            <div class="field-wrapper numberinput required js-prepend--field-wrapper">
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_claims_value">
@@ -1006,7 +986,7 @@
         let entityBlock = document.getElementById(`entity_block_${entities}`);
         document.getElementById(`entity_header_${entities}`).style.display = 'block';
         entityBlock.innerHTML = `
-        <div class="field-wrapper textinput required" id="entity_name_${entities}--wrapper">
+        <div class="field-wrapper textinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="entity_name_${entities}"> Name<span class="asterisk">*</span> </label>
           <input
@@ -1028,13 +1008,8 @@
             required.
           </div>
         </div>
-        <div
-          class="js-wrapElements-wrapper js-entity-id--wrapper o-grid o-grid--col-auto-count"
-        >
-          <div
-            class="field-wrapper textinput js-wrapElements-starter"
-            id="fein_${entities}--wrapper"
-          >
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="fein_${entities}"> FEIN<sup>5</sup> </label>
             <input
@@ -1053,7 +1028,7 @@
               Enter in format <samp>12-3456789</samp>.
             </div>
           </div>
-          <div class="field-wrapper textinput" id="license_number_${entities}--wrapper">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="license_number_${entities}"> License Number </label>
             <input
@@ -1072,7 +1047,7 @@
               Enter a 5 or 10 digit number.
             </div>
           </div>
-          <div class="field-wrapper textinput" id="naic_company_code_${entities}--wrapper">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="naic_company_code_${entities}"> NAIC<sup>6</sup> Company Code </label>
             <input
@@ -1096,10 +1071,7 @@
           Coverage Estimates
           <small>(Inclusive of all claims as of December 31 of previous year.)</small>
         </h6>
-        <div
-          class="field-wrapper numberinput required"
-          id="total_covered_lives_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="total_covered_lives_${entities}">
             Total Covered Lives<span class="asterisk">*</span>
@@ -1117,10 +1089,7 @@
           <div id="help-text-total_covered_lives_${entities}" class="help-text">
           </div>
         </div>
-        <div
-          class="field-wrapper numberinput required"
-          id="claims_encounters_volume_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="claims_encounters_volume_${entities}">
             Claims and Encounters Volume<span class="asterisk">*</span>
@@ -1137,10 +1106,7 @@
           <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
           </div>
         </div>
-        <div
-          class="field-wrapper numberinput required js-prepend--field-wrapper"
-          id="total_claims_value_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required js-prepend--field-wrapper">
           <div class="field-errors" style="display: none"></div>
           <label for="total_claims_value_${entities}">
             Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
@@ -1360,51 +1326,6 @@
       }
     </script>
 
-    <script id="form-wrap-entity-id-fields--js" type="module">
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (odule?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith = '.field-wrapper[id^="fein"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="total-covered-lives"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add(
-          "js-entity-id--wrapper",
-          "o-grid",
-          "o-grid--col-auto-count"
-        );
-      });
-    </script>
-    <style id="form-wrap-entity-id-fields--css">
-      .js-entity-id--wrapper {
-        align-items: start;
-      }
-    </style>
     <script id="form-wrap-types-of-files-fields--js" type="module">
       /* RFE: Provide this feature in a Core CMS module script */
 
