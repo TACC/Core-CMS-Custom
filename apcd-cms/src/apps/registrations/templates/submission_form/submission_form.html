@@ -1360,29 +1360,6 @@
       }
     </script>
 
-    <script id="form-contact-phone--js" type="module">
-      const phoneRegex = String.raw`^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$`;
-      const inputs = document.querySelectorAll('[name^="contact_phone"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "tel"); /* Django 2 neglects it */
-        input.setAttribute("pattern", phoneRegex);
-      });
-    </script>
-
-    <script id="form-zip-code--js" type="module">
-      const minLength = 5;
-      const maxLength = 10;
-      const inputs = document.querySelectorAll('[name^="zip_code"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric");
-        input.setAttribute("minlength", minLength);
-        input.setAttribute("maxlength", maxLength);
-        input.setAttribute("pattern", String.raw`\d{5}(-\d{4})?`);
-      });
-    </script>
-
     <script id="form-wrap-entity-id-fields--js" type="module">
       /* Wrap entity fields in markup (so layout of fields can be engineered) */
       import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
