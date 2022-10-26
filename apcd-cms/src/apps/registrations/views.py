@@ -2,6 +2,7 @@ from apps.utils import apcd_database
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.views.decorators.cache import never_cache
 from django.views.generic import View
 from requests.auth import HTTPBasicAuth
 import logging
@@ -16,6 +17,7 @@ RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
 class SubmissionFormView(View):
+    @never_cache
     def get(self, request):
         if (request.user.is_authenticated):
             template = loader.get_template('submission_form/submission_form.html')
