@@ -13,6 +13,11 @@
         font-weight: var(--regular);
     }
 
+    /* To not render space from markup between label and asterisk */
+    .field-wrapper.required:has(label > .asterisk) label {
+        display: flex;
+    }
+
     /* TODO: In Core, make these NOT be an override i.e.
              use `.field-wrapper.required .asterisk` for red "(required)" */
     .field-wrapper:not(.required) .asterisk {
