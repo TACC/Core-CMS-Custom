@@ -13,11 +13,12 @@
         font-weight: var(--regular);
     }
 
-    /* TODO: In Core, make these NOT be an override e.g. use .asterisk:not(…) */
-    .asterisk--important {
+    /* TODO: In Core, make these NOT be an override i.e.
+             use `.field-wrapper.required .asterisk` for red "(required)" */
+    .field-wrapper:not(.required) .asterisk {
         color: darkgoldenrod /* var(--global-color-warning--dark) */;
     }
-    .asterisk--important::after {
+    .field-wrapper:not(.required) .asterisk::after {
         content: '(important)'; /* override site.css `.asterisk::after` */
     }
 </style>
