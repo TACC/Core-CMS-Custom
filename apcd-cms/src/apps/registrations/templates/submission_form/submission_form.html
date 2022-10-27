@@ -1037,20 +1037,6 @@
               </div>
             </div>
         `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
-            input[name=types_of_files_eligibility_enrollment_${contacts}],
-            input[name=types_of_files_provider_${contacts}],
-            input[name=types_of_files_medical_${contacts}],
-            input[name=types_of_files_pharmacy_${contacts}],
-            input[name=types_of_files_dental_${contacts}]
-          `)
-        );  
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.checked));
-        };
-        inputs.forEach(i => i.addEventListener('input', inputListener));
         btnStatus();
       });
 
