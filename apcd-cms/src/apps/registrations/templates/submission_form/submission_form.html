@@ -99,7 +99,7 @@
                       name="on-behalf-of"
                       value="true"
                       class="radioselect"
-                      required=""
+                      required
                       id="on-behalf-of_0"
                     />
                     Self</label
@@ -112,7 +112,7 @@
                       name="on-behalf-of"
                       value="false"
                       class="radioselect"
-                      required=""
+                      required
                       id="on-behalf-of_1"
                     />
                     Other</label
@@ -163,7 +163,7 @@
               <input
                 type="text"
                 name="business-name"
-                required=""
+                required
                 class="textinput"
                 id="business-name"
               />
@@ -179,7 +179,7 @@
               <input
                 type="text"
                 name="mailing-address"
-                required=""
+                required
                 class="textinput"
                 id="mailing-address"
               />
@@ -193,7 +193,7 @@
               <input
                 type="text"
                 name="city"
-                required=""
+                required
                 class="textinput"
                 id="city"
               />
@@ -283,7 +283,7 @@
               <input
                 type="text"
                 name="zip_code"
-                required=""
+                required
                 class="textinput"
                 id="zip_code"
                 inputmode="numeric"
@@ -319,7 +319,7 @@
                       ><input
                         type="checkbox"
                         name="types_of_files_eligibility_enrollment"
-                        required=""
+                        required
                         id="types_of_files_eligibility_enrollment"
                         checked=""
                         disabled
@@ -331,7 +331,7 @@
                       ><input
                         type="checkbox"
                         name="types_of_files_provider"
-                        required=""
+                        required
                         id="types_of_files_provider"
                       />Provider</label
                     >
@@ -341,7 +341,7 @@
                       ><input
                         type="checkbox"
                         name="types_of_files_medical"
-                        required=""
+                        required
                         id="types_of_files_medical"
                       />Medical</label
                     >
@@ -351,7 +351,7 @@
                       ><input
                         type="checkbox"
                         name="types_of_files_pharmacy"
-                        required=""
+                        required
                         id="types_of_files_pharmacy"
                       />Pharmacy</label
                     >
@@ -361,7 +361,7 @@
                       ><input
                         type="checkbox"
                         name="types_of_files_dental"
-                        required=""
+                        required
                         id="types_of_files_dental"
                       />Dental</label
                     >
@@ -391,7 +391,7 @@
                         name="submission_method"
                         value="SFTP"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_sftp"
                         checked=""
                       /><span>SFTP<sup>2</sup></span></label
@@ -404,7 +404,7 @@
                         name="submission_method"
                         value="HTTPS"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_https"
                       /><span>HTTPS<sup>3</sup>**</span></label
                     >
@@ -416,7 +416,7 @@
                         name="submission_method"
                         value="Encrypted USB Drive"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_usb"
                       /><span>Encrypted USB<sup>4</sup> drive***</span></label
                     >
@@ -440,7 +440,7 @@
               <input
                 type="text"
                 name="entity_name"
-                required=""
+                required
                 class="textinput"
                 id="entity_name"
               />
@@ -476,7 +476,7 @@
                   minlength="10"
                   maxlength="10"
                   pattern="\d{2}-\d{7}"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-fein" class="help-text">
@@ -498,7 +498,7 @@
                   minlength="5"
                   maxlength="10"
                   pattern="\d{5}|\d{10}"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-license_number" class="help-text">
@@ -521,7 +521,7 @@
                   minlength="5"
                   maxlength="5"
                   pattern="\d+"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-naic_company_code" class="help-text">
@@ -550,7 +550,7 @@
               <input
                 type="number"
                 name="total_covered_lives"
-                required=""
+                required
                 class="integerfield"
                 id="total_covered_lives"
                 inputmode="numeric"
@@ -573,7 +573,7 @@
               <input
                 type="number"
                 name="claims_encounters_volume"
-                required=""
+                required
                 class="integerfield"
                 id="claims_encounters_volume"
                 inputmode="numeric"
@@ -596,7 +596,7 @@
               ><input
                 type="number"
                 name="total_claims_value"
-                required=""
+                required
                 class="integerfield js-prepend--input"
                 id="total_claims_value"
                 inputmode="numeric"
@@ -633,7 +633,7 @@
                 <input
                   type="text"
                   name="contact_type"
-                  required=""
+                  required
                   class="textinput"
                   id="contact_type"
                 />
@@ -646,7 +646,7 @@
                 <input
                   type="text"
                   name="contact_name"
-                  required=""
+                  required
                   class="textinput"
                   id="contact_name"
                 />
@@ -661,7 +661,7 @@
                 <input
                   type="tel"
                   name="contact_phone"
-                  required=""
+                  required
                   class="telephoneinput"
                   id="contact_phone"
                   inputmode="tel"
@@ -700,7 +700,7 @@
                   type="email"
                   name="contact_email"
                   autocomplete="email"
-                  required=""
+                  required
                   class="emailinput"
                   id="contact_email"
                 />
@@ -783,7 +783,7 @@
           <input
             type="text"
             name="entity_name_${entities}"
-            required=""
+            required
             class="textinput"
             id="entity_name_${entities}"
           />
@@ -813,7 +813,7 @@
               minlength="10"
               maxlength="10"
               pattern="\\d{2}-\\d{7}"
-              required=""
+              required
             />
             <div id="help-text-fein_${entities}" class="help-text">
               Enter in format <samp>12-3456789</samp>.
@@ -832,7 +832,7 @@
               minlength="5"
               maxlength="10"
               pattern="\\d{5}|\\d{10}"
-              required=""
+              required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
               Enter a 5 or 10 digit number.
@@ -851,7 +851,7 @@
               minlength="5"
               maxlength="5"
               pattern="\\d+"
-              required=""
+              required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
               Enter a 5 digit number.
@@ -870,7 +870,7 @@
           <input
             type="number"
             name="total_covered_lives_${entities}"
-            required=""
+            required
             class="integerfield"
             id="total_covered_lives_${entities}"
             inputmode="numeric"
@@ -888,7 +888,7 @@
           <input
             type="number"
             name="claims_encounters_volume_${entities}"
-            required=""
+            required
             class="integerfield"
             id="claims_encounters_volume_${entities}"
             inputmode="numeric"
@@ -906,7 +906,7 @@
           <input
             type="number"
             name="total_claims_value_${entities}"
-            required=""
+            required
             class="integerfield js-prepend--input"
             id="total_claims_value_${entities}"
             inputmode="numeric"
@@ -962,7 +962,7 @@
               <input
                 type="text"
                 name="contact_type_${contacts}"
-                required=""
+                required
                 class="textinput"
                 id="contact_type_${contacts}"
               />
@@ -973,7 +973,7 @@
               <input
                 type="text"
                 name="contact_name_${contacts}"
-                required=""
+                required
                 class="textinput"
                 id="contact_name_${contacts}"
               />
@@ -984,7 +984,7 @@
               <input
                 type="tel"
                 name="contact_phone_${contacts}"
-                required=""
+                required
                 class="telephoneinput"
                 id="contact_phone_${contacts}"
                 inputmode="tel"
@@ -1017,7 +1017,7 @@
                 type="email"
                 name="contact_email_${contacts}"
                 autocomplete="email"
-                required=""
+                required
                 class="emailinput"
                 id="contact_email_${contacts}"
               />
