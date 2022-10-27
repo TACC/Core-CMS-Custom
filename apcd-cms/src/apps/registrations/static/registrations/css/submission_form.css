@@ -25,7 +25,7 @@ input[name^="contact_phone"] {
 /* Field Layouts */
 
 /* To make "Types of Files" take up less vertical space */
-ul:is([id^="types_of_files"], [id^="submit_methods"]) {
+ul:is([id^="types_of_files"], [id^="submission_method"]) {
     display: flex;
     flex-wrap: wrap;
     column-gap: 1em;

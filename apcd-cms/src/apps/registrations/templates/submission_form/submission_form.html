@@ -391,15 +391,11 @@
               </div>
             </div>
 
-            <!-- submission_method -->
-            <div class="js-wrapElements-wrapper js-submit-methods--wrapper">
-              <div
-                class="field-wrapper radioselect required js-wrapElements-starter"
-                id="submission_method_0--wrapper"
-              >
+
+            <div class="field-wrapper checkboxselectmultiple required">
                 <div class="field-errors" style="display: none"></div>
 
-                <ul id="submission_method" class="radioselect">
+                <ul id="submission_method" class="checkboxselectmultiple">
                   <li>
                     <label for="submission_method_sftp"
                       ><input
@@ -438,7 +434,6 @@
                     >
                   </li>
                 </ul>
-              </div>
             </div>
             <hr />
             <h4>
@@ -1133,74 +1128,6 @@
         return target;
       }
     </script>
-
-    <script id="form-wrap-submit-methods-fields--js" type="module">
-      /* RFE: Provide this feature in a Core CMS module script */
-
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (module?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith = '.field-wrapper[id^="submit_methods_sftp"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="contact_name"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add("js-submit-methods--wrapper");
-
-        /* Replace text of "true" radiobox with label text */
-        const fieldWrappers = elementsWrapper.querySelectorAll(
-          ".js-submit-methods--wrapper .field-wrapper"
-        );
-        [...fieldWrappers].forEach((wrapper) => {
-          const label = wrapper.querySelector("label");
-          const labelTextSansChildText = label.childNodes[0].nodeValue.trim();
-          const yesInputs = wrapper.querySelectorAll('input[value="true"]');
-          const noInputs = wrapper.querySelectorAll('input[value="false"]');
-
-          [...yesInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = labelTextSansChildText;
-          });
-
-          [...noInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = "Not using this method";
-          });
-        });
-      });
-    </script>
-    <style id="form-wrap-submit-methods-fields--css">
-      .js-submit-methods--wrapper .field-wrapper:not(:last-of-type) {
-        margin-bottom: unset; /* override site.css .field-wrapper */
-      }
-      .js-submit-methods--wrapper .field-wrapper.radioselect > label {
-        display: none;
-      }
-    </style>
 
     <!-- <script id="form-wrap-contact-fields--js" ...> removed (because it duplicated markup) -->
     <style id="form-wrap-contact-fields--css">
