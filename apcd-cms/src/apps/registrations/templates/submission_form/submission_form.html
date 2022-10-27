@@ -577,19 +577,19 @@
               </div>
             </div>
 
-            <div class="field-wrapper numberinput required js-prepend--field-wrapper">
+            <div class="field-wrapper numberinput required s-affixed-input-wrapper">
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_claims_value">
                 Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
               </label>
 
-              <span class="js-prepend--span" data-text="$">$</span
-              ><input
+              <span class="s-affixed-input-wrapper__prefix">$</span>
+              <input
                 type="number"
                 name="total_claims_value"
                 required
-                class="integerfield js-prepend--input"
+                class="integerfield"
                 id="total_claims_value"
                 inputmode="numeric"
                 step="0.01"
@@ -884,17 +884,17 @@
           <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
           </div>
         </div>
-        <div class="field-wrapper numberinput required js-prepend--field-wrapper">
+        <div class="field-wrapper numberinput required s-affixed-input-wrapper">
           <div class="field-errors" style="display: none"></div>
           <label for="total_claims_value_${entities}">
             Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
           </label>
-          <span class="js-prepend--span" data-text="$">$</span>
+          <span class="s-affixed-input-wrapper__prefix">$</span>
           <input
             type="number"
             name="total_claims_value_${entities}"
             required
-            class="integerfield js-prepend--input"
+            class="integerfield"
             id="total_claims_value_${entities}"
             inputmode="numeric"
             step="0.01"
@@ -1165,107 +1165,6 @@
         input.setAttribute("pattern", String.raw`\d+`);
       });
     </script>
-
-    <script id="form-prepend-input--js" type="module">
-      const selectorSymbolDict = {
-        // Order matters (and we can safely use an object)
-        // SEE: https://www.stefanjudis.com/today-i-learned/property-order-is-predictable-in-javascript-objects-since-es2015/
-        '[name^="total_claims_value"]': "$",
-        // Uncomment value format hints until Design reviews new style
-        // FAQ: Design rejected these because each looks like a button
-        // RFE: Change styles to look less like button (done) and request review
-        /*
-			'[inputmode="numeric"]': '#',
-			'input[type="number"]': '#',
-			'input[type="email"]': '@',
-			'input[type="tel"]': '☎',
-			'input[pattern]': '⠿',
-			*/
-      };
-      const inputs = document.querySelectorAll("input");
-
-      [...inputs].forEach((input) => {
-        const selectors = Object.keys(selectorSymbolDict);
-        const matchedSelector = selectors.find((sel) => input.matches(sel));
-        const symbol = selectorSymbolDict[matchedSelector];
-
-        if (symbol) {
-          const prepend = document.createElement("span");
-          const fieldWrapper = input.closest(".field-wrapper");
-
-          prepend.className = "js-prepend--span";
-          prepend.dataset.text = symbol;
-          prepend.innerText = symbol;
-
-          fieldWrapper.classList.add("js-prepend--field-wrapper");
-
-          input.before(prepend);
-          input.classList.add("js-prepend--input");
-        }
-      });
-    </script>
-
-    <style id="form-prepend-input--css">
-      .field-wrapper.js-prepend--field-wrapper {
-        display: grid;
-        align-items: start;
-        grid-template-columns: auto 1fr;
-        grid-template-areas:
-          "label label"
-          "before input"
-          "help help"
-          "error error";
-      }
-      .js-prepend--field-wrapper label {
-        grid-area: label;
-      }
-      .js-prepend--field-wrapper input {
-        grid-area: input;
-      }
-      .js-prepend--field-wrapper .js-prepend--span {
-        grid-area: before;
-      }
-      .js-prepend--field-wrapper .js-append--span {
-        grid-area: after;
-      }
-      .js-prepend--field-wrapper .help-text {
-        grid-area: help;
-      }
-      .js-prepend--field-wrapper .field-errors {
-        grid-area: error;
-      }
-
-      .js-prepend--field-wrapper {
-        --width: 1em;
-        --padding-vert: 5px; /* mimic input */
-        --padding-horz: 10px; /* mimic input */
-      }
-      .js-prepend--span {
-        /* To mimic shape of an input */
-        display: inline-block;
-        padding: var(--padding-vert) var(--padding-horz);
-
-        /* To have consistent size */
-        width: var(--width);
-        text-align: center;
-        box-sizing: content-box;
-
-        /* To limit interaction */
-        user-select: none;
-        pointer-events: none;
-      }
-
-      /* To render <span> atop and (as if) within input */
-      .js-prepend--span {
-        position: relative;
-        top: var(--global-border-width--normal);
-        left: var(--global-border-width--normal);
-        margin-right: calc(-1 * var(--width) - var(--padding-horz) * 2);
-      }
-      .js-prepend--span + input {
-        text-indent: calc(var(--width) + var(--padding-horz));
-      }
-    </style>
   </aside>
   <div class="o-section o-section--style-light">
     <hr />

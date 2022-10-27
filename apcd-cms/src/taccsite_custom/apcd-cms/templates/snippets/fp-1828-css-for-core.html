@@ -94,3 +94,73 @@
         border-radius: 0.4rem;   /* similar to Bootstrap _code.scss */
     }
 </style>
+
+{# FP-1828: Add this to Core #}
+{# WARNING: The `__suffix` has bug; it shrinks field width #}
+<style id="form-affix-input--css">
+    .s-affixed-input-wrapper:not(
+        .checkboxinput,
+        .radio,
+        .select,
+        .checkboxselectmultiple,
+        .textarea
+    ) {
+        display: grid;
+        align-items: start;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "label label"
+            var(--input-row, "input input")
+            "help help"
+            "error error";
+    }
+    .s-affixed-input-wrapper:has(.s-affixed-input-wrapper__prefix) {
+        --input-row: "prefix input";
+    }
+    .s-affixed-input-wrapper:has(.s-affixed-input-wrapper__suffix) {
+        --input-row: "input suffix";
+    }
+    .s-affixed-input-wrapper label { grid-area: label; }
+    .s-affixed-input-wrapper input { grid-area: input; }
+    .s-affixed-input-wrapper__prefix { grid-area: prefix; }
+    .s-affixed-input-wrapper__suffix { grid-area: suffix; }
+    .s-affixed-input-wrapper .help-text { grid-area: help; }
+    .s-affixed-input-wrapper .field-errors { grid-area: error; }
+
+    .s-affixed-input-wrapper {
+      --width: 1em;
+      --padding-vert: 5px; /* mimic input */
+      --padding-horz: 10px; /* mimic input */
+    }
+    .s-affixed-input-wrapper span {
+      /* To mimic shape of an input */
+      display: inline-block;
+      padding: var(--padding-vert) var(--padding-horz);
+
+      /* To have consistent size */
+      width: var(--width);
+      text-align: center;
+      box-sizing: content-box;
+
+      /* To limit interaction */
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* To render <span> atop and (as if) within input */
+    .s-affixed-input-wrapper__prefix {
+      position: relative;
+      top: var(--global-border-width--normal);
+      left: var(--global-border-width--normal);
+      margin-right: calc(-1 * var(--width) - var(--padding-horz) * 2);
+    }
+    .s-affixed-input-wrapper__suffix {
+      position: relative;
+      top: var(--global-border-width--normal);
+      right: var(--global-border-width--normal);
+      margin-left: calc(-1 * var(--width) - var(--padding-horz) * 2);
+    }
+    .s-affixed-input-wrapper__prefix + input {
+      text-indent: calc(var(--width) + var(--padding-horz));
+    }
+</style>
