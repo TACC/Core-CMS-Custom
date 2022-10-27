@@ -295,8 +295,6 @@
               <div id="help-text-zip_code" class="help-text">
                 <!-- Enter 5 digit <samp>12345</samp> or <a href="https://en.wikipedia.org/wiki/ZIP_Code#ZIP+4">9 digit</a> <samp>12345-6789</samp> code. -->
                 <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
             <hr />
@@ -444,10 +442,6 @@
                 class="textinput"
                 id="entity_name"
               />
-
-              <div id="help-text-entity_name" class="help-text">
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-              </div>
             </div>
             <div class="field-wrapper required">
               <label
@@ -527,8 +521,6 @@
                 <div id="help-text-naic_company_code" class="help-text">
                   Enter a 5 digit number.
                   <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
                 </div>
               </div>
             </div>
@@ -606,7 +598,6 @@
 
               <div id="help-text-total_claims_value" class="help-text">
                 <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
               </div>
             </div>
             <!-- additional contacts rendered here... -->
@@ -718,10 +709,6 @@
                 <label for="contact_notifications">
                   Select to receive system notifications
                 </label>
-
-                <div id="help-text-contact_notifications" class="help-text">
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-                </div>
               </div>
             </div>
             <!-- additional contacts rendered here... -->
@@ -1047,60 +1034,6 @@
         if (contacts > 1) contacts -= 1;
         btnStatus();
       });
-    </script>
-    <script id="form-unnest-markup" type="module">
-      /* RFE: Provide this feature in a Core CMS module script */
-      /* Move hack markup, from a wrapper, outside the wrapper's parent */
-      const wrappers = document.querySelectorAll(
-        '[data-script="unnest-markup"]'
-      );
-      [...wrappers].forEach((wrapper) => {
-        const fragment = document.createDocumentFragment();
-        const targetRel = wrapper.dataset.targetRel;
-        const targetPos = wrapper.dataset.targetPos;
-        let target;
-
-        /* To move wrapper children to a target until wrapper is empty */
-        while (wrapper.hasChildNodes()) {
-          target = getTarget(targetRel, wrapper);
-
-          console.debug({ wrapper, wrapper_childNodes: wrapper.childNodes });
-
-          if (targetPos === "before") {
-            target.before(...wrapper.childNodes);
-          } else {
-            target.after(...wrapper.childNodes);
-          }
-        }
-
-        /* To flag wrapper as emptied */
-        wrapper.dataset.emptied = true;
-
-        /* To convert empty wrapper to a comment */
-        const comment = document.createComment(wrapper.outerHTML);
-        wrapper.after(comment);
-        wrapper.parentNode.removeChild(wrapper);
-      });
-
-      function getTarget(relationship, wrapper) {
-        let target;
-
-        /* To translate keyword to DOM traversal */
-        switch (relationship) {
-          case "grandparent":
-            target = wrapper.parentNode.parentNode;
-            break;
-
-          case "parent":
-          default:
-            target = wrapper.parentNode;
-            break;
-        }
-
-        console.debug({ target });
-
-        return target;
-      }
     </script>
 
     <!-- <script id="form-wrap-contact-fields--js" ...> removed (because it duplicated markup) -->
