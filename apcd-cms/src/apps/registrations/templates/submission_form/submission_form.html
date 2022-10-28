@@ -1001,37 +1001,6 @@
       });
     </script>
 
-    <style id="form-wrap-contact-fields--css">
-      [id^="contact_block_"] {
-        --max-col-width: 50ch;
-
-        /* Expectations
-				- automatically enough columns
-				- maximum column count of 2 (i.e. minimum column width of 50%)
-				- maximum column width of 50 char's (same as max-width of fields)
-				- equal width columns
-			*/
-        display: grid;
-        column-gap: var(--global-space--grid-gap);
-        grid-template-columns: repeat(auto-fill, var(--max-col-width));
-        max-width: calc(
-          var(--global-space--grid-gap) + var(--max-col-width) * 2
-        );
-      }
-      .field-wrapper[id^="contact"] {
-        min-height: 0;
-        grid-row: span 1;
-      }
-      .field-wrapper[id^="contact_email"] {
-        /* To mimic site.css `.help-text` margin-top */
-        margin-bottom: calc(var(--global-font-size--small) * 0.3);
-      }
-      .field-wrapper[id^="contact_phone"] {
-        /* HELP: span 2 is logical; span 3 raises _notifications */
-        grid-row: span 3;
-      }
-    </style>
-
     <script id="form-file-submission--js" type="module">
       const inputs = Array.from(
         document.querySelectorAll(`
