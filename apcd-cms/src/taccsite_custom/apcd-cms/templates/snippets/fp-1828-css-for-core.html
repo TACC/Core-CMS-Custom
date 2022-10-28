@@ -16,6 +16,7 @@
     /* To not render space from markup between label and asterisk */
     .field-wrapper.required:has(label > .asterisk) label {
         display: flex;
+        align-items: center; /* to prevent <sup>7</sup> from being too high */
     }
 
     /* TODO: In Core, make these NOT be an override i.e.
