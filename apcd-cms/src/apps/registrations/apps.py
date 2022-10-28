@@ -1,4 +1,4 @@
 from django.apps import AppConfig
 
 class SubmissionFormConfig(AppConfig):
-    name = 'apcd'
+    name = 'register'
