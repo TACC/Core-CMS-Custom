@@ -47,11 +47,11 @@ input[name^="contact_phone"] {
     grid-template-columns: repeat( auto-fill, var(--max-col-width) );
     max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 2 );
 }
-.field-wrapper:has(#contact_email) {
+.field-wrapper:has([id^="contact_email"]) {
     /* To mimic site.css `.help-text` margin-top */
     margin-bottom: calc(var(--global-font-size--small) * 0.3);
 }
-.field-wrapper:has(#contact_phone) {
+.field-wrapper:has([id^="contact_phone"]) {
     /* To pull contact_notifications up against contact_email */
     /* NOTE: A span 2 seems like enough, but only span 3+ does the job */
     grid-row: span 3;
