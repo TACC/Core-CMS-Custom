@@ -85,20 +85,8 @@
     /* Tp prevent help text font-style from affecting any tags */
     /* FAQ: Help text can contain inline elements like <samp> */
     /* FAQ: Help text is abused (allowed) to add headings between form fields */
-    .help-text > :not(details, a) {
+    .help-text > :not(details, a, samp) {
         font-style: initial;
-    }
-</style>
-
-{# TODO: Integrate this into Core #}
-{# HELP: For forms and/or guides and/or docs? #}
-{# IDEA: Also make standard for <kbd> (currently uses Bootstrap) #}
-<style id="form-css--monospace">
-    form samp {
-        padding: 0.2rem 0.4rem; /* copied from Bootstrap _code.scss */
-        font-size: smaller;     /* similar to Bootstrap _code.scss */
-        border: var(--global-border--normal);
-        border-radius: 0.4rem;   /* similar to Bootstrap _code.scss */
     }
 </style>
 
