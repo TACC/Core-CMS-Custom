@@ -714,6 +714,9 @@
     </aside>
   </div>
   <aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-entity" type="module">
       const addEntityBtn = document.getElementById("entity-add-btn");
       const dropEntityBtn = document.getElementById("entity-drop-btn");
@@ -723,7 +726,7 @@
       });
       let entities = 1;
       btnStatus();
-      
+
       addEntityBtn.addEventListener("click", () => {
         if (entities < 5) entities += 1;
         let entityBlock = document.getElementById(`entity_block_${entities}`);
@@ -892,7 +895,10 @@
         btnStatus();
       });
     </script>
-  
+
+    <!-- To let user add and remove contacts -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-contact" type="module">
       const addContactBtn = document.getElementById("contact-add-btn");
       const dropContactBtn = document.getElementById("contact-drop-btn");
@@ -1001,7 +1007,8 @@
       });
     </script>
 
-    <script id="form-file-submission--js" type="module">
+    <!-- To require at least one "types of files" choice -->
+    <script id="form-types_of_files-required" type="module">
       const inputs = Array.from(
         document.querySelectorAll(`
         input[name=types_of_files_eligibility_enrollment],
@@ -1018,7 +1025,8 @@
       inputs.forEach(i => i.addEventListener('input', inputListener));
     </script>
 
-    <script id="form-fein--js" type="module">
+    <!-- To require at least one "entity" identifier value -->
+    <script id="form-entity_id-required" type="module">
       const inputs = Array.from(
         document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
       );
