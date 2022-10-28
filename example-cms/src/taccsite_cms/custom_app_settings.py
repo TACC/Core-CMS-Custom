@@ -1,3 +1,3 @@
-CUSTOM_APPS = ['apps.custom_example']
+CUSTOM_APPS = ['apps.example_app']
 CUSTOM_MIDDLEWARE = []
-STATICFILES_DIRS = ('taccsite_custom/example-cms', 'apps/custom_example')
+STATICFILES_DIRS = ('taccsite_custom/example-cms', 'apps/example_app')

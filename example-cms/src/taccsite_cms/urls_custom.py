@@ -1,5 +1,5 @@
 from django.urls import path, include
 
 custom_urls = [
-    path('test/', include('apps.custom_example.urls', namespace='custom_test')),
+    path('example/', include('apps.example_app.urls', namespace='example_app')),
 ]
