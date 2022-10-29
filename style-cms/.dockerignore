@@ -1,0 +1,4 @@
+.git
+.cache
+**/secrets.py
+**/settings_local.py
