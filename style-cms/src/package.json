@@ -1,0 +1,22 @@
+{
+  "name": "@tacc/pattern-library",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "TACC ACI WMA <wma-portals@gmail.com>",
+  "description": "The TACC CMD Style Guide CMS codebase.",
+  "engines": {
+    "node": "^18.4.0",
+    "npm": "^8.12.0"
+  },
+  "devDependencies": {
+    "@frctl/fractal": "^1.5.13",
+    "@frctl/mandelbrot": "^1.10.1",
+    "minimist": "^1.2.6"
+  },
+  "repository": "git@github.com:TACC/Core-CMS-Custom.git",
+  "scripts": {
+    "start": "npx serve apps/pattern_library/templates",
+    "build": "fractal build --project=$npm_config_project"
+  },
+  "homepage": "https://github.com/TACC/Core-CMS-Custom/tree/main/style-cms/src/apps/pattern_library"
+}

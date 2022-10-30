@@ -3,6 +3,12 @@
 # *.STYLES.TACC.UTEXAS.EDU
 
 ########################
+# DJANGO
+########################
+
+APPEND_SLASH = False # so `/pattern-library/index.html` loads files from `./`
+
+########################
 # DJANGO CMS SETTINGS
 ########################
 

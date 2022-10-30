@@ -15,6 +15,10 @@ services:
       - ./src/taccsite_cms/settings_custom.py:/code/taccsite_cms/settings_custom.py
       - ./src/taccsite_cms/settings_local.py:/code/taccsite_cms/settings_local.py
       - ./src/taccsite_cms/secrets.py:/code/taccsite_cms/secrets.py
+      # IMPORTANT: The container is overwritten by host directory created by Docker because no host directory existed
+      # SEE: https://stackoverflow.com/questions/66724297/docker-compose-volume-copying-folder-from-docker-container-to-host-when-executi
+      # IDEA: (Me) Create symlinks in the container (via the Dockerfile) and work with those paths even though you can not see them locally
+      # IDEA: (StackOverflow) https://stackoverflow.com/questions/66724297/docker-compose-volume-copying-folder-from-docker-container-to-host-when-executi#comment117993119_66734699
     networks:
       - style_cms_net
 
