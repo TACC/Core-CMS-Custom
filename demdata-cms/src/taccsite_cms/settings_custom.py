@@ -34,10 +34,3 @@ FAVICON = {}
 # EMAIL_BACKEND = "..."
 # EMAIL_HOST = "..."
 # DEFAULT_FROM_EMAIL = "..."
-
-########################
-# DJANGO (RECAPTCHA)
-########################
-
-# XXX: Temporary for testing. Precedent dictate we set this on server, not here.
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
