@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+
+{# TUP-175: Move to Core, Remove from Here #}
+{% include 'snippets/tup-175-css-alerts-messages-ui-pattern.html' %}
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -15,4 +19,5 @@
         <button class="form-button" type="submit">Go to Dashboard</button>
     </form>
 </div>
+
 {% endblock %}

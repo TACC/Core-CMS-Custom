@@ -1,4 +1,13 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
+
+{# FP-1828: Move to Core, Remove from Here #}
+{% include 'snippets/fp-1828-css-for-core.html' %}
+
 <div class="container">
   <nav class="s-breadcrumbs">
     <ol itemscope="" itemtype="https://schema.org/BreadcrumbList">
@@ -38,108 +47,6 @@
     </ol>
   </nav>
 
-  <aside>
-    <style id="form-css-request-submit--extra-form-text">
-      /* To show within what specified context certain content is relevant */
-      /* FAQ: Could be done with text, but this offers editablity in one place */
-      [data-belongs-to]::before {
-        content: "(" attr(data-belongs-to) ") ";
-      }
-    </style>
-    <style id="form-css-request-submit--form-field-widths">
-      /* for Entities */
-      [name^="fein"],
-		[name^="license_number"],
-		[name^="naic_company_code"],
-		/* for Organization */
-		/* [name^="state"], */
-		[name^="zip_code"] {
-        width: 10ch !important; /* to overwrite site.css */
-        box-sizing: content-box;
-      }
-      [name^="state"] {
-        --length: 2ch;
-        --ui-buffer: 2.5ch; /* to make room for dropdown arrows */
-
-        width: calc(
-          var(--length) + var(--ui-buffer)
-        ) !important; /* to overwrite site.css */
-        box-sizing: content-box;
-      }
-      /* for Contacts */
-      [name^="contact_phone"] {
-        width: 17ch !important; /* to overwrite site.css */
-        box-sizing: content-box;
-      }
-    </style>
-    <style id="form-css-request-submit--radio-fields-layout">
-      /* To make radio fields take up less space */
-      ul:is([id^="types_of_files"], [id^="submit_methods"]) {
-        display: flex;
-        flex-wrap: wrap;
-        column-gap: 1em;
-      }
-
-      /* To align "No (such files)" */
-      ul:is([id^="types_of_files"], [id^="submit_methods"]) {
-        width: 100%;
-      }
-      ul:is([id^="types_of_files"], [id^="submit_methods"])
-        li:has(input[value="true"]) {
-        flex-basis: 20ch;
-      }
-
-      /* To align "No (such files)" */
-      ul:is([id^="types_of_files"], [id^="submit_methods"])
-        li:has(input[value="false"]) {
-        font-style: italic;
-      }
-    </style>
-
-    <style id="form-css-request-submit--hide-unusable-field">
-      /* HACK: FP-1808: To hide field we want to use (until it can be used) */
-      div.field-wrapper.checkboxselectmultiple:not(.required) {
-        display: none;
-      }
-    </style>
-
-    <style id="form-css-request-submit--fp-1808">
-      /* HACK: FP-1808: To warn admin and user that this field is broken */
-      div.field-wrapper.checkboxselectmultiple.required > label::after {
-        display: block;
-        margin-top: 0.5em;
-
-        /* To mimic c-message */
-        /* https://github.com/TACC/tup-ui/blob/main/libs/core-styles/src/lib/_imports/components/c-message.css */
-        padding: 15px 20px;
-        border: var(--global-border--thick);
-        font-size: var(--global-font-size--small);
-      }
-      html[class*="cms-structure-mode-"]
-        div.field-wrapper.checkboxselectmultiple.required
-        > label::after {
-        content: "A multi checkbox field that is required is not well implemented. Do not require this field or replace it with multiple required Yes/No radio fields.";
-
-        /* To mimic c-message c-message-error */
-        /* https://github.com/TACC/tup-ui/blob/main/libs/core-styles/src/lib/_imports/components/c-message.css */
-        color: var(--global-color-danger--dark);
-        background-color: var(--global-color-danger--weak);
-        border-color: var(--global-color-danger--normal);
-      }
-      html:not([class*="cms-structure-mode-"])
-        div.field-wrapper.checkboxselectmultiple.required
-        > label::after {
-        content: "This field is not well implemented. Select all boxes to bypass the error with this field.";
-
-        /* To mimic c-message c-message-warning */
-        /* https://github.com/TACC/tup-ui/blob/main/libs/core-styles/src/lib/_imports/components/c-message.css */
-        color: var(--global-color-warning--dark);
-        background-color: var(--global-color-warning--weak);
-        border-color: var(--global-color-warning--normal);
-      }
-    </style>
-  </aside>
-
   <div class="row">
     <div class="col">
       <h1>Request to Submit</h1>
@@ -164,29 +71,20 @@
 
       <hr />
 
-      <!--suppress ALL -->
-
-      <div class="forms" id="">
+      <div class="forms">
         <div class="description">
           <h4>Organization</h4>
         </div>
 
         <div class="form-wrapper">
-          <form
-            action=""
-            method="POST"
-            class="js-wrapElements-container"
-          >
-			{% csrf_token %}
+          <form action="" method="POST">
+                {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
 
-            <div
-              class="field-wrapper radioselect required"
-              id="on-behalf-of_0--wrapper"
-            >
+            <div class="field-wrapper radioselect required">
               <div class="field-errors" style="display: none"></div>
 
-              <label for="on-behalf-of_0">
+              <label>
                 On behalf of:<span class="asterisk">*</span>
               </label>
 
@@ -198,7 +96,7 @@
                       name="on-behalf-of"
                       value="true"
                       class="radioselect"
-                      required=""
+                      required
                       id="on-behalf-of_0"
                     />
                     Self</label
@@ -211,7 +109,7 @@
                       name="on-behalf-of"
                       value="false"
                       class="radioselect"
-                      required=""
+                      required
                       id="on-behalf-of_1"
                     />
                     Other</label
@@ -225,7 +123,7 @@
               </div>
             </div>
 
-            <div class="field-wrapper select required" id="type--wrapper">
+            <div class="field-wrapper select required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="type"> Type<span class="asterisk">*</span> </label>
@@ -246,16 +144,9 @@
                   Pharmacy Benefit Manager (PBM)
                 </option>
               </select>
-
-              <div id="help-text-type" class="help-text">
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-              </div>
             </div>
 
-            <div
-              class="field-wrapper textinput required"
-              id="business-name--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="business-name">
@@ -265,16 +156,13 @@
               <input
                 type="text"
                 name="business-name"
-                required=""
+                required
                 class="textinput"
                 id="business-name"
               />
             </div>
 
-            <div
-              class="field-wrapper textinput required"
-              id="mailing-address--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="mailing-address">
@@ -284,13 +172,13 @@
               <input
                 type="text"
                 name="mailing-address"
-                required=""
+                required
                 class="textinput"
                 id="mailing-address"
               />
             </div>
 
-            <div class="field-wrapper textinput required" id="city--wrapper">
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="city"> City<span class="asterisk">*</span> </label>
@@ -298,13 +186,13 @@
               <input
                 type="text"
                 name="city"
-                required=""
+                required
                 class="textinput"
                 id="city"
               />
             </div>
 
-            <div class="field-wrapper select required" id="state--wrapper">
+            <div class="field-wrapper select required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="state"> State<span class="asterisk">*</span> </label>
@@ -372,16 +260,9 @@
                 <option value="WI - Wisconsin">WI - Wisconsin</option>
                 <option value="WY - Wyoming">WY - Wyoming</option>
               </select>
-
-              <div id="help-text-state" class="help-text">
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-              </div>
             </div>
 
-            <div
-              class="field-wrapper textinput required"
-              id="zip_code--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="zip_code">
@@ -391,7 +272,7 @@
               <input
                 type="text"
                 name="zip_code"
-                required=""
+                required
                 class="textinput"
                 id="zip_code"
                 inputmode="numeric"
@@ -399,279 +280,79 @@
                 maxlength="10"
                 pattern="\d{5}(-\d{4})?"
               />
-
-              <div id="help-text-zip_code" class="help-text">
-                <!-- Enter 5 digit <samp>12345</samp> or <a href="https://en.wikipedia.org/wiki/ZIP_Code#ZIP+4">9 digit</a> <samp>12345-6789</samp> code. -->
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-              </div>
             </div>
             <hr />
             <h4>File Submission</h4>
             <div class="field-wrapper required">
               <label>
-                Types of Files<!-- no space --><span class="asterisk">*</span>
+                Types of Files<span class="asterisk">*</span>
               </label>
               <div class="help-text">
                 Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
               </div>
             </div>
 
-            <div class="js-wrapElements-wrapper js-types-of-files--wrapper">
-              <div
-                class="field-wrapper radioselect required js-wrapElements-starter"
-                id="types_of_files_eligibility_enrollment_0--wrapper"
-              >
+            <div class="field-wrapper checkboxselectmultiple required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="types_of_files_eligibility_enrollment_0">
-                  Eligibility/Enrollment*<span class="asterisk">*</span>
-                </label>
-
-                <ul
-                  id="types_of_files_eligibility_enrollment"
-                  class="radioselect"
-                >
+                <ul id="types_of_files" class="checkboxselectmultiple">
                   <li>
-                    <label for="types_of_files_eligibility_enrollment_0"
+                    <label for="types_of_files_eligibility_enrollment"
                       ><input
                         type="checkbox"
                         name="types_of_files_eligibility_enrollment"
-                        required=""
-                        id="types_of_files_eligibility_enrollment_0"
+                        required
+                        id="types_of_files_eligibility_enrollment"
                         checked=""
                         disabled
                       />Eligibility/Enrollment*</label
                     >
                   </li>
-                  <!-- <li>
-                    <label for="types_of_files_eligibility_enrollment_0"
-                      ><input
-                        type="radio"
-                        name="types_of_files_eligibility_enrollment"
-                        value="true"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_eligibility_enrollment_0"
-                        checked=""
-                      />Eligibility/Enrollment*</label
-                    >
-                  </li> -->
-                  <!-- <li>
-                    <label for="types_of_files_eligibility_enrollment_1"
-                      ><input
-                        type="radio"
-                        name="types_of_files_eligibility_enrollment"
-                        value="false"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_eligibility_enrollment_1"
-                      />No such files</label
-                    >
-                  </li> -->
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="types_of_files_provider_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="types_of_files_provider_0">
-                  Provider<span class="asterisk">*</span>
-                </label>
-
-                <ul id="types_of_files_provider" class="radioselect">
                   <li>
-                    <label for="types_of_files_provider_0"
+                    <label for="types_of_files_provider"
                       ><input
                         type="checkbox"
                         name="types_of_files_provider"
-                        required=""
-                        id="types_of_files_provider_0"
+                        required
+                        id="types_of_files_provider"
                       />Provider</label
                     >
                   </li>
-                  <!-- <li>
-                    <label for="types_of_files_provider_0"
-                      ><input
-                        type="radio"
-                        name="types_of_files_provider"
-                        value="true"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_provider_0"
-                      />Provider</label
-                    >
-                  </li> -->
-                  <!-- <li>
-                    <label for="types_of_files_provider_1"
-                      ><input
-                        type="radio"
-                        name="types_of_files_provider"
-                        value="false"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_provider_1"
-                        checked=""
-                      />No such files</label
-                    >
-                  </li> -->
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="types_of_files_medical_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="types_of_files_medical_0">
-                  Medical<span class="asterisk">*</span>
-                </label>
-
-                <ul id="types_of_files_medical" class="radioselect">
                   <li>
-                    <label for="types_of_files_medical_0"
+                    <label for="types_of_files_medical"
                       ><input
                         type="checkbox"
                         name="types_of_files_medical"
-                        required=""
-                        id="types_of_files_medical_0"
+                        required
+                        id="types_of_files_medical"
                       />Medical</label
                     >
                   </li>
-                  <!-- <li>
-                    <label for="types_of_files_medical_0"
-                      ><input
-                        type="radio"
-                        name="types_of_files_medical"
-                        value="true"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_medical_0"
-                      />Medical</label
-                    >
-                  </li> -->
-                  <!-- <li>
-                    <label for="types_of_files_medical_1"
-                      ><input
-                        type="radio"
-                        name="types_of_files_medical"
-                        value="false"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_medical_1"
-                        checked=""
-                      />No such files</label
-                    >
-                  </li> -->
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="types_of_files_pharmacy_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="types_of_files_pharmacy_0">
-                  Pharmacy<span class="asterisk">*</span>
-                </label>
-
-                <ul id="types_of_files_pharmacy" class="radioselect">
                   <li>
-                    <label for="types_of_files_pharmacy_0"
+                    <label for="types_of_files_pharmacy"
                       ><input
                         type="checkbox"
                         name="types_of_files_pharmacy"
-                        required=""
-                        id="types_of_files_pharmacy_0"
+                        required
+                        id="types_of_files_pharmacy"
                       />Pharmacy</label
                     >
                   </li>
-                  <!-- <li>
-                    <label for="types_of_files_pharmacy_0"
-                      ><input
-                        type="radio"
-                        name="types_of_files_pharmacy"
-                        value="true"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_pharmacy_0"
-                      />Pharmacy</label
-                    >
-                  </li> -->
-                  <!-- <li>
-                    <label for="types_of_files_pharmacy_1"
-                      ><input
-                        type="radio"
-                        name="types_of_files_pharmacy"
-                        value="false"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_pharmacy_1"
-                        checked=""
-                      />No such files</label
-                    >
-                  </li> -->
-                </ul>
-              </div>
-              <div
-                class="field-wrapper radioselect required"
-                id="types_of_files_dental_0--wrapper"
-              >
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="types_of_files_dental_0">
-                  Dental<span class="asterisk">*</span>
-                </label>
-
-                <ul id="types_of_files_dental" class="radioselect">
                   <li>
-                    <label for="types_of_files_dental_0"
+                    <label for="types_of_files_dental"
                       ><input
                         type="checkbox"
                         name="types_of_files_dental"
-                        required=""
-                        id="types_of_files_dental_0"
+                        required
+                        id="types_of_files_dental"
                       />Dental</label
                     >
                   </li>
-                  <!-- <li>
-                    <label for="types_of_files_dental_0"
-                      ><input
-                        type="radio"
-                        name="types_of_files_dental"
-                        value="true"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_dental_0"
-                      />Dental</label
-                    >
-                  </li> -->
-                  <!-- <li>
-                    <label for="types_of_files_dental_1"
-                      ><input
-                        type="radio"
-                        name="types_of_files_dental"
-                        value="false"
-                        class="radioselect"
-                        required=""
-                        id="types_of_files_dental_1"
-                        checked=""
-                      />No such files</label
-                    >
-                  </li> -->
                 </ul>
-
-                <div id="help-text-types_of_files_dental" class="help-text">
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-                </div>
-              </div>
             </div>
             <div class="field-wrapper required">
               <label
-                >Submission Method<!-- no space --><span class="asterisk"
+                >Submission Method<span class="asterisk"
                   >*</span
                 >
               </label>
@@ -679,15 +360,12 @@
                 At least one of the following must be selected.
               </div>
             </div>
-            <!-- submission_method -->
-            <div class="js-wrapElements-wrapper js-submit-methods--wrapper">
-              <div
-                class="field-wrapper radioselect required js-wrapElements-starter"
-                id="submission_method_0--wrapper"
-              >
+
+
+            <div class="field-wrapper checkboxselectmultiple required">
                 <div class="field-errors" style="display: none"></div>
 
-                <ul id="submission_method" class="radioselect">
+                <ul id="submission_method" class="checkboxselectmultiple">
                   <li>
                     <label for="submission_method_sftp"
                       ><input
@@ -695,7 +373,7 @@
                         name="submission_method"
                         value="SFTP"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_sftp"
                         checked=""
                       /><span>SFTP<sup>2</sup></span></label
@@ -708,7 +386,7 @@
                         name="submission_method"
                         value="HTTPS"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_https"
                       /><span>HTTPS<sup>3</sup>**</span></label
                     >
@@ -720,13 +398,12 @@
                         name="submission_method"
                         value="Encrypted USB Drive"
                         class="radioselect"
-                        required=""
+                        required
                         id="submission_method_usb"
                       /><span>Encrypted USB<sup>4</sup> drive***</span></label
                     >
                   </li>
                 </ul>
-              </div>
             </div>
             <hr />
             <h4>
@@ -735,10 +412,7 @@
                 (If single company, enter the same organization as above.)
               </small>
             </h4>
-            <div
-              class="field-wrapper textinput required"
-              id="entity_name--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="entity_name">
@@ -748,19 +422,14 @@
               <input
                 type="text"
                 name="entity_name"
-                required=""
+                required
                 class="textinput"
                 id="entity_name"
               />
-
-              <div id="help-text-entity_name" class="help-text">
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-              </div>
             </div>
             <div class="field-wrapper required">
               <label
-                >Number/Code<!-- no space --><span class="asterisk">*</span>
-                <!-- Notice "asterisk" (not "asterisk--important" like others) -->
+                >Number/Code<span class="asterisk">*</span>
               </label>
               <div class="help-text">
                 Provide all available identifiers. At least one of the following
@@ -768,13 +437,8 @@
               </div>
             </div>
 
-            <div
-              class="js-wrapElements-wrapper js-entity-id--wrapper o-grid o-grid--col-auto-count"
-            >
-              <div
-                class="field-wrapper textinput js-wrapElements-starter"
-                id="fein--wrapper"
-              >
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="fein"> FEIN<sup>5</sup> </label>
@@ -789,14 +453,14 @@
                   minlength="10"
                   maxlength="10"
                   pattern="\d{2}-\d{7}"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-fein" class="help-text">
                   Enter in format <samp>12-3456789</samp>.
                 </div>
               </div>
-              <div class="field-wrapper textinput" id="license_number--wrapper">
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="license_number"> License Number </label>
@@ -811,18 +475,14 @@
                   minlength="5"
                   maxlength="10"
                   pattern="\d{5}|\d{10}"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-license_number" class="help-text">
                   Enter a 5 or 10 digit number.
-                  <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
                 </div>
               </div>
-              <div
-                class="field-wrapper textinput"
-                id="naic_company_code--wrapper"
-              >
+              <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
@@ -837,14 +497,11 @@
                   minlength="5"
                   maxlength="5"
                   pattern="\d+"
-                  required=""
+                  required
                 />
 
                 <div id="help-text-naic_company_code" class="help-text">
                   Enter a 5 digit number.
-                  <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
                 </div>
               </div>
             </div>
@@ -856,10 +513,7 @@
               >
             </h6>
 
-            <div
-              class="field-wrapper numberinput required"
-              id="total_covered_lives--wrapper"
-            >
+            <div class="field-wrapper numberinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_covered_lives">
@@ -869,23 +523,16 @@
               <input
                 type="number"
                 name="total_covered_lives"
-                required=""
+                required
                 class="integerfield"
                 id="total_covered_lives"
                 inputmode="numeric"
                 min="1"
                 step="1"
               />
-
-              <div id="help-text-total_covered_lives" class="help-text">
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-              </div>
             </div>
 
-            <div
-              class="field-wrapper numberinput required"
-              id="claims_encounters_volume--wrapper"
-            >
+            <div class="field-wrapper numberinput required">
               <div class="field-errors" style="display: none"></div>
 
               <label for="claims_encounters_volume">
@@ -895,46 +542,34 @@
               <input
                 type="number"
                 name="claims_encounters_volume"
-                required=""
+                required
                 class="integerfield"
                 id="claims_encounters_volume"
                 inputmode="numeric"
                 min="1"
               />
-
-              <div id="help-text-claims_encounters_volume" class="help-text">
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-              </div>
             </div>
 
-            <div
-              class="field-wrapper numberinput required js-prepend--field-wrapper"
-              id="total_claims_value--wrapper"
-            >
+            <div class="field-wrapper numberinput required s-affixed-input-wrapper">
               <div class="field-errors" style="display: none"></div>
 
               <label for="total_claims_value">
                 Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
               </label>
 
-              <span class="js-prepend--span" data-text="$">$</span
-              ><input
+              <span class="s-affixed-input-wrapper__prefix">$</span>
+              <input
                 type="number"
                 name="total_claims_value"
-                required=""
-                class="integerfield js-prepend--input"
+                required
+                class="integerfield"
                 id="total_claims_value"
                 inputmode="numeric"
                 step="0.01"
                 min="0.01"
               />
-
-              <div id="help-text-total_claims_value" class="help-text">
-                <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-                <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-              </div>
             </div>
-            <!-- additional contacts rendered here... -->
+            {# Additional contacts rendered here... #}
             <h4 id="entity_header_2" style="display:none">Entity Information 2</h4>
             <div id="entity_block_2"></div>
             <h4 id="entity_header_3" style="display:none">Entity Information 3</h4>
@@ -946,12 +581,9 @@
             <button class="c-button c-button--primary" id="entity-add-btn" type="button">+ Add Another Entity</button>
             <button class="c-button c-button--secondary" id="entity-drop-btn" type="button">- Remove Last Entity</button>
             <hr />
-            <h4>Contact Information</h4>
-            <div class="js-wrapElements-wrapper js-contact--wrapper" id="contact_1">
-              <div
-                class="field-wrapper textinput required js-wrapElements-starter"
-                id="contact_type--wrapper"
-              >
+            <h4 id="contact_header_1">Contact Information</h4>
+            <div id="contact_block_1">
+              <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_type">
@@ -961,12 +593,12 @@
                 <input
                   type="text"
                   name="contact_type"
-                  required=""
+                  required
                   class="textinput"
                   id="contact_type"
                 />
               </div>
-              <div class="field-wrapper textinput required" id="contact_name--wrapper">
+              <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_name"> Name<span class="asterisk">*</span> </label>
@@ -974,15 +606,12 @@
                 <input
                   type="text"
                   name="contact_name"
-                  required=""
+                  required
                   class="textinput"
                   id="contact_name"
                 />
               </div>
-              <div
-                class="field-wrapper telephoneinput"
-                id="contact_phone--wrapper"
-              >
+              <div class="field-wrapper telephoneinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_phone">
@@ -992,7 +621,7 @@
                 <input
                   type="tel"
                   name="contact_phone"
-                  required=""
+                  required
                   class="telephoneinput"
                   id="contact_phone"
                   inputmode="tel"
@@ -1017,13 +646,9 @@
                       <li><samp>+1 (123) 456-7890</samp></li>
                     </ul>
                   </details>
-                  <!-- More HTML5 validation is added via JavaScript based on the "Custom Field Name" value. -->
                 </div>
               </div>
-              <div
-                class="field-wrapper emailinput required"
-                id="contact_email--wrapper"
-              >
+              <div class="field-wrapper emailinput required">
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_email">
@@ -1034,15 +659,12 @@
                   type="email"
                   name="contact_email"
                   autocomplete="email"
-                  required=""
+                  required
                   class="emailinput"
                   id="contact_email"
                 />
               </div>
-              <div
-                class="field-wrapper checkboxinput"
-                id="contact_notifications--wrapper"
-              >
+              <div class="field-wrapper checkboxinput">
                 <div class="field-errors" style="display: none"></div>
 
                 <input
@@ -1055,21 +677,17 @@
                 <label for="contact_notifications">
                   Select to receive system notifications
                 </label>
-
-                <div id="help-text-contact_notifications" class="help-text">
-                  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-                </div>
               </div>
             </div>
-            <!-- additional contacts rendered here... -->
+            {# Additional contacts rendered here... #}
             <h4 id="contact_header_2" style="display:none">Contact Information 2</h4>
-            <div id="contact_block_2" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_2"></div>
             <h4 id="contact_header_3" style="display:none">Contact Information 3</h4>
-            <div id="contact_block_3" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_3"></div>
             <h4 id="contact_header_4" style="display:none">Contact Information 4</h4>
-            <div id="contact_block_4" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_4"></div>
             <h4 id="contact_header_5" style="display:none">Contact Information 5</h4>
-            <div id="contact_block_5" class="js-wrapElements-wrapper js-contact--wrapper"></div>
+            <div id="contact_block_5"></div>
             <button class="c-button c-button--primary" id="contact-add-btn" type="button">+ Add Another Contact</button>
             <button class="c-button c-button--secondary" id="contact-drop-btn" type="button">- Remove Last Contact</button>
             <div class="button-wrapper submit">
@@ -1099,6 +717,9 @@
     </aside>
   </div>
   <aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-entity" type="module">
       const addEntityBtn = document.getElementById("entity-add-btn");
       const dropEntityBtn = document.getElementById("entity-drop-btn");
@@ -1108,19 +729,19 @@
       });
       let entities = 1;
       btnStatus();
-      
+
       addEntityBtn.addEventListener("click", () => {
         if (entities < 5) entities += 1;
         let entityBlock = document.getElementById(`entity_block_${entities}`);
         document.getElementById(`entity_header_${entities}`).style.display = 'block';
         entityBlock.innerHTML = `
-        <div class="field-wrapper textinput required" id="entity_name_${entities}--wrapper">
+        <div class="field-wrapper textinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="entity_name_${entities}"> Name<span class="asterisk">*</span> </label>
           <input
             type="text"
             name="entity_name_${entities}"
-            required=""
+            required
             class="textinput"
             id="entity_name_${entities}"
           />
@@ -1136,13 +757,8 @@
             required.
           </div>
         </div>
-        <div
-          class="js-wrapElements-wrapper js-entity-id--wrapper o-grid o-grid--col-auto-count"
-        >
-          <div
-            class="field-wrapper textinput js-wrapElements-starter"
-            id="fein_${entities}--wrapper"
-          >
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="fein_${entities}"> FEIN<sup>5</sup> </label>
             <input
@@ -1155,13 +771,13 @@
               minlength="10"
               maxlength="10"
               pattern="\\d{2}-\\d{7}"
-              required=""
+              required
             />
             <div id="help-text-fein_${entities}" class="help-text">
               Enter in format <samp>12-3456789</samp>.
             </div>
           </div>
-          <div class="field-wrapper textinput" id="license_number_${entities}--wrapper">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="license_number_${entities}"> License Number </label>
             <input
@@ -1174,13 +790,13 @@
               minlength="5"
               maxlength="10"
               pattern="\\d{5}|\\d{10}"
-              required=""
+              required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
               Enter a 5 or 10 digit number.
             </div>
           </div>
-          <div class="field-wrapper textinput" id="naic_company_code_${entities}--wrapper">
+          <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="naic_company_code_${entities}"> NAIC<sup>6</sup> Company Code </label>
             <input
@@ -1193,7 +809,7 @@
               minlength="5"
               maxlength="5"
               pattern="\\d+"
-              required=""
+              required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
               Enter a 5 digit number.
@@ -1204,10 +820,7 @@
           Coverage Estimates
           <small>(Inclusive of all claims as of December 31 of previous year.)</small>
         </h6>
-        <div
-          class="field-wrapper numberinput required"
-          id="total_covered_lives_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="total_covered_lives_${entities}">
             Total Covered Lives<span class="asterisk">*</span>
@@ -1215,7 +828,7 @@
           <input
             type="number"
             name="total_covered_lives_${entities}"
-            required=""
+            required
             class="integerfield"
             id="total_covered_lives_${entities}"
             inputmode="numeric"
@@ -1225,10 +838,7 @@
           <div id="help-text-total_covered_lives_${entities}" class="help-text">
           </div>
         </div>
-        <div
-          class="field-wrapper numberinput required"
-          id="claims_encounters_volume_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required">
           <div class="field-errors" style="display: none"></div>
           <label for="claims_encounters_volume_${entities}">
             Claims and Encounters Volume<span class="asterisk">*</span>
@@ -1236,7 +846,7 @@
           <input
             type="number"
             name="claims_encounters_volume_${entities}"
-            required=""
+            required
             class="integerfield"
             id="claims_encounters_volume_${entities}"
             inputmode="numeric"
@@ -1245,20 +855,17 @@
           <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
           </div>
         </div>
-        <div
-          class="field-wrapper numberinput required js-prepend--field-wrapper"
-          id="total_claims_value_${entities}--wrapper"
-        >
+        <div class="field-wrapper numberinput required s-affixed-input-wrapper">
           <div class="field-errors" style="display: none"></div>
           <label for="total_claims_value_${entities}">
             Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
           </label>
-          <span class="js-prepend--span" data-text="$">$</span>
+          <span class="s-affixed-input-wrapper__prefix">$</span>
           <input
             type="number"
             name="total_claims_value_${entities}"
-            required=""
-            class="integerfield js-prepend--input"
+            required
+            class="integerfield"
             id="total_claims_value_${entities}"
             inputmode="numeric"
             step="0.01"
@@ -1291,7 +898,10 @@
         btnStatus();
       });
     </script>
-  
+
+    <!-- To let user add and remove contacts -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-contact" type="module">
       const addContactBtn = document.getElementById("contact-add-btn");
       const dropContactBtn = document.getElementById("contact-drop-btn");
@@ -1307,39 +917,35 @@
         let contactBlock = document.getElementById(`contact_block_${contacts}`);
         document.getElementById(`contact_header_${contacts}`).style.display = 'block';
         contactBlock.innerHTML = `
-          <div id="contact_${contacts}">
-            <div
-              class="field-wrapper textinput required js-wrapElements-starter"
-              id="contact_type_${contacts}--wrapper"
-            >
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_type_${contacts}"> Role<span class="asterisk">*</span> </label>
               <input
                 type="text"
                 name="contact_type_${contacts}"
-                required=""
+                required
                 class="textinput"
                 id="contact_type_${contacts}"
               />
             </div>
-            <div class="field-wrapper textinput required" id="contact_name_${contacts}--wrapper">
+            <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_name_${contacts}"> Name<span class="asterisk">*</span> </label>
               <input
                 type="text"
                 name="contact_name_${contacts}"
-                required=""
+                required
                 class="textinput"
                 id="contact_name_${contacts}"
               />
             </div>
-            <div class="field-wrapper telephoneinput" id="contact_phone_${contacts}--wrapper">
+            <div class="field-wrapper telephoneinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_phone_${contacts}"> Phone<span class="asterisk">*</span> </label>
               <input
                 type="tel"
                 name="contact_phone_${contacts}"
-                required=""
+                required
                 class="telephoneinput"
                 id="contact_phone_${contacts}"
                 inputmode="tel"
@@ -1365,19 +971,19 @@
                 </details>
               </div>
             </div>
-            <div class="field-wrapper emailinput required" id="contact_email_${contacts}--wrapper">
+            <div class="field-wrapper emailinput required">
               <div class="field-errors" style="display: none"></div>
               <label for="contact_email_${contacts}"> Email<span class="asterisk">*</span> </label>
               <input
                 type="email"
                 name="contact_email_${contacts}"
                 autocomplete="email"
-                required=""
+                required
                 class="emailinput"
                 id="contact_email_${contacts}"
               />
             </div>
-            <div class="field-wrapper checkboxinput" id="contact_notifications_${contacts}--wrapper">
+            <div class="field-wrapper checkboxinput">
               <div class="field-errors" style="display: none"></div>
               <input
                 type="checkbox"
@@ -1391,22 +997,7 @@
               <div id="help-text-contact_notifications_${contacts}" class="help-text">
               </div>
             </div>
-          </div>
         `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
-            input[name=types_of_files_eligibility_enrollment_${contacts}],
-            input[name=types_of_files_provider_${contacts}],
-            input[name=types_of_files_medical_${contacts}],
-            input[name=types_of_files_pharmacy_${contacts}],
-            input[name=types_of_files_dental_${contacts}]
-          `)
-        );  
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.checked));
-        };
-        inputs.forEach(i => i.addEventListener('input', inputListener));
         btnStatus();
       });
 
@@ -1418,349 +1009,9 @@
         btnStatus();
       });
     </script>
-    <script id="form-unnest-markup" type="module">
-      /* RFE: Provide this feature in a Core CMS module script */
-      /* Move hack markup, from a wrapper, outside the wrapper's parent */
-      const wrappers = document.querySelectorAll(
-        '[data-script="unnest-markup"]'
-      );
-      [...wrappers].forEach((wrapper) => {
-        const fragment = document.createDocumentFragment();
-        const targetRel = wrapper.dataset.targetRel;
-        const targetPos = wrapper.dataset.targetPos;
-        let target;
 
-        /* To move wrapper children to a target until wrapper is empty */
-        while (wrapper.hasChildNodes()) {
-          target = getTarget(targetRel, wrapper);
-
-          console.debug({ wrapper, wrapper_childNodes: wrapper.childNodes });
-
-          if (targetPos === "before") {
-            target.before(...wrapper.childNodes);
-          } else {
-            target.after(...wrapper.childNodes);
-          }
-        }
-
-        /* To flag wrapper as emptied */
-        wrapper.dataset.emptied = true;
-
-        /* To convert empty wrapper to a comment */
-        const comment = document.createComment(wrapper.outerHTML);
-        wrapper.after(comment);
-        wrapper.parentNode.removeChild(wrapper);
-      });
-
-      function getTarget(relationship, wrapper) {
-        let target;
-
-        /* To translate keyword to DOM traversal */
-        switch (relationship) {
-          case "grandparent":
-            target = wrapper.parentNode.parentNode;
-            break;
-
-          case "parent":
-          default:
-            target = wrapper.parentNode;
-            break;
-        }
-
-        console.debug({ target });
-
-        return target;
-      }
-    </script>
-
-    <script id="form-contact-phone--js" type="module">
-      const phoneRegex = String.raw`^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$`;
-      const inputs = document.querySelectorAll('[name^="contact_phone"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "tel"); /* Django 2 neglects it */
-        input.setAttribute("pattern", phoneRegex);
-      });
-    </script>
-    <style id="form-contact-phone--css">
-      /* IDEA: Add a UI pattern to make this re-usable */
-      [name^="contact_phone"] {
-        min-width: 17ch;
-        box-sizing: content-box;
-      }
-    </style>
-
-    <script id="form-zip-code--js" type="module">
-      const minLength = 5;
-      const maxLength = 10;
-      const inputs = document.querySelectorAll('[name^="zip_code"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric");
-        input.setAttribute("minlength", minLength);
-        input.setAttribute("maxlength", maxLength);
-        input.setAttribute("pattern", String.raw`\d{5}(-\d{4})?`);
-      });
-    </script>
-    <style id="form-zip-code--css">
-      [name^="zip_code"] {
-        --length: ch;
-
-        min-width: var(--length);
-        box-sizing: content-box;
-      }
-    </style>
-
-    <script id="form-wrap-entity-id-fields--js" type="module">
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (odule?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith = '.field-wrapper[id^="fein"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="total-covered-lives"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add(
-          "js-entity-id--wrapper",
-          "o-grid",
-          "o-grid--col-auto-count"
-        );
-      });
-    </script>
-    <style id="form-wrap-entity-id-fields--css">
-      .js-entity-id--wrapper {
-        align-items: start;
-      }
-    </style>
-    <script id="form-wrap-types-of-files-fields--js" type="module">
-      /* RFE: Provide this feature in a Core CMS module script */
-
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (module?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith =
-        '.field-wrapper[id^="types_of_files_eligibility_enrollment"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper:not([id]),
-			.field-wrapper[id^="submit_methods_sftp"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add("js-types-of-files--wrapper");
-
-        /* Replace text of "true" radiobox with label text */
-        const fieldWrappers = elementsWrapper.querySelectorAll(
-          ".js-types-of-files--wrapper .field-wrapper"
-        );
-        [...fieldWrappers].forEach((wrapper) => {
-          const label = wrapper.querySelector("label");
-          const labelTextSansChildText = label.childNodes[0].nodeValue.trim();
-          const yesInputs = wrapper.querySelectorAll('input[value="true"]');
-          const noInputs = wrapper.querySelectorAll('input[value="false"]');
-
-          [...yesInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = labelTextSansChildText;
-          });
-
-          [...noInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = "No such files";
-          });
-        });
-      });
-    </script>
-    <style id="form-wrap-types-of-files-fields--css">
-      .js-types-of-files--wrapper .field-wrapper:not(:last-of-type) {
-        margin-bottom: unset; /* override site.css .field-wrapper */
-      }
-      .js-types-of-files--wrapper .field-wrapper.radioselect > label {
-        display: none;
-      }
-    </style>
-    <script id="form-wrap-submit-methods-fields--js" type="module">
-      /* RFE: Provide this feature in a Core CMS module script */
-
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (module?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith = '.field-wrapper[id^="submit_methods_sftp"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="contact_name"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add("js-submit-methods--wrapper");
-
-        /* Replace text of "true" radiobox with label text */
-        const fieldWrappers = elementsWrapper.querySelectorAll(
-          ".js-submit-methods--wrapper .field-wrapper"
-        );
-        [...fieldWrappers].forEach((wrapper) => {
-          const label = wrapper.querySelector("label");
-          const labelTextSansChildText = label.childNodes[0].nodeValue.trim();
-          const yesInputs = wrapper.querySelectorAll('input[value="true"]');
-          const noInputs = wrapper.querySelectorAll('input[value="false"]');
-
-          [...yesInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = labelTextSansChildText;
-          });
-
-          [...noInputs].forEach((input) => {
-            const inputText = input.nextSibling;
-            inputText.nodeValue = "Not using this method";
-          });
-        });
-      });
-    </script>
-    <style id="form-wrap-submit-methods-fields--css">
-      .js-submit-methods--wrapper .field-wrapper:not(:last-of-type) {
-        margin-bottom: unset; /* override site.css .field-wrapper */
-      }
-      .js-submit-methods--wrapper .field-wrapper.radioselect > label {
-        display: none;
-      }
-    </style>
-    <script id="form-wrap-contact-fields--js" type="module">
-      /* Wrap entity fields in markup (so layout of fields can be engineered) */
-      import wrapElements from "/static/site_cms/js/modules/wrapElements.js";
-
-      function getForm() {
-        return document.getElementsByTagName("form")[0];
-      }
-      let scope = getForm();
-
-      /* Tag field wrappers */
-      /* TODO: Only do this once (odule?) (another snippet has this same code) */
-      const fieldLabels = scope.querySelectorAll(".field-wrapper > label[for]");
-      [...fieldLabels].forEach((fieldLabel) => {
-        const fieldWrapper = fieldLabel.closest(".field-wrapper");
-        fieldWrapper.id = fieldLabel.getAttribute("for") + "--wrapper";
-      });
-
-      /* Wrap elements */
-      const startWith = '.field-wrapper[id^="contact_type"]';
-      const endBefore = `
-			hr, h6, h5, h4, h3, h2, h1,
-			.field-wrapper[id^="contact_role"],
-			.field-wrapper[id^="recaptcha"]
-		`;
-      const wrapWith = "div";
-      const wrapStarter = true;
-      wrapElements(startWith, endBefore, wrapWith, { wrapStarter, scope });
-
-      /* Style elements wrapper */
-      scope = getForm();
-      const elementsWrappers = scope.querySelectorAll(
-        ".js-wrapElements-wrapper:has(" + startWith + ")"
-      );
-      elementsWrappers.forEach((elementsWrapper) => {
-        elementsWrapper.classList.add("js-contact--wrapper");
-      });
-    </script>
-    <style id="form-wrap-contact-fields--css">
-      .js-contact--wrapper {
-        --max-col-width: 50ch;
-
-        /* Expectations
-				- automatically enough columns
-				- maximum column count of 2 (i.e. minimum column width of 50%)
-				- maximum column width of 50 char's (same as max-width of fields)
-				- equal width columns
-			*/
-        display: grid;
-        column-gap: var(--global-space--grid-gap);
-        grid-template-columns: repeat(auto-fill, var(--max-col-width));
-        max-width: calc(
-          var(--global-space--grid-gap) + var(--max-col-width) * 2
-        );
-      }
-      .field-wrapper[id^="contact"] {
-        min-height: 0;
-        grid-row: span 1;
-      }
-      .field-wrapper[id^="contact_email"] {
-        /* To mimic site.css `.help-text` margin-top */
-        margin-bottom: calc(var(--global-font-size--small) * 0.3);
-      }
-      .field-wrapper[id^="contact_phone"] {
-        /* HELP: span 2 is logical; span 3 raises _notifications */
-        grid-row: span 3;
-      }
-    </style>
-
-    <script id="form-file-submission--js" type="module">
+    <!-- To require at least one "types of files" choice -->
+    <script id="form-types_of_files-required" type="module">
       const inputs = Array.from(
         document.querySelectorAll(`
         input[name=types_of_files_eligibility_enrollment],
@@ -1777,7 +1028,8 @@
       inputs.forEach(i => i.addEventListener('input', inputListener));
     </script>
 
-    <script id="form-fein--js" type="module">
+    <!-- To require at least one "entity" identifier value -->
+    <script id="form-entity_id-required" type="module">
       const inputs = Array.from(
         document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
       );
@@ -1788,202 +1040,6 @@
 
       inputs.forEach(i => i.addEventListener('input', inputListener));
     </script>
-
-    <script id="form-fein--js" type="module">
-      const length = 10;
-      const inputs = document.querySelectorAll('[name^="fein"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric");
-        input.setAttribute("minlength", length);
-        input.setAttribute("maxlength", length);
-        input.setAttribute("pattern", String.raw`\d{2}-\d{7}`);
-      });
-    </script>
-    <style id="form-fein--css">
-      [name^="fein"] {
-        --length: 10ch;
-
-        min-width: var(--length);
-        box-sizing: content-box;
-      }
-    </style>
-
-    <script id="form-license-number--js" type="module">
-      const minLength = 5;
-      const maxLength = 10;
-      const inputs = document.querySelectorAll('[name^="license_number"]');
-
-      [...inputs].forEach((input) => {
-        /* NOTE: Client would prevent text input, but that is a11y problem */
-        /* SEE: https://confluence.tacc.utexas.edu/x/E4x9E */
-        input.setAttribute("inputmode", "numeric"); /* Django 2 neglects it */
-        input.setAttribute("minlength", minLength);
-        input.setAttribute("maxlength", maxLength);
-        input.setAttribute("pattern", String.raw`\d{5}|\d{10}`);
-      });
-    </script>
-    <style id="form-license-number--css">
-      /* IDEA: Add a UI pattern to make this re-usable */
-      [name^="license_number"] {
-        --length: 10ch;
-
-        min-width: var(--length);
-        box-sizing: content-box;
-      }
-    </style>
-
-    <script id="form-total-covered-lives" type="module">
-      const inputs = document.querySelectorAll('[name^="total_covered_lives"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric"); /* Django 2 neglects it */
-        input.setAttribute("min", "1");
-      });
-    </script>
-    <script id="form-claims-encounters-volume" type="module">
-      const inputs = document.querySelectorAll(
-        '[name^="claims_encounters_volume"]'
-      );
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric"); /* Django 2 neglects it */
-        input.setAttribute("min", "1");
-      });
-    </script>
-    <script id="form-total-claims-value" type="module">
-      const inputs = document.querySelectorAll('[name^="total_claims_value"]');
-
-      [...inputs].forEach((input) => {
-        input.setAttribute("inputmode", "numeric"); /* Django 2 neglects it */
-        input.setAttribute("step", "0.01");
-        input.setAttribute("min", "0.01");
-      });
-    </script>
-
-    <script id="form-naic-company-code--js" type="module">
-      const length = 5;
-      const inputs = document.querySelectorAll('[name^="naic_company_code"]');
-
-      [...inputs].forEach((input) => {
-        /* NOTE: Client would prevent text input, but that is a11y problem */
-        /* SEE: https://confluence.tacc.utexas.edu/x/E4x9E */
-        input.setAttribute("inputmode", "numeric"); /* Django 2 neglects it */
-        input.setAttribute("minlength", length);
-        input.setAttribute("maxlength", length);
-        input.setAttribute("pattern", String.raw`\d+`);
-      });
-    </script>
-    <style id="form-naic-company-code--css">
-      /* IDEA: Add a UI pattern to make this re-usable */
-      [name^="naic_company_code"] {
-        --length: 5ch;
-
-        min-width: var(--length);
-        box-sizing: content-box;
-      }
-    </style>
-
-    <script id="form-prepend-input--js" type="module">
-      const selectorSymbolDict = {
-        // Order matters (and we can safely use an object)
-        // SEE: https://www.stefanjudis.com/today-i-learned/property-order-is-predictable-in-javascript-objects-since-es2015/
-        '[name^="total_claims_value"]': "$",
-        // Uncomment value format hints until Design reviews new style
-        // FAQ: Design rejected these because each looks like a button
-        // RFE: Change styles to look less like button (done) and request review
-        /*
-			'[inputmode="numeric"]': '#',
-			'input[type="number"]': '#',
-			'input[type="email"]': '@',
-			'input[type="tel"]': '☎',
-			'input[pattern]': '⠿',
-			*/
-      };
-      const inputs = document.querySelectorAll("input");
-
-      [...inputs].forEach((input) => {
-        const selectors = Object.keys(selectorSymbolDict);
-        const matchedSelector = selectors.find((sel) => input.matches(sel));
-        const symbol = selectorSymbolDict[matchedSelector];
-
-        if (symbol) {
-          const prepend = document.createElement("span");
-          const fieldWrapper = input.closest(".field-wrapper");
-
-          prepend.className = "js-prepend--span";
-          prepend.dataset.text = symbol;
-          prepend.innerText = symbol;
-
-          fieldWrapper.classList.add("js-prepend--field-wrapper");
-
-          input.before(prepend);
-          input.classList.add("js-prepend--input");
-        }
-      });
-    </script>
-
-    <style id="form-prepend-input--css">
-      .field-wrapper.js-prepend--field-wrapper {
-        display: grid;
-        align-items: start;
-        grid-template-columns: auto 1fr;
-        grid-template-areas:
-          "label label"
-          "before input"
-          "help help"
-          "error error";
-      }
-      .js-prepend--field-wrapper label {
-        grid-area: label;
-      }
-      .js-prepend--field-wrapper input {
-        grid-area: input;
-      }
-      .js-prepend--field-wrapper .js-prepend--span {
-        grid-area: before;
-      }
-      .js-prepend--field-wrapper .js-append--span {
-        grid-area: after;
-      }
-      .js-prepend--field-wrapper .help-text {
-        grid-area: help;
-      }
-      .js-prepend--field-wrapper .field-errors {
-        grid-area: error;
-      }
-
-      .js-prepend--field-wrapper {
-        --width: 1em;
-        --padding-vert: 5px; /* mimic input */
-        --padding-horz: 10px; /* mimic input */
-      }
-      .js-prepend--span {
-        /* To mimic shape of an input */
-        display: inline-block;
-        padding: var(--padding-vert) var(--padding-horz);
-
-        /* To have consistent size */
-        width: var(--width);
-        text-align: center;
-        box-sizing: content-box;
-
-        /* To limit interaction */
-        user-select: none;
-        pointer-events: none;
-      }
-
-      /* To render <span> atop and (as if) within input */
-      .js-prepend--span {
-        position: relative;
-        top: var(--global-border-width--normal);
-        left: var(--global-border-width--normal);
-        margin-right: calc(-1 * var(--width) - var(--padding-horz) * 2);
-      }
-      .js-prepend--span + input {
-        text-indent: calc(var(--width) + var(--padding-horz));
-      }
-    </style>
   </aside>
   <div class="o-section o-section--style-light">
     <hr />
