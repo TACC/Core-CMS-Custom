@@ -1,4 +1,4 @@
-FROM taccwma/core-cms:fdd30ed
+FROM taccwma/core-cms:latest
 
 WORKDIR /code
 
