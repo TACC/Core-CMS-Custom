@@ -1,5 +1,9 @@
 {% extends "standard.html" %}
 {% block content %}
+
+{# TUP-175: Move to Core, Remove from Here #}
+{% include 'snippets/tup-175-css-alerts-messages-ui-pattern.html' %}
+
 <div class="container">
     {% include "nav_cms_breadcrumbs.html" %}
 
@@ -10,4 +14,5 @@
     </p>
     <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
 </div>
+
 {% endblock %}
