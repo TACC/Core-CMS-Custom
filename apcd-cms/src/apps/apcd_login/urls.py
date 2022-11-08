@@ -3,5 +3,5 @@ from apps.apcd_login.auth import auth_and_set_apcd_role
 
 app_name = 'apcd_login'
 urlpatterns = [
-    path('auth/', auth_and_set_apcd_role, name='auth_and_set_apcd_role')
+    path('get-roles/', auth_and_set_apcd_role, name='auth_and_set_apcd_role')
 ]
