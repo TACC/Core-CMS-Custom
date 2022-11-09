@@ -1,23 +1,18 @@
-{% extends "base.html" %}
+{% extends "standard.html" %}
 {% block content %}
 
 {# TUP-175: Move to Core, Remove from Here #}
 {% include 'snippets/tup-175-css-alerts-messages-ui-pattern.html' %}
 
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Request to Submit</h1>
-            <hr style="margin-top: 10px" />
-        </div>
-    </div>
-    <div class="c-message c-message--error">
-        There was an error when attempting to store your registration!
-        Please submit a ticket.
-    </div>
-    <form class="button-wrapper submit" action="/workbench/dashboard" method="GET">
-        <button class="form-button" type="submit">Go to Dashboard</button>
-    </form>
+    {% include "nav_cms_breadcrumbs.html" %}
+
+    <h1>Request to Submit</h1>
+    <hr />
+    <p class="c-message c-message--error">
+        An error occurred during submission. For help, <a href="/workbench/dashboard">submit a ticket</a>.
+    </p>
+    <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
 </div>
 
 {% endblock %}

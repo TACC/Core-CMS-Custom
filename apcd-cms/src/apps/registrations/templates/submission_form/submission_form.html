@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "standard.html" %}
 {% load static %}
 
 {% block content %}
@@ -6,54 +6,15 @@
 <link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
 
 <div class="container">
-  <nav class="s-breadcrumbs">
-    <ol itemscope="" itemtype="https://schema.org/BreadcrumbList">
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <a href="/" itemprop="item">
-          <span itemprop="name">Home</span>
-        </a>
+  {% include "nav_cms_breadcrumbs.html" %}
 
-        <meta itemprop="position" content="1" />
-      </li>
 
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <a href="/register/" itemprop="item">
-          <span itemprop="name">Register</span>
-        </a>
-
-        <meta itemprop="position" content="2" />
-      </li>
-
-      <li
-        itemscope=""
-        itemprop="itemListElement"
-        itemtype="https://schema.org/ListItem"
-      >
-        <span itemprop="name">Request To Submit</span>
-
-        <meta itemprop="position" content="3" />
-      </li>
-    </ol>
-  </nav>
 
   <div class="row">
     <div class="col">
       <h1>Request to Submit</h1>
+      <hr />
 
-      <hr style="margin-top: 10px" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
       <p style="margin-bottom: 30px">
         This form should be completed and submitted to register as a data
         submitter. Please review the
@@ -61,7 +22,7 @@
           href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
           target="_blank"
           >Data Submission Guide</a
-        >&nbsp;for details about completing and submitting this form, paying
+        > for details about completing and submitting this form, paying
         special attention to the schedule of submissions including test files,
         historical files, and monthly files.
       </p>
@@ -698,10 +659,10 @@
           <p>Thank you for your request.</p>
         </div>
       </div>
-    </div>
-  </div>
-  <div hidden="">
-    <aside class="row">
+
+  {# Hidden links for future pages #}
+  {# TODO: Allow this template to render CMS admin-entered markup #}
+    <aside class="row" hidden>
       <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
         <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
@@ -712,7 +673,9 @@
         <p><a href="/workbench/dashboard">Dashboard</a></p>
       </div>
     </aside>
-  </div>
+
+  {# Scripts #}
+  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
   <aside>
     <!-- To let user add and remove entities -->
     {# RFE: Do not duplicate entity markup #}
@@ -1038,6 +1001,8 @@
       inputs.forEach(i => i.addEventListener('input', inputListener));
     </script>
   </aside>
+
+  {# Footnotes #}
   <div class="o-section o-section--style-light">
     <hr />
     <p>
@@ -1051,7 +1016,6 @@
         ⁷ United States Dollar (USD)</small
       >
     </p>
-
     <hr />
     <p>
       <small
