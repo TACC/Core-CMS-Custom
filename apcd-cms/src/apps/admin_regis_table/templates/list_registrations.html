@@ -1,23 +1,18 @@
-{% extends "base.html" %}
+{% extends "standard.html" %}
 {% load static %}
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_table.css' %}" type="text/css">
-<link rel="stylesheet" href="{% static 'admin_regis_table/registrations_admin_modal.css' %}" type="text/css">
-
-<style>
-  .page-text {
-    margin-top: 27px;
-    margin-bottom: 27px;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
 
 <div class="container">
-  <h1 class="page-text">List Registrations</h1>
-  <hr style="margin-top: 10px">
-  <p class="page-text">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
-  <hr style="margin-top: 10px">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>List Registrations</h1>
+  <hr />
+  <p style="margin-bottom: 30px">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
+  <hr />
   <table class="registration-table">
       <thead>
           <tr>
@@ -54,4 +49,5 @@
       </tbody>
   </table>
 </div>
-{%endblock %}
+
+{% endblock %}
