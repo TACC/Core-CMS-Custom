@@ -1,0 +1,251 @@
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">View Registration</h4>
+        </div>
+        <div class="modal-body">
+         <!-- <p>{{modal_content}}</p> -->
+          <div class="forms cms-plugin cms-plugin-2309" id="">
+            <div class="description">
+             <h4>Organization</h4>
+            </div>
+  
+            <div class="form-wrapper">
+              <form action="/forms/submit/" method="POST" class="js-wrapElements-container">
+                <div class="form-errors" style="display:none;"></div>
+          
+                <div class="field-wrapper radioselect required" id="on-behalf-of_0--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="on-behalf-of_0">
+                      On behalf of:
+                  </label>
+                  {% if r.view_modal_content.for_self %} 
+                    Self
+                  {% else %}
+                    Other
+                  {% endif %}
+                </div>
+          
+                <div class="field-wrapper select required" id="type--wrapper">
+                  <div class="field-errors" style="display:none;"></div>  
+                  <label for="type">
+                      Type
+                  </label>
+                  {{r.view_modal_content.type}}                
+                </div>
+          
+                <div class="field-wrapper textinput required" id="business-name--wrapper">
+                  <div class="field-errors" style="display:none;"></div> 
+                  <label for="business-name">
+                      Business Name
+                  </label>                
+                  {{r.view_modal_content.biz_name}}
+                </div>
+          
+                <div class="field-wrapper textinput required" id="mailing-address--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="mailing-address">
+                      Mailing Address
+                  </label>                
+                  {{r.view_modal_content.address}}
+                </div>
+          
+                <div class="field-wrapper textinput required" id="city--wrapper">
+                  <div class="field-errors" style="display:none;"></div>  
+                  <label for="city">
+                      City
+                  </label>
+                  {{r.view_modal_content.city}}
+                </div>
+          
+                <div class="field-wrapper select required" id="state--wrapper">
+                  <div class="field-errors" style="display:none;"></div>  
+                  <label for="state">
+                      State
+                  </label>
+                  {{r.view_modal_content.state}}                
+                </div>
+          
+                <div class="field-wrapper textinput required" id="zip_code--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="zip_code">
+                      Zip Code
+                  </label>
+                  {{r.view_modal_content.zip}}
+                </div>
+          <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
+  
+  <!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
+              
+                <hr>
+                <h4>File Submission</h4>
+                <div class="field-wrapper required">
+                  <label>
+                    Types of Files
+                  </label>
+                </div>
+                <div class="field-wrapper checkboxselectmultiple required">
+                  <div class="field-errors" style="display: none"></div>
+  
+                  <ul id="types_of_files" class="checkboxselectmultiple">
+                    <li>
+                      <label for="types_of_files_eligibility_enrollment"><input type="checkbox" name="types_of_files_eligibility_enrollment" required="" id="types_of_files_eligibility_enrollment" checked="" disabled="">Eligibility/Enrollment*</label>
+                    </li>
+                    {% for file_type in all_file_types %}
+                      <li>
+                        <label for=`types_of_files_{{file_type|lower}}`>
+                          {% if file_type in r.view_modal_content.files_type %}
+                            <input type="checkbox" name=`types_of_files_{{file_type|lower}}` required="" id=`types_of_files_{{file_type|lower}}` checked disabled>
+                          {% else %}
+                            <input type="checkbox" name=`types_of_files_{{file_type|lower}}` required="" id=`types_of_files_{{file_type|lower}}` disabled>
+                          {% endif %}
+                        {{file_type}}</label>
+                      </li>
+                    {% endfor %}
+                  </ul>
+              </div>
+              <div class="field-wrapper required">
+                <label>Submission Method
+                </label>
+              </div>
+              <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+                <ul id="submission_method" class="checkboxselectmultiple">
+                  {% for sub_type in all_submission_types %}
+                    <li>
+                      <label for=`submission_method_{{sub_type|lower}}`>
+                        {% if sub_type == r.view_modal_content.sub_method %}
+                          <input type="radio" name="submission_method" value=`{{sub_type}}` class="radioselect" required="" id=`submission_method_{{sub_type|lower}}` checked disabled>
+                        {% else %}
+                          <input type="radio" name="submission_method" value=`{{sub_type}}` class="radioselect" required="" id=`submission_method_{{sub_type|lower}}` disabled>
+                        {% endif %}
+                      <span>{{sub_type}}</span></label>
+                    </li>
+                  {% endfor %}
+                </ul>
+            </div>
+            <hr>
+            <h4>Entity/Entities Being Registered</h4>
+            {% for entity in r.view_modal_content.entities%}
+              <h5>Entity {{forloop.counter}}</h5>
+              <div class="field-wrapper textinput required" id="entity_number_code--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  
+                  <label for="entity_number_code">
+                      Name
+                  </label>
+                  {{entity.ent_name}}                                   
+              </div>
+              <div class="field-wrapper required">
+              </div>
+              <div class="js-wrapElements-wrapper">
+                <div class="field-wrapper textinput js-wrapElements-starter" id="fein2--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="fein2">
+                    FEIN
+                  </label>
+                  {{entity.fein}}
+                </div>
+                <div class="field-wrapper textinput " id="license_number--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="license_number">
+                    License Number
+                  </label>
+                  {{entity.license}}                
+                </div>
+                <div class="field-wrapper textinput " id="naic_company_code--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  <label for="naic_company_code">
+                    NAIC Company Code
+                  </label>
+                  {{entity.naic}}
+                </div>
+              </div>
+              <h6>Coverage Estimates <small>(Inclusive of all claims as of December 31 of previous year.)</small></h6>
+              <div class="field-wrapper numberinput required" id="total_covered_lives--wrapper">
+                <div class="field-errors" style="display:none;"></div>  
+              <div class="field-errors" style="display:none;"></div>  
+                <div class="field-errors" style="display:none;"></div>  
+                <label for="total_covered_lives">
+                  Total Covered Lives
+                </label>
+                {{entity.no_covered}}
+              </div>
+              <div class="field-wrapper numberinput required" id="claims_encounters_volume--wrapper">
+                <div class="field-errors" style="display:none;"></div>
+                <label for="claims_encounters_volume">
+                  Claims and Encounters Volume
+                </label>
+                {{entity.claim_and_enc_vol}}
+              </div>
+              <div class="field-wrapper numberinput required js-prepend--field-wrapper" id="total_claims_value--wrapper">
+                <div class="field-errors" style="display:none;"></div>
+                <label for="total_claims_value">
+                  Total Claims Value (USD)
+                </label>
+                {{entity.claim_val}}
+              </div>
+            {% endfor %}                
+            <hr>
+            <h4>Contact Information</h4>
+            {% for contact in r.view_modal_content.contacts %}
+              <h5>Contact {{forloop.counter}}</h5>
+              <div class="js-wrapElements-wrapper">
+                <div class="field-wrapper textinput required js-wrapElements-starter" id="contact_type--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  
+                  <label for="contact_type">
+                      Role
+                  </label>
+                  {{contact.role}}
+                </div>
+                <div class="field-wrapper textinput required" id="name--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                    <label for="name">
+                        Name
+                    </label>
+                    {{contact.name}}
+                </div>
+                <div class="field-wrapper telephoneinput required" id="contact_phone--wrapper">
+                  <div class="field-errors" style="display:none;"></div>
+                  
+                  <label for="contact_phone">
+                      Phone
+                  </label>
+                  {{contact.phone}}
+                </div>
+                <div class="field-wrapper emailinput required" id="contact_email--wrapper">
+                    <div class="field-errors" style="display:none;"></div>
+                    
+                    <label for="contact_email">
+                        Email
+                    </label>
+                    {{contact.email}}
+                </div>
+                <div class="field-wrapper checkboxinput " id="contact_notifications--wrapper">
+                    <div class="field-errors" style="display:none;"></div>
+                      {% if contact.notif %}
+                        <input type="checkbox" name="contact_notifications" class="booleanfield" id="contact_notifications" checked disabled>
+                      {% else %}
+                        <input type="checkbox" name="contact_notifications" class="booleanfield" id="contact_notifications" disabled>
+                      {% endif %}
+                    
+                    <label for="contact_notifications">
+                        Select to receive system notifications
+                    </label>
+                </div>
+              </div>
+            {% endfor %}
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+    </div>
+  </div>
+</div>

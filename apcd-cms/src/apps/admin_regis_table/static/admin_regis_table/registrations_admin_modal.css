@@ -9,7 +9,7 @@
     height: 500px;
     overflow-y: clip !important;
 }
-.modal-body {
+.modal-content {
     height: 50vh;
     overflow-y: auto !important;
 }
