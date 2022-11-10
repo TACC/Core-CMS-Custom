@@ -1,4 +1,4 @@
-{% load menu_tags tacc_uri_shortcuts groups_and_roles %}
+{% load menu_tags tacc_uri_shortcuts limit_visibility_in_menu %}
 
 {% for child in children %}
   {% limit_visibility_in_menu child as can_view %}
