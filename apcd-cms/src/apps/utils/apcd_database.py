@@ -129,7 +129,7 @@ def create_registration(form):
             True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
             _clean_value(form['submission_method']),
-            None,
+            'Received',
             _clean_value(form['type']),
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
