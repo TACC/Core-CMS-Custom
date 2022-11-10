@@ -1,30 +1,10 @@
 {% load menu_tags tacc_uri_shortcuts groups_and_roles %}
 
-{% has_apcd_group as has_apcd_group %}
-{% is_apcd_admin as is_apcd_admin %}
-
 {% for child in children %}
-
-{% if child.get_menu_title == "Submissions Test Page" and has_apcd_group %}
-<li>
-  <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
-</li>
-{% elif child.get_menu_title == "Admin Test Page" and is_apcd_admin %}
-<li>
-  <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
-</li>
-{% elif not child.get_menu_title == "Submissions Test Page" and
-        not child.get_menu_title == "Admin Test Page" %}
-<li>
-  <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
-</li>
-{% endif %}
-
+  {% limit_visibility_in_menu child as can_view %}
+  {% if can_view %}
+  <li>
+    <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
+  </li>
+  {% endif %}
 {% endfor %}
-
-<li>
-  Has APCD Group: {{ has_apcd_group }}
-</li>
-<li>
-  Is APCD Admin: {{ is_apcd_admin }}
-</li>
