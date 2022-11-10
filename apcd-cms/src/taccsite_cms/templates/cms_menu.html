@@ -1,43 +1,30 @@
-{% load menu_tags tacc_uri_shortcuts %}
+{% load menu_tags tacc_uri_shortcuts groups_and_roles %}
 
-<pre>{% debug %}</pre>
-<style>
-  pre {
-    z-index: 1;
-    background-color: darkslategray;
-    color: lime;
-    position: fixed;
-    border: 1px solid gray;
-    overflow-y: scroll;
-    width: calc(100vw - 40px);
-    height: calc(100vh - 150px);
-    top: 150px;
-    left: 20px;
-  }
-  li {
-    color: white;
-    background-color: black;
-  }
-  li a {
-    color: white !important;
-  }
-</style>
-
-<!--
-{% ifequal user.groups.all.0 'SUBMITTER_USER' %}
-  <strong>IS</strong> A <code>SUBMITTER_USER</code>
-{% else %}
-  <strong>NOT</strong> A <code>SUBMITTER_USER</code>
-{% endifequal %}
--->
+{% has_apcd_group as has_apcd_group %}
+{% is_apcd_admin as is_apcd_admin %}
 
 {% for child in children %}
+
+{% if child.get_menu_title == "Submissions Test Page" and has_apcd_group %}
 <li>
   <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
-  {% if has_view_permissions %}
-    <code>has_view_permissions: <strong>TRUE</strong></code>
-  {% else %}
-    <code>has_view_permissions: <strong>FALSE</strong></code>
-  {% endif %}
 </li>
+{% elif child.get_menu_title == "Admin Test Page" and is_apcd_admin %}
+<li>
+  <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
+</li>
+{% elif not child.get_menu_title == "Submissions Test Page" and
+        not child.get_menu_title == "Admin Test Page" %}
+<li>
+  <a href="{{ child|get_menu_uri }}">{{ child.get_menu_title|safe }}</a>
+</li>
+{% endif %}
+
 {% endfor %}
+
+<li>
+  Has APCD Group: {{ has_apcd_group }}
+</li>
+<li>
+  Is APCD Admin: {{ is_apcd_admin }}
+</li>
