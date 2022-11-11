@@ -1,14 +1,10 @@
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
-<<<<<<< HEAD
 from django.shortcuts import render
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities
 import logging
 
 logger = logging.getLogger(__name__)
-=======
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities
->>>>>>> Update view with util functions for context data to be passed to modal template
 
 
 class RegistrationsTable(TemplateView):
