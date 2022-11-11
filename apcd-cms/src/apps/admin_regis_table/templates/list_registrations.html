@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "standard.html" %}
 {% load static %}
 
 {% block content %}
@@ -6,21 +6,14 @@
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
 
-{# FP-1828: Move to Core, Remove from Here #}
-{% include 'snippets/fp-1828-css-for-core.html' %}
-
-<style>
-  .page-text {
-    margin-top: 27px;
-    margin-bottom: 27px;
-  }
-</style>
-
 <div class="container">
-<h1 class="page-text">List Registrations</h1>
-<hr style="margin-top: 10px">
-<p class="page-text">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
-<hr style="margin-top: 10px">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>List Registrations</h1>
+  <hr />
+  <p style="margin-bottom: 30px">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
+  <hr />
+
 <table class="registration-table">
     <thead>
         <tr>
@@ -59,11 +52,12 @@
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
-    <!-- Modal content-->
     <div class="modal-content">
+
       <div class="modal-header">
         <h4 class="modal-title">View Registration</h4>
       </div>
+
       <div class="modal-body">
        <!-- <p>{{modal_content}}</p> -->
         <div class="forms cms-plugin cms-plugin-2309" id="">
@@ -388,8 +382,7 @@
           </div>
         </form>
       </div>
-    </div>
-  </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -397,5 +390,7 @@
 
   </div>
 </div>
+
 </div>
-{%endblock %}
+
+{% endblock %}
