@@ -85,6 +85,4 @@ class RegistrationsTable(TemplateView):
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             context['rows'].append(_set_registration(registration, associated_entities, associated_contacts))
 
-        context['all_file_types'] = ['Provider', 'Medical', 'Pharmacy', 'Dental']
-        context['all_submission_types'] = ['SFTP', 'HTTPS', 'Encrypted USB Drive']
         return context
