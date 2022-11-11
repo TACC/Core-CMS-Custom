@@ -1,0 +1,1035 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+
+
+  <div class="row">
+    <div class="col">
+      <h1>Request to Submit</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted to register as a data
+        submitter. Please review the
+        <a
+          href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+          target="_blank"
+          >Data Submission Guide</a
+        > for details about completing and submitting this form, paying
+        special attention to the schedule of submissions including test files,
+        historical files, and monthly files.
+      </p>
+
+      <hr />
+
+      <div class="forms">
+        <div class="description">
+          <h4>Organization</h4>
+        </div>
+
+        <div class="form-wrapper">
+          <form action="" method="POST">
+                {% csrf_token %}
+            <div class="form-errors" style="display: none"></div>
+
+            <div class="field-wrapper radioselect required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label>
+                On behalf of:<span class="asterisk">*</span>
+              </label>
+
+              <ul id="on-behalf-of" class="radioselect">
+                <li>
+                  <label for="on-behalf-of_0"
+                    ><input
+                      type="radio"
+                      name="on-behalf-of"
+                      value="true"
+                      class="radioselect"
+                      required
+                      id="on-behalf-of_0"
+                    />
+                    Self</label
+                  >
+                </li>
+                <li>
+                  <label for="on-behalf-of_1"
+                    ><input
+                      type="radio"
+                      name="on-behalf-of"
+                      value="false"
+                      class="radioselect"
+                      required
+                      id="on-behalf-of_1"
+                    />
+                    Other</label
+                  >
+                </li>
+              </ul>
+
+              <div id="help-text-on-behalf-of" class="help-text">
+                Whether you submit on behalf of your own organization (Self) or
+                another organization (Other)
+              </div>
+            </div>
+
+            <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="type"> Type<span class="asterisk">*</span> </label>
+
+              <select
+                name="type"
+                required="required"
+                class="choicefield"
+                id="type"
+              >
+                <option value="Insurance Carrier">Insurance Carrier</option>
+
+                <option value="Plan Administrator">
+                  Plan Administrator¹ (TPA/ASO)
+                </option>
+
+                <option value="PBM">
+                  Pharmacy Benefit Manager (PBM)
+                </option>
+              </select>
+            </div>
+
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="business-name"
+                required
+                class="textinput"
+                id="business-name"
+              />
+            </div>
+
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="mailing-address">
+                Mailing Address<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="mailing-address"
+                required
+                class="textinput"
+                id="mailing-address"
+              />
+            </div>
+
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="city"> City<span class="asterisk">*</span> </label>
+
+              <input
+                type="text"
+                name="city"
+                required
+                class="textinput"
+                id="city"
+              />
+            </div>
+
+            <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="state"> State<span class="asterisk">*</span> </label>
+
+              <select
+                name="state"
+                required="required"
+                class="choicefield"
+                id="state"
+              >
+                <option value="AL - Alabama">AL - Alabama</option>
+                <option value="AK - Alaska">AK - Alaska</option>
+                <option value="AS - American Samoa">AS - American Samoa</option>
+                <option value="AZ - Arizona">AZ - Arizona</option>
+                <option value="AR - Arkansas">AR - Arkansas</option>
+                <option value="CA - California">CA - California</option>
+                <option value="CO - Colorado">CO - Colorado</option>
+                <option value="CT - Connecticut">CT - Connecticut</option>
+                <option value="DE - Delaware">DE - Delaware</option>
+                <option value="DC - District of Columbia">DC - District of Columbia</option>
+                <option value="FL - Florida">FL - Florida</option>
+                <option value="GA - Georgia">GA - Georgia</option>
+                <option value="GU - Guam">GU - Guam</option>
+                <option value="HI - Hawaii">HI - Hawaii</option>
+                <option value="ID - Idaho">ID - Idaho</option>
+                <option value="IL - Illinois">IL - Illinois</option>
+                <option value="IN - Indiana">IN - Indiana</option>
+                <option value="IA - Iowa">IA - Iowa</option>
+                <option value="KS - Kansas">KS - Kansas</option>
+                <option value="KY - Kentucky">KY - Kentucky</option>
+                <option value="LA - Louisiana">LA - Louisiana</option>
+                <option value="ME - Maine">ME - Maine</option>
+                <option value="MD - Maryland">MD - Maryland</option>
+                <option value="MA - Massachusetts">MA - Massachusetts</option>
+                <option value="MI - Michigan">MI - Michigan</option>
+                <option value="MN - Minnesota">MN - Minnesota</option>
+                <option value="MS - Mississippi">MS - Mississippi</option>
+                <option value="MO - Missouri">MO - Missouri</option>
+                <option value="MT - Montana">MT - Montana</option>
+                <option value="NE - Nebraska">NE - Nebraska</option>
+                <option value="NV - Nevada">NV - Nevada</option>
+                <option value="NH - New hampshire">NH - New hampshire</option>
+                <option value="NJ - New jersey">NJ - New jersey</option>
+                <option value="NM - New mexico">NM - New mexico</option>
+                <option value="NY - New york">NY - New york</option>
+                <option value="NC - North carolina">NC - North carolina</option>
+                <option value="ND - North dakota">ND - North dakota</option>
+                <option value="MP - Northern Mariana Islands">MP - Northern Mariana Islands</option>
+                <option value="OH - Ohio">OH - Ohio</option>
+                <option value="OK - Oklahoma">OK - Oklahoma</option>
+                <option value="OR - Oregon">OR - Oregon</option>
+                <option value="PA - Pennsylvania">PA - Pennsylvania</option>
+                <option value="PR - Puerto rico">PR - Puerto rico</option>
+                <option value="RI - Rhode island">RI - Rhode island</option>
+                <option value="SC - South Carolina">SC - South Carolina</option>
+                <option value="SD - South Dakota">SD - South Dakota</option>
+                <option value="TN - Tennessee">TN - Tennessee</option>
+                <option value="TX - Texas">TX - Texas</option>
+                <option value="UT - Utah">UT - Utah</option>
+                <option value="VT - Vermont">VT - Vermont</option>
+                <option value="VA - Virginia">VA - Virginia</option>
+                <option value="VI - Virgin Islands">VI - Virgin Islands</option>
+                <option value="WA - Washington">WA - Washington</option>
+                <option value="WV - West Virginia">WV - West Virginia</option>
+                <option value="WI - Wisconsin">WI - Wisconsin</option>
+                <option value="WY - Wyoming">WY - Wyoming</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="zip_code">
+                Zip Code<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="zip_code"
+                required
+                class="textinput"
+                id="zip_code"
+                inputmode="numeric"
+                minlength="5"
+                maxlength="10"
+                pattern="\d{5}(-\d{4})?"
+              />
+            </div>
+            <hr />
+            <h4>File Submission</h4>
+            <div class="field-wrapper required">
+              <label>
+                Types of Files<span class="asterisk">*</span>
+              </label>
+              <div class="help-text">
+                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+              </div>
+            </div>
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+
+                <ul id="types_of_files" class="checkboxselectmultiple">
+                  <li>
+                    <label for="types_of_files_eligibility_enrollment"
+                      ><input
+                        type="checkbox"
+                        name="types_of_files_eligibility_enrollment"
+                        required
+                        id="types_of_files_eligibility_enrollment"
+                        checked=""
+                        disabled
+                      />Eligibility/Enrollment*</label
+                    >
+                  </li>
+                  <li>
+                    <label for="types_of_files_provider"
+                      ><input
+                        type="checkbox"
+                        name="types_of_files_provider"
+                        required
+                        id="types_of_files_provider"
+                      />Provider</label
+                    >
+                  </li>
+                  <li>
+                    <label for="types_of_files_medical"
+                      ><input
+                        type="checkbox"
+                        name="types_of_files_medical"
+                        required
+                        id="types_of_files_medical"
+                      />Medical</label
+                    >
+                  </li>
+                  <li>
+                    <label for="types_of_files_pharmacy"
+                      ><input
+                        type="checkbox"
+                        name="types_of_files_pharmacy"
+                        required
+                        id="types_of_files_pharmacy"
+                      />Pharmacy</label
+                    >
+                  </li>
+                  <li>
+                    <label for="types_of_files_dental"
+                      ><input
+                        type="checkbox"
+                        name="types_of_files_dental"
+                        required
+                        id="types_of_files_dental"
+                      />Dental</label
+                    >
+                  </li>
+                </ul>
+            </div>
+            <div class="field-wrapper required">
+              <label
+                >Submission Method<span class="asterisk"
+                  >*</span
+                >
+              </label>
+              <div class="help-text">
+                At least one of the following must be selected.
+              </div>
+            </div>
+
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+
+                <ul id="submission_method" class="checkboxselectmultiple">
+                  <li>
+                    <label for="submission_method_sftp"
+                      ><input
+                        type="radio"
+                        name="submission_method"
+                        value="SFTP"
+                        class="radioselect"
+                        required
+                        id="submission_method_sftp"
+                        checked=""
+                      /><span>SFTP<sup>2</sup></span></label
+                    >
+                  </li>
+                  <li>
+                    <label for="submission_method_https"
+                      ><input
+                        type="radio"
+                        name="submission_method"
+                        value="HTTPS"
+                        class="radioselect"
+                        required
+                        id="submission_method_https"
+                      /><span>HTTPS<sup>3</sup>**</span></label
+                    >
+                  </li>
+                  <li>
+                    <label for="submission_method_usb"
+                      ><input
+                        type="radio"
+                        name="submission_method"
+                        value="Encrypted USB Drive"
+                        class="radioselect"
+                        required
+                        id="submission_method_usb"
+                      /><span>Encrypted USB<sup>4</sup> drive***</span></label
+                    >
+                  </li>
+                </ul>
+            </div>
+            <hr />
+            <h4>
+              Entity Being Registered
+              <small>
+                (If single company, enter the same organization as above.)
+              </small>
+            </h4>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="entity_name">
+                Name<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="entity_name"
+                required
+                class="textinput"
+                id="entity_name"
+              />
+            </div>
+            <div class="field-wrapper required">
+              <label
+                >Number/Code<span class="asterisk">*</span>
+              </label>
+              <div class="help-text">
+                Provide all available identifiers. At least one of the following
+                is required.
+              </div>
+            </div>
+
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="fein"> FEIN<sup>5</sup> </label>
+
+                <input
+                  type="text"
+                  name="fein"
+                  placeholder="12-3456789"
+                  class="textinput"
+                  id="fein"
+                  inputmode="numeric"
+                  minlength="10"
+                  maxlength="10"
+                  pattern="\d{2}-\d{7}"
+                  required
+                />
+
+                <div id="help-text-fein" class="help-text">
+                  Enter in format <samp>12-3456789</samp>.
+                </div>
+              </div>
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="license_number"> License Number </label>
+
+                <input
+                  type="text"
+                  name="license_number"
+                  placeholder="1234567890"
+                  class="textinput"
+                  id="license_number"
+                  inputmode="numeric"
+                  minlength="5"
+                  maxlength="10"
+                  pattern="\d{5}|\d{10}"
+                  required
+                />
+
+                <div id="help-text-license_number" class="help-text">
+                  Enter a 5 or 10 digit number.
+                </div>
+              </div>
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
+
+                <input
+                  type="text"
+                  name="naic_company_code"
+                  placeholder="12345"
+                  class="textinput"
+                  id="naic_company_code"
+                  inputmode="numeric"
+                  minlength="5"
+                  maxlength="5"
+                  pattern="\d+"
+                  required
+                />
+
+                <div id="help-text-naic_company_code" class="help-text">
+                  Enter a 5 digit number.
+                </div>
+              </div>
+            </div>
+            <h6>
+              Coverage Estimates
+              <small
+                >(Inclusive of all claims as of December 31 of previous
+                year.)</small
+              >
+            </h6>
+
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="total_covered_lives">
+                Total Covered Lives<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="number"
+                name="total_covered_lives"
+                required
+                class="integerfield"
+                id="total_covered_lives"
+                inputmode="numeric"
+                min="1"
+                step="1"
+              />
+            </div>
+
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="claims_encounters_volume">
+                Claims and Encounters Volume<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="number"
+                name="claims_encounters_volume"
+                required
+                class="integerfield"
+                id="claims_encounters_volume"
+                inputmode="numeric"
+                min="1"
+              />
+            </div>
+
+            <div class="field-wrapper numberinput required s-affixed-input-wrapper">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="total_claims_value">
+                Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+              </label>
+
+              <span class="s-affixed-input-wrapper__prefix">$</span>
+              <input
+                type="number"
+                name="total_claims_value"
+                required
+                class="integerfield"
+                id="total_claims_value"
+                inputmode="numeric"
+                step="0.01"
+                min="0.01"
+              />
+            </div>
+            {# Additional contacts rendered here... #}
+            <h4 id="entity_header_2" style="display:none">Entity Information 2</h4>
+            <div id="entity_block_2"></div>
+            <h4 id="entity_header_3" style="display:none">Entity Information 3</h4>
+            <div id="entity_block_3"></div>
+            <h4 id="entity_header_4" style="display:none">Entity Information 4</h4>
+            <div id="entity_block_4"></div>
+            <h4 id="entity_header_5" style="display:none">Entity Information 5</h4>
+            <div id="entity_block_5"></div>
+            <button class="c-button c-button--primary" id="entity-add-btn" type="button">+ Add Another Entity</button>
+            <button class="c-button c-button--secondary" id="entity-drop-btn" type="button">- Remove Last Entity</button>
+            <hr />
+            <h4 id="contact_header_1">Contact Information</h4>
+            <div id="contact_block_1">
+              <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_type">
+                  Role<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="text"
+                  name="contact_type"
+                  required
+                  class="textinput"
+                  id="contact_type"
+                />
+              </div>
+              <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_name"> Name<span class="asterisk">*</span> </label>
+
+                <input
+                  type="text"
+                  name="contact_name"
+                  required
+                  class="textinput"
+                  id="contact_name"
+                />
+              </div>
+              <div class="field-wrapper telephoneinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_phone">
+                  Phone<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="tel"
+                  name="contact_phone"
+                  required
+                  class="telephoneinput"
+                  id="contact_phone"
+                  inputmode="tel"
+                  pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                />
+
+                <div id="help-text-contact_phone" class="help-text">
+                  <details>
+                    <summary>
+                      <a
+                        href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                        target="_blank"
+                        >North American Numbering Plan</a
+                      >
+                      e.g. <samp>123 456-7890</samp>…
+                    </summary>
+                    <ul>
+                      <li><samp>123-456-7890</samp></li>
+                      <li><samp>(123) 456-7890</samp></li>
+                      <li><samp>123 456 7890</samp></li>
+                      <li><samp>123.456.7890</samp></li>
+                      <li><samp>+1 (123) 456-7890</samp></li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
+              <div class="field-wrapper emailinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_email">
+                  Email<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="email"
+                  name="contact_email"
+                  autocomplete="email"
+                  required
+                  class="emailinput"
+                  id="contact_email"
+                />
+              </div>
+              <div class="field-wrapper checkboxinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <input
+                  type="checkbox"
+                  name="contact_notifications"
+                  class="booleanfield"
+                  id="contact_notifications"
+                />
+
+                <label for="contact_notifications">
+                  Select to receive system notifications
+                </label>
+              </div>
+            </div>
+            {# Additional contacts rendered here... #}
+            <h4 id="contact_header_2" style="display:none">Contact Information 2</h4>
+            <div id="contact_block_2"></div>
+            <h4 id="contact_header_3" style="display:none">Contact Information 3</h4>
+            <div id="contact_block_3"></div>
+            <h4 id="contact_header_4" style="display:none">Contact Information 4</h4>
+            <div id="contact_block_4"></div>
+            <h4 id="contact_header_5" style="display:none">Contact Information 5</h4>
+            <div id="contact_block_5"></div>
+            <button class="c-button c-button--primary" id="contact-add-btn" type="button">+ Add Another Contact</button>
+            <button class="c-button c-button--secondary" id="contact-drop-btn" type="button">- Remove Last Contact</button>
+            <div class="button-wrapper submit">
+              <button class="form-button" type="submit" value="Submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="form-success" style="display: none">
+          <p>Thank you for your request.</p>
+        </div>
+      </div>
+
+  {# Hidden links for future pages #}
+  {# TODO: Allow this template to render CMS admin-entered markup #}
+    <aside class="row" hidden>
+      <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+        <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+        <p><a href="/forms/exception">Exception Request</a></p>
+
+        <p><a href="/forms/extension">Extension Request</a></p>
+
+        <p><a href="/workbench/dashboard">Dashboard</a></p>
+      </div>
+    </aside>
+
+  {# Scripts #}
+  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
+  <aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-entity" type="module">
+      const addEntityBtn = document.getElementById("entity-add-btn");
+      const dropEntityBtn = document.getElementById("entity-drop-btn");
+      const btnStatus = (() => {
+        addEntityBtn.disabled = ( entities == 5 ? true : false );
+        dropEntityBtn.disabled = ( entities == 1 ? true : false );
+      });
+      let entities = 1;
+      btnStatus();
+
+      addEntityBtn.addEventListener("click", () => {
+        if (entities < 5) entities += 1;
+        let entityBlock = document.getElementById(`entity_block_${entities}`);
+        document.getElementById(`entity_header_${entities}`).style.display = 'block';
+        entityBlock.innerHTML = `
+        <div class="field-wrapper textinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="entity_name_${entities}"> Name<span class="asterisk">*</span> </label>
+          <input
+            type="text"
+            name="entity_name_${entities}"
+            required
+            class="textinput"
+            id="entity_name_${entities}"
+          />
+          <div id="help-text-entity_name_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper required">
+          <label>
+            Number/Code<span class="asterisk">*</span>
+          </label>
+          <div class="help-text">
+            Provide all available identifiers. At least one of the following is
+            required.
+          </div>
+        </div>
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="fein_${entities}"> FEIN<sup>5</sup> </label>
+            <input
+              type="text"
+              name="fein_${entities}"
+              placeholder="12-3456789"
+              class="textinput"
+              id="fein_${entities}"
+              inputmode="numeric"
+              minlength="10"
+              maxlength="10"
+              pattern="\\d{2}-\\d{7}"
+              required
+            />
+            <div id="help-text-fein_${entities}" class="help-text">
+              Enter in format <samp>12-3456789</samp>.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="license_number_${entities}"> License Number </label>
+            <input
+              type="text"
+              name="license_number_${entities}"
+              placeholder="1234567890"
+              class="textinput"
+              id="license_number_${entities}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="10"
+              pattern="\\d{5}|\\d{10}"
+              required
+            />
+            <div id="help-text-license_number_${entities}" class="help-text">
+              Enter a 5 or 10 digit number.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="naic_company_code_${entities}"> NAIC<sup>6</sup> Company Code </label>
+            <input
+              type="text"
+              name="naic_company_code_${entities}"
+              placeholder="12345"
+              class="textinput"
+              id="naic_company_code_${entities}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="5"
+              pattern="\\d+"
+              required
+            />
+            <div id="help-text-naic_company_code_${entities}" class="help-text">
+              Enter a 5 digit number.
+            </div>
+          </div>
+        </div>
+        <h6>
+          Coverage Estimates
+          <small>(Inclusive of all claims as of December 31 of previous year.)</small>
+        </h6>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_covered_lives_${entities}">
+            Total Covered Lives<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="total_covered_lives_${entities}"
+            required
+            class="integerfield"
+            id="total_covered_lives_${entities}"
+            inputmode="numeric"
+            min="1"
+            step="1"
+          />
+          <div id="help-text-total_covered_lives_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="claims_encounters_volume_${entities}">
+            Claims and Encounters Volume<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="claims_encounters_volume_${entities}"
+            required
+            class="integerfield"
+            id="claims_encounters_volume_${entities}"
+            inputmode="numeric"
+            min="1"
+          />
+          <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required s-affixed-input-wrapper">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_claims_value_${entities}">
+            Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+          </label>
+          <span class="s-affixed-input-wrapper__prefix">$</span>
+          <input
+            type="number"
+            name="total_claims_value_${entities}"
+            required
+            class="integerfield"
+            id="total_claims_value_${entities}"
+            inputmode="numeric"
+            step="0.01"
+            min="0.01"
+          />
+          <div id="help-text-total_claims_value_${entities}" class="help-text">
+          </div>
+        </div>
+        `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=fein_${entities}],
+            input[name=license_number_${entities}],
+            input[name=naic_company_code_${entities}]
+          `)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
+
+      dropEntityBtn.addEventListener("click", () => {
+        document.getElementById(`entity_header_${entities}`).style.display = 'none';
+        let entityBlock = document.getElementById(`entity_block_${entities}`);
+        entityBlock.innerHTML = '';
+        if (entities > 1) entities -= 1;
+        btnStatus();
+      });
+    </script>
+
+    <!-- To let user add and remove contacts -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-contact" type="module">
+      const addContactBtn = document.getElementById("contact-add-btn");
+      const dropContactBtn = document.getElementById("contact-drop-btn");
+      const btnStatus = (() => {
+        addContactBtn.disabled = ( contacts == 5 ? true : false );
+        dropContactBtn.disabled = ( contacts == 1 ? true : false );
+      });
+      let contacts = 1;
+      btnStatus();
+
+      addContactBtn.addEventListener("click", () => {
+        if (contacts < 5) contacts += 1;
+        let contactBlock = document.getElementById(`contact_block_${contacts}`);
+        document.getElementById(`contact_header_${contacts}`).style.display = 'block';
+        contactBlock.innerHTML = `
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_type_${contacts}"> Role<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_type_${contacts}"
+                required
+                class="textinput"
+                id="contact_type_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_name_${contacts}"> Name<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_name_${contacts}"
+                required
+                class="textinput"
+                id="contact_name_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper telephoneinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_phone_${contacts}"> Phone<span class="asterisk">*</span> </label>
+              <input
+                type="tel"
+                name="contact_phone_${contacts}"
+                required
+                class="telephoneinput"
+                id="contact_phone_${contacts}"
+                inputmode="tel"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+              />
+              <div id="help-text-contact_phone_${contacts}" class="help-text">
+                <details>
+                  <summary>
+                    <a
+                      href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                      target="_blank"
+                      >North American Numbering Plan</a
+                    >
+                    e.g. <samp>123 456-7890</samp>…
+                  </summary>
+                  <ul>
+                    <li><samp>123-456-7890</samp></li>
+                    <li><samp>(123) 456-7890</samp></li>
+                    <li><samp>123 456 7890</samp></li>
+                    <li><samp>123.456.7890</samp></li>
+                    <li><samp>+1 (123) 456-7890</samp></li>
+                  </ul>
+                </details>
+              </div>
+            </div>
+            <div class="field-wrapper emailinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_email_${contacts}"> Email<span class="asterisk">*</span> </label>
+              <input
+                type="email"
+                name="contact_email_${contacts}"
+                autocomplete="email"
+                required
+                class="emailinput"
+                id="contact_email_${contacts}"
+              />
+            </div>
+            <div class="field-wrapper checkboxinput">
+              <div class="field-errors" style="display: none"></div>
+              <input
+                type="checkbox"
+                name="contact_notifications_${contacts}"
+                class="booleanfield"
+                id="contact_notifications_${contacts}"
+              />
+              <label for="contact_notifications_${contacts}">
+                Select to receive system notifications
+              </label>
+              <div id="help-text-contact_notifications_${contacts}" class="help-text">
+              </div>
+            </div>
+        `;
+        btnStatus();
+      });
+
+      dropContactBtn.addEventListener("click", () => {
+        document.getElementById(`contact_header_${contacts}`).style.display = 'none';
+        let contactBlock = document.getElementById(`contact_block_${contacts}`);
+        contactBlock.innerHTML = '';
+        if (contacts > 1) contacts -= 1;
+        btnStatus();
+      });
+    </script>
+
+    <!-- To require at least one "types of files" choice -->
+    <script id="form-types_of_files-required" type="module">
+      const inputs = Array.from(
+        document.querySelectorAll(`
+        input[name=types_of_files_eligibility_enrollment],
+        input[name=types_of_files_provider],
+        input[name=types_of_files_medical],
+        input[name=types_of_files_pharmacy],
+        input[name=types_of_files_dental]`)
+      );
+      const inputListener = e => {
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.checked));
+      };
+
+      inputs.forEach(i => i.addEventListener('input', inputListener));
+    </script>
+
+    <!-- To require at least one "entity" identifier value -->
+    <script id="form-entity_id-required" type="module">
+      const inputs = Array.from(
+        document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
+      );
+      const inputListener = e => {
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.value.length));
+      };
+
+      inputs.forEach(i => i.addEventListener('input', inputListener));
+    </script>
+  </aside>
+
+  {# Footnotes #}
+  <div class="o-section o-section--style-light">
+    <hr />
+    <p>
+      <small
+        >¹ Third Party Administrator / Administrative Services Only (TPA/ASO)<br />
+        ² Secure File Transfer Protocol (SFTP)<br />
+        ³ Hypertext Transfer Protocol Secure (HTTPS)<br />
+        ⁴ Universal Serial Bus (USB)<br />
+        ⁵ Federal Employer Identification Number (FEIN)<br />
+        ⁶ National Association of Insurance Commissioners (NAIC)<br />
+        ⁷ United States Dollar (USD)</small
+      >
+    </p>
+    <hr />
+    <p>
+      <small
+        >∗ Eligibility/Enrollment files are mandatory along with any combination
+        of claims files.<br />
+        ∗∗ Secure browser uploads (HTTPS) are limited to files 2 GB or less.<br />
+        ∗∗∗ Consult the regulation and
+        <a
+          href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+          target="_blank"
+          >Data Submission Guide</a
+        ></small
+      >.
+    </p>
+  </div>
+</div>
+{% endblock %}
