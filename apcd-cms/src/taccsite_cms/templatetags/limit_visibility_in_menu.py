@@ -40,6 +40,7 @@ def limit_visibility_in_menu(context, menu_item):
     page_id = menu_item.attr['reverse_id']
 
     if (
+        user.is_superuser or
         page_id == 'submissions' and has_apcd_group(user) or
         page_id == 'administration' and is_apcd_admin(user) or
         (not page_id == 'submissions' and not page_id == 'administration')
