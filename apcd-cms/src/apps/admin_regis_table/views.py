@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from django.shortcuts import render
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities
+from apps.utils.apcd_groups import is_apcd_admin
 import logging
 
 logger = logging.getLogger(__name__)
@@ -9,6 +9,11 @@ logger = logging.getLogger(__name__)
 
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
