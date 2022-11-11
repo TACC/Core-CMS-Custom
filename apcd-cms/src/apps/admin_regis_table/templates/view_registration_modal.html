@@ -30,11 +30,7 @@
                 <dd class="c-data-list__value">{{r.view_modal_content.biz_name}}</dd>
                 <dt class="c-data-list__key">Mailing Address</dt>                
                 <dd class="c-data-list__value">{{r.view_modal_content.address}}</dd>
-                <dt class="c-data-list__key">City</dt>
-                <dd class="c-data-list__value">{{r.view_modal_content.city}}</dd>
-                <dt class="c-data-list__key">State</dt>
-                <dd class="c-data-list__value">{{r.view_modal_content.state}}</dd>
-                <dt class="c-data-list__key">Zip Code</dt>
+                <dd class="c-data-list__value">{{r.view_modal_content.city}}, {{r.view_modal_content.state}}</dd>
                 <dd class="c-data-list__value">{{r.view_modal_content.zip}}</dd>
               </dl>
             </dd>
@@ -43,40 +39,13 @@
             <dd>
               <dl class="c-data-list--is-vert c-data-list--is-wide">
                 <dt class="c-data-list__key">Types of Files</dt>
-                <dd class="c-data-list__value">
-                  <ul id="types_of_files" class="checkboxselectmultiple">
-                    <li>
-                      <label for="types_of_files_eligibility_enrollment"><input type="checkbox" name="types_of_files_eligibility_enrollment" required="" id="types_of_files_eligibility_enrollment" checked="" disabled="">Eligibility/Enrollment*</label>
-                    </li>
-                    {% for file_type in all_file_types %}
-                      <li>
-                        <label for=`types_of_files_{{file_type|lower}}`>
-                          {% if file_type in r.view_modal_content.files_type %}
-                            <input type="checkbox" name=`types_of_files_{{file_type|lower}}` required="" id=`types_of_files_{{file_type|lower}}` checked disabled>
-                          {% else %}
-                            <input type="checkbox" name=`types_of_files_{{file_type|lower}}` required="" id=`types_of_files_{{file_type|lower}}` disabled>
-                          {% endif %}
-                        {{file_type}}</label>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                </dd>
+                {% for file_type in r.view_modal_content.files_type %}
+                  {% if file_type != None %}
+                    <dd class="c-data-list__value">{{file_type}}</dd>
+                  {% endif %}
+                {% endfor %}
                 <dt class="c-data-list__key">Submission Method</dt>
-                <dd class="c-data-list__value">
-                  <ul id="submission_method" class="checkboxselectmultiple">
-                    {% for sub_type in all_submission_types %}
-                      <li>
-                        <label for=`submission_method_{{sub_type|lower}}`>
-                          {% if sub_type == r.view_modal_content.sub_method %}
-                            <input type="radio" name="submission_method" value=`{{sub_type}}` class="radioselect" required="" id=`submission_method_{{sub_type|lower}}` checked disabled>
-                          {% else %}
-                            <input type="radio" name="submission_method" value=`{{sub_type}}` class="radioselect" required="" id=`submission_method_{{sub_type|lower}}` disabled>
-                          {% endif %}
-                        <span>{{sub_type}}</span></label>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </dd>
+                <dd class="c-data-list__value">{{r.view_modal_content.sub_method}}</dd>
               </dl>
             </dd>
             <hr>
@@ -117,14 +86,15 @@
                 <dd class="c-data-list__value">{{contact.phone}}</dd>
                 <dt class="c-data-list__key">Email</dt>
                 <dd class="c-data-list__value">{{contact.email}}</dd>
-                {% if contact.notif %}
-                  <input type="checkbox" name="contact_notifications" class="booleanfield" id="contact_notifications" checked disabled>
-                {% else %}
-                  <input type="checkbox" name="contact_notifications" class="booleanfield" id="contact_notifications" disabled>
-                {% endif %}
-                <label for="contact_notifications">
-                  Select to receive system notifications
-                </label>
+                <dt> 
+                  <i>
+                    Should
+                    {% if not contact.notif %}
+                      <strong>not</strong>
+                    {% endif %}
+                    receive system notifications
+                  </i>
+                </dt>
               </dl>
             {% endfor %}
             </dd>
