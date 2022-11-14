@@ -3,7 +3,6 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
 
 <div class="container">
@@ -13,7 +12,7 @@
   <hr />
   <p style="margin-bottom: 30px">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
   <hr />
-  <table class="registration-table">
+  <table>
       <thead>
           <tr>
               {% for k in header %}
@@ -39,9 +38,7 @@
                     </ul>
                   </td>
                   <td>
-                    {# FAQ: So cell "has layout" on narrow screen layout #}
-                    &nbsp;
-                    <a href='' data-toggle="modal" data-target="#myModal" data-backdrop="static">View</a>
+                    <a href="" data-toggle="modal" data-target="#myModal" data-backdrop="static">View</a>
                     {% include "view_registration_modal.html" %}
                   </td>
               </tr>
