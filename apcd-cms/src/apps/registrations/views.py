@@ -1,4 +1,5 @@
 from apps.utils import apcd_database
+from apps.utils.apcd_groups import has_apcd_group
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -17,7 +18,7 @@ RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class SubmissionFormView(View):
     def get(self, request):
-        if (request.user.is_authenticated):
+        if (request.user.is_authenticated and has_apcd_group(request.user)):
             template = loader.get_template('submission_form/submission_form.html')
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect('/')
