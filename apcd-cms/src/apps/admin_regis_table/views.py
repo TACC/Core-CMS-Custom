@@ -41,6 +41,7 @@ class RegistrationsTable(TemplateView):
                     ],
                     'sub_method': reg[10],
                     'reg_status': reg[11].title(),
+                    'reg_id': reg[0],
                     'actions': actions,
                     'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts)
                 }
