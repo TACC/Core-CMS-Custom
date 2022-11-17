@@ -577,14 +577,13 @@
                 </label>
 
                 <input
-                  type="tel"
+                  type="input"
                   name="contact_phone"
                   required
                   class="telephoneinput"
                   id="contact_phone"
-                  inputmode="tel"
-                  pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
-                />
+                  onkeyup="formatPhone()"
+                  />
 
                 <div id="help-text-contact_phone" class="help-text">
                   <details>
@@ -908,8 +907,7 @@
                 required
                 class="telephoneinput"
                 id="contact_phone_${contacts}"
-                inputmode="tel"
-                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+                onkeyup="formatPhone(${contacts})"
               />
               <div id="help-text-contact_phone_${contacts}" class="help-text">
                 <details>
@@ -999,6 +997,26 @@
       };
 
       inputs.forEach(i => i.addEventListener('input', inputListener));
+    </script>
+
+    <!-- format phone number as it is typed -->
+    <script>
+      const formatter = ((value) => {
+        if (!value) return value;
+        const phoneNumber = value.replace(/[^\d]/g, '')
+        if (phoneNumber.length < 4) return phoneNumber;
+        if (phoneNumber.length < 7) {
+          return `(${phoneNumber.slice(0,3)}) ${phoneNumber.slice(3)}`;
+        }
+        return `(${phoneNumber.slice(0,3)}) ${phoneNumber.slice(3,6)}-${phoneNumber.slice(6,10)}`;
+      });
+      const formatPhone = ((index) => {
+        const inputField = (index
+          ? document.getElementById(`contact_phone_${index}`)
+          : document.getElementById('contact_phone'));
+        const formattedInput = formatter(inputField.value);
+        inputField.value = formattedInput
+      });
     </script>
   </aside>
 
