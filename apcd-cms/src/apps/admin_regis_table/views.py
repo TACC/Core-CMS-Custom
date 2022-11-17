@@ -56,11 +56,22 @@ class RegistrationsTable(TemplateView):
                 'fein': reg_ent[8]
             }
         def _set_contacts(reg_cont):
+
+            def format_phone_number(num):
+                formatted_num_list = list(reversed(num))
+                for n in range(len(formatted_num_list)):
+                    if n+1 == 4 or n+1 == 8:
+                        formatted_num_list.insert(n+1,'-')
+                    if n+1 == 12 and len(num) > 10:
+                        formatted_num_list.insert(n+1,' ')
+                        formatted_num_list.append('+')
+                return ''.join(reversed(formatted_num_list))
+
             return {
                 'notif': reg_cont[2],
                 'role': reg_cont[3],
                 'name': reg_cont[4],
-                'phone': reg_cont[5],
+                'phone': format_phone_number(reg_cont[5]),
                 'email': reg_cont[6]
             }
         def _set_modal_content(reg, reg_ent, reg_cont):
