@@ -38,8 +38,8 @@
                     </ul>
                   </td>
                   <td>
-                    <a href="" data-toggle="modal" data-target="#myModal" data-backdrop="static">View</a>
                     {% include "view_registration_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View</a>
                   </td>
               </tr>
           {% endfor %}

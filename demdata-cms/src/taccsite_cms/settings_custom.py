@@ -21,9 +21,20 @@ CMS_TEMPLATES = (
 # TACC: LOGOS
 ########################
 
-LOGO = []
+LOGO = [ 
+    "demdata",
+    "demdata-cms/img/org_logos/tacc-white.png",
+    "",
+    "/",
+    "_self",
+    "Demdata Logo for CMS/Portal",
+    "anonymous",
+    "True"
+]
 
-FAVICON = {}
+FAVICON = {
+    "img_file_src": "demdata-cms/img/favicons/favicon.ico"
+}
 
 ########################
 # DJANGO (EMAIL)
