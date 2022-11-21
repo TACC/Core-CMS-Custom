@@ -59,11 +59,16 @@ class RegistrationsTable(TemplateView):
 
             def format_phone_number(num):
                 formatted_num_list = list(reversed(num))
-                for n in range(len(formatted_num_list)):
-                    if n+1 == 4 or n+1 == 8:
-                        formatted_num_list.insert(n+1,'-')
-                    if n+1 == 12 and len(num) > 10:
-                        formatted_num_list.insert(n+1,' ')
+                last_four_digits = 3
+                last_seven_digits = 7
+                all_ten_digits = 11
+                placement_corrector = 1 #To add formatting chars in correct places
+                for curr_position in range(len(formatted_num_list)):
+                    placement_position = curr_position + placement_corrector
+                    if curr_position == last_four_digits or curr_position == last_seven_digits:
+                        formatted_num_list.insert(placement_position,'-')
+                    if curr_position == all_ten_digits and len(num) > 10:
+                        formatted_num_list.insert(placement_position,' ')
                         formatted_num_list.append('+')
                 return ''.join(reversed(formatted_num_list))
 
