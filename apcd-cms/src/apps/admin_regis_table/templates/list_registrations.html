@@ -42,7 +42,9 @@
                     {# FAQ: So cell "has layout" on narrow screen layout #}
                     &nbsp;
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View</a>
+                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View Record</a>
+                    {% include "create_submitter_modal.html" %} <br />&nbsp;
+                    <a href='' data-toggle="modal" data-target="#viewSubmitterModal_{{r.sub_id}}" data-backdrop="static" style="font-size: .8em;"> Create New Submitter</a>
                   </td>
               </tr>
           {% endfor %}

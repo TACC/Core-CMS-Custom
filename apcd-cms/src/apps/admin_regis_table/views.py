@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
 
-    def dispatch(self, request, *args, **kwargs):
+   def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
@@ -71,6 +71,7 @@ class RegistrationsTable(TemplateView):
                 'state': reg[16],
                 'address': reg[14],
                 'zip': reg[17],
+                'reg_status': reg[11],
                 'files_type': [
                         "Medical" if reg[6] else None,
                         "Provider" if reg[5] else None,
