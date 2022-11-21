@@ -12,7 +12,8 @@
   <hr />
   <p style="margin-bottom: 30px">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
   <hr />
-  <table>
+  <div class="o-table-wrap o-table-wrap--overflow-scroll">
+    <table>
       <thead>
           <tr>
               {% for k in header %}
@@ -44,7 +45,8 @@
               </tr>
           {% endfor %}
       </tbody>
-  </table>
+    </table>
+  </div>
 </div>
 
 {% endblock %}
