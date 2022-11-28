@@ -11,93 +11,16 @@ class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
 
     def dispatch(self, request, *args, **kwargs):
-        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
-        #    return HttpResponseRedirect('/')
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
         actions = 'View'
-        import datetime
-        registrations_content = [
-        (
-         1,                                  #registration_id
-         datetime.date(2022, 8, 3),          #posted_date
-         12023,                              #applicable_period_start
-         122023,                             #applicable_period_end
-         True,                               #file_me
-         True,                               #file_pv
-         True,                               #file_mc
-         True,                               #file_pc
-         False,                              #file_dc
-         True,                               #submitting_for_self
-         'SFTP',                             #submission_method
-         'active',                           #registration_status
-         'insurance carrier',                #org_type
-         'Golden Rule Insurance Company',    #business_name
-         '7440 Woodland Drive',              #mail_address
-         'Indianpolis',                      #city
-         'IN',                               #state
-         '46278     '                        #zip
-        ),
-        (
-         2,                                  #registration_id
-         datetime.date(2022, 8, 3),          #posted_date
-         12023,                              #applicable_period_start
-         122023,                             #applicable_period_end
-         True,                               #file_me
-         True,                               #file_pv
-         True,                               #file_mc
-         True,                               #file_pc
-         False,                              #file_dc
-         True,                               #submitting_for_self
-         'SFTP',                             #submission_method
-         'active',                           #registration_status
-         'insurance carrier',                #org_type
-         'Golden Rule Insurance Company',    #business_name
-         '7440 Woodland Drive',              #mail_address
-         'Indianpolis',                      #city
-         'IN',                               #state
-         '46278     '                        #zip
-        )
-        ]
-        registrations_entities = [
-        (
-         5, 1, 5, 46, 11111, 0, 5, 'Garretts Test Business 2', '11-0001111'
-        ),
-        (
-         5, 2, 50000, 47, 1010, 1101, 1, 'A Second Test Entity', '00-0000000'
-        )
-        ]
-        registrations_contacts = [
-        (
-         52,
-         1,
-         False,
-         'Test Role',
-         'Garrett Test Tester',
-         '2222222222',
-         'notarealemail@emailplace.email'
-        ),
-        (
-         53,
-         1,
-         False,
-         'A 2nd Test Role',
-         'Test Garrett 2 Test',
-         '5555555555',
-         'testemail@testemail.emailtest'
-        ),
-        (
-         54,
-         2,
-         True,
-         'A 3rd and final test role',
-         'Test 3rd Role Name Garrett',
-         '0000000000',
-         None
-        )
-        ]
+        registrations_content = get_registrations()
+        registrations_entities = get_registration_entities()
+        registrations_contacts = get_registration_contacts()
 
 
         def _set_registration(reg, reg_ents, reg_conts):
@@ -133,11 +56,27 @@ class RegistrationsTable(TemplateView):
                 'fein': reg_ent[8]
             }
         def _set_contacts(reg_cont):
+
+            def format_phone_number(num):
+                formatted_num_list = list(reversed(num))
+                last_four_digits = 3
+                last_seven_digits = 7
+                all_ten_digits = 11
+                placement_corrector = 1 #To add formatting chars in correct places
+                for curr_position in range(len(formatted_num_list)):
+                    placement_position = curr_position + placement_corrector
+                    if curr_position == last_four_digits or curr_position == last_seven_digits:
+                        formatted_num_list.insert(placement_position,'-')
+                    if curr_position == all_ten_digits and len(num) > 10:
+                        formatted_num_list.insert(placement_position,' ')
+                        formatted_num_list.append('+')
+                return ''.join(reversed(formatted_num_list))
+
             return {
                 'notif': reg_cont[2],
                 'role': reg_cont[3],
                 'name': reg_cont[4],
-                'phone': reg_cont[5],
+                'phone': format_phone_number(reg_cont[5]),
                 'email': reg_cont[6]
             }
         def _set_modal_content(reg, reg_ent, reg_cont):
