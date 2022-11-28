@@ -1,15 +1,15 @@
 <div id="viewSubmitterModal_{{s.sub_id}}" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="padding: 1em;">
+        <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Create New Submitter</h4>
               <button type="button" class="close" data-dismiss="modal">
                 <span aria-hidden="true">&#xe912;</span>
               </button>
             </div>
-            <div class="modal-body" style="height: auto; padding: 0 2rem;">
-                </div>
-                <div style="padding: 1em;">  
+            <div class="modal-body" style="height: auto;">
+                
+                
                   <h4>Organization</h4>
                   
                   <dd class="c-data-list__value">{{r.view_modal_content.type}}</dd>                       
@@ -23,48 +23,46 @@
                   <dd class="c-data-list__value">{{r.view_modal_content.reg_status}}</dd>
                 
                   <h4>File Submission</h4>
-            <dd>
-              <dl class="c-data-list--is-vert c-data-list--is-wide">
-                <dt class="c-data-list__key">Types of Files</dt>
-                {% for file_type in r.view_modal_content.files_type %}
-                  {% if file_type != None %}
+                <dd>
+                  <dl class="c-data-list--is-vert c-data-list--is-wide">
+                  <dt class="c-data-list__key">Types of Files</dt>
+                    {% for file_type in r.view_modal_content.files_type %}
+                    {% if file_type != None %}
                     <dd class="c-data-list__value">{{file_type}}</dd>
-                  {% endif %}
-                {% endfor %}
+                      {% endif %}
+                    {% endfor %}
                 
-              </dl>
-            </dd>
-                </div>
+                    </dl>
+                </dd>
+                
                 
                 <form role="form" method="POST" action="" >
                   <input type="hidden" name="_token" value="">
                   <div class="form-group">
                       <label class="control-label">Payor Code</label>
                       <div>
-                          <input type="text" class="form-control input-lg" name="payor_code" autofocus="autofocus" value="Enter Payor Code">
+                          <input type="text" class="form-control input-lg" name="payor_code" autofocus="autofocus" value="">
                       </div>
                   </div>
                   <div class="form-group">
                       <label class="control-label">Submitter Code</label>
                       <div>
-                          <input type="text" class="form-control input-lg" name="submit_code" value="Enter Submitter Code">
+                          <input type="text" class="form-control input-lg" name="submit_code" value="">
                       </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label">Encryption Key</label>
                     <div>
-                        <input type="text" class="form-control input-lg" name="encryption_key" value="Enter Encryption Key">
+                        <input type="text" class="form-control input-lg" name="encryption_key" value="">
                     </div>
-                </div>
+                  </div>
                   <div class="form-group" style="display: none;"">
                       <div>
-                          <button type="submit" class="btn btn-success">Submit</button>
-
-                         
+                          <button type="submit" class="btn btn-success">Submit</button> 
                       </div>
                   </div>
-              </form>
-                </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+  </div>

@@ -11,16 +11,93 @@ class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
+        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
+        #    return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
         actions = 'View'
-        registrations_content = get_registrations()
-        registrations_entities = get_registration_entities()
-        registrations_contacts = get_registration_contacts()
+        import datetime
+        registrations_content = [
+        (
+         1,                                  #registration_id
+         datetime.date(2022, 8, 3),          #posted_date
+         12023,                              #applicable_period_start
+         122023,                             #applicable_period_end
+         True,                               #file_me
+         True,                               #file_pv
+         True,                               #file_mc
+         True,                               #file_pc
+         False,                              #file_dc
+         True,                               #submitting_for_self
+         'SFTP',                             #submission_method
+         'active',                           #registration_status
+         'insurance carrier',                #org_type
+         'Golden Rule Insurance Company',    #business_name
+         '7440 Woodland Drive',              #mail_address
+         'Indianpolis',                      #city
+         'IN',                               #state
+         '46278     '                        #zip
+        ),
+        (
+         2,                                  #registration_id
+         datetime.date(2022, 8, 3),          #posted_date
+         12023,                              #applicable_period_start
+         122023,                             #applicable_period_end
+         True,                               #file_me
+         True,                               #file_pv
+         True,                               #file_mc
+         True,                               #file_pc
+         False,                              #file_dc
+         True,                               #submitting_for_self
+         'SFTP',                             #submission_method
+         'active',                           #registration_status
+         'insurance carrier',                #org_type
+         'Golden Rule Insurance Company',    #business_name
+         '7440 Woodland Drive',              #mail_address
+         'Indianpolis',                      #city
+         'IN',                               #state
+         '46278     '                        #zip
+        )
+        ]
+        registrations_entities = [
+        (
+         5, 1, 5, 46, 11111, 0, 5, 'Garretts Test Business 2', '11-0001111'
+        ),
+        (
+         5, 2, 50000, 47, 1010, 1101, 1, 'A Second Test Entity', '00-0000000'
+        )
+        ]
+        registrations_contacts = [
+        (
+         52,
+         1,
+         False,
+         'Test Role',
+         'Garrett Test Tester',
+         '2222222222',
+         'notarealemail@emailplace.email'
+        ),
+        (
+         53,
+         1,
+         False,
+         'A 2nd Test Role',
+         'Test Garrett 2 Test',
+         '5555555555',
+         'testemail@testemail.emailtest'
+        ),
+        (
+         54,
+         2,
+         True,
+         'A 3rd and final test role',
+         'Test 3rd Role Name Garrett',
+         '0000000000',
+         None
+        )
+        ]
 
 
         def _set_registration(reg, reg_ents, reg_conts):
@@ -71,7 +148,6 @@ class RegistrationsTable(TemplateView):
                 'state': reg[16],
                 'address': reg[14],
                 'zip': reg[17],
-                'reg_status': reg[11],
                 'files_type': [
                         "Medical" if reg[6] else None,
                         "Provider" if reg[5] else None,
