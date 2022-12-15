@@ -13,7 +13,18 @@
   <hr />
   <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
   <hr />
-  <table class="registration-table">
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        <option class="dropdown-text">All</option>
+        <option class="dropdown-text">Received</option>
+        <option class="dropdown-text">Processing</option>
+        <option class="dropdown-text">Completed</option>
+      </select>
+    </div>
+  </div>
+  <table id="registrationTable" class="registration-table">
       <thead>
           <tr>
               {% for k in header %}
@@ -49,5 +60,22 @@
       </tbody>
   </table>
 </div>
+<script>
+  function filterTableByStatus() {
+    var dropdown, filter, table, rows, status, i;
+    dropdown = document.getElementById("statusFilter");
+    filter =  dropdown.value;
+    table = document.getElementById("registrationTable");
+    rows = table.getElementsByTagName("tr");
+    [...rows].slice(1).forEach(row => {
+      status = row.getElementsByTagName("td")[4];
+      if (status.innerText != filter && filter != 'All') {
+        row.style.display = "none";
+      } else {
+        row.style.display = "";
+      }
+    })
+  }
+</script>
 
 {% endblock %}
