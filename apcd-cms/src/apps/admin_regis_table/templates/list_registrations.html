@@ -67,14 +67,14 @@
     filter =  dropdown.value;
     table = document.getElementById("registrationTable");
     rows = table.getElementsByTagName("tr");
-    for (i = 1; i < rows.length; i++) {
-      status = rows[i].getElementsByTagName("td")[4];
+    [...rows].slice(1).forEach(row => {
+      status = row.getElementsByTagName("td")[4];
       if (status.innerText != filter && filter != 'All') {
-        rows[i].style.display = "none";
+        row.style.display = "none";
       } else {
-        rows[i].style.display = "";
+        row.style.display = "";
       }
-    }
+    })
   }
 </script>
 
