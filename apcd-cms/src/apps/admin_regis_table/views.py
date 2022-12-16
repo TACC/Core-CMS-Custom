@@ -1,6 +1,7 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities
+from django.template import loader
+from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter
 from apps.utils.apcd_groups import is_apcd_admin
 import logging
 
@@ -9,19 +10,41 @@ logger = logging.getLogger(__name__)
 
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
+    registrations_content = get_registrations()
+    registrations_entities = get_registration_entities()
+    registrations_contacts = get_registration_contacts()
+    
+    def post(self, request, reg_cont=registrations_content):
+
+        def _err_msg(resp):
+            if hasattr(resp, 'pgerror'):
+                return resp.pgerror
+            if isinstance(resp, Exception):
+                return str(resp)
+            return None
+        
+        form = request.POST.copy()
+        errors = []
+        reg_data = [reg for reg in reg_cont if reg[0]==int(float(form['reg_id']))][0]
+        
+        sub_resp = create_submitter(form, reg_data)
+        template = loader.get_template('create_submitter_success.html')
+        if _err_msg(sub_resp) or type(sub_resp) != int:
+            errors.append(_err_msg(sub_resp))
+            template = loader.get_template('create_submitter_error.html')
+
+        response = HttpResponse(template.render({}, request))
+        return response
+
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, registrations_content=registrations_content, registrations_entities=registrations_entities, registrations_contacts=registrations_contacts, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
         actions = 'View'
-        registrations_content = get_registrations()
-        registrations_entities = get_registration_entities()
-        registrations_contacts = get_registration_contacts()
-
 
         def _set_registration(reg, reg_ents, reg_conts):
             return {
