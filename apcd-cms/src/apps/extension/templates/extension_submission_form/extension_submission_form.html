@@ -1,0 +1,610 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'extension/css/submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+
+
+  <div class="row">
+    <div class="col">
+      <h1>Extension Request Form</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted by data submitters to request 
+        an extension to the deadline for submitting either a regular submission or 
+        a corrected resubmission. Please review the 
+        <a
+          href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+          target="_blank"
+          >Data Submission Guide</a
+        > for details about completing and submitting this form, especially regarding 
+          the timeliness of the request.
+      </p>
+
+      <hr />
+
+      <div class="forms">
+        <div class="description">
+          <h4>Acknowledgment of Terms</h4>
+        </div>
+
+        <div class="form-wrapper">
+          <form action="" method="POST">
+                {% csrf_token %}
+            <div class="form-errors" style="display: none"></div>
+
+        <div class="field-wrapper textinput required">
+          <div class="field-errors" style="display: none"></div>
+
+          <label for="contact_name"> Name<span class="asterisk">*</span> </label>
+
+          <input
+            type="text"
+            name="contact_name"
+            required
+            class="textinput"
+            id="contact_name"
+          />
+        </div>
+
+
+          <div class="field-wrapper textinput required"><label>
+            I, named above, request an extension on behalf of:
+          </label></div>
+
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+
+              <input
+                type="text"
+                name="business-name"
+                required
+                class="textinput"
+                id="business-name"
+              />
+              </div>
+
+        <div class="field-wrapper radioselect required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="on-behalf-of_0"> I understand and acknowledge that the Texas Department 
+            of Insurance (TDI) may review the validity of the 
+            information submitted on this form.</label>
+              <ul id="on-behalf-of" class="radioselect"> 
+                <li>
+                  <label for="on-behalf-of_0"
+                    ><input
+                      type="radio"
+                      name="on-behalf-of"
+                      value="true"
+                      class="radioselect"
+                      required
+                      id="on-behalf-of_0"
+                    />
+                    Accept<span class="asterisk">*</span></label
+                  >
+                </li>
+              </ul>
+              <div id="help-text-on-behalf-of" class="help-text">
+
+              </div>
+            </div>
+            <hr />
+            <div class="description">
+            <h4>
+              Entity Being Registered
+              <small>
+                - Fill in all that apply.
+              </small>
+            </h4>
+          </div>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="entity_name">
+                Name<span class="asterisk">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="entity_name"
+                required
+                class="textinput"
+                id="entity_name"
+              />
+            </div>
+            <div class="field-wrapper required">
+              <label
+                >Number/Code<span class="asterisk">*</span>
+              </label>
+              <div class="help-text">
+                Provide all available identifiers. At least one of the following
+                is required.
+              </div>
+            </div>
+
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="fein"> FEIN<sup>1</sup> </label>
+
+                <input
+                  type="text"
+                  name="fein"
+                  placeholder="12-3456789"
+                  class="textinput"
+                  id="fein"
+                  inputmode="numeric"
+                  minlength="10"
+                  maxlength="10"
+                  pattern="\d{2}-\d{7}"
+                  required
+                />
+
+                <div id="help-text-fein" class="help-text">
+                  Enter in format <samp>12-3456789</samp>.
+                </div>
+              </div>
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="license_number"> License Number </label>
+
+                <input
+                  type="text"
+                  name="license_number"
+                  placeholder="1234567890"
+                  class="textinput"
+                  id="license_number"
+                  inputmode="numeric"
+                  minlength="5"
+                  maxlength="10"
+                  pattern="\d{5}|\d{10}"
+                  required
+                />
+
+                <div id="help-text-license_number" class="help-text">
+                  Enter a 5 or 10 digit number.
+                </div>
+              </div>
+              <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="naic_company_code"> NAIC<sup>2</sup> Company Code </label>
+
+                <input
+                  type="text"
+                  name="naic_company_code"
+                  placeholder="12345"
+                  class="textinput"
+                  id="naic_company_code"
+                  inputmode="numeric"
+                  minlength="5"
+                  maxlength="5"
+                  pattern="\d+"
+                  required
+                />
+
+                <div id="help-text-naic_company_code" class="help-text">
+                  Enter a 5 digit number.
+                </div>
+              </div>
+            </div>
+           <hr />
+           <h4 >Extension Information</h4>
+           <div id="extension_block_1">
+             <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+  
+            <label for="extension_type">
+              Extension Type<span class="asterisk">*</span>
+            </label>
+  
+            <input
+              type="text"
+              name="extension_type"
+              class="textinput"
+              id="extension_type"
+              minlength="1"
+              maxlength="50"
+              required
+            />
+          </div>
+
+          <div class="o-grid o-grid--col-auto-count">
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="applicable_data_period">Applicable Data Period<sup>3</sup><span class="asterisk">*</span> </label>
+    
+              <input
+                type="month"
+                name="applicable_data_period"
+                value="YYYY-MM"
+                class="numeric"
+                inputmode="numeric"
+                id="applicable_data_period"
+                pattern="\d{4}-\d{2}"
+                required
+              />
+              <div id="help-text-applicable_data_period" class="help-text">
+                Enter month and year period.
+              </div>
+            </div>
+            <div>
+              <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+      
+                <label for="current_expected_date">Current Expected Date<sup>4</sup><span class="asterisk">*</span> </label>
+      
+                <input
+                  type="date"
+                  name="current_expected_date"
+                  class="numeric"
+                  id="current_expected_date"
+                  inputmode="numeric"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  required
+                />
+              </div>
+           </div>
+           <div>
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+    
+              <label>Requested Target Date<sup>5</sup><span class="asterisk">*</span> </label>
+    
+              <input
+                type="date"
+                name="requested_target_date"
+                class="numeric"
+                id="requested_target_date"
+                inputmode="numeric"
+                pattern="\d{4}-\d{2}-\d{2}"
+                required
+              />
+            </div>
+         </div>
+          </div>
+        </div>
+          <h4 id="extension_header_2" style="display:none">Extension Information 2</h4>
+          <div id="extension_block_2"></div>
+          <h4 id="extension_header_3" style="display:none">Extension Information 3</h4>
+          <div id="extension_block_3"></div>
+          <h4 id="extension_header_4" style="display:none">Extension Information 4</h4>
+          <div id="extension_block_4"></div>
+          <h4 id="extension_header_5" style="display:none">Extension Information 5</h4>
+          <div id="extension_block_5"></div>
+          <button class="c-button c-button--primary" id="extension-add-btn" type="button">+ Add Another Extension Request </button>
+          <button class="c-button c-button--secondary" id="extension-drop-btn" type="button">- Remove Last Extension Request</button>
+           
+        <hr />
+           
+           <h4>Request Details 
+            <small><div class="description">Provide as much detail as possible regarding the extension request, indicating the specific submission
+              requirements for which relief is being sought.</div></small>
+           </h4>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+    
+                <textarea 
+                name="request_details" 
+                cols="40" rows="10" 
+                class="textinput"
+                type="request_details"
+                id="request_details"></textarea>
+                <p><span class="asterisk">*</span></p>
+                
+            </div>
+            <hr />
+           
+           <h4>Justification<small><div class="description">Provide rationale for the extension request, outlining the reasons why the organization cannot or
+            should not comply with the submission requirements. If applicable, indicate how the organization
+            plans to become compliant.</div></small>
+          </h4>
+            <div class="field-wrapper textarea required">
+              <div class="field-errors" style="display: none"></div>
+              
+              <textarea 
+                name="justification" 
+                cols="40" rows="10" 
+                class="textinput" 
+                type="justification"
+                id="justification"></textarea>
+                <p><span class="asterisk">*</span></p>
+            </div>
+          
+           <hr />
+            
+            <h4 id="contact_header_1">Contact Information</h4>
+            <div id="contact_block_1">
+              <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_type">
+                  Role<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="text"
+                  name="contact_type"
+                  required
+                  class="textinput"
+                  id="contact_type"
+                />
+              </div>
+              <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_name"> Name<span class="asterisk">*</span> </label>
+
+                <input
+                  type="text"
+                  name="contact_name"
+                  required
+                  class="textinput"
+                  id="contact_name"
+                />
+              </div>
+              <div class="field-wrapper telephoneinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_phone">
+                  Phone<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="tel"
+                  name="contact_phone"
+                  required
+                  class="telephoneinput"
+                  id="contact_phone"
+                  inputmode="tel"
+                  pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                />
+
+                <div id="help-text-contact_phone" class="help-text">
+                  <details>
+                    <summary>
+                      <a
+                        href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                        target="_blank"
+                        >North American Numbering Plan</a
+                      >
+                      e.g. <samp>123 456-7890</samp>…
+                    </summary>
+                    <ul>
+                      <li><samp>123-456-7890</samp></li>
+                      <li><samp>(123) 456-7890</samp></li>
+                      <li><samp>123 456 7890</samp></li>
+                      <li><samp>123.456.7890</samp></li>
+                      <li><samp>+1 (123) 456-7890</samp></li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
+              <div class="field-wrapper emailinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_email">
+                  Email<span class="asterisk">*</span>
+                </label>
+
+                <input
+                  type="email"
+                  name="contact_email"
+                  autocomplete="email"
+                  required
+                  class="emailinput"
+                  id="contact_email"
+                />
+              </div>
+              <div class="field-wrapper checkboxinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <input
+                  type="checkbox"
+                  name="contact_notifications"
+                  class="booleanfield"
+                  id="contact_notifications"
+                />
+
+                <label for="contact_notifications">
+                  Select to receive system notifications
+                </label>
+              </div>
+            </div>
+            <div class="button-wrapper submit">
+              <button class="form-button" type="submit" value="Submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="form-success" style="display: none">
+          <p>Thank you for your request.</p>
+        </div>
+      </div>
+
+  {# Hidden links for future pages #}
+  {# TODO: Allow this template to render CMS admin-entered markup #}
+    <aside class="row" hidden>
+      <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+        <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+        <p><a href="/forms/exception">Exception Request</a></p>
+
+        <p><a href="/forms/extension">Extension Request</a></p>
+
+        <p><a href="/workbench/dashboard">Dashboard</a></p>
+      </div>
+    </aside>
+
+  {# Scripts #}
+  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
+  <aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-extension" type="module">
+      const addExtensionBtn = document.getElementById("extension-add-btn");
+      const dropExtensionBtn = document.getElementById("extension-drop-btn");
+      const btnStatus = (() => {
+        addExtensionBtn.disabled = ( extension == 5 ? true : false );
+        dropExtensionBtn.disabled = ( extension == 1 ? true : false );
+      });
+      let extension = 1;
+      btnStatus();
+
+      addExtensionBtn.addEventListener("click", () => {
+        if (extension < 5) extension += 1;
+        let extensionBlock = document.getElementById(`extension_block_${extension}`);
+        document.getElementById(`extension_header_${extension}`).style.display = 'block';
+        extensionBlock.innerHTML = `
+        <div class="field-wrapper textinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="extension_type_${extension}"> Extension Type<span class="asterisk">*</span> </label>
+          <input
+            type="text"
+            name="extension_type_${extension}"
+            required
+            class="textinput"
+            id="extension_type_${extension}"
+          />
+          <div id="help-text-extension_type_${extension}" class="help-text">
+          </div>
+        </div>
+
+        <div class="o-grid o-grid--col-auto-count">
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="applicable_data_period_${extension}">Applicable Data Period<sup>3</sup><span class="asterisk">*</span> </label>
+    
+              <input
+                type="month"
+                name="applicable_data_period_${extension}"
+                value="YYYY-MM"
+                class="numeric"
+                inputmode="numeric"
+                id="applicable_data_period_${extension}"
+                pattern="\d{4}-\d{2}"
+                required
+              />
+              <div id="help-text-applicable_data_period_${extension}" class="help-text">
+                Enter month and year period.
+              </div>
+            </div>
+            <div>
+              <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+      
+                <label for="current_expected_date_${extension}">Current Expected Date<sup>4</sup><span class="asterisk">*</span> </label>
+      
+                <input
+                  type="date"
+                  name="current_expected_date_${extension}"
+                  class="numeric"
+                  id="current_expected_date_${extension}"
+                  inputmode="numeric"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  required
+                />
+              </div>
+           </div>
+           <div>
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+    
+              <label for=requested_target_date_${extension}>Requested Target Date<sup>5</sup><span class="asterisk">*</span> </label>
+    
+              <input
+                type="date"
+                name="requested_target_date_${extension}"
+                class="numeric"
+                id="requested_target_date_${extension}"
+                inputmode="numeric"
+                pattern="\d{4}-\d{2}-\d{2}"
+                required
+              />
+            </div>
+         </div>
+          </div>
+        </div>
+        `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=extension_type_period_${extension}],
+            input[name=applicable_data_period_${extension}],
+            input[name=current_expected_date_${extension}],
+            input[name=requested_target_date_${extension}]
+          `)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
+
+      dropExtensionBtn.addEventListener("click", () => {
+        document.getElementById(`extension_header_${extension}`).style.display = 'none';
+        let extensionBlock = document.getElementById(`extension_block_${extension}`);
+        extensionBlock.innerHTML = '';
+        if (extension > 1) extension -= 1;
+        btnStatus();
+      });
+    </script>
+
+    <!-- To require at least one "entity" identifier value -->
+    <script id="form-entity_id-required" type="module">
+      const inputs = Array.from(
+        document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
+      );
+      const inputListener = e => {
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.value.length));
+      };
+
+      inputs.forEach(i => i.addEventListener('input', inputListener));
+    </script>
+  </aside>
+
+  {# Footnotes #}
+  <div class="o-section o-section--style-light">
+    <hr />
+    <p>
+      <small
+        >¹ Federal Employer Identification Number (FEIN)<br />
+        ² National Association of Insurance Commissioners (NAIC)<br />
+        ³ Applicable data period – month/year in which claims data was adjudicated.<br />
+        ⁴ Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
+        ⁵ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
+        </small
+      >
+    </p>
+    <hr />
+    <p>
+      <small
+        >
+        ∗∗∗ Consult the regulation and
+        <a
+          href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+          target="_blank"
+          >Data Submission Guide</a
+        ></small
+      >.
+    </p>
+  </div>
+</div>
+{% endblock %}

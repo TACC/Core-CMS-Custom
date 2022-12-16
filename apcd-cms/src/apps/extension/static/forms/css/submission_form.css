@@ -1,0 +1,79 @@
+/* Field Widths */
+
+/* for an Entity*/
+input[name^="fein"],
+input[name^="license_number"],
+input[name^="naic_company_code"],
+/* for an Organization */
+input[name^="zip_code"] {
+    width: 10ch;
+    box-sizing: content-box;
+}
+/* to make input type='month' the same width as type="date"*/
+input[name^="applicable_data_period"] {
+    width: 15ch;
+    height: fit-content;
+    box-sizing: content-box;
+}
+
+select[name^="state"] {
+    --length: 2ch;
+    --ui-buffer: 2.5ch; /* to make room for dropdown arrows */
+
+    width: calc( var(--length) + var(--ui-buffer) );
+    box-sizing: content-box;
+}
+/* for a Contact */
+input[name^="contact_phone"] {
+    width: 17ch;
+    box-sizing: content-box;
+}
+
+/* Field Layouts */
+
+/* To make (radio/check)box sets take up less vertical space */
+#types_of_files, #submission_method, #on-behalf-of {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    row-gap: 0.5em;
+}
+
+/* To make contact fields take up less vertical space */
+[id^="contact_block_"] {
+    --max-col-width: 50ch;
+
+    /* Expectations:
+        - automatically enough columns
+        - maximum column count of 2 (i.e. minimum column width of 50%)
+        - maximum column width of 50 char's (same as max-width of fields)
+        - equal width columns
+    */
+    display: grid;
+    column-gap: var(--global-space--grid-gap);
+    grid-template-columns: repeat( auto-fill, var(--max-col-width) );
+    max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 2 );
+}
+[id^="extension_block_"] {
+    --max-col-width: 75ch;
+
+    /* Expectations:
+        - automatically enough columns
+        - maximum column count of 3 (i.e. minimum column width of 33%)
+        - maximum column width of 75 char's (same as max-width of fields)
+        - equal width columns
+    */
+    display: grid;
+    column-gap: var(--global-space--grid-gap);
+    grid-template-columns: repeat( auto-fill, var(--max-col-width) );
+    max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 3 );
+}
+.field-wrapper:has([id^="contact_email"]) {
+    /* To mimic site.css `.help-text` margin-top */
+    margin-bottom: calc(var(--global-font-size--small) * 0.3);
+}
+.field-wrapper:has([id^="contact_phone"]) {
+    /* To pull contact_notifications up against contact_email */
+    /* NOTE: A span 2 seems like enough, but only span 3+ does the job */
+    grid-row: span 3;
+}
