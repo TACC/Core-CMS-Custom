@@ -11,8 +11,7 @@ input[name^="zip_code"] {
 }
 /* to make input type='month' the same width as type="date"*/
 input[name^="applicable_data_period"] {
-    width: 15ch;
-    height: fit-content;
+    --length: 5ch;
     box-sizing: content-box;
 }
 
@@ -38,24 +37,8 @@ input[name^="contact_phone"] {
     column-gap: 1em;
     row-gap: 0.5em;
 }
-
-/* To make contact fields take up less vertical space */
-[id^="contact_block_"] {
-    --max-col-width: 50ch;
-
-    /* Expectations:
-        - automatically enough columns
-        - maximum column count of 2 (i.e. minimum column width of 50%)
-        - maximum column width of 50 char's (same as max-width of fields)
-        - equal width columns
-    */
-    display: grid;
-    column-gap: var(--global-space--grid-gap);
-    grid-template-columns: repeat( auto-fill, var(--max-col-width) );
-    max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 2 );
-}
 [id^="extension_block_"] {
-    --max-col-width: 75ch;
+    --max-col-width: 15ch;
 
     /* Expectations:
         - automatically enough columns
@@ -67,13 +50,4 @@ input[name^="contact_phone"] {
     column-gap: var(--global-space--grid-gap);
     grid-template-columns: repeat( auto-fill, var(--max-col-width) );
     max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 3 );
-}
-.field-wrapper:has([id^="contact_email"]) {
-    /* To mimic site.css `.help-text` margin-top */
-    margin-bottom: calc(var(--global-font-size--small) * 0.3);
-}
-.field-wrapper:has([id^="contact_phone"]) {
-    /* To pull contact_notifications up against contact_email */
-    /* NOTE: A span 2 seems like enough, but only span 3+ does the job */
-    grid-row: span 3;
 }
