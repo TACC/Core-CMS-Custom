@@ -21,9 +21,13 @@
     height: 60vh;
     overflow-y: auto !important;
     padding: 2rem;
+
+    font-size: var(--global-font-size--small);
+    font-family: var(--global-font-family--sans--portal);
 }
 
 .modal-title {
+    margin-top: unset;
     text-overflow: var(--text-overflow, ellipsis);
     overflow: hidden;
     white-space: nowrap;

@@ -345,7 +345,65 @@ def create_registration_contact(form, reg_id, iteration):
         if conn is not None:
             conn.close()
 
+def create_submitter(form, reg_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO submitters(
+            registration_id,
+            org_name,
+            file_me,
+            file_pv,
+            file_mc,
+            file_pc,
+            file_dc,
+            submission_method,
+            submitting_for_self,
+            submitter_code,
+            payor_code,
+            encryption_key,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            reg_data[0],
+            reg_data[13],
+            reg_data[6],
+            reg_data[5],
+            reg_data[4],
+            reg_data[7],
+            reg_data[8],
+            reg_data[10],
+            reg_data[9],
+            form['submit-code'],
+            form['payor-code'],
+            form['encryption-key'],
+            datetime.datetime.now()
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
 
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+            
 def _acceptable_entity(form, iteration):
     required_keys = [
         'total_claims_value_{}'.format(iteration),

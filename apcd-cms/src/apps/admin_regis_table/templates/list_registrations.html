@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -50,10 +51,10 @@
                     </ul>
                   </td>
                   <td>
-                    {# FAQ: So cell "has layout" on narrow screen layout #}
-                    &nbsp;
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View</a>
+                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View Record</a>
+                    {% include "create_submitter_modal.html" %}<br />
+                    <a href='' data-toggle="modal" data-target="#viewSubmitterModal_{{r.reg_id}}" data-backdrop="static"> Create New Submitter</a>
                   </td>
               </tr>
           {% endfor %}
