@@ -16,10 +16,10 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class ExtensionFormView(View):
+class ExceptionFormView(View):
     def get(self, request):
         if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('extension_submission_form/extension_submission_form.html')
+            template = loader.get_template('exception_submission_form/exception_submission_form.html')
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect('/')
 
@@ -36,10 +36,10 @@ class ExtensionFormView(View):
         else:
             return HttpResponseRedirect('/')
 
-        reg_resp = apcd_database.create_extension(form)
+        reg_resp = apcd_database.create_exception(form)
         if not _err_msg(reg_resp) and type(reg_resp) == int:
             for iteration in range(1,6):
-                contact_resp = apcd_database.create_extension_contact(form, reg_resp, iteration)
+                contact_resp = apcd_database.create_exception_contact(form, reg_resp, iteration)
                 entity_resp = apcd_database.create_registration_entity(form, reg_resp, iteration)
                 if _err_msg(contact_resp):
                     errors.append(_err_msg(contact_resp))
@@ -52,22 +52,22 @@ class ExtensionFormView(View):
         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
         tracker.login()
 
-        subject = "New TX-APCD Portal Extension Submission"
-        description = "APCD Extension Request Details\n"
+        subject = "New TX-APCD Portal Exception Submission"
+        description = "APCD Exception Request Details\n"
         description += "=========================\n"
         description += "submitter_user:            {}\n".format(username)
         description += "submitter_user_email:      {}\n".format(email)
         description += "submitter_user_first_name: {}\n".format(first_name)
         description += "submitter_user_last_name:  {}\n".format(last_name)
         if len(errors):
-            subject = "(ERROR): TX-APCD Portal Extension Submission"
+            subject = "(ERROR): TX-APCD Portal Exception Submission"
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            template = loader.get_template('extension_submission_form/extension_submission_error.html')
+            template = loader.get_template('exception_submission_form/exception_submission_error.html')
             response = HttpResponse(template.render({}, request))
         else:
-            template = loader.get_template('extension_submission_form/extension_form_success.html')
+            template = loader.get_template('exception_submission_form/exception_form_success.html')
             response = HttpResponse(template.render({}, request))
 
         tracker.create_ticket(
