@@ -302,6 +302,47 @@
           </ul>
         </div>
 
+        <div class="field-wrapper select required">
+          <div class="field-errors" style="display: none"></div>
+
+          <label for="type"> File Submission Threshold Exception<span class="asterisk">*</span></label>
+
+
+          <select
+            name="file-type"
+            required="required"
+            class="choicefield"
+            id="type"
+          >
+            <option value="Dental Claims">Dental Claims</option>
+
+            <option value="Medical Claims">
+              Medical Claims
+            </option>
+
+            <option value="Member Eligibility">
+              Member Eligibility
+            </option>
+
+            <option value="Pharmacy Claims">
+              Pharmacy Claims
+            </option>
+
+            <option value="Provider">
+              Provider
+            </option>
+          </select>
+
+        </div>
+        <div class="field-wrapper numberinput required">
+          <label for="threshold_requested">
+            Threshold Request<span class="asterisk">*</span>
+          </label>
+          <div class="field-errors" style="display: none"></div>
+  
+          <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
+        </div>
+
        
         <div class="field-wrapper numberinput required">
           <div class="field-errors" style="display: none"></div>
