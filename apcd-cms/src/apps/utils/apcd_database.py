@@ -384,8 +384,8 @@ def create_submitter(form, reg_data):
             reg_data[8],
             reg_data[10],
             reg_data[9],
-            _set_int(form['submit_code']),
-            form['payor_code'],
+            form['submit_code'],
+            _set_int(form['payor_code']),
             form['encryption_key'],
             datetime.datetime.now()
         )
