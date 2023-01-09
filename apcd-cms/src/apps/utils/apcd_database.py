@@ -384,9 +384,9 @@ def create_submitter(form, reg_data):
             reg_data[8],
             reg_data[10],
             reg_data[9],
-            form['submit-code'],
-            form['payor-code'],
-            form['encryption-key'],
+            _set_int(form['submit_code']),
+            form['payor_code'],
+            form['encryption_key'],
             datetime.datetime.now()
         )
         cur.execute(operation, values)
