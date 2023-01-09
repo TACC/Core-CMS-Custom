@@ -35,62 +35,6 @@
 
         </div>
       </div>
-      <div class="description">
-        <h4>
-          Entity Being Registered
-          <small>
-            (Fill in all that apply.)
-          </small>
-        </h4>
-      </div>
-      <div class="field-wrapper required">
-        <label>Number/Code<span class="asterisk">*</span>
-        </label>
-        <div class="help-text">
-          Provide all available identifiers. At least one of the following
-          is required.
-        </div>
-      </div>
-
-      <div class="o-grid o-grid--col-auto-count">
-        <div class="field-wrapper textinput">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="fein"> FEIN<sup>1</sup> </label>
-
-          <input type="text" name="fein" placeholder="12-3456789" class="textinput" id="fein" inputmode="numeric"
-            minlength="10" maxlength="10" pattern="\d{2}-\d{7}" required />
-
-          <div id="help-text-fein" class="help-text">
-            Enter in format <samp>12-3456789</samp>.
-          </div>
-        </div>
-        <div class="field-wrapper textinput">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="license_number"> License Number </label>
-
-          <input type="text" name="license_number" placeholder="1234567890" class="textinput" id="license_number"
-            inputmode="numeric" minlength="5" maxlength="10" pattern="\d{5}|\d{10}" required />
-
-          <div id="help-text-license_number" class="help-text">
-            Enter a 5 or 10 digit number.
-          </div>
-        </div>
-        <div class="field-wrapper textinput">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="naic_company_code"> NAIC<sup>2</sup> Company Code </label>
-
-          <input type="text" name="naic_company_code" placeholder="12345" class="textinput" id="naic_company_code"
-            inputmode="numeric" minlength="5" maxlength="5" pattern="\d+" required />
-
-          <div id="help-text-naic_company_code" class="help-text">
-            Enter a 5 digit number.
-          </div>
-        </div>
-      </div>
-      <hr />
       <h4>Exception Information</h4>
       <div id="exception_block_1">
         <div class="field-wrapper radioselect required">
@@ -101,61 +45,18 @@
           </label>
           <ul id="exception-type" class="radioselect">
             <li>
-              <label for="exception-type_0"><input type="radio" name="exception-type" value="true" class="radioselect"
-                  required id="exception-type_0" />
-                Exception from a requirement under the regulations. </label>
+              <label for="exception-type_0"><input type="radio" name="type" value="true" class="radioselect"
+                  required id="threshold-exception" />
+                Threshold Exception </label>
             </li>
 
             <li>
-              <label for="exception-type_1"><input type="radio" name="exception-type" value="true" class="radioselect"
-                  required id="exception-type_1" />
-                Partial exception from select submission requirements. </label>
+              <label for="exception-type_1"><input type="radio" name="type" value="true" class="radioselect"
+                  required id="other-exception" />
+                Other Exception </label>
             </li>
           </ul>
         </div>
-        <div class="field-wrapper select required">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="type"> File Submission Threshold Exception<span class="asterisk">*</span></label>
-
-
-          <select
-            name="file-type"
-            required="required"
-            class="choicefield"
-            id="type"
-          >
-            <option value="Dental Claims">Dental Claims</option>
-
-            <option value="Medical Claims">
-              Medical Claims
-            </option>
-
-            <option value="Member Eligibility">
-              Member Eligibility
-            </option>
-
-            <option value="Pharmacy Claims">
-              Pharmacy Claims
-            </option>
-
-            <option value="Provider">
-              Provider
-            </option>
-          </select>
-
-        </div>
-        <div class="field-wrapper numberinput required">
-          <label for="threshold_requested">
-            Threshold Request<span class="asterisk">*</span>
-          </label>
-          <div class="field-errors" style="display: none"></div>
-  
-          <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
-        </div>
-        
-
-
           <div class="field-wrapper numberinput required">
               <div class="field-errors" style="display: none"></div>
 
@@ -179,20 +80,8 @@
         </div>
 
       </div>
-      <h4 id="exception_header_2" style="display:none">Exception Information 2</h4>
+      <h4 id="exception_header_2" style="display:none">Threshold Exception Details</h4>
       <div id="exception_block_2"></div>
-      <h4 id="exception_header_3" style="display:none">Exception Information 3</h4>
-      <div id="exception_block_3"></div>
-      <h4 id="exception_header_4" style="display:none">Exception Information 4</h4>
-      <div id="exception_block_4"></div>
-      <h4 id="exception_header_5" style="display:none">Exception Information 5</h4>
-      <div id="exception_block_5"></div>
-      <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Exception Request
-      </button>
-      <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Exception
-        Request</button>
-
-
       <hr />
 
       <h4>Justification</h4>
@@ -266,42 +155,19 @@
     <!-- To let user add and remove entities -->
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
-    <script id="form-add-remove-exception" type="module">
-      const addExceptionBtn = document.getElementById("exception-add-btn");
-      const dropExceptionBtn = document.getElementById("exception-drop-btn");
+    <script id="form-threshold-exception" type="module">
+      const addThresholdException = document.getElementById("threshold-exception");
+      const addThresholdOther = document.getElementById("other-exception");
       const btnStatus = (() => {
-        addExceptionBtn.disabled = ( exception == 5 ? true : false );
-        dropExceptionBtn.disabled = ( exception == 1 ? true : false );
+        addThresholdException.disabled = ( exception == 2 ? true : false );
       });
       let exception = 1;
       btnStatus();
 
-      addExceptionBtn.addEventListener("click", () => {
-        if (exception < 5) exception += 1;
-        let exceptionBlock = document.getElementById(`exception_block_${exception}`);
-        document.getElementById(`exception_header_${exception}`).style.display = 'block';
+      addThresholdException.addEventListener("click", () => {
+        let exceptionBlock = document.getElementById(`exception_block_2`);
+        document.getElementById(`exception_header_2`).style.display = 'block';
         exceptionBlock.innerHTML = `
-        <div class="field-wrapper radioselect required">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="exception_type">
-            Exception Type<span class="asterisk">*</span>
-          </label>
-          <ul id="exception-type" class="radioselect">
-            <li>
-              <label for="exception-type_0"><input type="radio" name="exception-type" value="true" class="radioselect"
-                  required id="on-behalf-of_0" />
-                Exception from a requirement under the regulations. </label>
-            </li>
-
-            <li>
-              <label for="exception-type_1"><input type="radio" name="exception-type" value="true" class="radioselect"
-                  required id="on-behalf-of_0" />
-                Partial exception from select submission requirements. </label>
-            </li>
-          </ul>
-        </div>
-
         <div class="field-wrapper select required">
           <div class="field-errors" style="display: none"></div>
 
@@ -334,6 +200,38 @@
           </select>
 
         </div>
+        <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
+          <div class="field-errors" style="display: none"></div>
+
+          <label for="type"> Requested Field Threshold Exception <span class="asterisk">*</span></label>
+
+
+          <select
+            name="field-threshold-exception"
+            required="required"
+            class="choicefield"
+            id="type"
+          >
+            <option value="Dental Claims">Dental Claims</option>
+
+            <option value="Medical Claims">
+              Medical Claims
+            </option>
+
+            <option value="Member Eligibility">
+              Member Eligibility
+            </option>
+
+            <option value="Pharmacy Claims">
+              Pharmacy Claims
+            </option>
+
+            <option value="Provider">
+              Provider
+            </option>
+          </select>
+
+        </div>
         <div class="field-wrapper numberinput required">
           <label for="threshold_requested">
             Threshold Request<span class="asterisk">*</span>
@@ -342,41 +240,6 @@
   
           <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
         </div>
-
-       
-        <div class="field-wrapper numberinput required">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="exception_start_date_${exception}">Start Date<span class="asterisk">*</span> </label>
-
-            <input
-              type="date"
-              name="exception_start_date_${exception}"
-              class="numeric"
-              id="exception_start_date_${exception}"
-              inputmode="numeric"
-              pattern="\d{4}-\d{2}-\d{2}"
-              required
-            />
-          </div>
-        </div>
-        <div>
-        <div class="field-wrapper numberinput required">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for=exception_end_date_${exception}>End Date<span class="asterisk">*</span> </label>
-
-          <input
-            type="date"
-            name="exception_end_date_${exception}"
-            class="numeric"
-            id="exception_end_date_${exception}"
-            inputmode="numeric"
-            pattern="\d{4}-\d{2}-\d{2}"
-            required
-          />
-        </div>
-      </div>
       `;
         const inputs = Array.from(
           document.querySelectorAll(`
@@ -394,11 +257,11 @@
       });
 
       dropExceptionBtn.addEventListener("click", () => {
-        document.getElementById(`exception_header_${exception}`).style.display = 'none';
-        let exceptionBlock = document.getElementById(`exception_block_${exception}`);
+       
+        document.getElementById(`exception_header_1`).style.display = 'none';
+        let exceptionBlock = document.getElementById(`exception_block_1`);
         exceptionBlock.innerHTML = '';
-        if (exception > 1) exception -= 1;
-        btnStatus();
+
       });
     </script>
 
