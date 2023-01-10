@@ -52,9 +52,12 @@
                   </td>
                   <td>
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View Record</a>
                     {% include "create_submitter_modal.html" %}<br />
-                    <a href='' data-toggle="modal" data-target="#viewSubmitterModal_{{r.reg_id}}" data-backdrop="static"> Create New Submitter</a>
+                    <select id='actionsDropdown' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                      <option value="">Select Action</option>
+                      <option value="viewRegistration">View Record</option>
+                      <option value="createSubmitter">Create Submitter</option>
+                    </select>
                   </td>
               </tr>
           {% endfor %}
@@ -76,6 +79,14 @@
         row.style.display = "";
       }
     })
+  }
+  function openAction(reg_id) {
+    var dropdown, selectedOption, modal_id;
+    dropdown = document.getElementById('actionsDropdown');
+    selectedOption = dropdown.options[dropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${reg_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"});
+    dropdown.selectedIndex = 0;
   }
 </script>
 
