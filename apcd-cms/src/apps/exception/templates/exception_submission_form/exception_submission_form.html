@@ -82,6 +82,12 @@
       </div>
       <h4 id="exception_header_2" style="display:none">Threshold Exception Details</h4>
       <div id="exception_block_2"></div>
+      <h4 id="exception_header_3" style="display:none">Exception Information 3</h4>
+      <div id="exception_block_3"></div>
+      <h4 id="exception_header_4" style="display:none">Exception Information 4</h4>
+      <div id="exception_block_4"></div>
+      <h4 id="exception_header_5" style="display:none">Exception Information 5</h4>
+      <div id="exception_block_5"></div>
       <hr />
 
       <h4>Justification</h4>
@@ -156,6 +162,8 @@
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-threshold-exception" type="module">
+      const addExceptionBtn = document.getElementById("exception-add-btn");
+      const dropExceptionBtn = document.getElementById("exception-drop-btn");
       const addThresholdException = document.getElementById("threshold-exception");
       const addThresholdOther = document.getElementById("other-exception");
       const btnStatus = (() => {
@@ -165,6 +173,7 @@
       btnStatus();
 
       addThresholdException.addEventListener("click", () => {
+        let exception = 2;
         let exceptionBlock = document.getElementById(`exception_block_2`);
         document.getElementById(`exception_header_2`).style.display = 'block';
         exceptionBlock.innerHTML = `
@@ -240,6 +249,10 @@
   
           <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
         </div>
+        <button class="c-button c-button--primary" id="exception-add-btn_${exception}" type="button">+ Add Another Exception Request
+      </button>
+      <button class="c-button c-button--secondary" id="exception-drop-btn_${exception}" type="button">- Remove Last Exception
+        Request</button>
       `;
         const inputs = Array.from(
           document.querySelectorAll(`
@@ -256,6 +269,70 @@
         btnStatus();
       });
 
+      addExceptionBtn.addEventListener("click", () => {
+        if (exception < 6 ) exception +=1;
+        let exceptionBlock = document.getElementById(`exception_block_${exception}`);
+        document.getElementById(`exception_header_${exception}`).style.display = 'block';
+        exceptionBlock.innerHTML = `
+        <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
+          <div class="field-errors" style="display: none"></div>
+
+          <label for="type"> Requested Field Threshold Exception <span class="asterisk">*</span></label>
+
+
+          <select
+            name="field-threshold-exception"
+            required="required"
+            class="choicefield"
+            id="type"
+          >
+            <option value="Dental Claims">Dental Claims</option>
+
+            <option value="Medical Claims">
+              Medical Claims
+            </option>
+
+            <option value="Member Eligibility">
+              Member Eligibility
+            </option>
+
+            <option value="Pharmacy Claims">
+              Pharmacy Claims
+            </option>
+
+            <option value="Provider">
+              Provider
+            </option>
+          </select>
+
+        </div>
+        <div class="field-wrapper numberinput required">
+          <label for="threshold_requested">
+            Threshold Request<span class="asterisk">*</span>
+          </label>
+          <div class="field-errors" style="display: none"></div>
+  
+          <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
+        </div>
+        <button class="c-button c-button--primary" id="exception-add-btn_${exception}" type="button">+ Add Another Exception Request
+      </button>
+      <button class="c-button c-button--secondary" id="exception-drop-btn_${exception}" type="button">- Remove Last Exception
+        Request</button>
+      `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=exception_type_${exception}],
+            input[name=exception_start_date_${exception}],
+            input[name=exception_end_date_${exception}],
+          `)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
       dropExceptionBtn.addEventListener("click", () => {
        
         document.getElementById(`exception_header_1`).style.display = 'none';
