@@ -12,7 +12,7 @@
 
   <div class="row">
     <div class="col">
-      <h1>Exception Request Form</h1>
+      <h1>Exception Requests</h1>
       <hr />
 
       <p style="margin-bottom: 30px">
@@ -29,14 +29,17 @@
       <div class="forms">
 
         <div class="form-wrapper">
-          <form action="" method="POST">
+          <form action="#" method="POST">
             {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
 
+        <div class="description">
+          <h4>Exception Request Type</h4>
+          <p>Please choose the type of exception form to submit. If your entity requires a reporting threshold
+              reduction, please select the "Threshold Exception" option. 
+              For all other exceptions, please select "Other."
+          </p>
         </div>
-      </div>
-      <h4>Exception Information</h4>
-      <div id="exception_block_1">
         <div class="field-wrapper radioselect required">
           <div class="field-errors" style="display: none"></div>
 
@@ -45,93 +48,23 @@
           </label>
           <ul id="exception-type" class="radioselect">
             <li>
-              <label for="exception-type_0"><input type="radio" name="type" value="true" class="radioselect"
+              <label for="exception-type_0"><input type="radio" name="type" value="Threshold Exception" class="radioselect"
                   required id="threshold-exception" />
                 Threshold Exception </label>
             </li>
 
             <li>
-              <label for="exception-type_1"><input type="radio" name="type" value="true" class="radioselect"
+              <label for="exception-type_1"><input type="radio" name="type" value="Other Exception" class="radioselect"
                   required id="other-exception" />
                 Other Exception </label>
             </li>
           </ul>
         </div>
-          <div class="field-wrapper numberinput required">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="exception_start_date">Start Date<span class="asterisk">*</span>
-              </label>
-
-              <input type="date" name="exception_start_date" class="numeric" id="exception_start_date"
-                inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" required />
-          </div>
-          <div>
-            <div class="field-wrapper numberinput required">
-              <div class="field-errors" style="display: none"></div>
-
-              <label>End Date<sup>*</sup><span class="asterisk">*</span> </label>
-
-              <input type="date" name="exception_end_date" class="numeric" id="exception_end_date"
-                inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" required />
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <h4 id="exception_header_2" style="display:none">Threshold Exception Details</h4>
-      <div id="exception_block_2"></div>
-      <h4 id="exception_header_3" style="display:none">Exception Information 3</h4>
-      <div id="exception_block_3"></div>
-      <h4 id="exception_header_4" style="display:none">Exception Information 4</h4>
-      <div id="exception_block_4"></div>
-      <h4 id="exception_header_5" style="display:none">Exception Information 5</h4>
-      <div id="exception_block_5"></div>
-      <hr />
-
-      <h4>Justification</h4>
-          <p>Provide rationale for the exception request, outlining the reasons why the organization is unable to
-            comply with the relevant requirements. Provide as much detail as possible regarding the exception request, indicating the
-            specific submission requirements for which relief is being sought. If applicable, indicate how the organization
-            plans to become compliant.<sup>**</sup></p>
-      <div class="field-wrapper textarea required">
-        <div class="field-errors" style="display: none"></div>
-
-        <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
-          id="justification"></textarea>
-        <p><span class="asterisk">*</span></p>
-      </div>
-
-      <hr />
-      <div class="description">
-        <h4>Acknowledgment of Terms</h4>
-      </div>
-      <div class="field-wrapper textinput required"><label>
-          I request an exception on behalf of:
-        </label></div>
-
-      <div class="field-wrapper textinput required">
-        <label for="business-name">
-          Business Name<span class="asterisk">*</span>
-        </label>
-        <div class="field-errors" style="display: none"></div>
-
-        <input type="text" name="business-name" required class="textinput" id="business-name" />
-      </div>
-
-      <div class="field-wrapper checkbox required">
-        <div class="field-errors" style="display: none"></div>
-        <label for="on-behalf-of_0"> I understand and acknowledge that the Texas Department
-          of Insurance (TDI) may review the validity of the
-          information submitted on this form.</label>
-            <label for="on-behalf-of_0"><input type="checkbox" name="on-behalf-of" value="true" class="checkbox"
-                required id="on-behalf-of_0" />
-              Accept<span class="asterisk">*</span></label>
+         
 
 
           <div class="button-wrapper submit">
-            <button class="form-button" type="submit" value="Submit">
+            <button class="form-button" type="submit" id="exception-type-btn" value="Submit">
               Submit
             </button>
           </div>
@@ -158,109 +91,27 @@
   {# Scripts #}
   {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
   <aside>
-    <!-- To let user add and remove entities -->
+    <!-- To redirect user to correct exception form based on submission -->
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
-    <script id="form-threshold-exception" type="module">
-      const addExceptionBtn = document.getElementById("exception-add-btn");
-      const dropExceptionBtn = document.getElementById("exception-drop-btn");
-      const addThresholdException = document.getElementById("threshold-exception");
-      const addThresholdOther = document.getElementById("other-exception");
-      const btnStatus = (() => {
-        addThresholdException.disabled = ( exception == 2 ? true : false );
-      });
-      let exception = 1;
-      btnStatus();
+    <script id="form-exception-redirect" type="module">
+      let form = document.querySelector("form");
+      let exceptionType = querySelector('input[name="type"]:checked').value
+      form.addEventListener("Submit", redirect)
+
+      function redirect(event) {
+        event.preventDefault();
+        if (exceptionType.value == "Threshold Exception") {
+          location.href = '../exception_submission_form/exception_threshold_form.html'
+        }
+        if (exceptionType.value == "Other Exception") {
+          location.href = '../exception_submission_form/exception_other_form.html'
+        }
+    }
 
       addThresholdException.addEventListener("click", () => {
-        let exception = 2;
-        let exceptionBlock = document.getElementById(`exception_block_2`);
-        document.getElementById(`exception_header_2`).style.display = 'block';
-        exceptionBlock.innerHTML = `
-        <div class="field-wrapper select required">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="type"> File Submission Threshold Exception<span class="asterisk">*</span></label>
-
-
-          <select
-            name="file-type"
-            required="required"
-            class="choicefield"
-            id="type"
-          >
-            <option value="Dental Claims">Dental Claims</option>
-
-            <option value="Medical Claims">
-              Medical Claims
-            </option>
-
-            <option value="Member Eligibility">
-              Member Eligibility
-            </option>
-
-            <option value="Pharmacy Claims">
-              Pharmacy Claims
-            </option>
-
-            <option value="Provider">
-              Provider
-            </option>
-          </select>
-
-        </div>
-        <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="type"> Requested Field Threshold Exception <span class="asterisk">*</span></label>
-
-
-          <select
-            name="field-threshold-exception"
-            required="required"
-            class="choicefield"
-            id="type"
-          >
-            <option value="Dental Claims">Dental Claims</option>
-
-            <option value="Medical Claims">
-              Medical Claims
-            </option>
-
-            <option value="Member Eligibility">
-              Member Eligibility
-            </option>
-
-            <option value="Pharmacy Claims">
-              Pharmacy Claims
-            </option>
-
-            <option value="Provider">
-              Provider
-            </option>
-          </select>
-
-        </div>
-        <div class="field-wrapper numberinput required">
-          <label for="threshold_requested">
-            Threshold Request<span class="asterisk">*</span>
-          </label>
-          <div class="field-errors" style="display: none"></div>
-  
-          <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
-        </div>
-        <button class="c-button c-button--primary" id="exception-add-btn_${exception}" type="button">+ Add Another Exception Request
-      </button>
-      <button class="c-button c-button--secondary" id="exception-drop-btn_${exception}" type="button">- Remove Last Exception
-        Request</button>
-      `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
-            input[name=exception_type_${exception}],
-            input[name=exception_start_date_${exception}],
-            input[name=exception_end_date_${exception}],
-          `)
-        );
+        let submitRedirectButton = document.getElementById(`exception-type-btn`);
+        submitRedirectButton
         const inputListener = e => {
           inputs.filter(i => i !== e.target)
                 .forEach(i => (i.required = !e.target.value.length));
@@ -268,122 +119,17 @@
         inputs.forEach(i => i.addEventListener('input', inputListener));
         btnStatus();
       });
-
-      addExceptionBtn.addEventListener("click", () => {
-        if (exception < 6 ) exception +=1;
-        let exceptionBlock = document.getElementById(`exception_block_${exception}`);
-        document.getElementById(`exception_header_${exception}`).style.display = 'block';
-        exceptionBlock.innerHTML = `
-        <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
-          <div class="field-errors" style="display: none"></div>
-
-          <label for="type"> Requested Field Threshold Exception <span class="asterisk">*</span></label>
-
-
-          <select
-            name="field-threshold-exception"
-            required="required"
-            class="choicefield"
-            id="type"
-          >
-            <option value="Dental Claims">Dental Claims</option>
-
-            <option value="Medical Claims">
-              Medical Claims
-            </option>
-
-            <option value="Member Eligibility">
-              Member Eligibility
-            </option>
-
-            <option value="Pharmacy Claims">
-              Pharmacy Claims
-            </option>
-
-            <option value="Provider">
-              Provider
-            </option>
-          </select>
-
-        </div>
-        <div class="field-wrapper numberinput required">
-          <label for="threshold_requested">
-            Threshold Request<span class="asterisk">*</span>
-          </label>
-          <div class="field-errors" style="display: none"></div>
-  
-          <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
-        </div>
-        <button class="c-button c-button--primary" id="exception-add-btn_${exception}" type="button">+ Add Another Exception Request
-      </button>
-      <button class="c-button c-button--secondary" id="exception-drop-btn_${exception}" type="button">- Remove Last Exception
-        Request</button>
-      `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
-            input[name=exception_type_${exception}],
-            input[name=exception_start_date_${exception}],
-            input[name=exception_end_date_${exception}],
-          `)
-        );
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.value.length));
-        };
-        inputs.forEach(i => i.addEventListener('input', inputListener));
-        btnStatus();
-      });
-      dropExceptionBtn.addEventListener("click", () => {
-       
-        document.getElementById(`exception_header_1`).style.display = 'none';
-        let exceptionBlock = document.getElementById(`exception_block_1`);
-        exceptionBlock.innerHTML = '';
-
-      });
-    </script>
-
-    <!-- To require at least one "entity" identifier value -->
-    <script id="form-entity_id-required" type="module">
-      const inputs = Array.from(
-        document.querySelectorAll('input[name=fein], input[name=license_number], input[name=naic_company_code]')
-      );
-      const inputListener = e => {
-        inputs.filter(i => i !== e.target)
-              .forEach(i => (i.required = !e.target.value.length));
-      };
-
-      inputs.forEach(i => i.addEventListener('input', inputListener));
-    </script>
-
-    <!-- TODO To require exception is not longer than a year -->
-    <script id="form-exception_length_less_than_year" type="module">
-      const inputs = Array.from( 
-        document.querySelectorAll('input[name=exception_start_date], input[name=exception_end_date]')
-      );//stopped here
-      const inputListener = e => {
-        inputs.filter(i => i !== e.target)
-              .forEach(i => (i.required = !e.target.value.length));
-      };
-
-      inputs.forEach(i => i.addEventListener('input', inputListener));
     </script>
   </aside>
 
   {# Footnotes #}
   <div class="o-section o-section--style-light">
-    <hr />
-      <small
-        >¹ Federal Employer Identification Number (FEIN)<br />
-        ² National Association of Insurance Commissioners (NAIC)<br />
-        </small
-      >
       <hr />
       <small>
     <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br/>
     <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br/>
     </small
   >
-  </div>
   <hr />
 </div>
 {% endblock %}
