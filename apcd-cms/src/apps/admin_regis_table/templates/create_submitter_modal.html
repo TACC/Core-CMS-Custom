@@ -1,0 +1,70 @@
+<div id="viewSubmitterModal_{{r.reg_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Submitter</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="height: auto;">
+
+        <div class="readonly-form-data  o-grid o-grid--image-fill o-grid--col-auto-count">
+          <article>
+            <h4>Organization</h4>
+            <address>{{r.view_modal_content.type}}</dd>
+
+            <address>
+              {{r.view_modal_content.biz_name}}<br />
+              {{r.view_modal_content.address}}<br />
+              {{r.view_modal_content.city}},
+              {{r.view_modal_content.state}}<br />
+              {{r.view_modal_content.zip}}
+            </address>
+
+            <span>{{r.reg_status}}</span>
+
+          </article>
+          <article>
+            <h4>File Submission</h4>
+
+            <dl class="c-data-list--is-vert c-data-list--is-wide">
+              <dt class="c-data-list__key">Types of Files</dt>
+              {% for file_type in r.view_modal_content.files_type %}
+              {% if file_type != None %}
+              <dd class="c-data-list__value">{{file_type}}</dd>
+              {% endif %}
+              {% endfor %}
+            </dl>
+          </article>
+        </div>
+
+        <form method="POST" action="" class="c-form">
+          <h4>Submitter Data</h4>
+
+          {% csrf_token %}
+          <input type="hidden" name="_token" value>
+          <input type="hidden" name="reg_id" value="{{r.reg_id}}">
+
+          <div class="c-form__field">
+            <label>Payor Code</label>
+            <input type="number" name="payor_code" autofocus required inputmode="numeric">
+          </div>
+          <div class="c-form__field">
+            <label>Submitter Code</label>
+            <input type="text" name="submit_code" maxlength="8" required>
+          </div>
+          <div class="c-form__field">
+            <label>Encryption Key</label>
+            <input type="text" name="encryption_key" maxlength="30" required>
+          </div>
+
+          <div class="c-form__buttons">
+            <button type="submit" class="c-form__button">Submit</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

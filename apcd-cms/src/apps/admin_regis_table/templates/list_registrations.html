@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -13,7 +14,18 @@
   <hr />
   <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
   <hr />
-  <table class="registration-table">
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        <option class="dropdown-text">All</option>
+        <option class="dropdown-text">Received</option>
+        <option class="dropdown-text">Processing</option>
+        <option class="dropdown-text">Complete</option>
+      </select>
+    </div>
+  </div>
+  <table id="registrationTable" class="registration-table">
       <thead>
           <tr>
               {% for k in header %}
@@ -39,15 +51,32 @@
                     </ul>
                   </td>
                   <td>
-                    {# FAQ: So cell "has layout" on narrow screen layout #}
-                    &nbsp;
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View</a>
+                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View Record</a>
+                    {% include "create_submitter_modal.html" %}<br />
+                    <a href='' data-toggle="modal" data-target="#viewSubmitterModal_{{r.reg_id}}" data-backdrop="static"> Create New Submitter</a>
                   </td>
               </tr>
           {% endfor %}
       </tbody>
   </table>
 </div>
+<script>
+  function filterTableByStatus() {
+    var dropdown, filter, table, rows, status, i;
+    dropdown = document.getElementById("statusFilter");
+    filter =  dropdown.value;
+    table = document.getElementById("registrationTable");
+    rows = table.getElementsByTagName("tr");
+    [...rows].slice(1).forEach(row => {
+      status = row.getElementsByTagName("td")[4];
+      if (status.innerText != filter && filter != 'All') {
+        row.style.display = "none";
+      } else {
+        row.style.display = "";
+      }
+    })
+  }
+</script>
 
 {% endblock %}
