@@ -526,7 +526,22 @@ def create_threshold_exception(form, sub_data):
             form['type'],
             form['threshold-field'],
             form['exception_end_date'],
-            _clean_value(form['justification']), 
+            _clean_value(form['justification']),
+            datetime.datetime.now()
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close() 
 
             
 def _acceptable_entity(form, iteration):
