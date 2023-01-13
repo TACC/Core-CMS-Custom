@@ -1,0 +1,147 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'exception/css/submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+
+
+  <div class="row">
+    <div class="col">
+      <h1>General Exception Request</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted only by entities who are
+        eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
+        and associated regulations. Please review the legislation and regulation before
+        submitting this form. Links to both can be found on the
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/"
+          target="_blank">Texas All-Payor Claims Database website.</a> 
+      </p>
+
+      <hr />
+
+      <div class="forms">
+        <div class="description">
+            <h4>Exception Time Period</h4>
+            <p>Provide the time period for your exception request.</p>
+        </div>
+
+        <div class="form-wrapper">
+          <form action="" method="POST">
+            {% csrf_token %}
+          <div>
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label>Expiration Date<sup>*</sup><span class="asterisk">*</span> </label>
+
+              <input type="date" name="exception-end-date" class="numeric" id="exception-end-date"
+                inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" min=required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <hr />
+            <h4>Justification</h4>
+                <p>Provide rationale for the exception request, outlining the reasons why the organization is unable to
+                    comply with the relevant requirements. Provide as much detail as possible regarding the exception request, indicating the
+                    specific submission requirements for which relief is being sought. If applicable, indicate how the organization
+                    plans to become compliant.<sup>**</sup></p>
+      <div class="field-wrapper textarea required">
+        <div class="field-errors" style="display: none"></div>
+
+        <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
+          id="justification"></textarea>
+        <p><span class="asterisk">*</span></p>
+      </div>
+
+      <hr />
+        <h4>Acknowledgment of Terms</h4>
+      <div class="field-wrapper textinput required"><label>
+          I request an exception on behalf of:
+        </label></div>
+
+      <div class="field-wrapper textinput required">
+        <label for="business-name">
+          Business Name<span class="asterisk">*</span>
+        </label>
+        <div class="field-errors" style="display: none"></div>
+
+        <input type="text" name="business-name" required class="textinput" id="business-name" />
+      </div>
+
+      <div class="field-wrapper checkbox required">
+        <div class="field-errors" style="display: none"></div>
+        <label for="accept-terms"> I understand and acknowledge that the Texas Department
+          of Insurance (TDI) may review the validity of the
+          information submitted on this form.</label>
+            <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
+                required id="accept-terms" />
+              Accept<span class="asterisk">*</span></label></div>
+
+
+          <div class="button-wrapper submit">
+            <button class="form-button" type="submit" value="Submit">
+              Submit
+            </button>
+          </div>
+          </form>
+        <div class="form-success" style="display: none">
+          <p>Thank you for your request.</p>
+        </div>
+
+
+  {# Hidden links for future pages #}
+  {# TODO: Allow this template to render CMS admin-entered markup #}
+    <aside class="row" hidden>
+      <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+        <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+        <p><a href="/forms/exception">Exception Request</a></p>
+
+        <p><a href="/forms/extension">Extension Request</a></p>
+
+        <p><a href="/workbench/dashboard">Dashboard</a></p>
+      </div>
+    </aside>
+
+  {# Scripts #}
+  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
+  <aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <!-- TODO To require exception is not longer than a year -->
+    <script id="form-exception_length_less_than_year" type="module">
+      const expiration = document.querySelector("input[id='exception_end_date']");
+      //stopped here
+      expiration.addEventListener('blur', inputListener)
+
+      function inputListener 
+        const date = e.target.value
+        const now = new Date(date).getTime()
+           if (date <= now)
+            error
+          if (date < now + 1 year
+            error
+    </script>
+  </aside>
+
+  {# Footnotes #}
+  <div class="o-section o-section--style-light">
+      <hr />
+      <small>
+    <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br/>
+    <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br/>
+    </small
+  >
+  <hr />
+</div>
+{% endblock %}

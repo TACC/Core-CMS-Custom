@@ -345,6 +345,145 @@ def create_registration_contact(form, reg_id, iteration):
         if conn is not None:
             conn.close()
 
+def get_submitter_for_exception():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
+        FROM submitters 
+        LEFT JOIN submitter_users 
+        ON submitters.submitter_id = submitter_users.submitter_id 
+        WHERE user_id = user"""
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def create_other_exception(form, sub_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO exceptions(
+            submitter_id,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            request_type,
+            requested_expiration_date,
+            explanation_justification,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            sub_data[0],
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            None,
+            None,
+            'Other',
+            form['exception_end_date'],
+            _clean_value(form['justification']),
+            datetime.datetime.now()
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def create_threshold_exception(form, sub_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO exceptions(
+            submitter_id,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            request_type,
+            data_file,
+            field_number,
+            required_threshold,
+            requested_expiration_date,
+            explanation_justification,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            sub_data[0],
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            None,
+            None,
+            'Threshold',
+            form['type'],
+            form['threshold-field'],
+            form['exception_end_date'],
+            _clean_value(form['justification']),
+            datetime.datetime.now()
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def _acceptable_entity(form, iteration):
     required_keys = [

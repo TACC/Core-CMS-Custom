@@ -1,0 +1,305 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'exception/css/submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+
+
+  <div class="row">
+    <div class="col">
+      <h1>Threshold Exception Request</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted only by entities who are
+        eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
+        and associated regulations. Please review the legislation and regulation before
+        submitting this form. Links to both can be found on the
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
+          website.</a>
+      </p>
+      <hr />
+
+      <div class="forms">
+
+        <div class="form-wrapper">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-errors" style="display: none"></div>
+            <div class="exception-header-1">
+
+              <h2> Threshold Request Details</h2>
+              <p>Select submission file type for your requested threshold reduction:
+
+              </p>
+              <div class="field-wrapper select required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="type">File Type <span class="asterisk">*</span></label>
+
+
+                <select name="file-type" required="required" class="choicefield" id="file-type">
+                  <option value="dc">Dental Claims</option>
+
+                  <option value="mc">
+                    Medical Claims
+                  </option>
+
+                  <option value="me">
+                    Member Eligibility
+                  </option>
+
+                  <option value="pc">
+                    Pharmacy Claims
+                  </option>
+
+                  <option value="pv">
+                    Provider
+                  </option>
+                </select>
+                <div id="help-text-file-type" class="help-text">You can only submit an exception for one file type per exception form submission.
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div id="exception_block_1">
+              <div>
+                <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="expiration-date">Expiriation Date<sup>*</sup><span
+                      class="asterisk">*</span> </label>
+
+                  <input type="date" name="expiration-date" class="numeric"
+                    id="expiration-date" inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" required />
+                </div>
+              </div>
+
+              <hr />
+              <h4>Requested Threshold Reduction</h4>
+              <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="field-threshold-exception">Requested Field <span class="asterisk">*</span></label>
+
+                  <select name="field-threshold-exception" required="required" class="choicefield" id="field-threshold-exception">
+                    <option>
+                      Placeholder 1
+                    </option>
+        
+                    <option >
+                      Placeholder 2
+                    </option>
+        
+                    <option >
+                      Placeholder 3
+                    </option>
+                  </select>
+
+                </div>
+                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
+                  <label for="threshold_requested">
+                    Threshold Request <span class="asterisk">*</span>
+                  </label>
+                  <div class="field-errors" style="display: none"></div>
+                  <div class="s-affixed-input-wrapper">
+                  <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
+                  <span class="s-affixed-input-wrapper__suffix">%</span>
+                </div> 
+                <div id="help-text-threshold-required" class="help-text">
+                  Placeholder % Required
+                </div>
+              </div>
+            </div>
+            <h2 id="exception_header_2" style="display:none">Threshold Request Details 2</h2>
+            <div id="exception_block_2"></div>
+            <h2 id="exception_header_3" style="display:none">Threshold Request Details 3</h2>
+            <div id="exception_block_3"></div>
+            <h2 id="exception_header_4" style="display:none">Threshold Request Details 4</h2>
+            <div id="exception_block_4"></div>
+            <h2 id="exception_header_5" style="display:none">Threshold Request Details 5</h2>
+            <div id="exception_block_5"></div>
+            <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Threshold
+              Exception </button>
+            <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Threshold
+              Exception</button>
+            <hr />
+            <h4>Justification</h4>
+            <p>Provide rationale for the exception request, outlining the reasons why the organization is unable to
+              comply with the relevant requirements. Provide as much detail as possible regarding the exception request,
+              indicating the
+              specific submission requirements for which relief is being sought. If applicable, indicate how the
+              organization
+              plans to become compliant.<sup>**</sup></p>
+            <div class="field-wrapper textarea required">
+              <div class="field-errors" style="display: none"></div>
+
+              <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
+                id="justification"></textarea>
+              <p><span class="asterisk">*</span></p>
+            </div>
+            <hr />
+            <h4>Acknowledgment of Terms</h4>
+            <div class="field-wrapper textinput required"><label>
+                I request an exception on behalf of:
+              </label></div>
+
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+
+              <input type="text" name="business-name" required class="textinput" id="business-name" />
+            </div>
+
+            <div class="field-wrapper checkbox required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="accept-terms"> I understand and acknowledge that the Texas Department
+                of Insurance (TDI) may review the validity of the
+                information submitted on this form.</label>
+              <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
+                  required id="accept-terms" />
+                Accept<span class="asterisk">*</span></label>
+
+
+              <div class="button-wrapper submit">
+                <button class="form-button" type="submit" value="Submit">
+                  Submit
+                </button>
+              </div>
+          </form>
+        </div>
+        <div class="form-success" style="display: none">
+          <p>Thank you for your request.</p>
+        </div>
+
+
+        {# Hidden links for future pages #}
+        {# TODO: Allow this template to render CMS admin-entered markup #}
+        <aside class="row" hidden>
+          <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+            <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+            <p><a href="/forms/exception">Exception Request</a></p>
+
+            <p><a href="/forms/extension">Extension Request</a></p>
+
+            <p><a href="/workbench/dashboard">Dashboard</a></p>
+          </div>
+        </aside>
+
+        {# Scripts #}
+
+        <aside>
+          <!-- To let user add and remove exceptions -->
+          <script id="form-add-remove-exception" type="module">
+            const addExceptionBtn = document.getElementById("exception-add-btn");
+            const dropExceptionBtn = document.getElementById("exception-drop-btn");
+            const btnStatus = (() => {
+              addExceptionBtn.disabled = (exceptions == 5 ? true : false);
+              dropExceptionBtn.disabled = (exceptions == 1 ? true : false);
+            });
+            let exceptions = 1;
+            btnStatus();
+
+            addExceptionBtn.addEventListener("click", () => {
+              if (exceptions < 5) exceptions += 1;
+              let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
+              document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
+              exceptionBlock.innerHTML = `
+        <hr/> 
+                <div class="o-grid o-grid--col-auto-count">
+          <div>
+            <div class="field-wrapper numberinput required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="expiration-date">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
+
+              <input type="date" name="expiration-date" class="numeric" id="expiration-date"
+                inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" required />
+              </div></div></div>
+            <hr />
+            <h4>Requested Threshold Reduction</h4>
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper select required name=field-threshold-exception">
+                <div class="field-errors" style="display: none"></div>
+      
+                <label for="field-threshold-exception"> Requested Field <span class="asterisk">*</span></label>
+      
+      
+                <select
+                  name="field-threshold-exception"
+                  required="required"
+                  class="choicefield"
+                  id="field-threshold-exception"
+                >
+                  <option>
+                    Placeholder 1
+                    </option>
+      
+                  <option >
+                    Placeholder 2
+                  </option>
+      
+                  <option >
+                    Placeholder 3
+                  </option>
+      
+                </select>
+      
+              </div>
+              <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
+                  <label for="threshold_requested">
+                    Threshold Request <span class="asterisk">*</span>
+                  </label>
+                  <div class="field-errors" style="display: none"></div>
+                  <div class="s-affixed-input-wrapper">
+                  <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
+                  <span class="s-affixed-input-wrapper__suffix">%</span>
+                </div> 
+                <div id="help-text-threshold-requested" class="help-text">
+                  Placeholder % Required
+                </div>
+              </div> </div></div>              
+        `;
+              const inputs = Array.from(
+                document.querySelectorAll(`
+            input[name=expiration-date-${exceptions}],
+            input[name=requested-field-${exceptions}],
+            input[name=threshold-requested-${exceptions}]
+          `)
+              );
+              const inputListener = e => {
+                inputs.filter(i => i !== e.target)
+                  .forEach(i => (i.required = !e.target.value.length));
+              };
+              inputs.forEach(i => i.addEventListener('input', inputListener));
+              btnStatus();
+            });
+
+            dropExceptionBtn.addEventListener("click", () => {
+              document.getElementById(`exception_header_${exceptions}`).style.display = 'none';
+              let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
+              exceptionBlock.innerHTML = '';
+              if (exceptions > 1) exceptions -= 1;
+              btnStatus();
+            });
+          </script>
+
+        {# Footnotes #}
+        <div class="o-section o-section--style-light">
+          <hr />
+          <small>
+            <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br />
+            <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br />
+          </small>
+          <hr />
+        </div>
+        {% endblock %}
