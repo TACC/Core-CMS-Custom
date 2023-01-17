@@ -371,7 +371,8 @@ def create_submitter(form, reg_data):
             submitter_code,
             payor_code,
             encryption_key,
-            created_at
+            created_at,
+            status
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
@@ -387,7 +388,8 @@ def create_submitter(form, reg_data):
             form['submit_code'],
             _set_int(form['payor_code']),
             form['encryption_key'],
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            'new'
         )
         cur.execute(operation, values)
         conn.commit()
