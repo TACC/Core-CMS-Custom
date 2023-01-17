@@ -384,8 +384,8 @@ def create_submitter(form, reg_data):
             reg_data[8],
             reg_data[10],
             reg_data[9],
-            _set_int(form['submit_code']),
-            form['payor_code'],
+            form['submit_code'],
+            _set_int(form['payor_code']),
             form['encryption_key'],
             datetime.datetime.now()
         )
@@ -403,7 +403,79 @@ def create_submitter(form, reg_data):
         if conn is not None:
             conn.close()
 
-            
+def get_submissions(user):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+
+        query = """SELECT
+            *
+            FROM submissions
+            WHERE submitter_id 
+            IN (SELECT submitter_users.submitter_id FROM submitter_users WHERE user_id = %s )
+        """
+
+        cur = conn.cursor()
+        cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_submission_logs(submission_id):
+    
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+
+        query = """SELECT 
+        submission_logs.log_id, 
+        submission_logs.submission_id, 
+        submission_logs.file_type, 
+        submission_logs.validation_suite, 
+        submission_logs.json_log, 
+        submission_logs.outcome 
+        FROM submission_logs 
+        WHERE submission_id= %s
+        """
+
+        cur = conn.cursor()
+        cur.execute(query, (submission_id,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def _acceptable_entity(form, iteration):
     required_keys = [
         'total_claims_value_{}'.format(iteration),
