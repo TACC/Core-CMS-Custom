@@ -53,7 +53,7 @@
                   <td>
                     {% include "view_registration_modal.html" %}
                     {% include "create_submitter_modal.html" %}<br />
-                    <select id='actionsDropdown' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
                       <option value="">Select Action</option>
                       <option value="viewRegistration">View Record</option>
                       <option value="createSubmitter">Create Submitter</option>
@@ -81,12 +81,15 @@
     })
   }
   function openAction(reg_id) {
-    var dropdown, selectedOption, modal_id;
-    dropdown = document.getElementById('actionsDropdown');
-    selectedOption = dropdown.options[dropdown.selectedIndex].value;
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[dropdown.selectedIndex].value;
     modal_id = `${selectedOption}Modal_${reg_id}`;
-    $(`#${modal_id}`).modal({backdrop: "static"});
-    dropdown.selectedIndex = 0;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
   }
 </script>
 
