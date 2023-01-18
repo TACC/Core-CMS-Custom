@@ -17,7 +17,7 @@
   <div class="filter-container">
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
-      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus(); replaceActions();">
         <option class="dropdown-text">All</option>
         <option class="dropdown-text">Received</option>
         <option class="dropdown-text">Processing</option>
@@ -64,7 +64,42 @@
       </tbody>
   </table>
 </div>
+<template>
+  <template id="actionsOptions_All">
+    <option value="a">A</option>
+    <option value="b">B</option>
+    <option value="c">C</option>
+  </template>
+  <template id="actionsOptions_Received">
+    <option value="x">X</option>
+    <option value="y">Y</option>
+    <option value="z">Z</option>
+  </template>
+  <template id="actionsOptions_Processing">
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </template>
+  <template id="actionsOptions_Complete">
+    <option value="star">⭐️</option>
+    <option value="moon">🌖</option>
+    <option value="planet">🪐</option>
+  </template>
+</template>
 <script>
+  function replaceActions() {
+    const filterChoice = this.value;
+    const optionsTemplate = document.getElementById(`actionsOptions_${filterChoice}`);
+    const optionElements = template.content;
+    const actions = document.querySelectorAll(select[id^="actionsDropdown_"]);
+    /* NOTE: Using anonymous function so `optionElements` is accessible */
+    actions.forEach( dropdown => {
+      /* To delete old options (https://stackoverflow.com/a/3955238/11817077) */
+      dropdown.textContent = '';
+      /* To add new options */
+      dropdown.append(optionElements);
+    });
+  }
   function filterTableByStatus() {
     var dropdown, filter, table, rows, status, i;
     dropdown = document.getElementById("statusFilter");
