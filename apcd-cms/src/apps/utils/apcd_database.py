@@ -543,6 +543,364 @@ def create_threshold_exception(form, sub_data):
         if conn is not None:
             conn.close() 
 
+    
+def get_fields_and_thresholds_pv():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_pv' 
+        AND c2.list_name='threshold_list_pv'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_dc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+        cur = conn.cursor()
+
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_dc' 
+        AND c2.list_name='threshold_list_dc'"""
+        cur.execute(query)
+        return cur.fetchall()
+    
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_mc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_mc' 
+        AND c2.list_name='threshold_list_mc'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_me():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_me' 
+        AND c2.list_name='threshold_list_me'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_pc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_pc' 
+        AND c2.list_name='threshold_list_pc'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close() 
+
+    
+def get_fields_and_thresholds_pv():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_pv' 
+        AND c2.list_name='threshold_list_pv'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_dc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+        cur = conn.cursor()
+
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_dc' 
+        AND c2.list_name='threshold_list_dc'"""
+        cur.execute(query)
+        return cur.fetchall()
+    
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_mc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_mc' 
+        AND c2.list_name='threshold_list_mc'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_me():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_me' 
+        AND c2.list_name='threshold_list_me'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_fields_and_thresholds_pc():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT c1.item_code 
+        AS field_list_code, c1.item_value 
+        AS field_list_value, c2.item_value 
+        AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+        ON c2.item_code = c1.item_code 
+        WHERE c1.list_name='field_list_pc' 
+        AND c2.list_name='threshold_list_pc'"""
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_submissions(user):
     cur = None
     conn = None

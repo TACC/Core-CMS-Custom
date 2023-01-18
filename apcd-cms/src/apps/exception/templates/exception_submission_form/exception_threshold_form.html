@@ -3,12 +3,10 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'exception/css/submission_form.css' %}">
+<link rel="stylesheet" href="{% static 'forms/css/exception_submission_form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
-
-
 
   <div class="row">
     <div class="col">
@@ -40,10 +38,10 @@
               <div class="field-wrapper select required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="type">File Type <span class="asterisk">*</span></label>
+                <label for="file_type">File Type <span class="asterisk">*</span></label>
 
 
-                <select name="file-type" required="required" class="choicefield" id="file-type">
+                <select name="file_type" required="required" class="choicefield" id="file_type">
                   <option value="dc">Dental Claims</option>
 
                   <option value="mc">
@@ -62,7 +60,7 @@
                     Provider
                   </option>
                 </select>
-                <div id="help-text-file-type" class="help-text">You can only submit an exception for one file type per
+                <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
                   exception form submission.
                 </div>
               </div>
@@ -89,21 +87,48 @@
                   <label for="field-threshold-exception">Requested Field <span class="asterisk">*</span></label>
 
                   <select name="field-threshold-exception" required="required" class="choicefield"
-                    id="field-threshold-exception">
+                    id="field-threshold-exception" >
+                    <!-- 
+                  {% for #file_type in r.field_threshold_exception %}
                     <option>
-                      Placeholder 1
+                      {{r.field_threshold_exception.field_list_code}} - {{r.field_threshold_exception.field_list_value}}
+                    </option> 
+                  {% endfor %} -->
+                  <option value="none" selected disabled hidden>Select a Field</option>
+                    <option value="bs1" data-file-type-id="mc">
+                      MC: BS1
                     </option>
 
-                    <option>
-                      Placeholder 2
+                    <option value="bs2" data-file-type-id="mc">
+                      MC: BS2
                     </option>
 
-                    <option>
-                      Placeholder 3
+                    <option value="bs3" data-file-type-id="mc">
+                      MC: BS3
+                    </option>
+
+                    <option value="bs4" data-file-type-id="mc">
+                      MC: BS4
+                    </option>
+                    <option value="bs1" data-file-type-id="me">
+                      ME: BS1
+                    </option>
+
+                    <option value="bs2" data-file-type-id="me">
+                      ME: BS2
+                    </option>
+
+                    <option value="bs3" data-file-type-id="me">
+                      ME: BS3
+                    </option>
+
+                    <option value="bs4" data-file-type-id="me">
+                      ME: BS4
                     </option>
                   </select>
 
                 </div>
+
                 <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
                   <label for="threshold_requested">
                     Threshold Request <span class="asterisk">*</span>
@@ -295,6 +320,27 @@
               if (exceptions > 1) exceptions -= 1;
               btnStatus();
             });
+          </script>
+          <!-- To get file type to determine threshold fields in drop down -->
+          <script id="get-file-type" type="module">
+            const fileTypeSelector = document.getElementById('file_type');
+            const fieldsByFile = document.getElementById('field-threshold-exception');
+            const fieldsOpts = [...fieldsByFile.children];
+            fileTypeSelector.addEventListener("change", (e) => {
+              let fileType = fileTypeSelector.value;
+
+              fieldsOpts.forEach(opt => {
+                if (opt.dataset.fileTypeId == fileType) {
+                  opt.hidden = false;
+                } else {
+                  opt.hidden = true;
+                }
+                opt.selected = false;
+              });
+              // fieldsByFile.innerHTML = fieldsOpts.filter(
+              //   o => e.target.value.includes(o.value)
+              // ).map(o => o.outerHTML.join(' - '))
+            })
           </script>
 
           {# Footnotes #}
