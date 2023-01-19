@@ -1,5 +1,4 @@
 from apps.utils import apcd_database
-from apps.utils import apcd_groups
 from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,68 +10,74 @@ import rt
 
 logger = logging.getLogger(__name__)
 
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
+RT_HOST = getattr(settings, "RT_HOST", "")
+RT_UN = getattr(settings, "RT_UN", "")
+RT_PW = getattr(settings, "RT_PW", "")
+RT_QUEUE = getattr(settings, "RT_QUEUE", "")
 
 
 class ExceptionFormView(View):
     def get(self, request):
-        if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('exception_submission_form/exception_selection_page.html')
+        if request.user.is_authenticated and has_apcd_group(request.user):
+            template = loader.get_template(
+                "exception_submission_form/exception_selection_page.html"
+            )
             return HttpResponse(template.render({}, request))
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
 
     def _err_msg(resp):
-        if hasattr(resp, 'pgerror'):
+        if hasattr(resp, "pgerror"):
             return resp.pgerror
         if isinstance(resp, Exception):
             return str(resp)
         return None
 
+
 class ExceptionThresholdFormView(View):
-    submitter_content = [{'submitter_id': 1, 'submitter_code': 'TESTGOLD', 'payor_code': 10000000, 'user_name': 'ahawks'}]
-    '''threshold_fields_pv = apcd_database.get_fields_and_thresholds_pv()
+
+    """threshold_fields_pv = apcd_database.get_fields_and_thresholds_pv()
     threshold_fields_dc = apcd_database.get_fields_and_thresholds_dc()
     threshold_fields_mc = apcd_database.get_fields_and_thresholds_mc()
     threshold_fields_me = apcd_database.get_fields_and_thresholds_me()
-    threshold_fields_pc = apcd_database.get_fields_and_thresholds_pc()'''
+    threshold_fields_pc = apcd_database.get_fields_and_thresholds_pc()"""
 
     def get(self, request):
-        if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('exception_submission_form/exception_threshold_form.html')
+        if request.user.is_authenticated and has_apcd_group(request.user):
+            template = loader.get_template(
+                "exception_submission_form/exception_threshold_form.html"
+            )
             return HttpResponse(template.render({}, request))
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
 
-    def post(self, request, submitter_cont=submitter_content):
-        
+    def post(self, request):
+        submitter_cont = apcd_database.get_submitter_for_exception(
+            request.user.username
+        )
+
         def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
+            if hasattr(resp, "pgerror"):
                 return resp.pgerror
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-            
+
         form = request.POST.copy()
         errors = []
-        sub_data = [sub for sub in submitter_cont if sub[3]==request.user.username]
-
-        excep_resp = apcd_database.create_threshold_exception(form, sub_data)
-        if not _err_msg(excep_resp):
-            fields = apcd_database.get_field_data(form, sub_data)
+        sub_data = [sub for sub in submitter_cont if sub[3] == request.user.username][0]
+        if not _err_msg(sub_data):
+            excep_resp = apcd_database.create_threshold_exception(form, sub_data)
         else:
             errors.append(_err_msg(excep_resp))
 
         # ===> Create Ticket
 
-        if (request.user.is_authenticated):
+        if request.user.is_authenticated:
             username = request.user.username
             email = request.user.email
             first_name = request.user.first_name
             last_name = request.user.last_name
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect("/")
 
         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
         tracker.login()
@@ -89,40 +94,48 @@ class ExceptionThresholdFormView(View):
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            template = loader.get_template('exception_submission_form/exception_submission_error.html')
+            template = loader.get_template(
+                "exception_submission_form/exception_submission_error.html"
+            )
             response = HttpResponse(template.render({}, request))
         else:
-            template = loader.get_template('exception_submission_form/exception_form_success.html')
+            template = loader.get_template(
+                "exception_submission_form/exception_form_success.html"
+            )
             response = HttpResponse(template.render({}, request))
 
         tracker.create_ticket(
-            Queue=RT_QUEUE,
-            Subject=subject,
-            Text=description,
-            Requestors=email
+            Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
         )
-        
+
         return response
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(ExceptionThresholdFormView, self).dispatch(request, *args, **kwargs)
+            return HttpResponseRedirect("/")
+        return super(ExceptionThresholdFormView, self).dispatch(
+            request, *args, **kwargs
+        )
 
-    def get_context_data(self, submitter_cont=submitter_content, *args, **kwargs):
-        context = super(ExceptionThresholdFormView, self).get_context_data(*args, **kwargs)
+    def get_context_data(self, submitter_cont, *args, **kwargs):
+        context = super(ExceptionThresholdFormView, self).get_context_data(
+            *args, **kwargs
+        )
 
         def _set_submitter(sub):
             return {
-                'submitter_id': sub[0],
-                'submitter_code': sub[1],
-                'payor_code': sub[2],
-                'user_name': sub[3]
+                "submitter_id": sub[0],
+                "submitter_code": sub[1],
+                "payor_code": sub[2],
+                "user_name": sub[3],
             }
-        context['submitter'] = []
+
+        context["submitter"] = []
         for submitter, value in submitter_cont.items():
-            context['submitter'].append(_set_submitter(submitter))
+            context["submitter"].append(_set_submitter(submitter))
         return context
+
+
 """  def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not apcd_groups.is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
@@ -154,27 +167,41 @@ class ExceptionThresholdFormView(View):
 
 
 class ExceptionOtherFormView(View):
-    submitter_content = [{'submitter_id': 1, 'submitter_code': 'TESTGOLD', 'payor_code': 10000000, 'user_name': 'ahawks'}]
     def get(self, request):
-        if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('exception_submission_form/exception_other_form.html')
+        if request.user.is_authenticated and has_apcd_group(request.user):
+            template = loader.get_template(
+                "exception_submission_form/exception_other_form.html"
+            )
             return HttpResponse(template.render({}, request))
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
 
+    def post(self, request):
+        def _err_msg(resp):
+            if hasattr(resp, "pgerror"):
+                return resp.pgerror
+            if isinstance(resp, Exception):
+                return str(resp)
+            return None
 
-    def post(self, request, submitter_cont=submitter_content):
+        submitter_cont = apcd_database.get_submitter_for_exception(
+            request.user.username
+        )
+        if _err_msg(submitter_cont):
+            errors.append(_err_msg(submitter_cont))
         form = request.POST.copy()
         errors = []
-        sub_data = [sub for sub in submitter_cont if sub[3]==request.user.username]
+        sub_data = [sub for sub in submitter_cont if sub[3] == request.user.username][0]
+        if _err_msg(sub_data):
+            errors.append(_err_msg(sub_data))
 
-        if (request.user.is_authenticated):
+        if request.user.is_authenticated:
             username = request.user.username
             email = request.user.email
             first_name = request.user.first_name
             last_name = request.user.last_name
         else:
-            return HttpResponseRedirect('/')
-        
+            return HttpResponseRedirect("/")
+
         excep_resp = apcd_database.create_other_exception(form, sub_data)
         if _err_msg(excep_resp):
             errors.append(_err_msg(excep_resp))
@@ -195,36 +222,34 @@ class ExceptionOtherFormView(View):
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            template = loader.get_template('exception_submission_form/exception_submission_error.html')
+            template = loader.get_template(
+                "exception_submission_form/exception_submission_error.html"
+            )
             response = HttpResponse(template.render({}, request))
         else:
-            template = loader.get_template('exception_submission_form/exception_form_success.html')
+            template = loader.get_template(
+                "exception_submission_form/exception_form_success.html"
+            )
             response = HttpResponse(template.render({}, request))
 
         tracker.create_ticket(
-            Queue=RT_QUEUE,
-            Subject=subject,
-            Text=description,
-            Requestors=email
+            Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
         )
-        
-        return response
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(ExceptionOtherFormView, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, submitter_cont=submitter_content, *args, **kwargs):
+        return response
+
+    def get_context_data(self, submitter_cont, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
 
         def _set_submitter(sub):
             return {
-                'submitter_id': sub[0],
-                'submitter_code': sub[1],
-                'payor_code': sub[2],
-                'user_name': sub[3]
+                "submitter_id": sub[0],
+                "submitter_code": sub[1],
+                "payor_code": sub[2],
+                "user_name": sub[3],
             }
-        context['submitter'] = []
+
+        context["submitter"] = []
         for submitter, value in submitter_cont.items():
-            context['submitter'].append(_set_submitter(submitter))
+            context["submitter"].append(_set_submitter(submitter))
         return context

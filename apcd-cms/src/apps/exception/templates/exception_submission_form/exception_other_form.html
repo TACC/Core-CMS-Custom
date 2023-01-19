@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'exception/css/submission_form.css' %}">
+<link rel="stylesheet" href="{% static 'form/css/exception_submission_form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -49,22 +49,47 @@
       </div>
 
       <hr />
+
       <h4>Justification</h4>
-      <p>Provide rationale for the exception request, outlining the reasons why the organization is unable to
-        comply with the relevant requirements. Provide as much detail as possible regarding the exception request,
-        indicating the
-        specific submission requirements for which relief is being sought. If applicable, indicate how the organization
-        plans to become compliant.<sup>**</sup></p>
+
       <div class="field-wrapper textarea required">
+        Provide rationale for the exception request, outlining the reasons why the
+        organization is unable to comply with the relevant requirements. Provide as
+        much detail as possible regarding the exception request, indicating the
+        specific submission requirements for which relief is being sought. If applicable,
+        indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
+            id="justification-asterisk" style="padding-left: 0; margin-left: 0;">*</span></label>
+
         <div class="field-errors" style="display: none"></div>
 
-        <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
-          id="justification" required></textarea>
-        <p><span class="asterisk">*</span></p>
+        <textarea name="justification" cols="40" rows="10" class="textinput" type="justification" id="justification"
+          minlength="2" maxlength="2000"></textarea>
+        <div class="help-text">
+          2000 character limit
+        </div>
       </div>
 
       <hr />
       <h4>Acknowledgment of Terms</h4>
+      <div class="o-grid o-grid--col-auto-count">
+        <div class="field-wrapper textinput required">
+          <label for="requestor-name">
+            Requestor Name<span class="asterisk">*</span>
+          </label>
+          <div class="field-errors" style="display: none"></div>
+
+          <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
+        </div>
+        <div class="field-wrapper emailinput required">
+          <label for="requestor-email">
+            Requestor Email<span class="asterisk">*</span>
+          </label>
+          <div class="field-errors" style="display: none"></div>
+
+          <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
+            id="requestor-email" />
+        </div>
+      </div>
       <div class="field-wrapper textinput required"><label>
           I request an exception on behalf of:
         </label></div>
