@@ -32,7 +32,7 @@ class ExceptionFormView(View):
         return None
 
 class ExceptionThresholdFormView(View):
-    submitter_content = apcd_database.get_submitter_for_exception()
+    submitter_content = [{'submitter_id': 1, 'submitter_code': 'TESTGOLD', 'payor_code': 10000000, 'user_name': 'ahawks'}]
     '''threshold_fields_pv = apcd_database.get_fields_and_thresholds_pv()
     threshold_fields_dc = apcd_database.get_fields_and_thresholds_dc()
     threshold_fields_mc = apcd_database.get_fields_and_thresholds_mc()
@@ -154,7 +154,7 @@ class ExceptionThresholdFormView(View):
 
 
 class ExceptionOtherFormView(View):
-    submitter_content = apcd_database.get_submitter_for_exception()
+    submitter_content = [{'submitter_id': 1, 'submitter_code': 'TESTGOLD', 'payor_code': 10000000, 'user_name': 'ahawks'}]
     def get(self, request):
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             template = loader.get_template('exception_submission_form/exception_other_form.html')

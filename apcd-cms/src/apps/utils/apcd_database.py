@@ -457,8 +457,9 @@ def create_other_exception(form, sub_data):
             request_type,
             requested_expiration_date,
             explanation_justification,
+            outcome,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             sub_data[0],
@@ -468,8 +469,9 @@ def create_other_exception(form, sub_data):
             None,
             None,
             'Other',
-            form['exception_end_date'],
+            _clean_value(form['exception_end_date']),
             _clean_value(form['justification']),
+            "Pending",
             datetime.datetime.now()
         )
         cur.execute(operation, values)
@@ -513,8 +515,9 @@ def create_threshold_exception(form, sub_data):
             requested_threshold,
             requested_expiration_date,
             explanation_justification,
+            outcome,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             sub_data[0],
@@ -524,11 +527,12 @@ def create_threshold_exception(form, sub_data):
             None,
             None,
             'Threshold',
-            form['file_type'],
-            form['threshold-field'],
-            form['threshold-requested'],
-            form['expiration_date'],
+            _clean_value(form['file_type']),
+            _clean_value(form['threshold-field']),
+            _clean_value(form['threshold-requested']),
+            _clean_value(form['expiration_date']),
             _clean_value(form['justification']),
+            'Pending',
             datetime.datetime.now()
         )
         cur.execute(operation, values)

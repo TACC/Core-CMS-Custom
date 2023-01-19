@@ -87,7 +87,7 @@
                   <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
 
                   <input type="text" name="field-threshold-exception" required class="textinput"
-                    id="field-threshold-exception" placeholder="CDLXXX000" pattern="CDL+\s{2}+\d{3}">
+                    id="field-threshold-exception" placeholder="CDLXXX000" pattern="[/C/][/D/][/L/]\D{2}\d{3}]">
                   <div id="help-text-threshold-required" class="help-text">
                  Format CDLXXX000
                   </div>
@@ -138,8 +138,8 @@
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
-                    <input type="number" name="threshold-requested" required class="numberinput"
-                      id="threshold-requested" min="0" max="99" />
+                    <input type="text" name="threshold-requested" class="textinput"
+                      id="threshold-requested" inputmode="numeric" min="0" max="99" required />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
                   <div id="help-text-threshold-requested-required" class="help-text">
@@ -176,7 +176,10 @@
                 <div class="field-errors" style="display: none"></div>
 
                 <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
-                  id="justification"></textarea>
+                  id="justification" minlength="2" maxlength="2000"></textarea>
+                  <div class="help-text">
+                    2000 character limit
+                  </div>
                 </div>
               <hr />
               <h4>Acknowledgment of Terms</h4>
