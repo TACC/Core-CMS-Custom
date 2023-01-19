@@ -66,8 +66,13 @@
               </div>
               <hr />
             </div>
+
             <div id="exception_block_1">
-              <div>
+              <h4>Requested Threshold Reduction</h4>
+              <p>Please reference this <a href=https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXPACD-Common_%20Data_Layout.pdf>data submission guide</a> to 
+                find threshold field codes and minimum threshold percentages for your threshold reduction request.
+
+              </p>
                 <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
 
@@ -76,24 +81,23 @@
                   <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
                     pattern="\d{4}-\d{2}-\d{2}" required />
                 </div>
-              </div>
-
-              <hr />
-              <h4>Requested Threshold Reduction</h4>
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper select required id=field-threshold-exception name=field-threshold-exception">
+                <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper input required id=field-threshold-exception name=field-threshold-exception">
                   <div class="field-errors" style="display: none"></div>
+                  <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
 
-                  <label for="field-threshold-exception">Requested Field <span class="asterisk">*</span></label>
+                  <input type="text" name="field-threshold-exception" required class="textinput"
+                    id="field-threshold-exception" placeholder="CDLXXX000" pattern="CDL+\s{2}+\d{3}">
+                  <div id="help-text-threshold-required" class="help-text">
+                 Format CDLXXX000
+                  </div>
 
-                  <select name="field-threshold-exception" required="required" class="choicefield"
-                    id="field-threshold-exception" >
                     <!-- 
                   {% for #file_type in r.field_threshold_exception %}
                     <option>
                       {{r.field_threshold_exception.field_list_code}} - {{r.field_threshold_exception.field_list_value}}
                     </option> 
-                  {% endfor %} -->
+                  {% endfor %} 
                   <option value="none" selected disabled hidden>Select a Field</option>
                     <option value="bs1" data-file-type-id="mc">
                       MC: BS1
@@ -125,26 +129,26 @@
                     <option value="bs4" data-file-type-id="me">
                       ME: BS4
                     </option>
-                  </select>
+                  </select>-->
 
                 </div>
-
-                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
-                  <label for="threshold_requested">
-                    Threshold Request <span class="asterisk">*</span>
+                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix" >
+                  <label for="threshold-requested">
+                    Threshold Reduction <span class="asterisk">*</span>
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
-                    <input type="text" name="threshold_requested" required class="numberinput"
-                      id="threshold_requested" />
+                    <input type="number" name="threshold-requested" required class="numberinput"
+                      id="threshold-requested" min="0" max="99" />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
-                  <div id="help-text-threshold-required" class="help-text">
-                    Placeholder % Required
-                  </div>
+                  <div id="help-text-threshold-requested-required" class="help-text">
+                    Must be less than minimum <a href=https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXPACD-Common_%20Data_Layout.pdf>here.</a> 
+                    </div>
                 </div>
-              </div>
-              <h2 id="exception_header_2" style="display:none">Threshold Request Details 2</h2>
+              </div></div>
+
+              <!--<h2 id="exception_header_2" style="display:none">Threshold Request Details 2</h2>
               <div id="exception_block_2"></div>
               <h2 id="exception_header_3" style="display:none">Threshold Request Details 3</h2>
               <div id="exception_block_3"></div>
@@ -155,23 +159,25 @@
               <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Threshold
                 Exception </button>
               <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Threshold
-                Exception</button>
+                Exception</button>-->
               <hr />
+              <div class="field-wrapper textarea required">              
               <h4>Justification</h4>
-              <p>Provide rationale for the exception request, outlining the reasons why the organization is unable to
+              
+
+              <label for="justification">Provide rationale for the exception request, outlining the reasons why the organization is unable to
                 comply with the relevant requirements. Provide as much detail as possible regarding the exception
                 request,
                 indicating the
                 specific submission requirements for which relief is being sought. If applicable, indicate how the
                 organization
-                plans to become compliant.<sup>**</sup></p>
-              <div class="field-wrapper textarea required">
+                plans to become compliant.<span class="asterisk">*</span></label>
+
                 <div class="field-errors" style="display: none"></div>
 
                 <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
                   id="justification"></textarea>
-                <p><span class="asterisk">*</span></p>
-              </div>
+                </div>
               <hr />
               <h4>Acknowledgment of Terms</h4>
               <div class="field-wrapper textinput required"><label>
@@ -196,8 +202,6 @@
                     required id="accept-terms" />
                   Accept<span class="asterisk">*</span></label>
               </div>
-
-
               <div class="button-wrapper submit">
                 <button class="form-button" type="submit" value="Submit">
                   Submit
@@ -227,7 +231,9 @@
         {# Scripts #}
 
         <aside>
-          <!-- To let user add and remove exceptions -->
+          <!-- To make sure percentage is between 1 and less than 100-->
+
+          <!-- To let user add and remove exceptions 
           <script id="form-add-remove-exception" type="module">
             const addExceptionBtn = document.getElementById("exception-add-btn");
             const dropExceptionBtn = document.getElementById("exception-drop-btn");
@@ -320,8 +326,8 @@
               if (exceptions > 1) exceptions -= 1;
               btnStatus();
             });
-          </script>
-          <!-- To get file type to determine threshold fields in drop down -->
+          </script>-->
+          <!-- To get file type to determine threshold fields in drop down 
           <script id="get-file-type" type="module">
             const fileTypeSelector = document.getElementById('file_type');
             const fieldsByFile = document.getElementById('field-threshold-exception');
@@ -341,7 +347,7 @@
               //   o => e.target.value.includes(o.value)
               // ).map(o => o.outerHTML.join(' - '))
             })
-          </script>
+          </script>-->
 
           {# Footnotes #}
           <div class="o-section o-section--style-light">

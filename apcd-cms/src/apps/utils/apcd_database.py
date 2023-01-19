@@ -510,6 +510,7 @@ def create_threshold_exception(form, sub_data):
             data_file,
             field_number,
             required_threshold,
+            requested_threshold,
             requested_expiration_date,
             explanation_justification,
             created_at
@@ -523,9 +524,10 @@ def create_threshold_exception(form, sub_data):
             None,
             None,
             'Threshold',
-            form['type'],
+            form['file_type'],
             form['threshold-field'],
-            form['exception_end_date'],
+            form['threshold-requested'],
+            form['expiration_date'],
             _clean_value(form['justification']),
             datetime.datetime.now()
         )
