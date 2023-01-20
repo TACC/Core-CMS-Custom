@@ -86,7 +86,7 @@
     /* grabs dropdown option number selected by user via selectedIndex, 
       then grabs actual value associated with that option via 
       options[index].value */
-    selectedOption = actionsDropdown.options[dropdown.selectedIndex].value;
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
     modal_id = `${selectedOption}Modal_${reg_id}`;
     $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
     actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
