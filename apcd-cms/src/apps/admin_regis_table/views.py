@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter
+from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
 import logging
 
@@ -14,8 +14,19 @@ class RegistrationsTable(TemplateView):
     registrations_entities = get_registration_entities()
     registrations_contacts = get_registration_contacts()
     
-    def post(self, request, reg_cont=registrations_content):
+    def post(
+            self,
+            request,
+            reg_content=registrations_content,
+            reg_ents=registrations_entities,
+            reg_conts=registrations_contacts
+    ):
 
+        form = request.POST.copy()
+        reg_data = [reg for reg in reg_content if reg[0]==int(float(form['reg_id']))][0]
+        reg_ent_data = [reg_ent for reg_ent in reg_ents if reg_ent[1]==int(float(form['reg_id']))]
+        reg_cont_data = [reg_cont for reg_cont in reg_conts if reg_cont[1]==int(float(form['reg_id']))]
+        
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
@@ -23,19 +34,41 @@ class RegistrationsTable(TemplateView):
                 return str(resp)
             return None
         
-        form = request.POST.copy()
-        errors = []
-        reg_data = [reg for reg in reg_cont if reg[0]==int(float(form['reg_id']))][0]
+        def _new_submitter(form, reg_data=reg_data):
+            errors = []
+            
+            sub_resp = create_submitter(form, reg_data)
+            template = loader.get_template('create_submitter_success.html')
+            if _err_msg(sub_resp) or type(sub_resp) != int:
+                errors.append(_err_msg(sub_resp))
+                template = loader.get_template('create_submitter_error.html')
+
+            return template
         
-        sub_resp = create_submitter(form, reg_data)
-        template = loader.get_template('create_submitter_success.html')
-        if _err_msg(sub_resp) or type(sub_resp) != int:
-            errors.append(_err_msg(sub_resp))
-            template = loader.get_template('create_submitter_error.html')
+        def _edit_registration(form, reg_data=reg_data, reg_ent=reg_ent_data, reg_cont=reg_cont_data):
+            errors = []
+            reg_resp = update_registration(form, reg_data[0])
+            if not _err_msg(reg_resp) and type(reg_resp) == int:
+                for iteration in range(1, 6):
+                    contact_resp = update_registration_contact(form, reg_data[0], iteration, len(reg_cont))
+                    entity_resp = update_registration_entity(form, reg_data[0], iteration, len(reg_ent))
+                    if _err_msg(contact_resp):
+                        errors.append(_err_msg(contact_resp))
+                    if _err_msg(entity_resp):
+                        errors.append(_err_msg(entity_resp))
+                if len(errors) != 0:
+                    template = loader.get_template('edit_registration_error.html')
+                template = loader.get_template('edit_registration_success.html')
+            else:
+                errors.append(_err_msg(reg_resp))
+                template = loader.get_template('edit_registration_error.html')
+            return template
 
-        response = HttpResponse(template.render({}, request))
-        return response
-
+        if 'create-submitter-form' in form:
+            template = _new_submitter(form)
+        elif 'edit-registration-form' in form:
+            template = _edit_registration(form)
+        return HttpResponse(template.render({}, request))
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
@@ -71,6 +104,7 @@ class RegistrationsTable(TemplateView):
         def _set_entities(reg_ent):
             return {
                 'claim_val': reg_ent[0],
+                'ent_id': reg_ent[3],
                 'claim_and_enc_vol': reg_ent[2],
                 'license': reg_ent[4],
                 'naic': reg_ent[5],
@@ -86,7 +120,7 @@ class RegistrationsTable(TemplateView):
                 last_seven_digits = 7
                 all_ten_digits = 11
                 placement_corrector = 1 #To add formatting chars in correct places
-                for curr_position in range(len(formatted_num_list)):
+                for curr_position in range(len(formatted_num_list) + 1):
                     placement_position = curr_position + placement_corrector
                     if curr_position == last_four_digits or curr_position == last_seven_digits:
                         formatted_num_list.insert(placement_position,'-')
@@ -96,6 +130,7 @@ class RegistrationsTable(TemplateView):
                 return ''.join(reversed(formatted_num_list))
 
             return {
+                'cont_id': reg_cont[0],
                 'notif': reg_cont[2],
                 'role': reg_cont[3],
                 'name': reg_cont[4],
@@ -110,17 +145,84 @@ class RegistrationsTable(TemplateView):
                 'state': reg[16],
                 'address': reg[14],
                 'zip': reg[17],
-                'files_type': [
-                        "Medical" if reg[6] else None,
-                        "Provider" if reg[5] else None,
-                        "Eligibility/Enrollment" if reg[4] else None,
-                        "Pharmacy" if reg[7] else None,
-                        "Dental" if reg[8] else None
-                ],
+                'files_type': {
+                        "Eligibility/Enrollment": reg[4],
+                        "Provider": reg[5],
+                        "Medical": reg[6],
+                        "Pharmacy": reg[7],
+                        "Dental": reg[8]
+                },
                 'for_self': reg[9],
                 'sub_method': reg[10],
                 'entities': [_set_entities(ent) for ent in reg_ent],
-                'contacts': [_set_contacts(cont) for cont in reg_cont]
+                'contacts': [_set_contacts(cont) for cont in reg_cont],
+                'org_types': {
+                    'Insurance Carrier': 'Insurance Carrier', 
+                    'Plan Administrator': 'Plan Administrator¹ (TPA/ASO)',
+                    'Pbm': 'Pharmacy Benefit Manager (PBM)'
+                },
+                'us_state_list': [
+                    'AL - Alabama',
+                    'AK - Alaska',
+                    'AS - American Samoa',
+                    'AR - Arkansas',
+                    'AZ - Arizona',
+                    'CA - California',
+                    'CO - Colorado',
+                    'CT - Connecticut',
+                    'DE - Delaware',
+                    'DC - District of Columbia',
+                    'FL - Florida',
+                    'GA - Georgia',
+                    'GU - Guam',
+                    'HI - Hawaii',
+                    'ID - Idaho',
+                    'IL - Illinois',
+                    'IN - Indiana',
+                    'IA - Iowa',
+                    'KS - Kansas',
+                    'KY - Kentucky',
+                    'LA - Louisiana',
+                    'ME - Maine',
+                    'MD - Maryland',
+                    'MA - Massachusetts',
+                    'MI - Michigan',
+                    'MN - Minnesota',
+                    'MS - Mississippi',
+                    'MO - Missouri',
+                    'MT - Montana',
+                    'NE - Nebraska',
+                    'NH - New Hampshire',
+                    'NJ - New Jersey',
+                    'NM - New Mexico',
+                    'NV - Nevada',
+                    'NY - New York',
+                    'NC - North Carolina',
+                    'ND - North Dakota',
+                    'MP - Northern Mariana Islands',
+                    'OH - Ohio',
+                    'OK - Oklahoma',
+                    'OR - Oregon',
+                    'PA - Pennsylvania',
+                    'RI - Rhode Island',
+                    'SC - South Carolina',
+                    'SD - South Dakota',
+                    'TN - Tennessee',
+                    'TX - Texas',
+                    'UT - Utah',
+                    'VT - Vermont',
+                    'VA - Virginia',
+                    'VI - Virgin Islands',
+                    'WA - Washington',
+                    'WV - West Virginia',
+                    'WI - Wisconsin',
+                    'WY - Wyoming'
+                ],
+                'sub_methods': {
+                    'sftp': 'SFTP',
+                    'https': 'HTTPS',
+                    'usb': 'Encrypted USB Drive'
+                }
             }
 
         context['header'] = ['Business Name', 'Type', 'Location', 'Submission Method', 'Registration Status', 'Files to Submit', 'Actions']
