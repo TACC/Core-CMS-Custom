@@ -1,8 +1,18 @@
 /*Text Style*/
-[id^="justification-asterisk"] {
+#justification-asterisk {
   padding-left: 0;
   margin-left: 0;
 }
+
+/*To stop buttons from appearing next to required suffix*/
+input[id^="threshold-requested"]::-webkit-inner-spin-button,
+input[id^="threshold-requested"]::-webkit-outer-spin-button
+ {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance:textfield;
+}
+
 /* Field Widths */
 /* Field Layouts */
 

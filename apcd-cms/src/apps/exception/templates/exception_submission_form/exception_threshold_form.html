@@ -92,47 +92,8 @@
                     id="field-threshold-exception" placeholder="CDLXX000" pattern="CDL[a-zA-Z]{2}\d{3}" minlength="8"
                     maxlength="8" title="Must have format CDLXX000">
                   <div id="help-text-threshold-required" class="help-text">
-                    Format CDLXXX000
+                    Format CDLXX000
                   </div>
-
-                  <!-- 
-                  {% for #file_type in r.field_threshold_exception %}
-                    <option>
-                      {{r.field_threshold_exception.field_list_code}} - {{r.field_threshold_exception.field_list_value}}
-                    </option> 
-                  {% endfor %} 
-                  <option value="none" selected disabled hidden>Select a Field</option>
-                    <option value="bs1" data-file-type-id="mc">
-                      MC: BS1
-                    </option>
-
-                    <option value="bs2" data-file-type-id="mc">
-                      MC: BS2
-                    </option>
-
-                    <option value="bs3" data-file-type-id="mc">
-                      MC: BS3
-                    </option>
-
-                    <option value="bs4" data-file-type-id="mc">
-                      MC: BS4
-                    </option>
-                    <option value="bs1" data-file-type-id="me">
-                      ME: BS1
-                    </option>
-
-                    <option value="bs2" data-file-type-id="me">
-                      ME: BS2
-                    </option>
-
-                    <option value="bs3" data-file-type-id="me">
-                      ME: BS3
-                    </option>
-
-                    <option value="bs4" data-file-type-id="me">
-                      ME: BS4
-                    </option>
-                  </select>-->
 
                 </div>
                 <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
@@ -141,8 +102,8 @@
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
-                    <input type="text" name="threshold-requested" class="textinput" id="threshold-requested"
-                      inputmode="numeric" min="0" max="99" required />
+                    <input type="number" display=name="threshold-requested" class="textinput" id="threshold-requested"
+                      inputmode="numeric" min="0" max="99" style="" required />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
                   <div id="help-text-threshold-requested-required" class="help-text">
@@ -152,19 +113,6 @@
                 </div>
               </div>
             </div>
-
-            <!--<h2 id="exception_header_2" style="display:none">Threshold Request Details 2</h2>
-              <div id="exception_block_2"></div>
-              <h2 id="exception_header_3" style="display:none">Threshold Request Details 3</h2>
-              <div id="exception_block_3"></div>
-              <h2 id="exception_header_4" style="display:none">Threshold Request Details 4</h2>
-              <div id="exception_block_4"></div>
-              <h2 id="exception_header_5" style="display:none">Threshold Request Details 5</h2>
-              <div id="exception_block_5"></div>
-              <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Threshold
-                Exception </button>
-              <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Threshold
-                Exception</button>-->
             <hr />
             <h4>Justification</h4>
             <div class="field-wrapper textarea required">
@@ -275,123 +223,6 @@
                   $('#expiration-date').attr('max', maxDate);
               });
               </script>
-          <!-- To make sure percentage is between 1 and less than 100-->
-
-          <!-- To let user add and remove exceptions 
-          <script id="form-add-remove-exception" type="module">
-            const addExceptionBtn = document.getElementById("exception-add-btn");
-            const dropExceptionBtn = document.getElementById("exception-drop-btn");
-            const btnStatus = (() => {
-              addExceptionBtn.disabled = (exceptions == 5 ? true : false);
-              dropExceptionBtn.disabled = (exceptions == 1 ? true : false);
-            });
-            let exceptions = 1;
-            btnStatus();
-
-            addExceptionBtn.addEventListener("click", () => {
-              if (exceptions < 5) exceptions += 1;
-              let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
-              document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
-              exceptionBlock.innerHTML = `
-        <hr/> 
-                <div class="o-grid o-grid--col-auto-count">
-          <div>
-            <div class="field-wrapper numberinput required">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="expiration-date">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
-
-              <input type="date" name="expiration-date" class="numeric" id="expiration-date"
-                inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" required />
-              </div></div></div>
-            <hr />
-            <h4>Requested Threshold Reduction</h4>
-            <div class="o-grid o-grid--col-auto-count">
-              <div class="field-wrapper select required name=field-threshold-exception">
-                <div class="field-errors" style="display: none"></div>
-      
-                <label for="field-threshold-exception"> Requested Field <span class="asterisk">*</span></label>
-      
-      
-                <select
-                  name="field-threshold-exception"
-                  required="required"
-                  class="choicefield"
-                  id="field-threshold-exception"
-                >
-                  <option>
-                    Placeholder 1
-                    </option>
-      
-                  <option >
-                    Placeholder 2
-                  </option>
-      
-                  <option >
-                    Placeholder 3
-                  </option>
-      
-                </select>
-      
-              </div>
-              <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
-                  <label for="threshold_requested">
-                    Threshold Request <span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-                  <div class="s-affixed-input-wrapper">
-                  <input type="text" name="threshold_requested" required class="numberinput" id="threshold_requested" />
-                  <span class="s-affixed-input-wrapper__suffix">%</span>
-                </div> 
-                <div id="help-text-threshold-requested" class="help-text">
-                  Placeholder % Required
-                </div>
-              </div> </div></div>              
-        `;
-              const inputs = Array.from(
-                document.querySelectorAll(`
-            input[name=expiration-date-${exceptions}],
-            input[name=requested-field-${exceptions}],
-            input[name=threshold-requested-${exceptions}]
-          `)
-              );
-              const inputListener = e => {
-                inputs.filter(i => i !== e.target)
-                  .forEach(i => (i.required = !e.target.value.length));
-              };
-              inputs.forEach(i => i.addEventListener('input', inputListener));
-              btnStatus();
-            });
-
-            dropExceptionBtn.addEventListener("click", () => {
-              document.getElementById(`exception_header_${exceptions}`).style.display = 'none';
-              let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
-              exceptionBlock.innerHTML = '';
-              if (exceptions > 1) exceptions -= 1;
-              btnStatus();
-            });
-          </script>-->
-          <!-- To get file type to determine threshold fields in drop down 
-          <script id="get-file-type" type="module">
-            const fileTypeSelector = document.getElementById('file_type');
-            const fieldsByFile = document.getElementById('field-threshold-exception');
-            const fieldsOpts = [...fieldsByFile.children];
-            fileTypeSelector.addEventListener("change", (e) => {
-              let fileType = fileTypeSelector.value;
-
-              fieldsOpts.forEach(opt => {
-                if (opt.dataset.fileTypeId == fileType) {
-                  opt.hidden = false;
-                } else {
-                  opt.hidden = true;
-                }
-                opt.selected = false;
-              });
-              // fieldsByFile.innerHTML = fieldsOpts.filter(
-              //   o => e.target.value.includes(o.value)
-              // ).map(o => o.outerHTML.join(' - '))
-            })
-          </script>-->
           </aside>
 
           {# Footnotes #}
