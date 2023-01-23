@@ -29,7 +29,7 @@
       <div class="forms">
         <div class="description">
           <h4>Exception Time Period</h4>
-          <p>Provide the time period for your exception request.</p>
+          <p>Provide the requested expiration date for your request.</p>
         </div>
 
         <div class="form-wrapper">
@@ -41,7 +41,7 @@
 
                 <label>Expiration Date<sup>*</sup><span class="asterisk">*</span> </label>
 
-                <input type="date" name="exception-end-date" class="numeric" id="exception-end-date" inputmode="numeric"
+                <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
             </div>
@@ -141,22 +141,25 @@
 
       {# Scripts #}
       <aside>
-        {# RFE: Do not duplicate entity markup #}
-        {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
-        <!-- TODO To require exception is not longer than a year -->
+        <!-- To require exception is not longer than a year -->
         <script id="form-exception_length_less_than_year" type="module">
-          const expiration = document.querySelector("input[id='exception_end_date']");
-          //stopped here
-          expiration.addEventListener('blur', inputListener)
-
-          /*function inputListener
-            const date = e.target.value
-            const now = new Date(date).getTime()
-              /pseudo code
-              if (date <= now)
-                error
-              if (date < now + 1 year
-                error*/
+          $(function(){
+              var dtToday = new Date();
+              
+              var month = dtToday.getMonth() + 1;
+              var day = dtToday.getDate();
+              var year = dtToday.getFullYear();
+              if(month < 10)
+                  month = '0' + month.toString();
+              if(day < 10)
+                  day = '0' + day.toString();
+              
+              var minDate = dtToday.toISOString().substr(0, 10);
+              $('#expiration-date').attr('min', minDate);
+              year = year + 1;
+              var maxDate = year + '-' + month + '-' + day;    
+              $('#expiration-date').attr('max', maxDate);
+          });
         </script>
       </aside>
 
