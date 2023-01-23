@@ -135,37 +135,6 @@ class ExceptionThresholdFormView(View):
             context["submitter"].append(_set_submitter(submitter))
         return context
 
-
-"""  def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not apcd_groups.is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(ExceptionThresholdFormView, self).dispatch(request, *args, **kwargs)
-    
-    def get_field_data(self, threshold_fields_pv=threshold_fields_pv, threshold_fields_dc=threshold_fields_dc,
-        threshold_fields_mc=threshold_fields_mc, threshold_fields_me=threshold_fields_me, threshold_fields_pc=threshold_fields_pc, *args, **kwargs):
-        context = super(ExceptionThresholdFormView, self).get_field_data(*args, **kwargs)
-
-        def _set_select_options(excep, excep_type):
-            return {
-                _set_threshold_values(threshold_fields_dc if excep_type.file_type == 'dc' else None,
-                threshold_fields_mc if excep_type.file_type == 'mc' else None,
-                threshold_fields_me if excep_type.file_type == 'me' else None,
-                threshold_fields_pv if excep_type.file_type == 'pv' else None,
-                threshold_fields_pc if excep_type.file_type == 'pc' else None)
-            }
-        def _set_threshold_values(excep_type):
-            return {
-                'field_code': excep_type[0],
-                'field_name': excep_type[1],
-                'field_threshold': excep_type[2]
-            }
-        context['option'] = []
-        for fields in excep:
-            context['option'].append(_set_select_options(fields, fields_per_file))
-        
-        return context """
-
-
 class ExceptionOtherFormView(View):
     def get(self, request):
         if request.user.is_authenticated and has_apcd_group(request.user):
@@ -176,6 +145,14 @@ class ExceptionOtherFormView(View):
         return HttpResponseRedirect("/")
 
     def post(self, request):
+        if request.user.is_authenticated:
+            username = request.user.username
+            email = request.user.email
+            first_name = request.user.first_name
+            last_name = request.user.last_name
+        else:
+            return HttpResponseRedirect("/")
+
         def _err_msg(resp):
             if hasattr(resp, "pgerror"):
                 return resp.pgerror
@@ -193,14 +170,6 @@ class ExceptionOtherFormView(View):
         sub_data = [sub for sub in submitter_cont if sub[3] == request.user.username][0]
         if _err_msg(sub_data):
             errors.append(_err_msg(sub_data))
-
-        if request.user.is_authenticated:
-            username = request.user.username
-            email = request.user.email
-            first_name = request.user.first_name
-            last_name = request.user.last_name
-        else:
-            return HttpResponseRedirect("/")
 
         excep_resp = apcd_database.create_other_exception(form, sub_data)
         if _err_msg(excep_resp):
