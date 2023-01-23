@@ -70,7 +70,10 @@ class AdminSubmissionsTable(TemplateView):
             submission_logs = get_submission_logs(submission[0])
             submission_with_logs.append(_set_submissions(submission, submission_logs))
 
-        page_num = self.request.GET.get('page')
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
 
         p = Paginator(submission_with_logs, 10)
 
