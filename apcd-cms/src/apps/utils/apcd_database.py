@@ -627,7 +627,6 @@ def get_submission_logs(submission_id):
         if conn is not None:
             conn.close()
 
-
 def _acceptable_entity(form, iteration):
     required_keys = [
         "total_claims_value_{}".format(iteration),
