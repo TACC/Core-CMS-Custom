@@ -77,7 +77,6 @@ class RegistrationsTable(TemplateView):
 
     def get_context_data(self, registrations_content=registrations_content, registrations_entities=registrations_entities, registrations_contacts=registrations_contacts, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
-        actions = 'View'
 
         def _set_registration(reg, reg_ents, reg_conts):
             return {
@@ -98,7 +97,6 @@ class RegistrationsTable(TemplateView):
                     'sub_method': reg[10],
                     'reg_status': reg[11].title(),
                     'reg_id': reg[0],
-                    'actions': actions,
                     'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts)
                 }
         def _set_entities(reg_ent):
