@@ -10,9 +10,9 @@
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
-  <h1>List Submissions</h1>
+  <h1>View Submissions</h1>
   <hr />
-  <p style="margin-bottom: 30px">All completed submissions by a user</p>
+  <p style="margin-bottom: 30px">A list of submissions by a user</p>
   <hr />
   <table id="submissionTable" class="submission-table">
       <thead>
@@ -25,11 +25,11 @@
       <tbody>
           {% for r in rows %}
               <tr>
+                  <td>{{r.received_timestamp}}</td>
                   <td>{{r.submission_id}}</td>
-                  <td>{{r.file_name}}</td>
-                  <td>{{r.status}}</td>
+                  <td colspan="2">{{r.file_name}}</td>
                   <td>{{r.outcome}}</td>
-                  <td>{{r.created}}</td>
+                  <td>{{r.status}}</td>
                   <td>
                     {% include "view_submission_logs_modal.html" %}
                     <a href='' data-toggle="modal" data-target="#viewSubmissionLogsModal_{{r.submission_id}}" data-backdrop="static">View Logs</a>

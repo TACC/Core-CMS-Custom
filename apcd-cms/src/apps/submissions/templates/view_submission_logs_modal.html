@@ -12,23 +12,21 @@
         <div class="modal-body">
           <div>
             <dl>
-              <h4>Logs</h4>
+              <h4 class="title">Logs</h4>
               {% for log in r.view_modal_content %}
-                <dd>          
+                <div class="modal-section">
                     <dl class="c-data-list--is-vert c-data-list--is-wide">
-                    <dt class="c-data-list__key">Log ID</dt>
-                    <dd class="c-data-list__value">{{log.log_id}}</dd>
-                    <dt class="c-data-list__key">Submitter ID</dt>
-                    <dd class="c-data-list__value">{{log.submitter_id}}</dd>                       
-                    <dt class="c-data-list__key">File Type</dt>                
-                    <dd class="c-data-list__value">{{log.file_type}}</dd>
-                    <dt class="c-data-list__key">Validation Suite</dt>                
-                    <dd class="c-data-list__value">{{log.validation_suite}}</dd>
-                    <dt class="c-data-list__key">Outcome</dt>                
-                    <dd class="c-data-list__value">{{log.outcome}}</dd>
+                        <dt class="c-data-list__key">Log ID</dt>
+                        <dd class="c-data-list__value">{{log.log_id}}</dd>                    
+                        <dt class="c-data-list__key">File Type</dt>                
+                        <dd class="c-data-list__value">{{log.file_type}}</dd>
+                        <dt class="c-data-list__key">Validation Suite</dt>                
+                        <dd class="c-data-list__value">{{log.validation_suite}}</dd>
+                        <dt class="c-data-list__key">Outcome</dt>                
+                        <dd class="c-data-list__value">{{log.outcome}}</dd>
                     </dl>
-                </dd>
-                <hr>
+                    <hr>
+                </div>
               {% endfor %}
               </dd>
             </dl>
