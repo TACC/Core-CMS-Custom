@@ -1,6 +1,5 @@
 from django.urls import path
 from apps.submissions.views import SubmissionsTable
-from apps.admin_regis_table.urls import RegistrationsTable
 from apps.exception.views import ExceptionFormView, ExceptionThresholdFormView, ExceptionOtherFormView
 
 app_name = 'submissions'

@@ -34,13 +34,6 @@ class ExceptionFormView(View):
 
 
 class ExceptionThresholdFormView(View):
-
-    """threshold_fields_pv = apcd_database.get_fields_and_thresholds_pv()
-    threshold_fields_dc = apcd_database.get_fields_and_thresholds_dc()
-    threshold_fields_mc = apcd_database.get_fields_and_thresholds_mc()
-    threshold_fields_me = apcd_database.get_fields_and_thresholds_me()
-    threshold_fields_pc = apcd_database.get_fields_and_thresholds_pc()"""
-
     def get(self, request):
         if request.user.is_authenticated and has_apcd_group(request.user):
             template = loader.get_template(
