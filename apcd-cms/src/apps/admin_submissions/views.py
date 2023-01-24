@@ -82,8 +82,7 @@ class AdminSubmissionsTable(TemplateView):
         except EmptyPage:
             page = p.page(1)
 
-        context['rows'] = page
+        context['page'] = page
         context['page_num'] = int(page_num)
-        context['num_pages'] = range(1, p.num_pages + 1)
 
         return context
