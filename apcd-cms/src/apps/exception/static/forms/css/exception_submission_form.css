@@ -14,6 +14,9 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
 }
 
 /* Field Widths */
+#threshold-requested {
+  min-width: 25ch;
+}
 /* Field Layouts */
 
 [id^="extension_block_"] {
