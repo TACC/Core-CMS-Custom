@@ -627,6 +627,43 @@ def get_submission_logs(submission_id):
         if conn is not None:
             conn.close()
 
+def get_all_submissions():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host='apcd-psql-dev.tacc.utexas.edu',
+            dbname='pipeline',
+            user='portal_user',
+            password='99/11=Nine',
+            port=5432,
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                submissions.submission_id,
+                submissions.submitter_id, 
+                submissions.zip_file_name,
+                submissions.received_timestamp,
+                submissions.status,
+                submissions.outcome,
+                users.user_name,
+                users.org_name
+            FROM submissions
+            JOIN submitter_users
+                ON submissions.submitter_id = submitter_users.submitter_id
+            JOIN users
+                ON submitter_users.user_id = users.user_id
+            ORDER BY submissions.received_timestamp DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def _acceptable_entity(form, iteration):
     required_keys = [

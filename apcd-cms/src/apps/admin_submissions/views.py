@@ -1,16 +1,16 @@
 from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group
+from apps.utils.apcd_groups import is_apcd_admin
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic import View
+from django.core.paginator import Paginator, EmptyPage
 from requests.auth import HTTPBasicAuth
 import logging
 from django.views.generic.base import TemplateView
 import rt
-from apps.utils.apcd_database import get_submissions, get_submission_logs
+from apps.utils.apcd_database import get_submission_logs, get_all_submissions
 from apps.utils.apcd_groups import is_apcd_admin
-import datetime
 
 
 logger = logging.getLogger(__name__)
@@ -20,31 +20,30 @@ RT_UN = getattr(settings, 'RT_UN', '')
 RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
-class SubmissionsTable(TemplateView):
+class AdminSubmissionsTable(TemplateView):
 
-    template_name = 'list_submissions.html'
+    template_name = 'list_admin_submissions.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated or not is_apcd_admin(request.user): 
             return HttpResponseRedirect('/')
-        return super(SubmissionsTable, self).dispatch(request, *args, **kwargs)
+        return super(AdminSubmissionsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
 
-        context = super(SubmissionsTable, self).get_context_data(*args, **kwargs)
+        context = super(AdminSubmissionsTable, self).get_context_data(*args, **kwargs)
 
-        user = self.request.user.username
-
-        submission_content = get_submissions(user)
+        submission_content = get_all_submissions()
 
         def _set_submissions(submission, submission_logs):
             return {
-                'received_timestamp': submission[4],
                 'submission_id': submission[0],
-                'submitter_id': submission[2],
-                'file_name': submission[3],
-                'status': submission[8],
-                'outcome': submission[9],
+                'submitter_id': submission[1],
+                'file_name': submission[2],
+                'status': submission[4],
+                'outcome': submission[5],
+                'received_timestamp': submission[3],
+                'org_name': submission[7],
                 'view_modal_content': _set_submission_logs(submission_logs)
             }
 
@@ -63,11 +62,28 @@ class SubmissionsTable(TemplateView):
             return modal_content
 
 
-        context['header'] = ['Received','Submission ID', 'File Name', ' ', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Actions']
         context['rows'] = [] 
+        submission_with_logs = []
 
         for submission in submission_content:
             submission_logs = get_submission_logs(submission[0])
-            context['rows'].append(_set_submissions(submission, submission_logs))
+            submission_with_logs.append(_set_submissions(submission, submission_logs))
+
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
+
+        p = Paginator(submission_with_logs, 10)
+
+        try:
+            page = p.page(page_num)
+        except EmptyPage:
+            page = p.page(1)
+
+        context['rows'] = page
+        context['page_num'] = int(page_num)
+        context['num_pages'] = range(1, p.num_pages + 1)
 
         return context
