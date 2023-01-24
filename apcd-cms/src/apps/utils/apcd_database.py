@@ -345,6 +345,174 @@ def create_registration_contact(form, reg_id, iteration):
         if conn is not None:
             conn.close()
 
+def create_submitter(form, reg_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO submitters(
+            registration_id,
+            org_name,
+            file_me,
+            file_pv,
+            file_mc,
+            file_pc,
+            file_dc,
+            submission_method,
+            submitting_for_self,
+            submitter_code,
+            payor_code,
+            encryption_key,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            reg_data[0],
+            reg_data[13],
+            reg_data[6],
+            reg_data[5],
+            reg_data[4],
+            reg_data[7],
+            reg_data[8],
+            reg_data[10],
+            reg_data[9],
+            form['submit_code'],
+            _set_int(form['payor_code']),
+            form['encryption_key'],
+            datetime.datetime.now()
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_submissions(user):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+
+        query = """SELECT
+            *
+            FROM submissions
+            WHERE submitter_id 
+            IN (SELECT submitter_users.submitter_id FROM submitter_users WHERE user_id = %s )
+        """
+
+        cur = conn.cursor()
+        cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_submission_logs(submission_id):
+    
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+
+
+        query = """SELECT 
+        submission_logs.log_id, 
+        submission_logs.submission_id, 
+        submission_logs.file_type, 
+        submission_logs.validation_suite, 
+        submission_logs.json_log, 
+        submission_logs.outcome 
+        FROM submission_logs 
+        WHERE submission_id= %s
+        """
+
+        cur = conn.cursor()
+        cur.execute(query, (submission_id,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_all_submissions():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host='apcd-psql-dev.tacc.utexas.edu',
+            dbname='pipeline',
+            user='portal_user',
+            password='99/11=Nine',
+            port=5432,
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                submissions.submission_id,
+                submissions.submitter_id, 
+                submissions.zip_file_name,
+                submissions.received_timestamp,
+                submissions.status,
+                submissions.outcome,
+                users.user_name,
+                users.org_name
+            FROM submissions
+            JOIN submitter_users
+                ON submissions.submitter_id = submitter_users.submitter_id
+            JOIN users
+                ON submitter_users.user_id = users.user_id
+            ORDER BY submissions.received_timestamp DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def _acceptable_entity(form, iteration):
     required_keys = [
