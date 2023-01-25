@@ -81,7 +81,7 @@ class RegistrationsTable(TemplateView):
         def _set_registration(reg, reg_ents, reg_conts):
             return {
                     'biz_name': reg[13],
-                    'type': reg[12].title(),
+                    'type': reg[12].title() if reg[12] else None,
                     'location': '{city}, {state}'.format
                         (
                             city=reg[15],
@@ -138,7 +138,7 @@ class RegistrationsTable(TemplateView):
         def _set_modal_content(reg, reg_ent, reg_cont):
             return {
                 'biz_name': reg[13],
-                'type': reg[12].title(),
+                'type': reg[12].title() if reg[12] else None,
                 'city': reg[15],
                 'state': reg[16],
                 'address': reg[14],
