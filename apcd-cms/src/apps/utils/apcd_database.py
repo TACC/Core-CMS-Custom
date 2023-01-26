@@ -19,7 +19,7 @@ def get_user_role(user):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         operation = """SELECT roles.role_name FROM roles WHERE role_id
                     IN (SELECT users.role_id FROM users
@@ -49,7 +49,7 @@ def get_registrations():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         query = """SELECT
                 registrations.registration_id,
@@ -95,7 +95,7 @@ def create_registration(form):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         operation = """INSERT INTO registrations(
@@ -122,14 +122,14 @@ def create_registration(form):
             datetime.datetime.now(),
             None,
             None,
-            True if "types_of_files_eligibility_enrollment" in form else False,
-            True if "types_of_files_provider" in form else False,
-            True if "types_of_files_medical" in form else False,
-            True if "types_of_files_pharmacy" in form else False,
-            True if "types_of_files_dental" in form else False,
-            True if form['on-behalf-of'] == "true" else False,
+            True if 'types_of_files_eligibility_enrollment' in form else False,
+            True if 'types_of_files_provider' in form else False,
+            True if 'types_of_files_medical' in form else False,
+            True if 'types_of_files_pharmacy' in form else False,
+            True if 'types_of_files_dental' in form else False,
+            True if form['on-behalf-of'] == 'true' else False,
             _clean_value(form['submission_method']),
-            "Received",
+            'Received',
             _clean_value(form['type']),
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
@@ -162,7 +162,7 @@ def get_registration_entities():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         query = """SELECT
                 registration_entities.total_claims_value,
@@ -205,7 +205,7 @@ def create_registration_entity(form, reg_id, iteration):
                 _set_int(form['naic_company_code_{}'.format(iteration)]),
                 _set_int(form['total_covered_lives_{}'.format(iteration)]),
                 _clean_value(form['entity_name_{}'.format(iteration)]),
-                _clean_value(form['fein_{}'.format(iteration)]),
+                _clean_value(form['fein_{}'.format(iteration)])
             )
         else:
             values = (
@@ -236,7 +236,7 @@ def create_registration_entity(form, reg_id, iteration):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -263,7 +263,7 @@ def get_registration_contacts():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         query = """SELECT
                 registration_contacts.registration_contact_id,
@@ -298,7 +298,7 @@ def create_registration_contact(form, reg_id, iteration):
                 return
             values = (
                 reg_id,
-                True if "contact_notifications_{}'.format(iteration) in form else False,
+                True if 'contact_notifications_{}'.format(iteration) in form else False,
                 _clean_value(form['contact_type_{}'.format(iteration)]),
                 _clean_value(form['contact_name_{}'.format(iteration)]),
                 re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
@@ -307,7 +307,7 @@ def create_registration_contact(form, reg_id, iteration):
         else:
             values = (
                 reg_id,
-                True if "contact_notifications" in form else False,
+                True if 'contact_notifications' in form else False,
                 _clean_value(form['contact_type']),
                 _clean_value(form['contact_name']),
                 re.sub("[^0-9]", "", form['contact_phone']),
@@ -329,7 +329,7 @@ def create_registration_contact(form, reg_id, iteration):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -345,7 +345,6 @@ def create_registration_contact(form, reg_id, iteration):
         if conn is not None:
             conn.close()
 
-
 def create_submitter(form, reg_data):
     cur = None
     conn = None
@@ -356,7 +355,7 @@ def create_submitter(form, reg_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         operation = """INSERT INTO submitters(
@@ -388,7 +387,7 @@ def create_submitter(form, reg_data):
             form['submit_code'],
             _set_int(form['payor_code']),
             form['encryption_key'],
-            datetime.datetime.now(),
+            datetime.datetime.now()
         )
         cur.execute(operation, values)
         conn.commit()
@@ -405,7 +404,7 @@ def create_submitter(form, reg_data):
             conn.close()
 
 
-def get_submitter_for_exception(u):
+def get_submitter_for_exception(user):
     cur = None
     conn = None
     try:
@@ -415,17 +414,17 @@ def get_submitter_for_exception(u):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
         FROM submitters 
         LEFT JOIN submitter_users 
         ON submitters.submitter_id = submitter_users.submitter_id 
-        WHERE user_id = user AND submitter_id = submitter
+        WHERE user_id = (%s) AND submitter_id = submitter
         """
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (user,))
         return cur.fetchall()
 
     except Exception as error:
@@ -448,7 +447,7 @@ def create_other_exception(form, sub_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
@@ -503,7 +502,7 @@ def create_threshold_exception(form, sub_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
@@ -565,7 +564,7 @@ def get_submissions(user):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
 
         query = """SELECT
@@ -588,7 +587,6 @@ def get_submissions(user):
         if conn is not None:
             conn.close()
 
-
 def get_submission_logs(submission_id):
 
     cur = None
@@ -600,7 +598,7 @@ def get_submission_logs(submission_id):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode='require',
+            sslmode='require'
         )
         query = """SELECT
         submission_logs.log_id,
@@ -653,7 +651,8 @@ def get_all_submissions():
                 ON submissions.submitter_id = submitter_users.submitter_id
             JOIN users
                 ON submitter_users.user_id = users.user_id
-            ORDER BY submissions.received_timestamp DESC"""
+            ORDER BY submissions.received_timestamp DESC
+        """
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -668,15 +667,18 @@ def _acceptable_entity(form, iteration):
         'total_claims_value_{}'.format(iteration),
         'claims_encounters_volume_{}'.format(iteration),
         'total_covered_lives_{}'.format(iteration),
-        'entity_name_{}'.format(iteration),
+        'entity_name_{}'.format(iteration)
     ]
     requires_one = [
         'naic_company_code_{}'.format(iteration),
         'license_number_{}'.format(iteration),
-        'fein_{}'.format(iteration),
+        'fein_{}'.format(iteration)
     ]
     if all(key in form and form[key] for key in required_keys):
-        return next((True for key in requires_one if key), False)
+        return next(
+            (True for key in requires_one if key),
+            False
+        )
     return False
 
 
@@ -685,21 +687,25 @@ def _acceptable_contact(form, iteration):
         'contact_type_{}'.format(iteration),
         'contact_name_{}'.format(iteration),
         'contact_phone_{}'.format(iteration),
-        'contact_email_{}'.format(iteration),
+        'contact_email_{}'.format(iteration)
     ]
     return all(key in form and form[key] for key in required_keys)
 
 
 def _clean_email(email):
-    pattern = re.compile(
-        r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""
-    )
+    pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-
+    z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-
+    \x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:
+    [a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:
+    (?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-
+    9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-
+    \x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
     result = pattern.match(email)
     return result.string if result else None
 
 
 def _clean_value(value):
-    return re.sub("[^a-zA-Z0-9 \.\-\,]", "", value)
+    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
 
 
 def _set_int(value):
