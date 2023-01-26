@@ -635,7 +635,7 @@ def get_submissions(user):
         query = """SELECT
             *
             FROM submissions
-            WHERE submitter_id 
+            WHERE submitter_id
             IN (SELECT submitter_users.submitter_id FROM submitter_users WHERE user_id = %s )
         """
 
@@ -653,7 +653,7 @@ def get_submissions(user):
             conn.close()
 
 def get_submission_logs(submission_id):
-    
+
     cur = None
     conn = None
     try:
@@ -667,14 +667,14 @@ def get_submission_logs(submission_id):
         )
 
 
-        query = """SELECT 
-        submission_logs.log_id, 
-        submission_logs.submission_id, 
-        submission_logs.file_type, 
-        submission_logs.validation_suite, 
-        submission_logs.json_log, 
-        submission_logs.outcome 
-        FROM submission_logs 
+        query = """SELECT
+        submission_logs.log_id,
+        submission_logs.submission_id,
+        submission_logs.file_type,
+        submission_logs.validation_suite,
+        submission_logs.json_log,
+        submission_logs.outcome
+        FROM submission_logs
         WHERE submission_id= %s
         """
 
@@ -696,17 +696,17 @@ def get_all_submissions():
     conn = None
     try:
         conn = psycopg2.connect(
-            host='apcd-psql-dev.tacc.utexas.edu',
-            dbname='pipeline',
-            user='portal_user',
-            password='99/11=Nine',
-            port=5432,
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode='require'
         )
         query = """
-            SELECT 
+            SELECT
                 submissions.submission_id,
-                submissions.submitter_id, 
+                submissions.submitter_id,
                 submissions.zip_file_name,
                 submissions.received_timestamp,
                 submissions.status,
@@ -719,7 +719,7 @@ def get_all_submissions():
             JOIN users
                 ON submitter_users.user_id = users.user_id
             ORDER BY submissions.received_timestamp DESC
-        """ 
+        """
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
