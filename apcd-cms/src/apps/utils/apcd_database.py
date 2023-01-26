@@ -19,7 +19,7 @@ def get_user_role(user):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         operation = """SELECT roles.role_name FROM roles WHERE role_id
                     IN (SELECT users.role_id FROM users
@@ -49,7 +49,7 @@ def get_registrations():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         query = """SELECT
                 registrations.registration_id,
@@ -95,7 +95,7 @@ def create_registration(form):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         operation = """INSERT INTO registrations(
@@ -162,7 +162,7 @@ def get_registration_entities():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         query = """SELECT
                 registration_entities.total_claims_value,
@@ -236,7 +236,7 @@ def create_registration_entity(form, reg_id, iteration):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -263,7 +263,7 @@ def get_registration_contacts():
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         query = """SELECT
                 registration_contacts.registration_contact_id,
@@ -329,7 +329,7 @@ def create_registration_contact(form, reg_id, iteration):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -356,7 +356,7 @@ def create_submitter(form, reg_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         operation = """INSERT INTO submitters(
@@ -415,7 +415,7 @@ def get_submitter_for_exception(u):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
@@ -448,7 +448,7 @@ def create_other_exception(form, sub_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
@@ -503,7 +503,7 @@ def create_threshold_exception(form, sub_data):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
@@ -565,7 +565,7 @@ def get_submissions(user):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
 
         query = """SELECT
@@ -600,7 +600,7 @@ def get_submission_logs(submission_id):
             user=APCD_DB['user'],
             password=APCD_DB['password'],
             port=APCD_DB['port'],
-            sslmode="require",
+            sslmode='require',
         )
         query = """SELECT
         submission_logs.log_id,
