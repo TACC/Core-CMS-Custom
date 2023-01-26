@@ -14,11 +14,11 @@ def get_user_role(user):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         operation = """SELECT roles.role_name FROM roles WHERE role_id
@@ -44,11 +44,11 @@ def get_registrations():
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         query = """SELECT
@@ -90,11 +90,11 @@ def create_registration(form):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -127,15 +127,15 @@ def create_registration(form):
             True if "types_of_files_medical" in form else False,
             True if "types_of_files_pharmacy" in form else False,
             True if "types_of_files_dental" in form else False,
-            True if form["on-behalf-of"] == "true" else False,
-            _clean_value(form["submission_method"]),
+            True if form['on-behalf-of'] == "true" else False,
+            _clean_value(form['submission_method']),
             "Received",
-            _clean_value(form["type"]),
-            _clean_value(form["business-name"]),
-            _clean_value(form["mailing-address"]),
-            _clean_value(form["city"]),
-            form["state"][:2],
-            form["zip_code"],
+            _clean_value(form['type']),
+            _clean_value(form['business-name']),
+            _clean_value(form['mailing-address']),
+            _clean_value(form['city']),
+            form['state'][:2],
+            form['zip_code'],
         )
         cur.execute(operation, values)
         conn.commit()
@@ -157,11 +157,11 @@ def get_registration_entities():
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         query = """SELECT
@@ -199,24 +199,24 @@ def create_registration_entity(form, reg_id, iteration):
                 return
             values = (
                 reg_id,
-                _set_int(form["total_claims_value_{}".format(iteration)]),
-                _set_int(form["claims_encounters_volume_{}".format(iteration)]),
-                _set_int(form["license_number_{}".format(iteration)]),
-                _set_int(form["naic_company_code_{}".format(iteration)]),
-                _set_int(form["total_covered_lives_{}".format(iteration)]),
-                _clean_value(form["entity_name_{}".format(iteration)]),
-                _clean_value(form["fein_{}".format(iteration)]),
+                _set_int(form['total_claims_value_{}'.format(iteration)]),
+                _set_int(form['claims_encounters_volume_{}'.format(iteration)]),
+                _set_int(form['license_number_{}'.format(iteration)]),
+                _set_int(form['naic_company_code_{}'.format(iteration)]),
+                _set_int(form['total_covered_lives_{}'.format(iteration)]),
+                _clean_value(form['entity_name_{}'.format(iteration)]),
+                _clean_value(form['fein_{}'.format(iteration)]),
             )
         else:
             values = (
                 reg_id,
-                _set_int(form["total_claims_value"]),
-                _set_int(form["claims_encounters_volume"]),
-                _set_int(form["license_number"]),
-                _set_int(form["naic_company_code"]),
-                _set_int(form["total_covered_lives"]),
-                _clean_value(form["entity_name"]),
-                _clean_value(form["fein"]),
+                _set_int(form['total_claims_value']),
+                _set_int(form['claims_encounters_volume']),
+                _set_int(form['license_number']),
+                _set_int(form['naic_company_code']),
+                _set_int(form['total_covered_lives']),
+                _clean_value(form['entity_name']),
+                _clean_value(form['fein']),
             )
 
         operation = """INSERT INTO registration_entities(
@@ -231,11 +231,11 @@ def create_registration_entity(form, reg_id, iteration):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -258,11 +258,11 @@ def get_registration_contacts():
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         query = """SELECT
@@ -298,20 +298,20 @@ def create_registration_contact(form, reg_id, iteration):
                 return
             values = (
                 reg_id,
-                True if "contact_notifications_{}".format(iteration) in form else False,
-                _clean_value(form["contact_type_{}".format(iteration)]),
-                _clean_value(form["contact_name_{}".format(iteration)]),
-                re.sub("[^0-9]", "", form["contact_phone_{}".format(iteration)]),
-                _clean_email(form["contact_email_{}".format(iteration)]),
+                True if "contact_notifications_{}'.format(iteration) in form else False,
+                _clean_value(form['contact_type_{}'.format(iteration)]),
+                _clean_value(form['contact_name_{}'.format(iteration)]),
+                re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
+                _clean_email(form['contact_email_{}'.format(iteration)]),
             )
         else:
             values = (
                 reg_id,
                 True if "contact_notifications" in form else False,
-                _clean_value(form["contact_type"]),
-                _clean_value(form["contact_name"]),
-                re.sub("[^0-9]", "", form["contact_phone"]),
-                _clean_email(form["contact_email"]),
+                _clean_value(form['contact_type']),
+                _clean_value(form['contact_name']),
+                re.sub("[^0-9]", "", form['contact_phone']),
+                _clean_email(form['contact_email']),
             )
 
         operation = """INSERT INTO registration_contacts(
@@ -324,11 +324,11 @@ def create_registration_contact(form, reg_id, iteration):
         ) VALUES (%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -351,11 +351,11 @@ def create_submitter(form, reg_data):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -385,9 +385,9 @@ def create_submitter(form, reg_data):
             reg_data[8],
             reg_data[10],
             reg_data[9],
-            form["submit_code"],
-            _set_int(form["payor_code"]),
-            form["encryption_key"],
+            form['submit_code'],
+            _set_int(form['payor_code']),
+            form['encryption_key'],
             datetime.datetime.now(),
         )
         cur.execute(operation, values)
@@ -410,11 +410,11 @@ def get_submitter_for_exception(u):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -443,11 +443,11 @@ def create_other_exception(form, sub_data):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -470,11 +470,11 @@ def create_other_exception(form, sub_data):
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
             "Other",
-            _clean_value(form["exception_end_date"]),
-            _clean_value(form["justification"]),
+            _clean_value(form['exception_end_date']),
+            _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
@@ -498,11 +498,11 @@ def create_threshold_exception(form, sub_data):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         cur = conn.cursor()
@@ -529,14 +529,14 @@ def create_threshold_exception(form, sub_data):
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
             "Threshold",
-            _clean_value(form["file_type"]),
-            _clean_value(form["threshold-field"]),
-            _clean_value(form["threshold-requested"]),
-            _clean_value(form["expiration_date"]),
-            _clean_value(form["justification"]),
+            _clean_value(form['file_type']),
+            _clean_value(form['threshold-field']),
+            _clean_value(form['threshold-requested']),
+            _clean_value(form['expiration_date']),
+            _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
@@ -560,11 +560,11 @@ def get_submissions(user):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
 
@@ -595,11 +595,11 @@ def get_submission_logs(submission_id):
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode="require",
         )
         query = """SELECT
@@ -653,7 +653,7 @@ def get_all_submissions():
                 ON submissions.submitter_id = submitter_users.submitter_id
             JOIN users
                 ON submitter_users.user_id = users.user_id
-            ORDER BY submissions.received_timestamp DESC
+            ORDER BY submissions.received_timestamp DESC"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -665,15 +665,15 @@ def get_all_submissions():
 
 def _acceptable_entity(form, iteration):
     required_keys = [
-        "total_claims_value_{}".format(iteration),
-        "claims_encounters_volume_{}".format(iteration),
-        "total_covered_lives_{}".format(iteration),
-        "entity_name_{}".format(iteration),
+        'total_claims_value_{}'.format(iteration),
+        'claims_encounters_volume_{}'.format(iteration),
+        'total_covered_lives_{}'.format(iteration),
+        'entity_name_{}'.format(iteration),
     ]
     requires_one = [
-        "naic_company_code_{}".format(iteration),
-        "license_number_{}".format(iteration),
-        "fein_{}".format(iteration),
+        'naic_company_code_{}'.format(iteration),
+        'license_number_{}'.format(iteration),
+        'fein_{}'.format(iteration),
     ]
     if all(key in form and form[key] for key in required_keys):
         return next((True for key in requires_one if key), False)
@@ -682,10 +682,10 @@ def _acceptable_entity(form, iteration):
 
 def _acceptable_contact(form, iteration):
     required_keys = [
-        "contact_type_{}".format(iteration),
-        "contact_name_{}".format(iteration),
-        "contact_phone_{}".format(iteration),
-        "contact_email_{}".format(iteration),
+        'contact_type_{}'.format(iteration),
+        'contact_name_{}'.format(iteration),
+        'contact_phone_{}'.format(iteration),
+        'contact_email_{}'.format(iteration),
     ]
     return all(key in form and form[key] for key in required_keys)
 
