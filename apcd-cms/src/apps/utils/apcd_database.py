@@ -135,7 +135,7 @@ def create_registration(form):
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
             form['state'][:2],
-            form['zip_code'],
+            form['zip_code']
         )
         cur.execute(operation, values)
         conn.commit()
@@ -216,7 +216,7 @@ def create_registration_entity(form, reg_id, iteration):
                 _set_int(form['naic_company_code']),
                 _set_int(form['total_covered_lives']),
                 _clean_value(form['entity_name']),
-                _clean_value(form['fein']),
+                _clean_value(form['fein'])
             )
 
         operation = """INSERT INTO registration_entities(
@@ -302,7 +302,7 @@ def create_registration_contact(form, reg_id, iteration):
                 _clean_value(form['contact_type_{}'.format(iteration)]),
                 _clean_value(form['contact_name_{}'.format(iteration)]),
                 re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
-                _clean_email(form['contact_email_{}'.format(iteration)]),
+                _clean_email(form['contact_email_{}'.format(iteration)])
             )
         else:
             values = (
@@ -311,7 +311,7 @@ def create_registration_contact(form, reg_id, iteration):
                 _clean_value(form['contact_type']),
                 _clean_value(form['contact_name']),
                 re.sub("[^0-9]", "", form['contact_phone']),
-                _clean_email(form['contact_email']),
+                _clean_email(form['contact_email'])
             )
 
         operation = """INSERT INTO registration_contacts(
@@ -600,6 +600,8 @@ def get_submission_logs(submission_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
+
+        
         query = """SELECT
         submission_logs.log_id,
         submission_logs.submission_id,
@@ -693,15 +695,7 @@ def _acceptable_contact(form, iteration):
 
 
 def _clean_email(email):
-    pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-
-    z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-
-    \x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:
-    [a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:
-    (?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-
-    9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-
-    \x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
-    result = pattern.match(email)
-    return result.string if result else None
+    pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
 
 
 def _clean_value(value):
