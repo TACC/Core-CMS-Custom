@@ -601,7 +601,7 @@ def get_submission_logs(submission_id):
             sslmode='require'
         )
 
-        
+   
         query = """SELECT
         submission_logs.log_id,
         submission_logs.submission_id,
