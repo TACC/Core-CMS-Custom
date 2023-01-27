@@ -24,7 +24,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                 <td>{{r.received_timestamp}}</td>
                 <td>{{r.org_name}}</td>
@@ -41,9 +41,28 @@
   </table>
 
     <div class="pagination">
-        {% for p in num_pages %}
-            <a class="{% if p == page_num %}active{% endif %} " href="{% url 'admin_submission:admin_submissions' %}?page={{p}}">{{p}}</a>
+        {% if page.has_previous %}
+            <a href="{% url 'admin_submission:admin_submissions' %}?page={{page.previous_page_number}}"><</a>
+        {% endif %}
+
+        {% if page.number|add:'-2' > 0 %}
+            <a href="{% url 'admin_submission:admin_submissions' %}?page={{page.number|add:'-2'}}">&hellip;</a>
+        {% endif %}
+        
+        {% for i in page.paginator.page_range %}
+            {% if i > page.number|add:'-2' and i < page.number|add:'2' %}
+                <a class="{% if i == page_num %}active{% endif %} " href="{% url 'admin_submission:admin_submissions' %}?page={{i}}">{{i}}</a>
+            {% endif %}
         {% endfor %}
+
+        {% if page.paginator.num_pages >= page.number|add:'2' %}
+            <a href="{% url 'admin_submission:admin_submissions' %}?page={{page.number|add:'2'}}">&hellip;</a>
+            <a href="{% url 'admin_submission:admin_submissions' %}?page={{page.paginator.num_pages}}">{{page.paginator.num_pages}}</a>
+        {% endif %}
+
+        {% if page.has_next %}
+            <a href="{% url 'admin_submission:admin_submissions' %}?page={{page.next_page_number}}">></a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
