@@ -39,8 +39,8 @@
             <dd>
               <dl class="c-data-list--is-vert c-data-list--is-wide">
                 <dt class="c-data-list__key">Types of Files</dt>
-                {% for file_type in r.view_modal_content.files_type %}
-                  {% if file_type != None %}
+                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
+                  {% if file_type_selected %}
                     <dd class="c-data-list__value">{{file_type}}</dd>
                   {% endif %}
                 {% endfor %}
