@@ -41,7 +41,7 @@
                 class="radioselect"
                 required
                 id="on-behalf-of_1"
-                {% if not r.view_modal_content.for_self %}
+                {% if not r.view_modal_content.for_self and r is not None %}
                     checked
                 {% endif %}
                 />
@@ -68,11 +68,11 @@
             id="type"
         >
             {% if r.view_modal_content %}
-            {% for type, display_text in r.view_modal_content.org_types.items %}
-            <option value="{{ type|lower }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
-                {{display_text}}
-            </option>
-            {% endfor %}
+                {% for type, display_text in r.view_modal_content.org_types.items %}
+                <option value="{{ type|lower }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
+                    {{display_text}}
+                </option>
+                {% endfor %}
             {% else %}
             <option value="Insurance Carrier">Insurance Carrier</option>
 
@@ -148,11 +148,11 @@
             id="state"
         >
             {% if r.view_modal_content %}
-            {% for state in r.view_modal_content.us_state_list %}
-            <option value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
-                {{ state }}
-            </option>
-            {% endfor %}
+                {% for state in r.view_modal_content.us_state_list %}
+                <option value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
+                    {{ state }}
+                </option>
+                {% endfor %}
             {% else %}
             <option value="AL - Alabama">AL - Alabama</option>
             <option value="AK - Alaska">AK - Alaska</option>
@@ -282,7 +282,6 @@
                     ><input
                     type="checkbox"
                     name="types_of_files_provider"
-                    required
                     id="types_of_files_provider"
                     />Provider</label
                 >
@@ -292,7 +291,6 @@
                     ><input
                     type="checkbox"
                     name="types_of_files_medical"
-                    required
                     id="types_of_files_medical"
                     />Medical</label
                 >
@@ -302,7 +300,6 @@
                     ><input
                     type="checkbox"
                     name="types_of_files_pharmacy"
-                    required
                     id="types_of_files_pharmacy"
                     />Pharmacy</label
                 >
@@ -312,7 +309,6 @@
                     ><input
                     type="checkbox"
                     name="types_of_files_dental"
-                    required
                     id="types_of_files_dental"
                     />Dental</label
                 >
@@ -464,7 +460,7 @@
                     inputmode="numeric"
                     minlength="5"
                     maxlength="10"
-                    pattern="\d{5}|\d{10}"
+                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
                     required
                     value="{{ entity.license }}"
                     />
@@ -487,7 +483,7 @@
                     inputmode="numeric"
                     minlength="5"
                     maxlength="5"
-                    pattern="\d+"
+                    pattern="^[1-9]\d{4}"
                     required
                     value="{{ entity.naic }}"
                     />
@@ -647,7 +643,7 @@
                     inputmode="numeric"
                     minlength="5"
                     maxlength="10"
-                    pattern="\d{5}|\d{10}"
+                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
                     required
                 />
 
@@ -669,7 +665,7 @@
                     inputmode="numeric"
                     minlength="5"
                     maxlength="5"
-                    pattern="\d+"
+                    pattern="^[1-9]\d{4}"
                     required
                 />
 

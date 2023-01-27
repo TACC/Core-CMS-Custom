@@ -85,7 +85,7 @@
               inputmode="numeric"
               minlength="5"
               maxlength="10"
-              pattern="\\d{5}|\\d{10}"
+              pattern="^[1-9]\\d{4}|^[1-9]\\d{9}"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
@@ -104,7 +104,7 @@
               inputmode="numeric"
               minlength="5"
               maxlength="5"
-              pattern="\\d+"
+              pattern="^[1-9]\\d{4}"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
@@ -317,25 +317,6 @@
         if (contacts > 1) contacts -= 1;
         btnStatus();
       });
-    </script>
-
-    <!-- To require at least one "types of files" choice -->
-    <script id="form-types_of_files-required" type="module">
-      const inputs = Array.from(
-        document.querySelectorAll(`
-        input[name=types_of_files_eligibility_enrollment{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=types_of_files_provider{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=types_of_files_medical{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=types_of_files_pharmacy{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=types_of_files_dental{% if r %}_{{r.reg_id}}{% endif %}]`)
-      );
-      const inputListener = e => {
-        inputs.filter(i => i !== e.target)
-              .forEach(i => (i.required = !e.target.checked));
-      };
-
-      inputs.forEach(i => i.addEventListener('input', inputListener));
-    </script>
 
     <!-- To require at least one "entity" identifier value -->
     <script id="form-entity_id-required" type="module">
