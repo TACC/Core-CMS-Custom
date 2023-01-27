@@ -514,6 +514,59 @@ def get_all_submissions():
         if conn is not None:
             conn.close()
 
+def get_all_exceptions():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                exceptions.exception_id, 
+                exceptions.submitter_id,
+                exceptions.requestor_name,
+                exceptions.request_type,
+                exceptions.explanation_justification,
+                exceptions.outcome,
+                exceptions.created_at,
+                exceptions.updated_at,
+                exceptions.submitter_code,
+                exceptions.payor_code,
+                exceptions.user_id,
+                exceptions.requestor_email,
+                exceptions.data_file,
+                exceptions.field_number,
+                exceptions.required_threshold,
+                exceptions.requested_threshold,
+                exceptions.requested_expiration_date,
+                exceptions.approved_threshold,
+                exceptions.approved_expiration_date,
+                exceptions.status,
+                exceptions.notes,
+                users.org_name
+            FROM exceptions
+            JOIN submitter_users
+                ON exceptions.submitter_id = submitter_users.submitter_id
+            JOIN users
+                ON submitter_users.user_id = users.user_id
+            ORDER BY exceptions.created_at DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def _acceptable_entity(form, iteration):
     required_keys = [
         'total_claims_value_{}'.format(iteration),
