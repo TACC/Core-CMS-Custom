@@ -151,6 +151,47 @@ def create_registration(form):
         if conn is not None:
             conn.close()
 
+def update_registration(form, reg_id):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = f"""UPDATE registrations
+            SET
+            file_pv = {True if 'types_of_files_provider' in form else False},
+            file_mc = {True if 'types_of_files_medical' in form else False},
+            file_pc = {True if 'types_of_files_pharmacy' in form else False},
+            file_dc = {True if 'types_of_files_dental' in form else False},
+            submitting_for_self = {True if form['on-behalf-of'] == 'true' else False},
+            submission_method = {_clean_value(form['submission_method'])},
+            org_type = {_clean_value(form['type'])},
+            business_name = {_clean_value(form['business-name'])},
+            mail_address = {_clean_value(form['mailing-address'])},
+            city = {_clean_value(form['city'])},
+            state = {form['state'][:2]},
+            zip = {form['zip_code']},
+            updated_at={datetime.datetime.now}
+        WHERE registration_id = {reg_id}"""
+        cur.execute(operation)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 
 def get_registration_entities():
     cur = None
@@ -189,34 +230,36 @@ def get_registration_entities():
             conn.close()
 
 
-def create_registration_entity(form, reg_id, iteration):
+def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     cur = None
     conn = None
     values = ()
     try:
         if iteration > 1:
-            if not _acceptable_entity(form, iteration):
+            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
                 return
+            str_end = f'{reg_id}_{iteration}' if from_update_reg else iteration
             values = (
                 reg_id,
-                _set_int(form['total_claims_value_{}'.format(iteration)]),
-                _set_int(form['claims_encounters_volume_{}'.format(iteration)]),
-                _set_int(form['license_number_{}'.format(iteration)]),
-                _set_int(form['naic_company_code_{}'.format(iteration)]),
-                _set_int(form['total_covered_lives_{}'.format(iteration)]),
-                _clean_value(form['entity_name_{}'.format(iteration)]),
-                _clean_value(form['fein_{}'.format(iteration)])
+                _set_int(form['total_claims_value_{}'.format(str_end)]),
+                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+                _set_int(form['license_number_{}'.format(str_end)]),
+                _set_int(form['naic_company_code_{}'.format(str_end)]),
+                _set_int(form['total_covered_lives_{}'.format(str_end)]),
+                _clean_value(form['entity_name_{}'.format(str_end)]),
+                _clean_value(form['fein_{}'.format(str_end)])
             )
-        else:
+        else:            
+            str_end = f'_{reg_id}_{iteration}' if from_update_reg else None
             values = (
                 reg_id,
-                _set_int(form['total_claims_value']),
-                _set_int(form['claims_encounters_volume']),
-                _set_int(form['license_number']),
-                _set_int(form['naic_company_code']),
-                _set_int(form['total_covered_lives']),
-                _clean_value(form['entity_name']),
-                _clean_value(form['fein'])
+                _set_int(form[f'total_claims_value{str_end}']),
+                _set_int(form[f'claims_encounters_volume{str_end}']),
+                _set_int(form[f'license_number{str_end}']),
+                _set_int(form[f'naic_company_code{str_end}']),
+                _set_int(form[f'total_covered_lives{str_end}']),
+                _clean_value(form[f'entity_name{str_end}']),
+                _clean_value(form[f'fein{str_end}'])
             )
 
         operation = """INSERT INTO registration_entities(
@@ -238,6 +281,92 @@ def create_registration_entity(form, reg_id, iteration):
             port=APCD_DB['port'],
             sslmode='require'
         )
+        cur = conn.cursor()
+        cur.execute(operation, values)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def update_registration_entity(form, reg_id, iteration, no_entities):
+    cur = None
+    conn = None
+    values = ()
+    try:
+        if not _acceptable_entity(form, iteration, reg_id):
+            if iteration <= no_entities:
+                return delete_registration_entity(reg_id, form[f'ent_id_{iteration}'])
+            return
+        if iteration > no_entities:
+            return create_registration_entity(form, reg_id, iteration, True)
+        str_end = f'{reg_id}_{iteration}'
+        values = (
+            _set_int(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)])
+        )
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = f"""UPDATE registration_entities
+            SET
+            total_claims_value = {values[0]},
+            claims_and_encounters_volume = {values[1]},
+            license_number = {values[2]},
+            naic_company_code = {values[3]},
+            total_covered_lives = {values[4]},
+            entity_name = '{values[5]}',
+            fein = {values[6]}
+            WHERE registration_id = {reg_id} AND registration_entity_id = {form[f'ent_id_{iteration}']}
+        """
+        cur = conn.cursor()
+        cur.execute(operation)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def delete_registration_entity(reg_id, ent_id):
+    cur = None
+    conn = None
+    values = ()
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = f"""DELETE FROM registration_entities
+            WHERE registration_id = {reg_id} AND registration_entity_id = {ent_id}
+        """
         cur = conn.cursor()
         cur.execute(operation, values)
         conn.commit()
@@ -288,30 +417,32 @@ def get_registration_contacts():
             conn.close()
 
 
-def create_registration_contact(form, reg_id, iteration):
+def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
     cur = None
     conn = None
     values = ()
     try:
         if iteration > 1:
-            if not _acceptable_contact(form, iteration):
+            if not _acceptable_contact(form, iteration, reg_id if from_update_reg else None):
                 return
+            str_end = f'{reg_id}_{iteration}' if from_update_reg else iteration
             values = (
                 reg_id,
-                True if 'contact_notifications_{}'.format(iteration) in form else False,
-                _clean_value(form['contact_type_{}'.format(iteration)]),
-                _clean_value(form['contact_name_{}'.format(iteration)]),
-                re.sub("[^0-9]", "", form['contact_phone_{}'.format(iteration)]),
-                _clean_email(form['contact_email_{}'.format(iteration)])
+                True if 'contact_notifications_{}'.format(str_end) in form else False,
+                _clean_value(form['contact_type_{}'.format(str_end)]),
+                _clean_value(form['contact_name_{}'.format(str_end)]),
+                re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
+                _clean_email(form['contact_email_{}'.format(str_end)])
             )
         else:
+            str_end = f'_{reg_id}_{iteration}' if from_update_reg else None
             values = (
                 reg_id,
-                True if 'contact_notifications' in form else False,
-                _clean_value(form['contact_type']),
-                _clean_value(form['contact_name']),
-                re.sub("[^0-9]", "", form['contact_phone']),
-                _clean_email(form['contact_email'])
+                True if f'contact_notifications{str_end}' in form else False,
+                _clean_value(form[f'contact_type{str_end}']),
+                _clean_value(form[f'contact_name{str_end}']),
+                re.sub("[^0-9]", "", form[f'contact_phone{str_end}']),
+                _clean_email(form[f'contact_email{str_end}'])
             )
 
         operation = """INSERT INTO registration_contacts(
@@ -344,6 +475,89 @@ def create_registration_contact(form, reg_id, iteration):
             cur.close()
         if conn is not None:
             conn.close()
+
+
+def update_registration_contact(form, reg_id, iteration, no_contacts):
+    cur = None
+    conn = None
+    values = ()
+    try:
+        if not _acceptable_contact(form, iteration, reg_id):
+            if iteration < no_contacts: # contact is not in form but was in original contact list -> need to delete
+                return delete_registration_contact(reg_id, form[f'cont_id_{iteration}'])
+            return
+        if iteration > no_contacts: # contact is in form but not in original list -> need to create
+            return create_registration_contact(form, reg_id, iteration)
+        str_end = f'{reg_id}_{iteration}'
+        values = (
+            True if 'contact_notifications_{}'.format(str_end) in form else False,
+            _clean_value(form['contact_type_{}'.format(str_end)]),
+            _clean_value(form['contact_name_{}'.format(str_end)]),
+            re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
+            _clean_email(form['contact_email_{}'.format(str_end)])
+        )
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = f"""UPDATE registration_contacts
+            SET
+            notify_flag = {values[0]},
+            contact_type = '{values[1]}',
+            contact_name = '{values[2]}',
+            contact_phone = {values[3]},
+            contact_email = '{values[4]}'
+            WHERE registration_id = {reg_id} AND registration_contact_id = {form[f'cont_id_{iteration}']}
+        """
+        cur = conn.cursor()
+        cur.execute(operation, values)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def delete_registration_contact(reg_id, cont_id):
+    cur = None
+    conn = None
+    values = ()
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = f"""DELETE FROM registration_contacts
+            WHERE registration_id = {reg_id} AND registration_contact_id = {cont_id}
+        """
+        cur = conn.cursor()
+        cur.execute(operation, values)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 
 def create_submitter(form, reg_data):
     cur = None
@@ -405,6 +619,7 @@ def create_submitter(form, reg_data):
         if conn is not None:
             conn.close()
 
+
 def get_submissions(user):
     cur = None
     conn = None
@@ -422,7 +637,7 @@ def get_submissions(user):
         query = """SELECT
             *
             FROM submissions
-            WHERE submitter_id 
+            WHERE submitter_id
             IN (SELECT submitter_users.submitter_id FROM submitter_users WHERE user_id = %s )
         """
 
@@ -440,7 +655,7 @@ def get_submissions(user):
             conn.close()
 
 def get_submission_logs(submission_id):
-    
+
     cur = None
     conn = None
     try:
@@ -454,14 +669,14 @@ def get_submission_logs(submission_id):
         )
 
 
-        query = """SELECT 
-        submission_logs.log_id, 
-        submission_logs.submission_id, 
-        submission_logs.file_type, 
-        submission_logs.validation_suite, 
-        submission_logs.json_log, 
-        submission_logs.outcome 
-        FROM submission_logs 
+        query = """SELECT
+        submission_logs.log_id,
+        submission_logs.submission_id,
+        submission_logs.file_type,
+        submission_logs.validation_suite,
+        submission_logs.json_log,
+        submission_logs.outcome
+        FROM submission_logs
         WHERE submission_id= %s
         """
 
@@ -483,17 +698,17 @@ def get_all_submissions():
     conn = None
     try:
         conn = psycopg2.connect(
-            host='apcd-psql-dev.tacc.utexas.edu',
-            dbname='pipeline',
-            user='portal_user',
-            password='99/11=Nine',
-            port=5432,
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
             sslmode='require'
         )
         query = """
-            SELECT 
+            SELECT
                 submissions.submission_id,
-                submissions.submitter_id, 
+                submissions.submitter_id,
                 submissions.zip_file_name,
                 submissions.received_timestamp,
                 submissions.status,
@@ -506,7 +721,7 @@ def get_all_submissions():
             JOIN users
                 ON submitter_users.user_id = users.user_id
             ORDER BY submissions.received_timestamp DESC
-        """ 
+        """
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -516,17 +731,18 @@ def get_all_submissions():
         if conn is not None:
             conn.close()
 
-def _acceptable_entity(form, iteration):
+def _acceptable_entity(form, iteration, reg_id=None):
+    str_end = f'{reg_id}_{iteration}' if reg_id else iteration
     required_keys = [
-        'total_claims_value_{}'.format(iteration),
-        'claims_encounters_volume_{}'.format(iteration),
-        'total_covered_lives_{}'.format(iteration),
-        'entity_name_{}'.format(iteration)
+        'total_claims_value_{}'.format(str_end),
+        'claims_encounters_volume_{}'.format(str_end),
+        'total_covered_lives_{}'.format(str_end),
+        'entity_name_{}'.format(str_end)
     ]
     requires_one = [
-        'naic_company_code_{}'.format(iteration),
-        'license_number_{}'.format(iteration),
-        'fein_{}'.format(iteration)
+        'naic_company_code_{}'.format(str_end),
+        'license_number_{}'.format(str_end),
+        'fein_{}'.format(str_end)
     ]
     if all(key in form and form[key] for key in required_keys):
         return next(
@@ -536,12 +752,13 @@ def _acceptable_entity(form, iteration):
     return False
 
 
-def _acceptable_contact(form, iteration):
+def _acceptable_contact(form, iteration, reg_id=None):
+    str_end = f'{reg_id}_{iteration}' if reg_id else iteration
     required_keys = [
-        'contact_type_{}'.format(iteration),
-        'contact_name_{}'.format(iteration),
-        'contact_phone_{}'.format(iteration),
-        'contact_email_{}'.format(iteration)
+        'contact_type_{}'.format(str_end),
+        'contact_name_{}'.format(str_end),
+        'contact_phone_{}'.format(str_end),
+        'contact_email_{}'.format(str_end)
     ]
     return all(key in form and form[key] for key in required_keys)
 
