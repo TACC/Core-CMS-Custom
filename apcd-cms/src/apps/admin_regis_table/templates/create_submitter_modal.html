@@ -39,11 +39,11 @@
           </article>
         </div>
 
-        <form method="POST" action="" class="c-form">
+        <form method="POST" action="" class="c-form" name="create-submitter-form">
           <h4>Submitter Data</h4>
 
           {% csrf_token %}
-          <input type="hidden" name="_token" value>
+          <input type="hidden" name="create-submitter-form" value>
           <input type="hidden" name="reg_id" value="{{r.reg_id}}">
 
           <div class="c-form__field">
