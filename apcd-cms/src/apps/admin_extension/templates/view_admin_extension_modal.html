@@ -1,0 +1,43 @@
+<div id="viewAdminExtensionsModal_{{r.extension_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Exception Details</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&#xe912;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <dl>
+              <h4>Details</h4>
+                <div class="modal-section">
+                    <dl class="c-data-list--is-vert c-data-list--is-wide">
+                        <dt class="c-data-list__key">Last Updated</dt>
+                        <dd class="c-data-list__value">{{r.updated_at}}</dd> 
+                        <dt class="c-data-list__key">Requestor</dt>
+                        <dd class="c-data-list__value">{{r.requestor_name}}</dd> 
+                        <dt class="c-data-list__key">Requestor Email</dt>
+                        <dd class="c-data-list__value">{{r.requestor_name}}</dd> 
+                        <dt class="c-data-list__key">Extension Type</dt>
+                        <dd class="c-data-list__value">{{r.extension_type}}</dd> 
+                        <dt class="c-data-list__key">Requestor Email</dt>
+                        <dd class="c-data-list__value">{{r.requestor_email}}</dd> 
+                        <dt class="c-data-list__key">Requested Target Date</dt>                
+                        <dd class="c-data-list__value">{{r.requested_target_date}}</dd>
+                        <dt class="c-data-list__key">Approved Expiration Date</dt>                
+                        <dd class="c-data-list__value">{{r.approved_expiration_date}}</dd>
+                        <dt class="c-data-list__key">Explanation Justification</dt>
+                        <dd class="c-data-list__value">{{r.explanation_justification}}</dd>
+                    </dl> 
+                    <hr>
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
