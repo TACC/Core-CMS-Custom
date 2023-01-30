@@ -1,0 +1,991 @@
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {% if r %}
+        <input type="hidden" name="edit-registration-form" value>
+        <input type="hidden" name="reg_id" value="{{r.reg_id}}">
+    {% endif %}
+
+    <div class="form-errors" style="display: none"></div>
+
+    <div class="field-wrapper radioselect required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label>
+            On behalf of:<span class="asterisk">*</span>
+        </label>
+
+        <ul id="on-behalf-of" class="radioselect">
+            <li>
+            <label for="on-behalf-of_0"
+                ><input
+                type="radio"
+                name="on-behalf-of"
+                value="true"
+                class="radioselect"
+                required
+                id="on-behalf-of_0"                      
+                {% if r.view_modal_content.for_self %}
+                    checked
+                {% endif %}
+                />
+                Self</label
+            >
+            </li>
+            <li>
+            <label for="on-behalf-of_1"
+                ><input
+                type="radio"
+                name="on-behalf-of"
+                value="false"
+                class="radioselect"
+                required
+                id="on-behalf-of_1"
+                {% if not r.view_modal_content.for_self and r is not None %}
+                    checked
+                {% endif %}
+                />
+                Other</label
+            >
+            </li>
+        </ul>
+
+        <div id="help-text-on-behalf-of" class="help-text">
+            Whether you submit on behalf of your own organization (Self) or
+            another organization (Other)
+        </div>
+        </div>
+
+        <div class="field-wrapper select required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="type"> Type<span class="asterisk">*</span> </label>
+
+        <select
+            name="type"
+            required="required"
+            class="choicefield"
+            id="type"
+        >
+            {% if r.view_modal_content %}
+                {% for type, display_text in r.view_modal_content.org_types.items %}
+                <option value="{{ type|lower }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
+                    {{display_text}}
+                </option>
+                {% endfor %}
+            {% else %}
+            <option value="Insurance Carrier">Insurance Carrier</option>
+
+                <option value="Plan Administrator">
+                    Plan Administrator¹ (TPA/ASO)
+                </option>
+
+                <option value="PBM">
+                    Pharmacy Benefit Manager (PBM)
+                </option>
+            {% endif %}
+        </select>
+        </div>
+
+        <div class="field-wrapper textinput required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="business-name">
+            Business Name<span class="asterisk">*</span>
+        </label>
+
+        <input
+            type="text"
+            name="business-name"
+            required
+            class="textinput"
+            id="business-name"
+            value="{{r.view_modal_content.biz_name}}"
+            />
+        </div>
+
+        <div class="field-wrapper textinput required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="mailing-address">
+            Mailing Address<span class="asterisk">*</span>
+        </label>
+
+        <input
+            type="text"
+            name="mailing-address"
+            required
+            class="textinput"
+            id="mailing-address"
+            value="{{r.view_modal_content.address}}"
+            />
+        </div>
+
+        <div class="field-wrapper textinput required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="city"> City<span class="asterisk">*</span> </label>
+
+        <input
+            type="text"
+            name="city"
+            required
+            class="textinput"
+            id="city"
+            value="{{r.view_modal_content.city}}"
+            />
+        </div>
+
+        <div class="field-wrapper select required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="state"> State<span class="asterisk">*</span> </label>
+
+        <select
+            name="state"
+            required="required"
+            class="choicefield"
+            id="state"
+        >
+            {% if r.view_modal_content %}
+                {% for state in r.view_modal_content.us_state_list %}
+                <option value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
+                    {{ state }}
+                </option>
+                {% endfor %}
+            {% else %}
+            <option value="AL - Alabama">AL - Alabama</option>
+            <option value="AK - Alaska">AK - Alaska</option>
+            <option value="AS - American Samoa">AS - American Samoa</option>
+            <option value="AZ - Arizona">AZ - Arizona</option>
+            <option value="AR - Arkansas">AR - Arkansas</option>
+            <option value="CA - California">CA - California</option>
+            <option value="CO - Colorado">CO - Colorado</option>
+            <option value="CT - Connecticut">CT - Connecticut</option>
+            <option value="DE - Delaware">DE - Delaware</option>
+            <option value="DC - District of Columbia">DC - District of Columbia</option>
+            <option value="FL - Florida">FL - Florida</option>
+            <option value="GA - Georgia">GA - Georgia</option>
+            <option value="GU - Guam">GU - Guam</option>
+            <option value="HI - Hawaii">HI - Hawaii</option>
+            <option value="ID - Idaho">ID - Idaho</option>
+            <option value="IL - Illinois">IL - Illinois</option>
+            <option value="IN - Indiana">IN - Indiana</option>
+            <option value="IA - Iowa">IA - Iowa</option>
+            <option value="KS - Kansas">KS - Kansas</option>
+            <option value="KY - Kentucky">KY - Kentucky</option>
+            <option value="LA - Louisiana">LA - Louisiana</option>
+            <option value="ME - Maine">ME - Maine</option>
+            <option value="MD - Maryland">MD - Maryland</option>
+            <option value="MA - Massachusetts">MA - Massachusetts</option>
+            <option value="MI - Michigan">MI - Michigan</option>
+            <option value="MN - Minnesota">MN - Minnesota</option>
+            <option value="MS - Mississippi">MS - Mississippi</option>
+            <option value="MO - Missouri">MO - Missouri</option>
+            <option value="MT - Montana">MT - Montana</option>
+            <option value="NE - Nebraska">NE - Nebraska</option>
+            <option value="NV - Nevada">NV - Nevada</option>
+            <option value="NH - New hampshire">NH - New hampshire</option>
+            <option value="NJ - New jersey">NJ - New jersey</option>
+            <option value="NM - New mexico">NM - New mexico</option>
+            <option value="NY - New york">NY - New york</option>
+            <option value="NC - North carolina">NC - North carolina</option>
+            <option value="ND - North dakota">ND - North dakota</option>
+            <option value="MP - Northern Mariana Islands">MP - Northern Mariana Islands</option>
+            <option value="OH - Ohio">OH - Ohio</option>
+            <option value="OK - Oklahoma">OK - Oklahoma</option>
+            <option value="OR - Oregon">OR - Oregon</option>
+            <option value="PA - Pennsylvania">PA - Pennsylvania</option>
+            <option value="PR - Puerto rico">PR - Puerto rico</option>
+            <option value="RI - Rhode island">RI - Rhode island</option>
+            <option value="SC - South Carolina">SC - South Carolina</option>
+            <option value="SD - South Dakota">SD - South Dakota</option>
+            <option value="TN - Tennessee">TN - Tennessee</option>
+            <option value="TX - Texas">TX - Texas</option>
+            <option value="UT - Utah">UT - Utah</option>
+            <option value="VT - Vermont">VT - Vermont</option>
+            <option value="VA - Virginia">VA - Virginia</option>
+            <option value="VI - Virgin Islands">VI - Virgin Islands</option>
+            <option value="WA - Washington">WA - Washington</option>
+            <option value="WV - West Virginia">WV - West Virginia</option>
+            <option value="WI - Wisconsin">WI - Wisconsin</option>
+            <option value="WY - Wyoming">WY - Wyoming</option>
+            {% endif %}
+        </select>
+        </div>
+
+        <div class="field-wrapper textinput required">
+        <div class="field-errors" style="display: none"></div>
+
+        <label for="zip_code">
+            Zip Code<span class="asterisk">*</span>
+        </label>
+
+        <input
+            type="text"
+            name="zip_code"
+            required
+            class="textinput"
+            id="zip_code"
+            inputmode="numeric"
+            minlength="5"
+            maxlength="10"
+            pattern="\d{5}(-\d{4})?"
+            value="{{ r.view_modal_content.zip|cut:' ' }}"
+            />
+        </div>
+        <hr />
+        <h4>File Submission</h4>
+        <div class="field-wrapper required">
+        <label>
+            Types of Files<span class="asterisk">*</span>
+        </label>
+        <div class="help-text">
+            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+        </div>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_files" class="checkboxselectmultiple">
+            <li>
+                <label for="types_of_files_eligibility_enrollment"
+                ><input
+                    type="checkbox"
+                    name="types_of_files_eligibility_enrollment"
+                    required
+                    id="types_of_files_eligibility_enrollment"
+                    checked=""
+                    disabled
+                />Eligibility/Enrollment*</label
+                >
+            </li>
+            {% if r.view_modal_content %}
+                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
+                {% if not forloop.first %}
+                    <li>
+                    <label for="types_of_files_{{ file_type|lower }}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_{{ file_type|lower }}"
+                        id="types_of_files_{{ file_type|lower }}"
+                        {% if file_type_selected %}checked{% endif %}
+                        />{{ file_type }}</label
+                    >
+                    </li>
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                <li>
+                <label for="types_of_files_provider"
+                    ><input
+                    type="checkbox"
+                    name="types_of_files_provider"
+                    id="types_of_files_provider"
+                    />Provider</label
+                >
+                </li>
+                <li>
+                <label for="types_of_files_medical"
+                    ><input
+                    type="checkbox"
+                    name="types_of_files_medical"
+                    id="types_of_files_medical"
+                    />Medical</label
+                >
+                </li>
+                <li>
+                <label for="types_of_files_pharmacy"
+                    ><input
+                    type="checkbox"
+                    name="types_of_files_pharmacy"
+                    id="types_of_files_pharmacy"
+                    />Pharmacy</label
+                >
+                </li>
+                <li>
+                <label for="types_of_files_dental"
+                    ><input
+                    type="checkbox"
+                    name="types_of_files_dental"
+                    id="types_of_files_dental"
+                    />Dental</label
+                >
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        <div class="field-wrapper required">
+        <label
+            >Submission Method<span class="asterisk"
+            >*</span
+            >
+        </label>
+        <div class="help-text">
+            At least one of the following must be selected.
+        </div>
+        </div>
+
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="submission_method" class="checkboxselectmultiple">
+            {% if r.view_modal_content %}
+                {% for sub, display_value in r.view_modal_content.sub_methods.items %}
+                <li>
+                    <label for="submission_method_{{ sub }}"
+                    ><input
+                        type="radio"
+                        name="submission_method"
+                        value="{{ display_value }}"
+                        class="radioselect"
+                        required
+                        id="submission_method_{{ sub }}"
+                        {{ r.view_modal_content.sub_method }}
+                        {% if sub|upper == r.view_modal_content.sub_method %}checked{% endif %}
+                    />{{ display_value }}</label
+                    >
+                </li>
+                {% endfor %}
+            {% else %}
+                <li>
+                <label for="submission_method_sftp"
+                    ><input
+                    type="radio"
+                    name="submission_method"
+                    value="SFTP"
+                    class="radioselect"
+                    required
+                    id="submission_method_sftp"
+                    checked=""
+                    /><span>SFTP<sup>2</sup></span></label
+                >
+                </li>
+                <li>
+                <label for="submission_method_https"
+                    ><input
+                    type="radio"
+                    name="submission_method"
+                    value="HTTPS"
+                    class="radioselect"
+                    required
+                    id="submission_method_https"
+                    /><span>HTTPS<sup>3</sup>**</span></label
+                >
+                </li>
+                <li>
+                <label for="submission_method_usb"
+                    ><input
+                    type="radio"
+                    name="submission_method"
+                    value="Encrypted USB Drive"
+                    class="radioselect"
+                    required
+                    id="submission_method_usb"
+                    /><span>Encrypted USB<sup>4</sup> drive***</span></label
+                >
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        <hr />
+        {% if r.view_modal_content %}
+            <h4>Entity/Entities Being Registered</h4>
+            {% for entity in r.view_modal_content.entities %}
+                <h5 id="entity_header_{{ forloop.counter }}_{{r.reg_id}}">Entity {{ forloop.counter }}</h5>
+                <input type="hidden" name="ent_id_{{forloop.counter}}" value="{{entity.ent_id}}">
+                <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="entity_name_{{forloop.counter}}_{{r.reg_id}}">
+                    Name<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="entity_name_{{forloop.counter}}_{{r.reg_id}}"
+                    required
+                    class="textinput"
+                    id="entity_name_{{forloop.counter}}_{{r.reg_id}}"
+                    value="{{ entity.ent_name }}"
+                />
+                </div>
+                <div class="field-wrapper required">
+                <label
+                    >Number/Code<span class="asterisk">*</span>
+                </label>
+                <div class="help-text">
+                    Provide all available identifiers. At least one of the following
+                    is required.
+                </div>
+                </div>
+
+                <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper textinput">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <label for="fein_{{forloop.counter}}_{{r.reg_id}}"> FEIN<sup>5</sup> </label>
+
+                    <input
+                    type="text"
+                    name="fein_{{forloop.counter}}_{{r.reg_id}}"
+                    placeholder="12-3456789"
+                    class="textinput"
+                    id="fein_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    minlength="10"
+                    maxlength="10"
+                    pattern="\d{2}-\d{7}"
+                    required
+                    value="{{ entity.fein }}"
+                    />
+
+                    <div id="help-text-fein" class="help-text">
+                    Enter in format <samp>12-3456789</samp>.
+                    </div>
+                </div>
+                <div class="field-wrapper textinput">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <label for="license_number_{{forloop.counter}}_{{r.reg_id}}"> License Number </label>
+
+                    <input
+                    type="text"
+                    name="license_number_{{forloop.counter}}_{{r.reg_id}}"
+                    placeholder="1234567890"
+                    class="textinput"
+                    id="license_number_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    minlength="5"
+                    maxlength="10"
+                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
+                    required
+                    value="{{ entity.license }}"
+                    />
+
+                    <div id="help-text-license_number" class="help-text">
+                    Enter a 5 or 10 digit number.
+                    </div>
+                </div>
+                <div class="field-wrapper textinput">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <label for="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"> NAIC<sup>6</sup> Company Code </label>
+
+                    <input
+                    type="text"
+                    name="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
+                    placeholder="12345"
+                    class="textinput"
+                    id="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    minlength="5"
+                    maxlength="5"
+                    pattern="^[1-9]\d{4}"
+                    required
+                    value="{{ entity.naic }}"
+                    />
+
+                    <div id="help-text-naic_company_code" class="help-text">
+                    Enter a 5 digit number.
+                    </div>
+                </div>
+                </div>
+                <h6>
+                Coverage Estimates
+                <small
+                    >(Inclusive of all claims as of December 31 of previous
+                    year.)</small
+                >
+                </h6>
+
+                <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}">
+                    Total Covered Lives<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="number"
+                    name="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}"
+                    required
+                    class="integerfield"
+                    id="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    min="1"
+                    step="1"
+                    value="{{ entity.no_covered }}"
+                />
+                </div>
+
+                <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}">
+                    Claims and Encounters Volume<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="number"
+                    name="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}"
+                    required
+                    class="integerfield"
+                    id="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    min="1"
+                    value="{{ entity.claim_and_enc_vol }}"
+                />
+                </div>
+
+                <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="total_claims_value_{{forloop.counter}}_{{r.reg_id}}">
+                    Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+                </label>
+
+                <span class="s-affixed-input-wrapper__prefix">$</span>
+                <input
+                    type="number"
+                    name="total_claims_value_{{forloop.counter}}_{{r.reg_id}}"
+                    required
+                    class="integerfield"
+                    id="total_claims_value_{{forloop.counter}}_{{r.reg_id}}"
+                    inputmode="numeric"
+                    step="0.01"
+                    min="0.01"
+                    value="{{ entity.claim_val }}"
+                />
+                </div>
+            {% endfor %}
+            {# Additional entities rendered here... #}
+            {% with r.view_modal_content.entities|length as no_entities %}
+                {% with no_entities|add:"-5"|cut:"-" as no_add_entities %}
+                    {% with ''|center:no_add_entities as range %}
+                        {% for add_entity_no in range %}
+                            {% with forloop.counter|add:no_entities as add_entity_no %}                    
+                                <h5 id="entity_header_{{ add_entity_no }}_{{r.reg_id}}" style="display:none">Entity {{ add_entity_no }}</h5>
+                                <div id="entity_block_{{ add_entity_no }}_{{r.reg_id}}"></div>
+                            {% endwith %}
+                        {% endfor %}
+                    {% endwith %}
+                {% endwith %}
+            {% endwith %}
+        {% else %}
+            <h4>
+                Entity Being Registered
+                <small>
+                (If single company, enter the same organization as above.)
+                </small>
+            </h4>
+            <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="entity_name">
+                Name<span class="asterisk">*</span>
+                </label>
+
+                <input
+                type="text"
+                name="entity_name"
+                required
+                class="textinput"
+                id="entity_name"
+                />
+            </div>
+            <div class="field-wrapper required">
+                <label
+                >Number/Code<span class="asterisk">*</span>
+                </label>
+                <div class="help-text">
+                Provide all available identifiers. At least one of the following
+                is required.
+                </div>
+            </div>
+
+            <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="fein"> FEIN<sup>5</sup> </label>
+
+                <input
+                    type="text"
+                    name="fein"
+                    placeholder="12-3456789"
+                    class="textinput"
+                    id="fein"
+                    inputmode="numeric"
+                    minlength="10"
+                    maxlength="10"
+                    pattern="\d{2}-\d{7}"
+                    required
+                />
+
+                <div id="help-text-fein" class="help-text">
+                    Enter in format <samp>12-3456789</samp>.
+                </div>
+                </div>
+                <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="license_number"> License Number </label>
+
+                <input
+                    type="text"
+                    name="license_number"
+                    placeholder="1234567890"
+                    class="textinput"
+                    id="license_number"
+                    inputmode="numeric"
+                    minlength="5"
+                    maxlength="10"
+                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
+                    required
+                />
+
+                <div id="help-text-license_number" class="help-text">
+                    Enter a 5 or 10 digit number.
+                </div>
+                </div>
+                <div class="field-wrapper textinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
+
+                <input
+                    type="text"
+                    name="naic_company_code"
+                    placeholder="12345"
+                    class="textinput"
+                    id="naic_company_code"
+                    inputmode="numeric"
+                    minlength="5"
+                    maxlength="5"
+                    pattern="^[1-9]\d{4}"
+                    required
+                />
+
+                <div id="help-text-naic_company_code" class="help-text">
+                    Enter a 5 digit number.
+                </div>
+                </div>
+            </div>
+            <h6>
+                Coverage Estimates
+                <small
+                >(Inclusive of all claims as of December 31 of previous
+                year.)</small
+                >
+            </h6>
+
+            <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="total_covered_lives">
+                Total Covered Lives<span class="asterisk">*</span>
+                </label>
+
+                <input
+                type="number"
+                name="total_covered_lives"
+                required
+                class="integerfield"
+                id="total_covered_lives"
+                inputmode="numeric"
+                min="1"
+                step="1"
+                />
+            </div>
+
+            <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="claims_encounters_volume">
+                Claims and Encounters Volume<span class="asterisk">*</span>
+                </label>
+
+                <input
+                type="number"
+                name="claims_encounters_volume"
+                required
+                class="integerfield"
+                id="claims_encounters_volume"
+                inputmode="numeric"
+                min="1"
+                />
+            </div>
+
+            <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="total_claims_value">
+                Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+                </label>
+
+                <span class="s-affixed-input-wrapper__prefix">$</span>
+                <input
+                type="number"
+                name="total_claims_value"
+                required
+                class="integerfield"
+                id="total_claims_value"
+                inputmode="numeric"
+                step="0.01"
+                min="0.01"
+                />
+            </div>
+            {# Additional entities rendered here... #}
+            <h4 id="entity_header_2" style="display:none">Entity Information 2</h4>
+            <div id="entity_block_2"></div>
+            <h4 id="entity_header_3" style="display:none">Entity Information 3</h4>
+            <div id="entity_block_3"></div>
+            <h4 id="entity_header_4" style="display:none">Entity Information 4</h4>
+            <div id="entity_block_4"></div>
+            <h4 id="entity_header_5" style="display:none">Entity Information 5</h4>
+            <div id="entity_block_5"></div>
+        {% endif %}
+        <button class="c-button c-button--primary" id="entity-add-btn{% if r %}-{{r.reg_id}}{% endif %}" type="button">+ Add Another Entity</button>
+        <button class="c-button c-button--secondary" id="entity-drop-btn{% if r %}-{{r.reg_id}}{% endif %}" type="button">- Remove Last Entity</button>
+        <hr />
+        {% if r.view_modal_content %}
+            <h4>Contact Information</h4>
+            {% for contact in r.view_modal_content.contacts %}
+                <input type="hidden" name="cont_id_{{forloop.counter}}" value="{{contact.cont_id}}">
+                <h5 id="contact_header_{{ forloop.counter }}_{{r.reg_id}}">Contact {{ forloop.counter }}</h5>
+                <div id="contact_block_{{ forloop.counter }}_{{r.reg_id}}">
+                    <div class="field-wrapper textinput required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="contact_type_{{forloop.counter}}_{{r.reg_id}}">
+                        Role<span class="asterisk">*</span>
+                        </label>
+
+                        <input
+                        type="text"
+                        name="contact_type_{{forloop.counter}}_{{r.reg_id}}"
+                        required
+                        class="textinput"
+                        id="contact_type_{{forloop.counter}}_{{r.reg_id}}"
+                        value="{{ contact.role }}"
+                        />
+                    </div>
+                    <div class="field-wrapper textinput required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="contact_name_{{forloop.counter}}_{{r.reg_id}}"> Name<span class="asterisk">*</span> </label>
+
+                        <input
+                        type="text"
+                        name="contact_name_{{forloop.counter}}_{{r.reg_id}}"
+                        required
+                        class="textinput"
+                        id="contact_name_{{forloop.counter}}_{{r.reg_id}}"
+                        value="{{ contact.name }}"
+                        />
+                    </div>
+                    <div class="field-wrapper telephoneinput required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="contact_phone_{{r.reg_id}}">
+                        Phone<span class="asterisk">*</span>
+                        </label>
+
+                        <input
+                        type="tel"
+                        name="contact_phone_{{forloop.counter}}_{{r.reg_id}}"
+                        required
+                        class="telephoneinput"
+                        id="contact_phone_{{forloop.counter}}_{{r.reg_id}}"
+                        inputmode="tel"
+                        pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                        value="{{ contact.phone }}"
+                        />
+
+                        <div id="help-text-contact_phone" class="help-text">
+                        <details>
+                            <summary>
+                            <a
+                                href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                                target="_blank"
+                                >North American Numbering Plan</a
+                            >
+                            e.g. <samp>123 456-7890</samp>…
+                            </summary>
+                            <ul>
+                            <li><samp>123-456-7890</samp></li>
+                            <li><samp>(123) 456-7890</samp></li>
+                            <li><samp>123 456 7890</samp></li>
+                            <li><samp>123.456.7890</samp></li>
+                            <li><samp>+1 (123) 456-7890</samp></li>
+                            </ul>
+                        </details>
+                        </div>
+                    </div>
+                    <div class="field-wrapper emailinput required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="contact_email_{{forloop.counter}}_{{r.reg_id}}">
+                        Email<span class="asterisk">*</span>
+                        </label>
+
+                        <input
+                        type="email"
+                        name="contact_email_{{forloop.counter}}_{{r.reg_id}}"
+                        autocomplete="email"
+                        required
+                        class="emailinput"
+                        id="contact_email_{{forloop.counter}}_{{r.reg_id}}"
+                        value="{{ contact.email }}"
+                        />
+                    </div>
+                    <div class="field-wrapper checkboxinput">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <input
+                        type="checkbox"
+                        name="contact_notifications_{{forloop.counter}}_{{r.reg_id}}"
+                        class="booleanfield"
+                        id="contact_notifications_{{forloop.counter}}_{{r.reg_id}}"
+                        {% if contact.notif %}checked{% endif %}
+                        />
+
+                        <label for="contact_notifications_{{forloop.counter}}_{{r.reg_id}}">
+                        Select to receive system notifications
+                        </label>
+                    </div>
+                </div>
+            {% endfor %}
+            {# Additional entities rendered here... #}
+            {% with r.view_modal_content.contacts|length as no_contacts %}
+                {% with no_contacts|add:"-5"|cut:"-" as no_add_contacts %}
+                {% with ''|center:no_add_contacts as range %}
+                    {% for add_contact_no in range %}
+                    {% with forloop.counter|add:no_contacts as add_contact_no %}                    
+                        <h5 id="contact_header_{{ add_contact_no }}_{{r.reg_id}}" style="display:none">Contact {{ add_contact_no }}</h5>
+                        <div id="contact_block_{{ add_contact_no }}_{{r.reg_id}}"></div>
+                    {% endwith %}
+                    {% endfor %}
+                {% endwith %}
+                {% endwith %}
+            {% endwith %}
+        {% else %}
+            <h4 id="contact_header_1">Contact Information</h4>
+            <div id="contact_block_1">
+                <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_type">
+                    Role<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="contact_type"
+                    required
+                    class="textinput"
+                    id="contact_type"
+                />
+                </div>
+                <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_name"> Name<span class="asterisk">*</span> </label>
+
+                <input
+                    type="text"
+                    name="contact_name"
+                    required
+                    class="textinput"
+                    id="contact_name"
+                />
+                </div>
+                <div class="field-wrapper telephoneinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_phone">
+                    Phone<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="tel"
+                    name="contact_phone"
+                    required
+                    class="telephoneinput"
+                    id="contact_phone"
+                    inputmode="tel"
+                    pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                />
+
+                <div id="help-text-contact_phone" class="help-text">
+                    <details>
+                    <summary>
+                        <a
+                        href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                        target="_blank"
+                        >North American Numbering Plan</a
+                        >
+                        e.g. <samp>123 456-7890</samp>…
+                    </summary>
+                    <ul>
+                        <li><samp>123-456-7890</samp></li>
+                        <li><samp>(123) 456-7890</samp></li>
+                        <li><samp>123 456 7890</samp></li>
+                        <li><samp>123.456.7890</samp></li>
+                        <li><samp>+1 (123) 456-7890</samp></li>
+                    </ul>
+                    </details>
+                </div>
+                </div>
+                <div class="field-wrapper emailinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="contact_email">
+                    Email<span class="asterisk">*</span>
+                </label>
+
+                <input
+                    type="email"
+                    name="contact_email"
+                    autocomplete="email"
+                    required
+                    class="emailinput"
+                    id="contact_email"
+                />
+                </div>
+                <div class="field-wrapper checkboxinput">
+                <div class="field-errors" style="display: none"></div>
+
+                <input
+                    type="checkbox"
+                    name="contact_notifications"
+                    class="booleanfield"
+                    id="contact_notifications"
+                />
+
+                <label for="contact_notifications">
+                    Select to receive system notifications
+                </label>
+                </div>
+            </div>
+            {# Additional contacts rendered here... #}
+            <h4 id="contact_header_2" style="display:none">Contact Information 2</h4>
+            <div id="contact_block_2"></div>
+            <h4 id="contact_header_3" style="display:none">Contact Information 3</h4>
+            <div id="contact_block_3"></div>
+            <h4 id="contact_header_4" style="display:none">Contact Information 4</h4>
+            <div id="contact_block_4"></div>
+            <h4 id="contact_header_5" style="display:none">Contact Information 5</h4>
+            <div id="contact_block_5"></div>
+        {% endif %}
+    <button class="c-button c-button--primary" id="contact-add-btn{% if r %}-{{r.reg_id}}{% endif %}" type="button">+ Add Another Contact</button>
+    <button class="c-button c-button--secondary" id="contact-drop-btn{% if r %}-{{r.reg_id}}{% endif %}" type="button">- Remove Last Contact</button>
+    <div class="button-wrapper submit">
+        <button class="form-button" type="submit" value="Submit">
+            Submit
+        </button>
+    </div>
+</form>
