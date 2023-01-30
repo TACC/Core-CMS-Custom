@@ -1,4 +1,4 @@
-<div id="viewSubmitterModal_{{r.reg_id}}" class="modal fade" role="dialog">
+<div id="createSubmitterModal_{{r.reg_id}}" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -39,27 +39,33 @@
           </article>
         </div>
 
-        <form method="POST" action="" class="c-form">
+        <form method="POST" action="" class="c-form" name="create-submitter-form">
           <h4>Submitter Data</h4>
 
           {% csrf_token %}
-          <input type="hidden" name="_token" value>
+          <input type="hidden" name="create-submitter-form" value>
           <input type="hidden" name="reg_id" value="{{r.reg_id}}">
 
-          <div class="c-form__field">
-            <label>Payor Code</label>
-            <input type="text" name="payor_code" autofocus>
+          <div class="field-wrapper required">
+            <label>
+              Payor Code<span class="asterisk">*</span>
+            </label>
+            <input type="number" name="payor_code" autofocus required inputmode="numeric">
           </div>
-          <div class="c-form__field">
-            <label>Submitter Code</label>
-            <input type="number" name="submit_code" maxlength="8">
+          <div class="field-wrapper required">
+            <label>
+              Submitter Code<span class="asterisk">*</span>
+            </label>
+            <input type="text" name="submit_code" maxlength="8" required>
           </div>
-          <div class="c-form__field">
-            <label>Encryption Key</label>
-            <input type="text" name="encryption_key" maxlength="30">
+          <div class="field-wrapper required">
+            <label>
+              Encryption Key<span class="asterisk">*</span>
+            </label>
+            <input type="text" name="encryption_key" maxlength="30" required>
           </div>
 
-          <div class="c-form__buttons">
+          <div class="button-wrapper submit">
             <button type="submit" class="c-form__button">Submit</button>
           </div>
         </form>

@@ -21,7 +21,7 @@
         <option class="dropdown-text">All</option>
         <option class="dropdown-text">Received</option>
         <option class="dropdown-text">Processing</option>
-        <option class="dropdown-text">Completed</option>
+        <option class="dropdown-text">Complete</option>
       </select>
     </div>
   </div>
@@ -37,7 +37,13 @@
           {% for r in rows %}
               <tr>
                   <td>{{r.biz_name}}</td>
-                  <td>{{r.type}}</td>
+                  <td>
+                    {% if r.type == 'Pbm'%}
+                      Pharmacy Benefit Manager (PBM)
+                    {% else %}
+                      {{r.type}}
+                    {% endif %}
+                  </td>
                   <td>{{r.location}}</td>
                   <td>{{r.sub_method}}</td>
                   <td>{{r.reg_status}}</td>
@@ -52,9 +58,14 @@
                   </td>
                   <td>
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View Record</a>
+                    {% include "edit_registration_modal.html" %}
                     {% include "create_submitter_modal.html" %}<br />
-                    <a href='' data-toggle="modal" data-target="#viewSubmitterModal_{{r.reg_id}}" data-backdrop="static"> Create New Submitter</a>
+                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                      <option value="">Select Action</option>
+                      <option value="viewRegistration">View Record</option>
+                      <option value="editRegistration">Edit Record</option>
+                      <option value="createSubmitter">Create Submitter</option>
+                    </select>
                   </td>
               </tr>
           {% endfor %}
@@ -76,6 +87,17 @@
         row.style.display = "";
       }
     })
+  }
+  function openAction(reg_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${reg_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
   }
 </script>
 
