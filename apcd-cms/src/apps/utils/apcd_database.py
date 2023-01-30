@@ -620,6 +620,156 @@ def create_submitter(form, reg_data):
             conn.close()
 
 
+def get_submitter_for_exception(user):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
+        FROM submitters 
+        LEFT JOIN submitter_users 
+        ON submitters.submitter_id = submitter_users.submitter_id 
+        WHERE user_id = (%s) AND submitter_id = submitter
+        """
+        cur = conn.cursor()
+        cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def create_other_exception(form, sub_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO exceptions(
+            submitter_id,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            request_type,
+            requested_expiration_date,
+            explanation_justification,
+            outcome,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            sub_data[0],
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
+            "Other",
+            _clean_value(form['exception_end_date']),
+            _clean_value(form['justification']),
+            "Pending",
+            datetime.datetime.now(),
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def create_threshold_exception(form, sub_data):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """INSERT INTO exceptions(
+            submitter_id,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            request_type,
+            data_file,
+            field_number,
+            required_threshold,
+            requested_threshold,
+            requested_expiration_date,
+            explanation_justification,
+            outcome,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING submitter_id"""
+        values = (
+            sub_data[0],
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
+            "Threshold",
+            _clean_value(form['file_type']),
+            _clean_value(form['threshold-field']),
+            _clean_value(form['threshold-requested']),
+            _clean_value(form['expiration_date']),
+            _clean_value(form['justification']),
+            "Pending",
+            datetime.datetime.now(),
+        )
+        cur.execute(operation, values)
+        conn.commit()
+        return cur.fetchone()[0]
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
 def get_submissions(user):
     cur = None
     conn = None
@@ -632,7 +782,6 @@ def get_submissions(user):
             port=APCD_DB['port'],
             sslmode='require'
         )
-
 
         query = """SELECT
             *
@@ -668,7 +817,7 @@ def get_submission_logs(submission_id):
             sslmode='require'
         )
 
-
+   
         query = """SELECT
         submission_logs.log_id,
         submission_logs.submission_id,
@@ -888,7 +1037,6 @@ def _clean_email(email):
     pattern = re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
     result = pattern.match(email)
     return result.string if result else None
-
 
 def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
