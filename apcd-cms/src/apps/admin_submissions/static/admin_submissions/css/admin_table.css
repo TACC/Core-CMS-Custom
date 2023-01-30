@@ -9,6 +9,7 @@
     float: left;
     padding: 8px 16px;
     text-decoration: none;
+    border: 1px solid var(--global-color-primary--light);
 }
 
 .pagination a.active {
@@ -16,4 +17,5 @@
     color: white;
   }
   
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {background-color: var(--global-color-primary--light);}
+
