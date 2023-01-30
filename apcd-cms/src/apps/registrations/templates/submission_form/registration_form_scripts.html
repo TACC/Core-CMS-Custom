@@ -1,0 +1,336 @@
+<aside>
+    <!-- To let user add and remove entities -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-entity" type="module">
+      const addEntityBtn = document.getElementById("entity-add-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const dropEntityBtn = document.getElementById("entity-drop-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const btnStatus = (() => {
+        addEntityBtn.disabled = ( entities == 5 ? true : false );
+        dropEntityBtn.disabled = ( entities == 1 ? true : false );
+      });
+      let entities = 
+        {% if r %}
+            Number(`
+                {% with r.view_modal_content.entities|length as no_entities %}
+                    {% if no_entities == 0 %}
+                        1
+                    {% else %}
+                        {{ no_entities }}
+                    {% endif %}
+                {% endwith %}
+            `)
+        {% else %}
+            1
+        {% endif %};
+                    
+      btnStatus();
+
+      addEntityBtn.addEventListener("click", () => {
+        if (entities < 5) entities += 1;
+        let entityBlock = document.getElementById(`entity_block_${entities}{% if r %}_{{r.reg_id}}{% endif %}`);
+        document.getElementById(`entity_header_${entities}{% if r %}_{{r.reg_id}}{% endif %}`).style.display = 'block';
+        entityBlock.innerHTML = `
+        <div class="field-wrapper textinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> Name<span class="asterisk">*</span> </label>
+          <input
+            type="text"
+            name="entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            required
+            class="textinput"
+            id="entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+          />
+          <div id="help-text-entity_name_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper required">
+          <label>
+            Number/Code<span class="asterisk">*</span>
+          </label>
+          <div class="help-text">
+            Provide all available identifiers. At least one of the following is
+            required.
+          </div>
+        </div>
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> FEIN<sup>5</sup> </label>
+            <input
+              type="text"
+              name="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              placeholder="12-3456789"
+              class="textinput"
+              id="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              inputmode="numeric"
+              minlength="10"
+              maxlength="10"
+              pattern="\\d{2}-\\d{7}"
+              required
+            />
+            <div id="help-text-fein_${entities}" class="help-text">
+              Enter in format <samp>12-3456789</samp>.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> License Number </label>
+            <input
+              type="text"
+              name="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              placeholder="1234567890"
+              class="textinput"
+              id="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="10"
+              pattern="^[1-9]\\d{4}|^[1-9]\\d{9}"
+              required
+            />
+            <div id="help-text-license_number_${entities}" class="help-text">
+              Enter a 5 or 10 digit number.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> NAIC<sup>6</sup> Company Code </label>
+            <input
+              type="text"
+              name="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              placeholder="12345"
+              class="textinput"
+              id="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+              inputmode="numeric"
+              minlength="5"
+              maxlength="5"
+              pattern="^[1-9]\\d{4}"
+              required
+            />
+            <div id="help-text-naic_company_code_${entities}" class="help-text">
+              Enter a 5 digit number.
+            </div>
+          </div>
+        </div>
+        <h6>
+          Coverage Estimates
+          <small>(Inclusive of all claims as of December 31 of previous year.)</small>
+        </h6>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_covered_lives_${entities}{% if r %}_{{r.reg_id}}{% endif %}">
+            Total Covered Lives<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="total_covered_lives_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            required
+            class="integerfield"
+            id="total_covered_lives_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            inputmode="numeric"
+            min="1"
+            step="1"
+          />
+          <div id="help-text-total_covered_lives_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="claims_encounters_volume_${entities}{% if r %}_{{r.reg_id}}{% endif %}">
+            Claims and Encounters Volume<span class="asterisk">*</span>
+          </label>
+          <input
+            type="number"
+            name="claims_encounters_volume_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            required
+            class="integerfield"
+            id="claims_encounters_volume_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            inputmode="numeric"
+            min="1"
+          />
+          <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_claims_value_${entities}{% if r %}_{{r.reg_id}}{% endif %}">
+            Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+          </label>
+          <span class="s-affixed-input-wrapper__prefix">$</span>
+          <input
+            type="number"
+            name="total_claims_value_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            required
+            class="integerfield"
+            id="total_claims_value_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+            inputmode="numeric"
+            step="0.01"
+            min="0.01"
+          />
+          <div id="help-text-total_claims_value_${entities}" class="help-text">
+          </div>
+        </div>
+        `;
+        const inputs = Array.from(
+          document.querySelectorAll(`
+            input[name=fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}],
+            input[name=license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}],
+            input[name=naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}]
+          `)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+        btnStatus();
+      });
+
+      dropEntityBtn.addEventListener("click", () => {
+        document.getElementById(`entity_header_${entities}{% if r %}_{{r.reg_id}}{% endif %}`).style.display = 'none';
+        let entityBlock = document.getElementById(`entity_block_${entities}{% if r %}_{{r.reg_id}}{% endif %}`);
+        entityBlock.innerHTML = '';
+        if (entities > 1) entities -= 1;
+        btnStatus();
+      });
+    </script>
+
+    <!-- To let user add and remove contacts -->
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-contact" type="module">
+      const addContactBtn = document.getElementById("contact-add-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const dropContactBtn = document.getElementById("contact-drop-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const btnStatus = (() => {
+        addContactBtn.disabled = ( contacts == 5 ? true : false );
+        dropContactBtn.disabled = ( contacts == 1 ? true : false );
+      });
+      let contacts =
+      {% if r %}
+            Number(`
+                {% with r.view_modal_content.contacts|length as no_contacts %}
+                    {% if no_contacts == 0 %}
+                        1
+                    {% else %}
+                        {{ no_contacts }}
+                    {% endif %}
+                {% endwith %}
+            `)
+        {% else %}
+            1
+        {% endif %};
+      btnStatus();
+
+      addContactBtn.addEventListener("click", () => {
+        if (contacts < 5) contacts += 1;
+        let contactBlock = document.getElementById(`contact_block_${contacts}{% if r %}_{{r.reg_id}}{% endif %}`);
+        document.getElementById(`contact_header_${contacts}{% if r %}_{{r.reg_id}}{% endif %}`).style.display = 'block';
+        contactBlock.innerHTML = `
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"> Role<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                required
+                class="textinput"
+                id="contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+              />
+            </div>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"> Name<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                required
+                class="textinput"
+                id="contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+              />
+            </div>
+            <div class="field-wrapper telephoneinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"> Phone<span class="asterisk">*</span> </label>
+              <input
+                type="tel"
+                name="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                required
+                class="telephoneinput"
+                id="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                inputmode="tel"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+              />
+              <div id="help-text-contact_phone_${contacts}" class="help-text">
+                <details>
+                  <summary>
+                    <a
+                      href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                      target="_blank"
+                      >North American Numbering Plan</a
+                    >
+                    e.g. <samp>123 456-7890</samp>…
+                  </summary>
+                  <ul>
+                    <li><samp>123-456-7890</samp></li>
+                    <li><samp>(123) 456-7890</samp></li>
+                    <li><samp>123 456 7890</samp></li>
+                    <li><samp>123.456.7890</samp></li>
+                    <li><samp>+1 (123) 456-7890</samp></li>
+                  </ul>
+                </details>
+              </div>
+            </div>
+            <div class="field-wrapper emailinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"> Email<span class="asterisk">*</span> </label>
+              <input
+                type="email"
+                name="contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                autocomplete="email"
+                required
+                class="emailinput"
+                id="contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+              />
+            </div>
+            <div class="field-wrapper checkboxinput">
+              <div class="field-errors" style="display: none"></div>
+              <input
+                type="checkbox"
+                name="contact_notifications_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
+                class="booleanfield"
+                id="contact_notifications_${contacts}"
+              />
+              <label for="contact_notifications_${contacts}{% if r %}_{{r.reg_id}}{% endif %}">
+                Select to receive system notifications
+              </label>
+              <div id="help-text-contact_notifications_${contacts}{% if r %}_{{r.reg_id}}{% endif %}" class="help-text">
+              </div>
+            </div>
+        `;
+        btnStatus();
+      });
+
+      dropContactBtn.addEventListener("click", () => {
+        document.getElementById(`contact_header_${contacts}{% if r %}_{{r.reg_id}}{% endif %}`).style.display = 'none';
+        let contactBlock = document.getElementById(`contact_block_${contacts}{% if r %}_{{r.reg_id}}{% endif %}`);
+        contactBlock.innerHTML = '';
+        if (contacts > 1) contacts -= 1;
+        btnStatus();
+      });
+
+    <!-- To require at least one "entity" identifier value -->
+    <script id="form-entity_id-required" type="module">
+      const inputs = Array.from(
+        document.querySelectorAll(`
+        input[name=fein{% if r %}_{{r.reg_id}}{% endif %}],
+        input[name=license_number{% if r %}_{{r.reg_id}}{% endif %}],
+        input[name=naic_company_code{% if r %}_{{r.reg_id}}{% endif %}]`)
+      );
+      const inputListener = e => {
+        inputs.filter(i => i !== e.target)
+              .forEach(i => (i.required = !e.target.value.length));
+      };
+
+      inputs.forEach(i => i.addEventListener('input', inputListener));
+    </script>
+</aside>
