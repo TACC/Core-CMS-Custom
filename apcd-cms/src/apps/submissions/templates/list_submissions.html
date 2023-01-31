@@ -30,6 +30,7 @@
                   <td colspan="2">{{r.file_name}}</td>
                   <td>{{r.outcome}}</td>
                   <td>{{r.status}}</td>
+                  <td>{{r.updated_at}}</td>
                   <td>
                     {% include "view_submission_logs_modal.html" %}
                     <a href='' data-toggle="modal" data-target="#viewSubmissionLogsModal_{{r.submission_id}}" data-backdrop="static">View Logs</a>
