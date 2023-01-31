@@ -38,11 +38,12 @@ class AdminSubmissionsTable(TemplateView):
         def _set_submissions(submission, submission_logs):
             return {
                 'submission_id': submission[0],
-                'submitter_id': submission[1],
-                'file_name': submission[2],
+                'apcd_id': submission[1],
+                'submitter_id': submission[2],
+                'file_name': submission[3],
                 'status': submission[4],
                 'outcome': submission[5],
-                'received_timestamp': submission[3],
+                'received_timestamp': submission[6],
                 'updated_at': submission[7],
                 'org_name': submission[8],
                 'view_modal_content': _set_submission_logs(submission_logs)
