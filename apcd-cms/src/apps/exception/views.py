@@ -62,31 +62,7 @@ class ExceptionThresholdFormView(View):
         else:
             errors.append(_err_msg(excep_resp))
 
-        # ===> Create Ticket
-
-        if request.user.is_authenticated:
-            username = request.user.username
-            email = request.user.email
-            first_name = request.user.first_name
-            last_name = request.user.last_name
-        else:
-            return HttpResponseRedirect("/")
-
-        tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
-        tracker.login()
-
-        subject = "New TX-APCD Portal Exception Submission"
-        description = "APCD Exception Request Details\n"
-        description += "=========================\n"
-        description += "submitter_user:            {}\n".format(username)
-        description += "submitter_user_email:      {}\n".format(email)
-        description += "submitter_user_first_name: {}\n".format(first_name)
-        description += "submitter_user_last_name:  {}\n".format(last_name)
         if len(errors):
-            subject = "(ERROR): TX-APCD Portal Exception Submission"
-            description += "Error(s):\n"
-            for err_msg in errors:
-                description += "{}\n".format(err_msg)
             template = loader.get_template(
                 "exception_submission_form/exception_submission_error.html"
             )
@@ -97,10 +73,6 @@ class ExceptionThresholdFormView(View):
             )
             response = HttpResponse(template.render({}, request))
 
-        tracker.create_ticket(
-            Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
-        )
-
         return response
 
     def dispatch(self, request, *args, **kwargs):
@@ -110,9 +82,12 @@ class ExceptionThresholdFormView(View):
             request, *args, **kwargs
         )
 
-    def get_context_data(self, submitter_cont, *args, **kwargs):
+    def get_context_data(self, request, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(
             *args, **kwargs
+        )
+        submitter_cont =  apcd_database.get_submitter_for_exception(
+            request.user.username
         )
 
         def _set_submitter(sub):
@@ -168,22 +143,7 @@ class ExceptionOtherFormView(View):
         if _err_msg(excep_resp):
             errors.append(_err_msg(excep_resp))
 
-        # ===> Create Ticket
-        tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
-        tracker.login()
-
-        subject = "New TX-APCD Portal Exception Submission"
-        description = "APCD Exception Request Details\n"
-        description += "=========================\n"
-        description += "submitter_user:            {}\n".format(username)
-        description += "submitter_user_email:      {}\n".format(email)
-        description += "submitter_user_first_name: {}\n".format(first_name)
-        description += "submitter_user_last_name:  {}\n".format(last_name)
         if len(errors):
-            subject = "(ERROR): TX-APCD Portal Exception Submission"
-            description += "Error(s):\n"
-            for err_msg in errors:
-                description += "{}\n".format(err_msg)
             template = loader.get_template(
                 "exception_submission_form/exception_submission_error.html"
             )
@@ -194,15 +154,13 @@ class ExceptionOtherFormView(View):
             )
             response = HttpResponse(template.render({}, request))
 
-        tracker.create_ticket(
-            Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
-        )
-
         return response
 
-    def get_context_data(self, submitter_cont, *args, **kwargs):
+    def get_context_data(self, request, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
-
+        submitter_cont =  apcd_database.get_submitter_for_exception(
+            request.user.username
+        )
         def _set_submitter(sub):
             return {
                 "submitter_id": sub[0],
