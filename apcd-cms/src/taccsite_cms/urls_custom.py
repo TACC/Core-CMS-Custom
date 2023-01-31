@@ -2,6 +2,7 @@ from django.urls import path, include
 
 custom_urls = [
     path('administration/', include('apps.admin_regis_table.urls', namespace='administration')),
+    path('administration/', include('apps.view_users.urls', namespace='viewusers')),
     path('administration/', include('apps.admin_submissions.urls', namespace='admin_submission')),
     path('administration/', include('apps.admin_exception.urls', namespace='admin_exception')),
     path('administration/', include('apps.admin_extension.urls', namespace='admin_extension')),
