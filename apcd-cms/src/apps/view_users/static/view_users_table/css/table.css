@@ -2,7 +2,7 @@
     --cell-padding: 5px;
 
     width: 100%;
-    table-layout: fixed; /* allows table to shrink (reason unknown) */
+    table-layout: inherit; /* allows table to shrink (reason unknown) */   
 }
 .users-table th, td {
     text-align: left;
