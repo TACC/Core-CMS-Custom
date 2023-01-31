@@ -216,9 +216,11 @@ def update_registration(form, reg_id):
             state = '{form['state'][:2]}',
             zip = '{form['zip_code']}',
             updated_at='{datetime.datetime.now()}'
-        WHERE registration_id = {reg_id}"""
+        WHERE registration_id = {reg_id}
+        RETURNING registration_id"""
         cur.execute(operation)
         conn.commit()
+        return cur.fetchone()[0]
 
     except Exception as error:
         logger.error(error)
