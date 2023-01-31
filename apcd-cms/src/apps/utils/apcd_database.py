@@ -178,7 +178,7 @@ def update_registration(form, reg_id):
             city = {_clean_value(form['city'])},
             state = {form['state'][:2]},
             zip = {form['zip_code']},
-            updated_at={datetime.datetime.now}
+            updated_at='{datetime.datetime.now()}'
         WHERE registration_id = {reg_id}"""
         cur.execute(operation)
         conn.commit()
