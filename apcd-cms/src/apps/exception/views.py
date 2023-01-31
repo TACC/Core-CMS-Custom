@@ -43,9 +43,7 @@ class ExceptionThresholdFormView(View):
         return HttpResponseRedirect("/")
 
     def post(self, request):
-        submitter_cont = apcd_database.get_submitter_for_exception(
-            request.user.username
-        )
+        submitter_cont =  [(1, "TESTGOLD", 10000000, "smassie")]
 
         def _err_msg(resp):
             if hasattr(resp, "pgerror"):
@@ -72,8 +70,10 @@ class ExceptionThresholdFormView(View):
         else:
             return HttpResponseRedirect("/")
 
-        tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
-        tracker.login()
+        ''' TO DO 
+        --> Tracker returns Creditentials Required Error and stops posting of form. RT Ticket creation needs to be fixed
+         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
+        tracker.login()'''
 
         subject = "New TX-APCD Portal Exception Submission"
         description = "APCD Exception Request Details\n"
@@ -97,9 +97,9 @@ class ExceptionThresholdFormView(View):
             )
             response = HttpResponse(template.render({}, request))
 
-        tracker.create_ticket(
-            Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
-        )
+        #tracker.create_ticket(
+           # Queue=RT_QUEUE, Subject=subject, Text=description, Requestors=email
+        #)
 
         return response
 
