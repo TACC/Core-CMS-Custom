@@ -43,7 +43,8 @@ class AdminSubmissionsTable(TemplateView):
                 'status': submission[4],
                 'outcome': submission[5],
                 'received_timestamp': submission[3],
-                'org_name': submission[7],
+                'updated_at': submission[7],
+                'org_name': submission[8],
                 'view_modal_content': _set_submission_logs(submission_logs)
             }
 
@@ -62,7 +63,7 @@ class AdminSubmissionsTable(TemplateView):
             return modal_content
 
 
-        context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['rows'] = [] 
         submission_with_logs = []
 
@@ -75,7 +76,7 @@ class AdminSubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        p = Paginator(submission_with_logs, 10)
+        p = Paginator(submission_with_logs, 50)
 
         try:
             page = p.page(page_num)

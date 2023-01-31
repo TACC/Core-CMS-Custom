@@ -855,22 +855,21 @@ def get_all_submissions():
             sslmode='require'
         )
         query = """
-            SELECT
+            SELECT 
                 submissions.submission_id,
-                submissions.submitter_id,
+                submissions.apcd_id,
+                submissions.submitter_id, 
                 submissions.zip_file_name,
-                submissions.received_timestamp,
                 submissions.status,
                 submissions.outcome,
-                users.user_name,
-                users.org_name
+                submissions.received_timestamp,
+                submissions.updated_at,
+                apcd_orgs.official_name
             FROM submissions
-            JOIN submitter_users
-                ON submissions.submitter_id = submitter_users.submitter_id
-            JOIN users
-                ON submitter_users.user_id = users.user_id
+            JOIN apcd_orgs
+                ON submissions.apcd_id = apcd_orgs.apcd_id
             ORDER BY submissions.received_timestamp DESC
-        """
+        """ 
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
