@@ -1,0 +1,237 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'forms/css/exception_submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <div class="row">
+    <div class="col">
+      <h1>Threshold Exception Request</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted only by entities who are
+        eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
+        and associated regulations. Please review the legislation and regulation before
+        submitting this form. Links to both can be found on the
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
+          website.</a>
+      </p>
+      <hr />
+
+      <div class="forms">
+
+        <div class="form-wrapper">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-errors" style="display: none"></div>
+            <div class="exception-header-1">
+
+              <h2> Threshold Request Details</h2>
+              <p>Select submission file type for your requested threshold reduction:
+
+              </p>
+              <div class="field-wrapper select required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="file_type">File Type <span class="asterisk">*</span></label>
+
+
+                <select name="file_type" required="required" class="choicefield" id="file_type">
+                  <option value="dc">Dental Claims</option>
+
+                  <option value="mc">
+                    Medical Claims
+                  </option>
+
+                  <option value="me">
+                    Member Eligibility
+                  </option>
+
+                  <option value="pc">
+                    Pharmacy Claims
+                  </option>
+
+                  <option value="pv">
+                    Provider
+                  </option>
+                </select>
+                <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
+                  exception form submission.
+                </div>
+              </div>
+              <hr />
+            </div>
+
+            <div id="exception_block_1">
+              <h4>Requested Threshold Reduction</h4>
+              <p>Please reference this <a
+                  href=https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXPACD-Common_%20Data_Layout.pdf>data
+                  submission guide</a> to
+                find threshold field codes and minimum threshold percentages for your threshold reduction request.
+
+              </p>
+              <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="expiration-date">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
+
+                <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
+                  pattern="\d{4}-\d{2}-\d{2}" required />
+              </div>
+              <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper input required id=field-threshold-exception name=field-threshold-exception">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
+
+                  <input type="text" name="field-threshold-exception" required class="textinput"
+                    id="field-threshold-exception" placeholder="CDLXX000" pattern="CDL[a-zA-Z]{2}\d{3}" minlength="8"
+                    maxlength="8" title="Must have format CDLXX000">
+                  <div id="help-text-threshold-required" class="help-text">
+                    Format CDLXX000
+                  </div>
+
+                </div>
+                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
+                  <label for="threshold-requested">
+                    Threshold Reduction <span class="asterisk">*</span>
+                  </label>
+                  <div class="field-errors" style="display: none"></div>
+                  <div class="s-affixed-input-wrapper">
+                    <input type="number" display=name="threshold-requested" class="textinput" id="threshold-requested"
+                      inputmode="numeric" min="0" max="99" style="" required />
+                    <span class="s-affixed-input-wrapper__suffix">%</span>
+                  </div>
+                  <div id="help-text-threshold-requested-required" class="help-text">
+                    Must be less than minimum <a
+                      href=https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXPACD-Common_%20Data_Layout.pdf>here.</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <h4>Justification</h4>
+            <div class="field-wrapper textarea required">
+              <p>Provide rationale for the exception request, outlining the reasons why the
+                organization is unable to comply with the relevant requirements. Provide as
+                much detail as possible regarding the exception request, indicating the
+                specific submission requirements for which relief is being sought. If applicable,
+                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span class="asterisk"
+                    id="justification-asterisk" style="padding-left: 0; margin-left: 0;">*</span></label></p>
+
+              <div class="field-errors" style="display: none"></div>
+
+              <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
+                id="justification" minlength="2" maxlength="2000"></textarea>
+              <div class="help-text">
+                2000 character limit
+              </div>
+            </div>
+            <hr />
+            <h4>Acknowledgment of Terms</h4>
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput required">
+                <label for="requestor-name">
+                  Requestor Name<span class="asterisk">*</span>
+                </label>
+                <div class="field-errors" style="display: none"></div>
+
+                <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
+              </div>
+              <div class="field-wrapper emailinput required">
+                <label for="requestor-email">
+                  Requestor Email<span class="asterisk">*</span>
+                </label>
+                <div class="field-errors" style="display: none"></div>
+
+                <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
+                  id="requestor-email" />
+              </div>
+            </div>
+            <div class="field-wrapper textinput required"><label>
+                I request an exception on behalf of:
+              </label></div>
+
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+
+              <input type="text" name="business-name" required class="textinput" id="business-name" />
+            </div>
+
+            <div class="field-wrapper checkbox required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="accept-terms"> I understand and acknowledge that the Texas Department
+                of Insurance (TDI) may review the validity of the
+                information submitted on this form.</label>
+              <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
+                  required id="accept-terms" />
+                Accept<span class="asterisk">*</span></label>
+            </div>
+            <div class="button-wrapper submit">
+              <button class="form-button" type="submit" value="Submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="form-success" style="display: none">
+          <p>Thank you for your request.</p>
+        </div>
+
+
+        {# Hidden links for future pages #}
+        {# TODO: Allow this template to render CMS admin-entered markup #}
+        <aside class="row" hidden>
+          <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+            <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+            <p><a href="/forms/exception">Exception Request</a></p>
+
+            <p><a href="/forms/extension">Extension Request</a></p>
+
+            <p><a href="/workbench/dashboard">Dashboard</a></p>
+          </div>
+        </aside>
+
+        {# Scripts #}
+
+        <aside>
+          <!-- To require exception is not longer than a year -->
+            <script id="form-exception_length_less_than_year" type="module">
+              $(function(){
+                  var dtToday = new Date();
+                  
+                  var month = dtToday.getMonth() + 1;
+                  var day = dtToday.getDate();
+                  var year = dtToday.getFullYear();
+                  if(month < 10)
+                      month = '0' + month.toString();
+                  if(day < 10)
+                      day = '0' + day.toString();
+                  
+                  var minDate = dtToday.toISOString().substr(0, 10);
+                  $('#expiration-date').attr('min', minDate);
+                  year = year + 1;
+                  var maxDate = year + '-' + month + '-' + day;    
+                  $('#expiration-date').attr('max', maxDate);
+              });
+              </script>
+          </aside>
+
+          {# Footnotes #}
+          <div class="o-section o-section--style-light">
+            <hr />
+            <small>
+              <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br />
+              <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br />
+            </small>
+            <hr />
+          </div>
+          {% endblock %}
