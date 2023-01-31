@@ -25,15 +25,8 @@ class ExceptionFormView(View):
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect("/")
 
-    def _err_msg(resp):
-        if hasattr(resp, "pgerror"):
-            return resp.pgerror
-        if isinstance(resp, Exception):
-            return str(resp)
-        return None
-
-
 class ExceptionThresholdFormView(View):
+    submitter = apcd_database.get_submitter_for_extend_or_except()
     def get(self, request):
         if request.user.is_authenticated and has_apcd_group(request.user):
             template = loader.get_template(
@@ -42,17 +35,8 @@ class ExceptionThresholdFormView(View):
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect("/")
 
-    def post(self, request):
-        submitter_cont =  apcd_database.get_submitter_for_exception(
-            request.user.username
-        )
+    def post(self, request, submitter_cont= submitter):
 
-        def _err_msg(resp):
-            if hasattr(resp, "pgerror"):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
 
         form = request.POST.copy()
         errors = []
@@ -104,6 +88,7 @@ class ExceptionThresholdFormView(View):
         return context
 
 class ExceptionOtherFormView(View):
+    submitter = apcd_database.get_submitter_for_extend_or_except()
     def get(self, request):
         if request.user.is_authenticated and has_apcd_group(request.user):
             template = loader.get_template(
@@ -112,49 +97,35 @@ class ExceptionOtherFormView(View):
             return HttpResponse(template.render({}, request))
         return HttpResponseRedirect("/")
 
-    def post(self, request):
-        if request.user.is_authenticated:
-            username = request.user.username
-            email = request.user.email
-            first_name = request.user.first_name
-            last_name = request.user.last_name
+    def post(self, request, submitter_cont=submitter):
+        if request.user.is_authenticated and has_apcd_group(request.user):
+
+            if _err_msg(submitter_cont):
+                errors.append(_err_msg(submitter_cont))
+            form = request.POST.copy()
+            errors = []
+            sub_data = [sub for sub in submitter_cont if sub[3] == request.user.username][0]
+            if _err_msg(sub_data):
+                errors.append(_err_msg(sub_data))
+
+            excep_resp = apcd_database.create_other_exception(form, sub_data)
+            if _err_msg(excep_resp):
+                errors.append(_err_msg(excep_resp))
+
+            if len(errors):
+                template = loader.get_template(
+                    "exception_submission_form/exception_submission_error.html"
+                )
+                response = HttpResponse(template.render({}, request))
+            else:
+                template = loader.get_template(
+                    "exception_submission_form/exception_form_success.html"
+                )
+                response = HttpResponse(template.render({}, request))
+
+            return response
         else:
             return HttpResponseRedirect("/")
-
-        def _err_msg(resp):
-            if hasattr(resp, "pgerror"):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-
-        submitter_cont = apcd_database.get_submitter_for_exception(
-            request.user.username
-        )
-        if _err_msg(submitter_cont):
-            errors.append(_err_msg(submitter_cont))
-        form = request.POST.copy()
-        errors = []
-        sub_data = [sub for sub in submitter_cont if sub[3] == request.user.username][0]
-        if _err_msg(sub_data):
-            errors.append(_err_msg(sub_data))
-
-        excep_resp = apcd_database.create_other_exception(form, sub_data)
-        if _err_msg(excep_resp):
-            errors.append(_err_msg(excep_resp))
-
-        if len(errors):
-            template = loader.get_template(
-                "exception_submission_form/exception_submission_error.html"
-            )
-            response = HttpResponse(template.render({}, request))
-        else:
-            template = loader.get_template(
-                "exception_submission_form/exception_form_success.html"
-            )
-            response = HttpResponse(template.render({}, request))
-
-        return response
 
     def get_context_data(self, request, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
@@ -173,3 +144,10 @@ class ExceptionOtherFormView(View):
         for submitter, value in submitter_cont.items():
             context["submitter"].append(_set_submitter(submitter))
         return context
+
+def _err_msg(resp):
+    if hasattr(resp, "pgerror"):
+        return resp.pgerror
+    if isinstance(resp, Exception):
+        return str(resp)
+    return None

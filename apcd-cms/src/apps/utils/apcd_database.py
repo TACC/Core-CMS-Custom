@@ -620,39 +620,6 @@ def create_submitter(form, reg_data):
             conn.close()
 
 
-def get_submitter_for_exception(user):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
-        FROM submitters 
-        LEFT JOIN submitter_users 
-        ON submitters.submitter_id = submitter_users.submitter_id 
-        WHERE user_id = (%s) AND submitter_id = submitter
-        """
-        cur = conn.cursor()
-        cur.execute(query, (user,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-
 def create_other_exception(form, sub_data):
     cur = None
     conn = None
@@ -1143,7 +1110,7 @@ def _clean_email(email):
     return result.string if result else None
 
 def _clean_value(value):
-    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
+    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
 
 
 def _set_int(value):
