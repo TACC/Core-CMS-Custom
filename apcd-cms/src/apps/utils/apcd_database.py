@@ -163,6 +163,7 @@ def update_registration(form, reg_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
+        cur = conn.cursor()
         operation = f"""UPDATE registrations
             SET
             file_pv = {True if 'types_of_files_provider' in form else False},
@@ -177,7 +178,7 @@ def update_registration(form, reg_id):
             city = {_clean_value(form['city'])},
             state = {form['state'][:2]},
             zip = {form['zip_code']},
-            updated_at={datetime.datetime.now}
+            updated_at='{datetime.datetime.now()}'
         WHERE registration_id = {reg_id}"""
         cur.execute(operation)
         conn.commit()
@@ -587,7 +588,7 @@ def create_submitter(form, reg_data):
             encryption_key,
             created_at,
             status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             reg_data[0],
