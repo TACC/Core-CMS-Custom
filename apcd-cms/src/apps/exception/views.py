@@ -43,7 +43,7 @@ class ExceptionThresholdFormView(View):
         return HttpResponseRedirect("/")
 
     def post(self, request):
-        submitter_cont =  apcd_database.get_submitter_for_exception(
+        submitter_cont = apcd_database.get_submitter_for_exception(
             request.user.username
         )
 
