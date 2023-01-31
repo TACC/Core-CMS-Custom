@@ -151,6 +151,7 @@ def create_registration(form):
         if conn is not None:
             conn.close()
 
+
 def update_registration(form, reg_id):
     cur = None
     conn = None
@@ -163,6 +164,7 @@ def update_registration(form, reg_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
+        cur = conn.cursor()
         operation = f"""UPDATE registrations
             SET
             file_pv = {True if 'types_of_files_provider' in form else False},
@@ -170,14 +172,14 @@ def update_registration(form, reg_id):
             file_pc = {True if 'types_of_files_pharmacy' in form else False},
             file_dc = {True if 'types_of_files_dental' in form else False},
             submitting_for_self = {True if form['on-behalf-of'] == 'true' else False},
-            submission_method = {_clean_value(form['submission_method'])},
-            org_type = {_clean_value(form['type'])},
-            business_name = {_clean_value(form['business-name'])},
-            mail_address = {_clean_value(form['mailing-address'])},
-            city = {_clean_value(form['city'])},
-            state = {form['state'][:2]},
-            zip = {form['zip_code']},
-            updated_at={datetime.datetime.now}
+            submission_method = '{_clean_value(form['submission_method'])}',
+            org_type = '{_clean_value(form['type'])}',
+            business_name = '{_clean_value(form['business-name'])}',
+            mail_address = '{_clean_value(form['mailing-address'])}',
+            city = '{_clean_value(form['city'])}',
+            state = '{form['state'][:2]}',
+            zip = '{form['zip_code']}',
+            updated_at='{datetime.datetime.now()}'
         WHERE registration_id = {reg_id}"""
         cur.execute(operation)
         conn.commit()
@@ -587,7 +589,7 @@ def create_submitter(form, reg_data):
             encryption_key,
             created_at,
             status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             reg_data[0],
@@ -886,6 +888,178 @@ def create_extension(form, iteration, sub_data):
     values = ()
     try:
         if iteration > 1:
+            values = (
+                None,
+                _clean_value(sub_data[0]),
+                _clean_value(form['current-expected-date_{}'.format(iteration)]),
+                _clean_value(form['requested-target-date_{}'.format(iteration)]),
+                None,
+                _clean_value(form['extension-type_{}'.format(iteration)]),
+                _clean_value(form['applicable-data-period_{}'.format(iteration)]),
+                "Pending",
+                None,
+                datetime.datetime.now(),
+                None,
+                _clean_value(sub_data[1]),
+                _clean_value(sub_data[2]),
+                _clean_value(sub_data[3]),
+                _clean_value(form["requestor-name"]),
+                _clean_email(form["requestor-email"]),
+                _clean_value(form["justification"]),
+                None
+                )
+        else:
+            values = (
+            None,
+            _clean_value(sub_data[0]),
+            _clean_value(form['current-expected-date']),
+            _clean_value(form['requested-target-date']),
+            None,
+            _clean_value(form['extension-type']),
+            _clean_value(form['applicable-data-period']),
+            "Pending",
+            None,
+            datetime.datetime.now(),
+            None,
+            _clean_value(sub_data[1]),
+            _clean_value(sub_data[2]),
+            _clean_value(sub_data[3]),
+            _clean_value(form["requestor-name"]),
+            _clean_email(form["requestor-email"]),
+            _clean_value(form["justification"]),
+            None
+            )            
+            operation = """INSERT INTO extensions(
+                    extension_id,
+                    submitter_id,
+                    current_expected_date,
+                    requested_target_date,
+                    approved_expiration_date,
+                    extension_type,
+                    applicable_data_period,
+                    status,
+                    outcome,
+                    created_at,
+                    updated_at,
+                    submitter_code,
+                    payor_code,
+                    user_id,
+                    requestor_name,
+                    requestor_email,
+                    explanation_justification,
+                    notes
+                    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+            conn = psycopg2.connect(
+                host=APCD_DB['host'],
+                dbname=APCD_DB['database'],
+                user=APCD_DB['user'],
+                password=APCD_DB['password'],
+                port=APCD_DB['port'],
+                sslmode='require'
+            )
+            cur = conn.cursor()
+            cur.execute(operation, values)
+            conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_submitter_for_extend_or_except():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB["host"],
+            dbname=APCD_DB["database"],
+            user=APCD_DB["user"],
+            password=APCD_DB["password"],
+            port=APCD_DB["port"],
+            sslmode="require",
+        )
+        user = APCD_DB["user"]
+        cur = conn.cursor()
+        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id 
+        FROM submitters 
+        LEFT JOIN submitter_users 
+        ON submitters.submitter_id = submitter_users.submitter_id 
+        WHERE user_id = (%s) 
+        """
+        cur = conn.cursor()
+        cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_all_extensions():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                extensions.extension_id, 
+                extensions.submitter_id,
+                extensions.current_expected_date,
+                extensions.requested_target_date,
+                extensions.approved_expiration_date,
+                extensions.extension_type,
+                extensions.applicable_data_period,
+                extensions.status,
+                extensions.outcome,
+                extensions.created_at,
+                extensions.updated_at,
+                extensions.submitter_code,
+                extensions.payor_code,
+                extensions.user_id,
+                extensions.requestor_name,
+                extensions.requestor_email,
+                extensions.explanation_justification,
+                extensions.notes,
+                users.org_name
+            FROM extensions
+            JOIN submitter_users
+                ON extensions.submitter_id = submitter_users.submitter_id
+            JOIN users
+                ON submitter_users.user_id = users.user_id
+            ORDER BY extensions.created_at DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
+def create_extension(form, iteration, sub_data):
+    cur = None
+    conn = None
+    values = ()
+    try:
+        if iteration >= 1:
             values = (
                 None,
                 _clean_value(sub_data[0]),
