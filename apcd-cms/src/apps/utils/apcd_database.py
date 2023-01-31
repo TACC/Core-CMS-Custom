@@ -151,6 +151,7 @@ def create_registration(form):
         if conn is not None:
             conn.close()
 
+
 def update_registration(form, reg_id):
     cur = None
     conn = None
@@ -171,13 +172,13 @@ def update_registration(form, reg_id):
             file_pc = {True if 'types_of_files_pharmacy' in form else False},
             file_dc = {True if 'types_of_files_dental' in form else False},
             submitting_for_self = {True if form['on-behalf-of'] == 'true' else False},
-            submission_method = {_clean_value(form['submission_method'])},
-            org_type = {_clean_value(form['type'])},
-            business_name = {_clean_value(form['business-name'])},
-            mail_address = {_clean_value(form['mailing-address'])},
-            city = {_clean_value(form['city'])},
-            state = {form['state'][:2]},
-            zip = {form['zip_code']},
+            submission_method = '{_clean_value(form['submission_method'])}',
+            org_type = '{_clean_value(form['type'])}',
+            business_name = '{_clean_value(form['business-name'])}',
+            mail_address = '{_clean_value(form['mailing-address'])}',
+            city = '{_clean_value(form['city'])}',
+            state = '{form['state'][:2]}',
+            zip = '{form['zip_code']}',
             updated_at='{datetime.datetime.now()}'
         WHERE registration_id = {reg_id}"""
         cur.execute(operation)
