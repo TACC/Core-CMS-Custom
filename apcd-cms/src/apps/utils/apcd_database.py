@@ -885,7 +885,7 @@ def create_extension(form, iteration, sub_data):
     conn = None
     values = ()
     try:
-        if iteration >= 1:
+        if iteration > 1:
             values = (
                 None,
                 _clean_value(sub_data[0]),
@@ -1092,7 +1092,7 @@ def _clean_email(email):
     return result.string if result else None
 
 def _clean_value(value):
-    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', value)
+    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
 
 
 def _set_int(value):
