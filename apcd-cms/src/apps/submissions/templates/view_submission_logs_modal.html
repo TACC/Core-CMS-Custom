@@ -13,22 +13,27 @@
           <div>
             <dl>
               <h4 class="title">Logs</h4>
-              {% for log in r.view_modal_content %}
-                <div class="modal-section">
-                    <dl class="c-data-list--is-vert c-data-list--is-wide">
-                        <dt class="c-data-list__key">Log ID</dt>
-                        <dd class="c-data-list__value">{{log.log_id}}</dd>                    
-                        <dt class="c-data-list__key">File Type</dt>                
-                        <dd class="c-data-list__value">{{log.file_type}}</dd>
-                        <dt class="c-data-list__key">Validation Suite</dt>                
-                        <dd class="c-data-list__value">{{log.validation_suite}}</dd>
-                        <dt class="c-data-list__key">Outcome</dt>                
-                        <dd class="c-data-list__value">{{log.outcome}}</dd>
-                    </dl>
-                    <hr>
-                </div>
-              {% endfor %}
-              </dd>
+              {% if not r.view_modal_content %}
+              <div class="modal-section">
+                No logs found for this submission
+              </div>
+              {% else %}
+                {% for log in r.view_modal_content %}
+                  <div class="modal-section">
+                      <dl class="c-data-list--is-vert c-data-list--is-wide">
+                          <dt class="c-data-list__key">Log ID</dt>
+                          <dd class="c-data-list__value">{{log.log_id}}</dd>                    
+                          <dt class="c-data-list__key">File Type</dt>                
+                          <dd class="c-data-list__value">{{log.file_type}}</dd>
+                          <dt class="c-data-list__key">Validation Suite</dt>                
+                          <dd class="c-data-list__value">{{log.validation_suite}}</dd>
+                          <dt class="c-data-list__key">Outcome</dt>                
+                          <dd class="c-data-list__value">{{log.outcome}}</dd>
+                      </dl>
+                      <hr>
+                  </div>
+                {% endfor %}
+              {% endif %}
             </dl>
           </div>
         </div>

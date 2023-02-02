@@ -9,6 +9,42 @@ logger = logging.getLogger(__name__)
 APCD_DB = settings.APCD_DATABASE
 
 
+def get_users():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """SELECT
+                users.user_id,
+                users.user_email,
+                users.user_name,
+                users.org_name,
+                users.role_id,
+                users.created_at,
+                users.updated_at,
+                users.notes
+                FROM users"""
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+    
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+            
+
 def get_user_role(user):
     cur = None
     conn = None
@@ -180,9 +216,11 @@ def update_registration(form, reg_id):
             state = '{form['state'][:2]}',
             zip = '{form['zip_code']}',
             updated_at='{datetime.datetime.now()}'
-        WHERE registration_id = {reg_id}"""
+        WHERE registration_id = {reg_id}
+        RETURNING registration_id"""
         cur.execute(operation)
         conn.commit()
+        return cur.fetchone()[0]
 
     except Exception as error:
         logger.error(error)
@@ -857,22 +895,21 @@ def get_all_submissions():
             sslmode='require'
         )
         query = """
-            SELECT
+            SELECT 
                 submissions.submission_id,
-                submissions.submitter_id,
+                submissions.apcd_id,
+                submissions.submitter_id, 
                 submissions.zip_file_name,
-                submissions.received_timestamp,
                 submissions.status,
                 submissions.outcome,
-                users.user_name,
-                users.org_name
+                submissions.received_timestamp,
+                submissions.updated_at,
+                apcd_orgs.official_name
             FROM submissions
-            JOIN submitter_users
-                ON submissions.submitter_id = submitter_users.submitter_id
-            JOIN users
-                ON submitter_users.user_id = users.user_id
+            JOIN apcd_orgs
+                ON submissions.apcd_id = apcd_orgs.apcd_id
             ORDER BY submissions.received_timestamp DESC
-        """
+        """ 
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
