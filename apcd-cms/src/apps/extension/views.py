@@ -2,21 +2,28 @@ from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.views.generic import View
+from django.views.generic.base import TemplateView
+
 import logging
 
 logger = logging.getLogger(__name__)
 
-class ExtensionFormView(View):
-    submitter = apcd_database.get_submitter_for_extend_or_except()
-    def get(self, request):
-        if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('extension_submission_form/extension_submission_form.html')
-            return HttpResponse(template.render({}, request))
-        return HttpResponseRedirect('/')
+class ExtensionFormView(TemplateView):
+    template_name = 'extension_submission_form/extension_submission_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
+            return HttpResponseRedirect('/')
+        return super(ExtensionFormView, self).dispatch(request, *args, **kwargs)
    
-    def get_context_data(self, submitter=submitter, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
             context = super(ExtensionFormView, self).get_context_data(*args, **kwargs)
+
+            user = self.request.user.username
+
+            submitters = apcd_database.get_submitter_for_extend_or_except(user)
+
+            self.request.session['submitters'] = submitters
 
             def _set_submitter(sub):
                 return {
@@ -24,21 +31,26 @@ class ExtensionFormView(View):
                     "submitter_code": sub[1],
                     "payor_code": sub[2],
                     "user_name": sub[3],
+                    "org_name": sub[4]
                 }
 
-            context["submitter"] = []
-            for sub_data, value in submitter.items():
-                context["submitter"].append(_set_submitter(sub_data))
-                context = [sub for sub in context if sub[3] == self.request.user.username][0]
+            context['submitters'] = []
+
+            for submitter in submitters: 
+                context['submitters'].append(_set_submitter(submitter))
+
             return context      
 
 
-    def post(self, request, submitter = submitter):
+    def post(self, request):
         if (request.user.is_authenticated) and has_apcd_group(request.user):
             
             form = request.POST.copy()
             errors= []
+            submitters = request.session.get('submitters')
 
+            submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
+         
             for iteration in range(1,6):
                 exten_resp = apcd_database.create_extension(form, iteration, submitter)
                 if _err_msg(exten_resp):
@@ -51,8 +63,10 @@ class ExtensionFormView(View):
                 template = loader.get_template('extension_submission_form/extension_form_success.html')
                 response = HttpResponse(template.render({}, request))
 
+            del request.session['submitters']
             return response
         else:
+            del request.session['submitters']
             return HttpResponseRedirect('/')
 
 

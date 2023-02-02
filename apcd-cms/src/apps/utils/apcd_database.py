@@ -895,10 +895,10 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['requested-target-date_{}'.format(iteration)]),
                 None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
-                _clean_value(form['applicable-data-period_{}'.format(iteration)]),
+                int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
                 "Pending",
                 None,
-                datetime.datetime.now(),
+                datetime.datetime.now().strftime('%Y-%m-%d'),
                 None,
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
@@ -916,10 +916,10 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['requested-target-date']),
             None,
             _clean_value(form['extension-type']),
-            _clean_value(form['applicable-data-period']),
+            int(form['applicable-data-period'].replace('-', '')),
             "Pending",
             None,
-            datetime.datetime.now(),
+            datetime.datetime.now().strftime('%Y-%m-%d'),
             None,
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
@@ -970,29 +970,28 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
-def get_submitter_for_extend_or_except():
+def get_submitter_for_extend_or_except(user):
     cur = None
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
-            sslmode="require",
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
         )
-        user = APCD_DB["user"]
         cur = conn.cursor()
         query = """
-        SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id 
-        FROM submitters 
-        JOIN submitter_users 
-            ON submitters.submitter_id = submitter_users.submitter_id 
-        JOIN users
-            ON submitter_users.user_id = users.user_id
-            WHERE submitter_users.user_id = (%s)
-        """
+                SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id, users.org_name
+                FROM submitters
+                JOIN submitter_users
+                    ON submitters.submitter_id = submitter_users.submitter_id
+                JOIN users
+                    ON submitter_users.user_id = users.user_id
+                WHERE submitter_users.user_id = (%s)
+            """
         cur = conn.cursor()
         cur.execute(query, (user,))
         return cur.fetchall()
@@ -1049,39 +1048,6 @@ def get_all_extensions():
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-def get_submitter_for_extend_or_except():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
-            sslmode="require",
-        )
-        user = APCD_DB["user"]
-        cur = conn.cursor()
-        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id 
-        FROM submitters 
-        LEFT JOIN submitter_users 
-        ON submitters.submitter_id = submitter_users.submitter_id 
-        WHERE user_id = (%s) 
-        """
-        cur = conn.cursor()
-        cur.execute(query, (user,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
 
     finally:
         if cur is not None:

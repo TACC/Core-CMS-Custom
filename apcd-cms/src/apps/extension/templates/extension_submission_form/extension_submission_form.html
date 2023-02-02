@@ -204,8 +204,12 @@
             Business Name<span class="asterisk">*</span>
           </label>
           <div class="field-errors" style="display: none"></div>
-  
-          <input type="text" name="business-name" required class="textinput" id="business-name" />
+            <select name='business-name' required='required' class="choicefield" id='business-name'>
+            {% for submitter in submitters %}
+              <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}}</option>
+            {% endfor %} 
+          </select>
+
         </div>
   
         <div class="field-wrapper checkbox required">
