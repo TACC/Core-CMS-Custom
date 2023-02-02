@@ -30,7 +30,9 @@ def get_users():
                 users.created_at,
                 users.updated_at,
                 users.notes
-                FROM users"""
+                FROM users
+                ORDER BY users.org_name ASC
+                """
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()

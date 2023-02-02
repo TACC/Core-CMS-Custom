@@ -46,7 +46,7 @@ class ViewUsersTable(TemplateView):
         
         
 
-        context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'RoleId', 'Created', 'Updated', 'Notes']
+        context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'Role ID', 'Created', 'Updated', 'Notes']
         context['rows'] = []
         for user in user_content:
             user_view = [usr for usr in user_content if usr[1] == user[0]]
