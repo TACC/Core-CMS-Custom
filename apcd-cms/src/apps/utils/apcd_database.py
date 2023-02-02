@@ -928,8 +928,8 @@ def create_extension(form, iteration, sub_data):
             values = (
                 None,
                 _clean_value(sub_data[0]),
-                _clean_value(form['current-expected-date_{}'.format(iteration)]),
-                _clean_value(form['requested-target-date_{}'.format(iteration)]),
+                _clean_date(form['current-expected-date_{}'.format(iteration)]),
+                _clean_date(form['requested-target-date_{}'.format(iteration)]),
                 None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
                 int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
@@ -949,8 +949,8 @@ def create_extension(form, iteration, sub_data):
             values = (
             None,
             _clean_value(sub_data[0]),
-            _clean_value(form['current-expected-date']),
-            _clean_value(form['requested-target-date']),
+            _clean_date(form['current-expected-date']),
+            _clean_date(form['requested-target-date']),
             None,
             _clean_value(form['extension-type']),
             int(form['applicable-data-period'].replace('-', '')),
@@ -966,37 +966,37 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form["justification"]),
             None
             )            
-            operation = """INSERT INTO extensions(
-                    extension_id,
-                    submitter_id,
-                    current_expected_date,
-                    requested_target_date,
-                    approved_expiration_date,
-                    extension_type,
-                    applicable_data_period,
-                    status,
-                    outcome,
-                    created_at,
-                    updated_at,
-                    submitter_code,
-                    payor_code,
-                    user_id,
-                    requestor_name,
-                    requestor_email,
-                    explanation_justification,
-                    notes
-                    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-            conn = psycopg2.connect(
-                host=APCD_DB['host'],
-                dbname=APCD_DB['database'],
-                user=APCD_DB['user'],
-                password=APCD_DB['password'],
-                port=APCD_DB['port'],
-                sslmode='require'
-            )
-            cur = conn.cursor()
-            cur.execute(operation, values)
-            conn.commit()
+        operation = """INSERT INTO extensions(
+                extension_id,
+                submitter_id,
+                current_expected_date,
+                requested_target_date,
+                approved_expiration_date,
+                extension_type,
+                applicable_data_period,
+                status,
+                outcome,
+                created_at,
+                updated_at,
+                submitter_code,
+                payor_code,
+                user_id,
+                requestor_name,
+                requestor_email,
+                explanation_justification,
+                notes
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        cur.execute(operation, values)
+        conn.commit()
     except Exception as error:
         logger.error(error)
         return error
@@ -1185,6 +1185,13 @@ def _clean_email(email):
 def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
 
+def _clean_date(date_string):
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+
+    if re.match(date_pattern, date_string):
+        return datetime.datetime.strptime(date_string, '%Y-%m-%d').strftime('%Y-%m-%d')
+    else:
+        return None
 
 def _set_int(value):
     if len(value):

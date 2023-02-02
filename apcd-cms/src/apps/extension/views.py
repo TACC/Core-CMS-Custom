@@ -50,8 +50,16 @@ class ExtensionFormView(TemplateView):
             submitters = request.session.get('submitters')
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
-         
-            for iteration in range(1,6):
+
+            max_iterations = 1
+            
+            for i in range(2, 6):
+                if form.get('current-expecte-date_{}'.format(i)):
+                    max_iterations += 1
+                else:
+                    break
+
+            for iteration in range(max_iterations):
                 exten_resp = apcd_database.create_extension(form, iteration, submitter)
                 if _err_msg(exten_resp):
                     errors.append(_err_msg(exten_resp))
