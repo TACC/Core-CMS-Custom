@@ -919,6 +919,56 @@ def get_all_submissions():
         if conn is not None:
             conn.close()
 
+def get_all_extensions():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                extensions.extension_id, 
+                extensions.submitter_id,
+                extensions.current_expected_date,
+                extensions.requested_target_date,
+                extensions.approved_expiration_date,
+                extensions.extension_type,
+                extensions.applicable_data_period,
+                extensions.status,
+                extensions.outcome,
+                extensions.created_at,
+                extensions.updated_at,
+                extensions.submitter_code,
+                extensions.payor_code,
+                extensions.user_id,
+                extensions.requestor_name,
+                extensions.requestor_email,
+                extensions.explanation_justification,
+                extensions.notes,
+                users.org_name
+            FROM extensions
+            JOIN submitter_users
+                ON extensions.submitter_id = submitter_users.submitter_id
+            JOIN users
+                ON submitter_users.user_id = users.user_id
+            ORDER BY extensions.created_at DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def create_extension(form, iteration, sub_data):
     cur = None
     conn = None
