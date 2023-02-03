@@ -73,6 +73,9 @@ class RegistrationsTable(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
+        registrations_content = get_registrations()
+        registrations_entities = get_registration_entities()
+        registrations_contacts = get_registration_contacts()
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content=registrations_content, registrations_entities=registrations_entities, registrations_contacts=registrations_contacts, *args, **kwargs):

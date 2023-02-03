@@ -1,31 +1,29 @@
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
-from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.views.generic import View
-from requests.auth import HTTPBasicAuth
+from django.views.generic.base import TemplateView
+
 import logging
-import rt
 
 logger = logging.getLogger(__name__)
 
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
+class ExtensionFormView(TemplateView):
+    template_name = 'extension_submission_form/extension_submission_form.html'
 
-
-class ExtensionFormView(View):
-    submitter = apcd_database.get_submitter_for_extend_or_except()
-    def get(self, request):
-        if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('extension_submission_form/extension_submission_form.html')
-            return HttpResponse(template.render({}, request))
-        return HttpResponseRedirect('/')
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
+            return HttpResponseRedirect('/')
+        return super(ExtensionFormView, self).dispatch(request, *args, **kwargs)
    
-    def get_context_data(self, submitter=submitter, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
             context = super(ExtensionFormView, self).get_context_data(*args, **kwargs)
+
+            user = self.request.user.username
+
+            submitters = apcd_database.get_submitter_for_extend_or_except(user)
+
+            self.request.session['submitters'] = submitters
 
             def _set_submitter(sub):
                 return {
@@ -33,72 +31,51 @@ class ExtensionFormView(View):
                     "submitter_code": sub[1],
                     "payor_code": sub[2],
                     "user_name": sub[3],
+                    "org_name": sub[4]
                 }
 
-            context["submitter"] = []
-            for sub_data, value in submitter.items():
-                context["submitter"].append(_set_submitter(sub_data))
-                context = [sub for sub in context if sub[3] == self.request.user.username][0]
-            logger.error(context)
+            context['submitters'] = []
+
+            for submitter in submitters: 
+                context['submitters'].append(_set_submitter(submitter))
+
             return context      
 
 
-    def post(self, request, submitter = submitter):
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
+    def post(self, request):
+        if (request.user.is_authenticated) and has_apcd_group(request.user):
+            
+            form = request.POST.copy()
+            errors= []
+            submitters = request.session.get('submitters')
 
-        if (request.user.is_authenticated):
-            username = request.user.username
-            email = request.user.email
-            first_name = request.user.first_name
-            last_name = request.user.last_name
-        else:
-            return HttpResponseRedirect('/')
+            submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
 
-        form = request.POST.copy()
-        errors= []
+            max_iterations = 1
+            
+            for i in range(2, 6):
+                if form.get('current-expected-date_{}'.format(i)):
+                    max_iterations += 1
+                else:
+                    break
 
-        if not _err_msg(submitter):
-            for iteration in range(1,6):
+            for iteration in range(max_iterations):
                 exten_resp = apcd_database.create_extension(form, iteration, submitter)
                 if _err_msg(exten_resp):
                     errors.append(_err_msg(exten_resp))
+
+            if len(errors):
+                template = loader.get_template('extension_submission_form/extension_submission_error.html')
+                response = HttpResponse(template.render({}, request))
+            else:
+                template = loader.get_template('extension_submission_form/extension_form_success.html')
+                response = HttpResponse(template.render({}, request))
+
+            del request.session['submitters']
+            return response
         else:
-            errors.append(_err_msg(exten_resp))
-
-        # ===> Create Ticket
-        tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
-        tracker.login()
-
-        subject = "New TX-APCD Portal Extension Submission"
-        description = "APCD Extension Request Details\n"
-        description += "=========================\n"
-        description += "submitter_user:            {}\n".format(username)
-        description += "submitter_user_email:      {}\n".format(email)
-        description += "submitter_user_first_name: {}\n".format(first_name)
-        description += "submitter_user_last_name:  {}\n".format(last_name)
-        if len(errors):
-            subject = "(ERROR): TX-APCD Portal Extension Submission"
-            description += "Error(s):\n"
-            for err_msg in errors:
-                description += "{}\n".format(err_msg)
-            template = loader.get_template('extension_submission_form/extension_submission_error.html')
-            response = HttpResponse(template.render({}, request))
-        else:
-            template = loader.get_template('extension_submission_form/extension_form_success.html')
-            response = HttpResponse(template.render({}, request))
-
-        tracker.create_ticket(
-            Queue=RT_QUEUE,
-            Subject=subject,
-            Text=description,
-            Requestors=email
-        )
-        return response
+            del request.session['submitters']
+            return HttpResponseRedirect('/')
 
 
 def _err_msg(resp):
