@@ -17,17 +17,16 @@
   <div class="filter-container">
     <div class="filter-content">
       <span><b>Filter by Organization: </b></span>
-      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
-        <option class="dropdown-text">All</option>
-        <option class="dropdown-text">UUL</option>
-        <option class="dropdown-text">UMR</option>
-        <option class="dropdown-text">UHC</option>
-        <option class="dropdown-text">Reserve Nat Ins Co</option>
-        <option class="dropdown-text">Optum Behavioral</option>
+      <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
+       
+        <option class="dropdown-text"></option>
+        {% for r in rows %}
+        <option class="dropdown-text">{{r.org_name}}</option>
+        {% endfor %}
       </select>
     </div>
   </div>
-  <table id="usersTable" class="users-table"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
+  <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
       <thead>
           <tr>
               {% for k in header %}
@@ -35,7 +34,7 @@
               {% endfor %}
           </tr>
       </thead>
-      <tbody>
+      <tbody id="usersTableBody">
           {% for r in rows %}
               <tr>
                   <td>{{r.user_id}}</td>
@@ -54,21 +53,39 @@
   </table>
 </div>
 <script>
-  function filterTableByStatus() {
-    var dropdown, filter, table, rows, status, i;
-    dropdown = document.getElementById("statusFilter");
-    filter =  dropdown.value;
-    table = document.getElementById("registrationTable");
-    rows = table.getElementsByTagName("tr");
-    [...rows].slice(1).forEach(row => {
-      status = row.getElementsByTagName("td")[5];
-      if (status.innerText != filter && filter != 'All') {
-        row.style.display = "none";
+function filterTableByOrganization() {
+  var dropdown, filter, table, tr, td, i;
+  input = document.getElementById("organizationFilter");
+  console.log(input)
+  filter = input.value.toUpperCase();
+  console.log(filter)
+  table = document.getElementById("usersTableBody");
+  console.log(table)
+  tr = table.getElementsByTagName("tr");
+  console.log(tr)
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
       } else {
-        row.style.display = "";
+        tr[i].style.display = "none";
       }
-    })
+    }       
   }
+}
+
+/***remove duplicates from dropdown
+ */
+ const options = []
+
+document.querySelectorAll('#organizationFilter > option').forEach((option) => {
+    if (options.includes(option.value)) option.remove()
+    else options.push(option.value)
+})
+
+
+
 </script>
 
 {% endblock %}
