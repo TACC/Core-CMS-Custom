@@ -56,13 +56,9 @@
 function filterTableByOrganization() {
   var dropdown, filter, table, tr, td, i;
   input = document.getElementById("organizationFilter");
-  console.log(input)
   filter = input.value.toUpperCase();
-  console.log(filter)
   table = document.getElementById("usersTableBody");
-  console.log(table)
   tr = table.getElementsByTagName("tr");
-  console.log(tr)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
