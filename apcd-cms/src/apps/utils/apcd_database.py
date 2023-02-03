@@ -1189,7 +1189,7 @@ def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
     if re.match(date_pattern, date_string):
-        return datetime.datetime.strptime(date_string, '%Y-%m-%d').strftime('%Y-%m-%d')
+        return date_string
     else:
         return None
 
