@@ -54,7 +54,7 @@ class ExtensionFormView(TemplateView):
             max_iterations = 1
             
             for i in range(2, 6):
-                if form.get('current-expecte-date_{}'.format(i)):
+                if form.get('current-expected-date_{}'.format(i)):
                     max_iterations += 1
                 else:
                     break
