@@ -45,6 +45,7 @@ class SubmissionsTable(TemplateView):
                 'file_name': submission[3],
                 'status': submission[8],
                 'outcome': submission[9],
+                'updated_at': submission[14],
                 'view_modal_content': _set_submission_logs(submission_logs)
             }
 
@@ -63,7 +64,7 @@ class SubmissionsTable(TemplateView):
             return modal_content
 
 
-        context['header'] = ['Received','Submission ID', 'File Name', ' ', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Received','Submission ID', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['rows'] = [] 
 
         for submission in submission_content:

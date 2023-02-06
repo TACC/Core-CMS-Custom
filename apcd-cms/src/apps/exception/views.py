@@ -67,8 +67,12 @@ class ExceptionThresholdFormView(View):
         )
 
     def get_context_data(self, request, *args, **kwargs):
+    def get_context_data(self, request, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(
             *args, **kwargs
+        )
+        submitter_cont =  apcd_database.get_submitter_for_exception(
+            request.user.username
         )
         submitter_cont =  apcd_database.get_submitter_for_exception(
             request.user.username
@@ -128,10 +132,12 @@ class ExceptionOtherFormView(View):
             return HttpResponseRedirect("/")
 
     def get_context_data(self, request, *args, **kwargs):
+    def get_context_data(self, request, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
         submitter_cont =  apcd_database.get_submitter_for_exception(
             request.user.username
         )
+
         def _set_submitter(sub):
             return {
                 "submitter_id": sub[0],
