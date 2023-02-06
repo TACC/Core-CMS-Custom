@@ -18,9 +18,7 @@
     <div class="filter-content">
       <span><b>Filter by Organization: </b></span>
       <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
-       
-        <option class="dropdown-text"></option>
-        <option class="dropdown-text"></option>
+        <option class="dropdown-text" value="">All</option>
         {% for r in rows %}
         <option class="dropdown-text">{{r.org_name}}</option>
         {% endfor %}
@@ -54,26 +52,22 @@
   </table>
 </div>
 <script>
+/*filters by organization with dropdown*/
 function filterTableByOrganization() {
   var dropdown, filter, table, tr, td, i;
   input = document.getElementById("organizationFilter");
-  console.log(input)
   filter = input.value.toUpperCase();
-  console.log(filter)
   table = document.getElementById("usersTableBody");
-  console.log(table)
   tr = table.getElementsByTagName("tr");
-  console.log(tr)
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
         tr[i].style.display = "";
       } else {
-        tr[i].style.display = "none";
-        tr[i].style.display = "none";
+        tr[i].style.display = "none";  
       }
-    }       
+    }  
   }
 }
 
@@ -86,7 +80,7 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     else options.push(option.value)
 })
 
-
+/*sorts dropdown list*/
 function sortlist()
 {
     var cl = document.getElementById('organizationFilter');
@@ -149,7 +143,7 @@ function sortTable() {
     }
   }
 }
-window.onload = sortTable;
+sortTable();
 
 </script>
 
