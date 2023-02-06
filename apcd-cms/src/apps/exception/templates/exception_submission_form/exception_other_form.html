@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-wrapper">
-          <form action="" method="POST">
+          <form action="" method="POST" id="other-exception">
             {% csrf_token %}
             <div>
               <div class="field-wrapper numberinput required">
@@ -62,7 +62,7 @@
 
         <div class="field-errors" style="display: none"></div>
 
-        <textarea name="justification" cols="40" rows="10" class="textinput" type="justification" id="justification"
+        <textarea name="justification" cols="40" rows="10" class="textinput" form="other-exception" type="justification" id="justification"
           minlength="2" maxlength="2000" required></textarea>
         <div class="help-text">
           2000 character limit
@@ -99,8 +99,12 @@
           Business Name<span class="asterisk">*</span>
         </label>
         <div class="field-errors" style="display: none"></div>
+          <select name='business-name' required='required' class="choicefield" id='business-name'>
+          {% for submitter in submitters %}
+            <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
+          {% endfor %} 
+        </select>
 
-        <input type="text" name="business-name" required class="textinput" id="business-name" />
       </div>
 
       <div class="field-wrapper checkbox required">
@@ -131,9 +135,9 @@
         <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
           <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-          <p><a href="/forms/exception">Exception Request</a></p>
+          <p><a href="/submissions/exception">Exception Request</a></p>
 
-          <p><a href="/forms/extension">Extension Request</a></p>
+          <p><a href="/submissions/extension-request">Extension Request</a></p>
 
           <p><a href="/workbench/dashboard">Dashboard</a></p>
         </div>

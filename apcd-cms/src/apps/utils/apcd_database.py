@@ -712,32 +712,28 @@ def create_other_exception(form, sub_data):
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
-            submitter_id,
-            submitter_code,
-            payor_code,
-            user_id,
-            requestor_name,
-            requestor_email,
-            request_type,
-            requested_expiration_date,
-            explanation_justification,
-            outcome,
-            created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING submitter_id"""
+                    submitter_id,
+                    user_id,
+                    requestor_name,
+                    requestor_email,
+                    request_type,
+                    requested_expiration_date,
+                    explanation_justification,
+                    outcome,
+                    created_at
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
         values = (
-            sub_data[0],
-            sub_data[1],
-            sub_data[2],
-            sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
-            "Other",
-            _clean_date(form['exception_end_date']),
-            _clean_value(form['justification']),
-            "Pending",
-            datetime.datetime.now(),
-        )
+                form["business-name"],
+                sub_data[3],
+                _clean_value(form['requestor-name']),
+                _clean_email(form['requestor-email']),
+                "Other",
+                _clean_date(form['expiration-date']),
+                _clean_value(form['justification']),
+                "Pending",
+                datetime.datetime.now(),
+            )
         cur.execute(operation, (values,))
         conn.commit()
         return cur.fetchall()
@@ -768,8 +764,6 @@ def create_threshold_exception(form, sub_data):
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
-            submitter_code,
-            payor_code,
             user_id,
             requestor_name,
             requestor_email,
@@ -781,20 +775,18 @@ def create_threshold_exception(form, sub_data):
             explanation_justification,
             outcome,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING submitter_id"""
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """
         values = (
-            sub_data[0],
-            sub_data[1],
-            sub_data[2],
+            form["business-name"],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "Threshold",
-            _clean_date(form['expiration_date']),
+            _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
-            _clean_value(form['threshold-field']),
-            _clean_value(form['threshold-requested']),
+            _clean_value(form['field-threshold-exception']),
+           form['threshold-requested'],
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
