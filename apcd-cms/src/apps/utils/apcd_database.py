@@ -655,14 +655,14 @@ def create_other_exception(form, sub_data):
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "Other",
-            _clean_value(form['exception_end_date']),
+            _clean_date(form['exception_end_date']),
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
-        cur.execute(operation, values)
+        cur.execute(operation, (values,))
         conn.commit()
-        return cur.fetchone()[0]
+        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -696,11 +696,10 @@ def create_threshold_exception(form, sub_data):
             requestor_name,
             requestor_email,
             request_type,
+            requested_expiration_date,
             data_file,
             field_number,
-            required_threshold,
             requested_threshold,
-            requested_expiration_date,
             explanation_justification,
             outcome,
             created_at
@@ -714,17 +713,17 @@ def create_threshold_exception(form, sub_data):
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "Threshold",
+            _clean_date(form['expiration_date']),
             _clean_value(form['file_type']),
             _clean_value(form['threshold-field']),
             _clean_value(form['threshold-requested']),
-            _clean_value(form['expiration_date']),
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
-        cur.execute(operation, values)
+        cur.execute(operation, (values,))
         conn.commit()
-        return cur.fetchone()[0]
+        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -986,30 +985,32 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
-def get_submitter_for_extend_or_except():
+def get_submitter_for_extend_or_except(user):
     cur = None
     conn = None
     try:
         conn = psycopg2.connect(
-            host=APCD_DB["host"],
-            dbname=APCD_DB["database"],
-            user=APCD_DB["user"],
-            password=APCD_DB["password"],
-            port=APCD_DB["port"],
-            sslmode="require",
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
         )
-        user = APCD_DB["user"]
         cur = conn.cursor()
-        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id 
-        FROM submitters 
-        LEFT JOIN submitter_users 
-        ON submitters.submitter_id = submitter_users.submitter_id 
-        WHERE user_id = (%s) 
-        """
+        query = """
+                SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id, users.org_name
+                FROM submitters
+                JOIN submitter_users
+                    ON submitters.submitter_id = submitter_users.submitter_id
+                JOIN users
+                    ON submitter_users.user_id = users.user_id
+                WHERE submitter_users.user_id = (%s)
+            """
         cur = conn.cursor()
         cur.execute(query, (user,))
         return cur.fetchall()
-
+    
     except Exception as error:
         logger.error(error)
 
@@ -1018,6 +1019,7 @@ def get_submitter_for_extend_or_except():
             cur.close()
         if conn is not None:
             conn.close()
+
 
 def get_all_exceptions():
     cur = None
@@ -1112,6 +1114,13 @@ def _clean_email(email):
 def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
 
+def _clean_date(date_string):
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+
+    if re.match(date_pattern, date_string):
+        return date_string
+    else:
+        return None
 
 def _set_int(value):
     if len(value):
