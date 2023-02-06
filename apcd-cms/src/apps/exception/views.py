@@ -27,7 +27,8 @@ class ExceptionThresholdFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
+        submitters = [(1, 'TESTGOLD', 10000000, 'thbrown', 'chcd'), (4, 'TESTMRTN', 10000003, 'thbrown', 'chcd')]
+
 
         self.request.session['submitters'] = submitters
 
@@ -54,9 +55,10 @@ class ExceptionThresholdFormView(TemplateView):
             errors = []
             submitters = request.session.get('submitters')
 
-            submitter = next(submitter for submitter in submitters if submitter[0] == form['business-name'])
+            submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
+            if _err_msg(submitter):
+                errors.append(_err_msg(submitter))       
             
-
             except_response = apcd_database.create_threshold_exception(form, submitter)
             if _err_msg(except_response):
                 errors.append(_err_msg(except_response))
@@ -88,7 +90,8 @@ class ExceptionOtherFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
+        submitters = [(1, 'TESTGOLD', 10000000, 'thbrown', 'chcd'), (4, 'TESTMRTN', 10000003, 'thbrown', 'chcd')]
+
 
         self.request.session['submitters'] = submitters
 
@@ -116,6 +119,8 @@ class ExceptionOtherFormView(TemplateView):
             submitters = request.session.get('submitters')
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
+            if _err_msg(submitter):
+                errors.append(_err_msg(submitter))
 
             except_response = apcd_database.create_other_exception(form, submitter)
             if _err_msg(except_response):
