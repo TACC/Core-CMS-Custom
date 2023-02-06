@@ -713,6 +713,8 @@ def create_other_exception(form, sub_data):
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
                     submitter_id,
+                    submitter_code,
+                    payor_code,
                     user_id,
                     requestor_name,
                     requestor_email,
@@ -721,10 +723,12 @@ def create_other_exception(form, sub_data):
                     explanation_justification,
                     outcome,
                     created_at
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """
         values = (
                 form["business-name"],
+                sub_data[1],
+                sub_data[2],
                 sub_data[3],
                 _clean_value(form['requestor-name']),
                 _clean_email(form['requestor-email']),
@@ -764,6 +768,8 @@ def create_threshold_exception(form, sub_data):
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
+            submitter_code,
+            payor_code,
             user_id,
             requestor_name,
             requestor_email,
@@ -775,10 +781,12 @@ def create_threshold_exception(form, sub_data):
             explanation_justification,
             outcome,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],
+            sub_data[1],
+            sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
@@ -1067,13 +1075,13 @@ def get_submitter_for_extend_or_except(user):
         )
         cur = conn.cursor()
         query = """
-                SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id, users.org_name
-                FROM submitters
-                JOIN submitter_users
-                    ON submitters.submitter_id = submitter_users.submitter_id
-                JOIN users
-                    ON submitter_users.user_id = users.user_id
-                WHERE submitter_users.user_id = (%s)
+                SELECT submitter_users.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id, apcd_orgs.official_name
+                FROM submitter_users
+                JOIN submitters
+                    ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
+                JOIN apcd_orgs
+                    ON submitters.apcd_id = apcd_orgs.apcd_id
+                ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))

@@ -27,12 +27,7 @@ class ExceptionThresholdFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = [
-            (2, 'TESTGOLD', 10000001, 'gmunoz1', 'AHCD'),
-            (1, 'TESTGOLD', 10000001, 'gmunoz1', 'AHCD'),
-            (3, 'TESTGOLD', 10000002, 'gmunoz1', 'BHCD'),
-            (1, 'TESTGOLD', 10000000, 'gmunoz1', 'CHCD')
-        ]
+        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
 
         self.request.session['submitters'] = submitters
 
@@ -59,7 +54,7 @@ class ExceptionThresholdFormView(TemplateView):
             errors = []
             submitters = request.session.get('submitters')
 
-            submitter = next(submitter for submitter in submitters if submitter[0]) == form['business-name']
+            submitter = next(submitter for submitter in submitters if submitter[0] == form['business-name'])
             
 
             except_response = apcd_database.create_threshold_exception(form, submitter)
