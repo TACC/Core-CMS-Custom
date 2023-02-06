@@ -980,7 +980,6 @@ def create_extension(form, iteration, sub_data):
     try:
         if iteration > 1:
             values = (
-                None,
                 _clean_value(sub_data[0]),
                 _clean_date(form['current-expected-date_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
@@ -1001,7 +1000,6 @@ def create_extension(form, iteration, sub_data):
                 )
         else:
             values = (
-            None,
             _clean_value(sub_data[0]),
             _clean_date(form['current-expected-date']),
             _clean_date(form['requested-target-date']),
@@ -1021,7 +1019,6 @@ def create_extension(form, iteration, sub_data):
             None
             )            
         operation = """INSERT INTO extensions(
-                extension_id,
                 submitter_id,
                 current_expected_date,
                 requested_target_date,
@@ -1039,7 +1036,8 @@ def create_extension(form, iteration, sub_data):
                 requestor_email,
                 explanation_justification,
                 notes
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
@@ -1128,12 +1126,13 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                users.org_name
+                submitters.apcd_id,
+                apcd_orgs.official_name
             FROM extensions
-            JOIN submitter_users
-                ON extensions.submitter_id = submitter_users.submitter_id
-            JOIN users
-                ON submitter_users.user_id = users.user_id
+            JOIN submitters
+                ON extensions.submitter_id = submitters.submitter_id
+            JOIN apcd_orgs
+                ON submitters.apcd_id = apcd_orgs.apcd_id
             ORDER BY extensions.created_at DESC
         """ 
         cur = conn.cursor()
@@ -1181,12 +1180,12 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                users.org_name
+                apcd_orgs.official_name
             FROM exceptions
-            JOIN submitter_users
-                ON exceptions.submitter_id = submitter_users.submitter_id
-            JOIN users
-                ON submitter_users.user_id = users.user_id
+            JOIN submitters
+                ON exceptions.submitter_id = submitters.submitter_id
+            JOIN apcd_orgs
+                ON submitters.apcd_id = apcd_orgs.apcd_id
             ORDER BY exceptions.created_at DESC
         """ 
         cur = conn.cursor()

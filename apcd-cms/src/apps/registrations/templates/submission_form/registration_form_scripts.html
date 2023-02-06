@@ -1,5 +1,5 @@
 <aside>
-    <!-- To let user add and remove entities -->
+    {# To let user add and remove entities #}
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-entity" type="module">
@@ -195,7 +195,7 @@
       });
     </script>
 
-    <!-- To let user add and remove contacts -->
+    {# To let user add and remove contacts #}
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
     <script id="form-add-remove-contact" type="module">
@@ -206,7 +206,7 @@
         dropContactBtn.disabled = ( contacts == 1 ? true : false );
       });
       let contacts =
-      {% if r %}
+        {% if r %}
             Number(`
                 {% with r.view_modal_content.contacts|length as no_contacts %}
                     {% if no_contacts == 0 %}
@@ -317,8 +317,8 @@
         if (contacts > 1) contacts -= 1;
         btnStatus();
       });
-
-    <!-- To require at least one "entity" identifier value -->
+    </script>
+    {# To require at least one "entity" identifier value #}
     <script id="form-entity_id-required" type="module">
       const inputs = Array.from(
         document.querySelectorAll(`
