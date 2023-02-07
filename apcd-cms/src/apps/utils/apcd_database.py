@@ -712,19 +712,19 @@ def create_other_exception(form, sub_data):
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
-                submitter_id,
-                submitter_code,
-                payor_code,
-                user_id,
-                requestor_name,
-                requestor_email,
-                request_type,
-                requested_expiration_date,
-                explanation_justification,
-                outcome,
-                created_at
-            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """
+            submitter_id,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            request_type,
+            requested_expiration_date,
+            explanation_justification,
+            outcome,
+            created_at
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """
         values = (
             form["business-name"],
             sub_data[1],
@@ -1084,7 +1084,7 @@ def get_submitter_for_extend_or_except(user):
         cur = conn.cursor()
         cur.execute(query, (user,))
         return cur.fetchall()
-    
+
     except Exception as error:
         logger.error(error)
 
