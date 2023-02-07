@@ -16,26 +16,24 @@ class ViewUsersTable(TemplateView):
            return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
         actions = 'View'
-        import datetime
-        user_content = get_users()
-
-
 
 
         def _set_user(usr):
             return {
-                    'user_id': usr[0],
-                    'user_email': usr[1],
-                    'user_name': usr[2],
-                    'org_name': usr[3],
-                    'role_id': usr[4],
+                    'role_id': usr[0],
+                    'user_id': usr[1],
+                    'user_email': usr[2],
+                    'user_name': usr[3],
+                    'org_name': usr[4],
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
-                    
+                    'active': usr[8],
+                    'role_name': usr[9],
+    
                 }
 
         def _set_modal_content(usr):
@@ -46,7 +44,7 @@ class ViewUsersTable(TemplateView):
         
         
 
-        context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'Role ID', 'Created', 'Updated', 'Notes']
+        context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'Role', 'Active', 'Created', 'Updated', 'Notes']
         context['rows'] = []
         for user in user_content:
             user_view = [usr for usr in user_content if usr[1] == user[0]]

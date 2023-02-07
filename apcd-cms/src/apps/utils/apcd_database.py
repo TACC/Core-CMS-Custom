@@ -21,17 +21,7 @@ def get_users():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
-                users.user_id,
-                users.user_email,
-                users.user_name,
-                users.org_name,
-                users.role_id,
-                users.created_at,
-                users.updated_at,
-                users.notes
-                FROM users
-                ORDER BY users.org_name ASC
+        query = """SELECT * FROM users NATURAL JOIN roles ORDER BY users.org_name ASC
                 """
         cur = conn.cursor()
         cur.execute(query)
