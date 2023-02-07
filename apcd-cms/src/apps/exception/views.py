@@ -27,7 +27,6 @@ class ExceptionThresholdFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = [(1, 'TESTGOLD', 10000000, 'thbrown', 'chcd'), (4, 'TESTMRTN', 10000003, 'thbrown', 'chcd')]
 
 
         self.request.session['submitters'] = submitters
