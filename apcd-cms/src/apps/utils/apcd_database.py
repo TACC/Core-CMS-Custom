@@ -712,32 +712,32 @@ def create_other_exception(form, sub_data):
         )
         cur = conn.cursor()
         operation = """INSERT INTO exceptions(
-                    submitter_id,
-                    submitter_code,
-                    payor_code,
-                    user_id,
-                    requestor_name,
-                    requestor_email,
-                    request_type,
-                    requested_expiration_date,
-                    explanation_justification,
-                    outcome,
-                    created_at
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """
+                submitter_id,
+                submitter_code,
+                payor_code,
+                user_id,
+                requestor_name,
+                requestor_email,
+                request_type,
+                requested_expiration_date,
+                explanation_justification,
+                outcome,
+                created_at
+            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            """
         values = (
-                form["business-name"],
-                sub_data[1],
-                sub_data[2],
-                sub_data[3],
-                _clean_value(form['requestor-name']),
-                _clean_email(form['requestor-email']),
-                "Other",
-                _clean_date(form['expiration-date']),
-                _clean_value(form['justification']),
-                "Pending",
-                datetime.datetime.now(),
-            )
+            form["business-name"],
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
+            "Other",
+            _clean_date(form['expiration-date']),
+            _clean_value(form['justification']),
+            "Pending",
+            datetime.datetime.now(),
+        )
         cur.execute(operation, (values,))
         conn.commit()
         return cur.fetchall()
