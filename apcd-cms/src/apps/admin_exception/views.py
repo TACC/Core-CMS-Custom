@@ -58,7 +58,8 @@ class AdminExceptionsTable(TemplateView):
                 'approved_expiration_date': exception[18],
                 'status': exception[19],
                 'notes': exception[20],
-                'org_name': exception[21]
+                'org_name': exception[21],
+                'data_file_name': exception[22]
             }
 
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Request Type', 'Outcome', 'Status', 'Actions']
