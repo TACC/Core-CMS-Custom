@@ -27,7 +27,7 @@ class ExceptionThresholdFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionThresholdFormView, self).get_context_data(*args, **kwargs)
 
-
+        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
 
         self.request.session['submitters'] = submitters
 
@@ -89,7 +89,7 @@ class ExceptionOtherFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
 
-
+        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
 
         self.request.session['submitters'] = submitters
 
