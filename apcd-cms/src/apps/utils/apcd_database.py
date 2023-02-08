@@ -21,17 +21,7 @@ def get_users():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
-                users.user_id,
-                users.user_email,
-                users.user_name,
-                users.org_name,
-                users.role_id,
-                users.created_at,
-                users.updated_at,
-                users.notes
-                FROM users
-                ORDER BY users.org_name ASC
+        query = """SELECT * FROM users NATURAL JOIN roles ORDER BY users.org_name ASC
                 """
         cur = conn.cursor()
         cur.execute(query)
@@ -47,40 +37,6 @@ def get_users():
             conn.close()
             
 
-def get_users():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        query = """SELECT
-                users.user_id,
-                users.user_email,
-                users.user_name,
-                users.org_name,
-                users.role_id,
-                users.created_at,
-                users.updated_at,
-                users.notes
-                FROM users"""
-        cur = conn.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-    
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
             
 
 def get_user_role(user):
