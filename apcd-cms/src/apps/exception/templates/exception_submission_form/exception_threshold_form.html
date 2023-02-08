@@ -26,7 +26,7 @@
       <div class="forms">
 
         <div class="form-wrapper">
-          <form action="" method="POST">
+          <form action="" method="POST" id="threshold-form">
             {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
@@ -35,6 +35,7 @@
               <p>Select submission file type for your requested threshold reduction:
 
               </p>
+            </div>
               <div class="field-wrapper select required">
                 <div class="field-errors" style="display: none"></div>
 
@@ -65,7 +66,7 @@
                 </div>
               </div>
               <hr />
-            </div>
+
 
             <div id="exception_block_1">
               <h4>Requested Threshold Reduction</h4>
@@ -102,8 +103,8 @@
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
-                    <input type="number" display=name="threshold-requested" class="textinput" id="threshold-requested"
-                      inputmode="numeric" min="0" max="99" style="" required />
+                    <input type="number" name="threshold-requested" class="textinput" id="threshold-requested"
+                      inputmode="numeric" min="0" max="99" required />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
                   <div id="help-text-threshold-requested-required" class="help-text">
@@ -124,8 +125,8 @@
 
               <div class="field-errors" style="display: none"></div>
 
-              <textarea name="justification" cols="40" rows="10" class="textinput" type="justification"
-                id="justification" minlength="2" maxlength="2000"></textarea>
+              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form" type="justification"
+                id="justification" minlength="2" maxlength="2000" required></textarea>
               <div class="help-text">
                 2000 character limit
               </div>
@@ -152,17 +153,21 @@
               </div>
             </div>
             <div class="field-wrapper textinput required"><label>
-                I request an exception on behalf of:
-              </label></div>
+              I request an exception on behalf of:
+            </label></div>
 
-            <div class="field-wrapper textinput required">
-              <label for="business-name">
-                Business Name<span class="asterisk">*</span>
-              </label>
-              <div class="field-errors" style="display: none"></div>
+          <div class="field-wrapper textinput required">
+            <label for="business-name">
+              Business Name<span class="asterisk">*</span>
+            </label>
+            <div class="field-errors" style="display: none"></div>
+              <select name='business-name' required='required' class="choicefield" id='business-name'>
+              {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
+              {% endfor %} 
+            </select>
 
-              <input type="text" name="business-name" required class="textinput" id="business-name" />
-            </div>
+          </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -183,6 +188,9 @@
         <div class="form-success" style="display: none">
           <p>Thank you for your request.</p>
         </div>
+        </div>
+
+
 
 
         {# Hidden links for future pages #}
@@ -191,9 +199,9 @@
           <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
             <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-            <p><a href="/forms/exception">Exception Request</a></p>
+            <p><a href="/submissions/exception">Exception Request</a></p>
 
-            <p><a href="/forms/extension">Extension Request</a></p>
+            <p><a href="/submissions/extension-request">Extension Request</a></p>
 
             <p><a href="/workbench/dashboard">Dashboard</a></p>
           </div>
