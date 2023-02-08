@@ -711,7 +711,6 @@ def create_other_exception(form, sub_data):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
@@ -767,7 +766,6 @@ def create_threshold_exception(form, sub_data):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
@@ -799,7 +797,7 @@ def create_threshold_exception(form, sub_data):
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
             "Pending",
-            datetime.datetime.now(),
+            datetime.datetime.now().strftime('%Y-%m-%d')
         )
         cur = conn.cursor()
         cur.execute(operation, values)
