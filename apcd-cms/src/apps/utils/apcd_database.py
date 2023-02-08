@@ -1136,12 +1136,15 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                apcd_orgs.official_name
+                apcd_orgs.official_name,
+                standard_codes.item_value
             FROM exceptions
             JOIN submitters
                 ON exceptions.submitter_id = submitters.submitter_id
             JOIN apcd_orgs
                 ON submitters.apcd_id = apcd_orgs.apcd_id
+            LEFT JOIN standard_codes 
+                ON exceptions.data_file = standard_codes.item_code AND list_name='submission_file_type'
             ORDER BY exceptions.created_at DESC
         """ 
         cur = conn.cursor()
