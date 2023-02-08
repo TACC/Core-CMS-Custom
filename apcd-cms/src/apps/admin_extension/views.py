@@ -36,9 +36,9 @@ class AdminExtensionsTable(TemplateView):
 
         extension_content = get_all_extensions()
 
-        def _set_exceptions(extension):
+        def _set_extensions(extension):
             return {
-                'extension': extension[0],
+                'extension_id': extension[0],
                 'submitter_id': extension[1],
                 'current_expected_date': extension[2],
                 'requested_target_date': extension[3],
@@ -57,14 +57,13 @@ class AdminExtensionsTable(TemplateView):
                 'explanation_justification': extension[16],
                 'notes': extension[17],
                 'org_name': extension[18]
-
             }
 
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Actions']
         extensions = []
 
         for extension in extension_content:
-            extensions.append(_set_exceptions(extension))
+            extensions.append(_set_extensions(extension))
 
         try:
             page_num = int(self.request.GET.get('page'))
