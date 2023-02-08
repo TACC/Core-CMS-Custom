@@ -739,7 +739,7 @@ def create_other_exception(form, sub_data):
             "Pending",
             datetime.datetime.now().strftime('%Y-%m-%d')
         )
-        cur.conn.cursor()
+        cur = conn.cursor()
         cur.execute(operation, values)
         conn.commit()
 
