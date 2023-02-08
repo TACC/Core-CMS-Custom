@@ -11,6 +11,7 @@ from django.views.generic.base import TemplateView
 import rt
 from apps.utils.apcd_database import get_all_extensions
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.utils.utils import title_case
 
 
 logger = logging.getLogger(__name__)
@@ -35,17 +36,17 @@ class AdminExtensionsTable(TemplateView):
 
         extension_content = get_all_extensions()
 
-        def _set_exceptions(extension):
+        def _set_extensions(extension):
             return {
-                'extension': extension[0],
+                'extension_id': extension[0],
                 'submitter_id': extension[1],
                 'current_expected_date': extension[2],
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
-                'extension_type': extension[5],
+                'extension_type': title_case(extension[8]),
                 'applicable_data_period': extension[6],
-                'status': extension[7],
-                'outcome': extension[8],
+                'status': title_case(extension[7]),
+                'outcome': title_case(extension[8]),
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
@@ -56,14 +57,13 @@ class AdminExtensionsTable(TemplateView):
                 'explanation_justification': extension[16],
                 'notes': extension[17],
                 'org_name': extension[18]
-
             }
 
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Actions']
         extensions = []
 
         for extension in extension_content:
-            extensions.append(_set_exceptions(extension))
+            extensions.append(_set_extensions(extension))
 
         try:
             page_num = int(self.request.GET.get('page'))
