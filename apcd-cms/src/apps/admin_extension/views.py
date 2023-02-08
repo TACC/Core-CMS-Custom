@@ -11,6 +11,7 @@ from django.views.generic.base import TemplateView
 import rt
 from apps.utils.apcd_database import get_all_extensions
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.utils.utils import title_case
 
 
 logger = logging.getLogger(__name__)
@@ -42,10 +43,10 @@ class AdminExtensionsTable(TemplateView):
                 'current_expected_date': extension[2],
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
-                'extension_type': extension[5],
+                'extension_type': title_case(extension[8]),
                 'applicable_data_period': extension[6],
-                'status': extension[7],
-                'outcome': extension[8],
+                'status': title_case(extension[7]),
+                'outcome': title_case(extension[8]),
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
