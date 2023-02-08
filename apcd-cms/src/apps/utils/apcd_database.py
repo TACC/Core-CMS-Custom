@@ -328,7 +328,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
                 _clean_value(form['fein_{}'.format(str_end)])
             )
         else:            
-            str_end = f'_{reg_id}_{iteration}' if from_update_reg else None
+            str_end = f'_{reg_id}_{iteration}' if from_update_reg else ''
             values = (
                 reg_id,
                 _set_int(form[f'total_claims_value{str_end}']),
@@ -513,7 +513,7 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
                 _clean_email(form['contact_email_{}'.format(str_end)])
             )
         else:
-            str_end = f'_{reg_id}_{iteration}' if from_update_reg else None
+            str_end = f'_{reg_id}_{iteration}' if from_update_reg else ''
             values = (
                 reg_id,
                 True if f'contact_notifications{str_end}' in form else False,
