@@ -1,9 +1,8 @@
-from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic.base import TemplateView
-
+from apps.utils import apcd_database
+from apps.utils.apcd_groups import has_apcd_group
 import logging
 
 logger = logging.getLogger(__name__)
