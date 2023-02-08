@@ -698,39 +698,6 @@ def create_submitter(form, reg_data):
             conn.close()
 
 
-def get_submitter_for_exception(user):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        query = """SELECT submitters.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.username 
-        FROM submitters 
-        LEFT JOIN submitter_users 
-        ON submitters.submitter_id = submitter_users.submitter_id 
-        WHERE user_id = (%s) AND submitter_id = submitter
-        """
-        cur = conn.cursor()
-        cur.execute(query, (user,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-
 def create_other_exception(form, sub_data):
     cur = None
     conn = None
@@ -757,23 +724,23 @@ def create_other_exception(form, sub_data):
             outcome,
             created_at
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING submitter_id"""
+        """
         values = (
-            sub_data[0],
+            form["business-name"],
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "Other",
-            _clean_value(form['exception_end_date']),
+            _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
-        cur.execute(operation, values)
+        cur.execute(operation, (values,))
         conn.commit()
-        return cur.fetchone()[0]
+        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -807,35 +774,34 @@ def create_threshold_exception(form, sub_data):
             requestor_name,
             requestor_email,
             request_type,
+            requested_expiration_date,
             data_file,
             field_number,
-            required_threshold,
             requested_threshold,
-            requested_expiration_date,
             explanation_justification,
             outcome,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING submitter_id"""
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """
         values = (
-            sub_data[0],
+            form["business-name"],
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "Threshold",
+            _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
-            _clean_value(form['threshold-field']),
-            _clean_value(form['threshold-requested']),
-            _clean_value(form['expiration_date']),
+            _clean_value(form['field-threshold-exception']),
+           form['threshold-requested'],
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
-        cur.execute(operation, values)
+        cur.execute(operation, (values,))
         conn.commit()
-        return cur.fetchone()[0]
+        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -1113,6 +1079,7 @@ def get_submitter_for_extend_or_except(user):
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
                 JOIN apcd_orgs
                     ON submitters.apcd_id = apcd_orgs.apcd_id
+                ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
