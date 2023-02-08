@@ -794,7 +794,7 @@ def create_threshold_exception(form, sub_data):
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
             _clean_value(form['field-threshold-exception']),
-           form['threshold-requested'],
+            _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
