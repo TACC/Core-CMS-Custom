@@ -12,7 +12,7 @@ import rt
 from apps.utils.apcd_database import get_all_extensions
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
-
+import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ class AdminExtensionsTable(TemplateView):
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
                 'extension_type': title_case(extension[5]),
-                'applicable_data_period': extension[6].date() if extension[6] else None,
+                'applicable_data_period': datetime.datetime.strptime(str(extension[6]), '%Y%m').strftime('%b. %Y') if extension[6] else None,
                 'status': title_case(extension[7]),
                 'outcome': title_case(extension[8]),
                 'created_at': extension[9],
