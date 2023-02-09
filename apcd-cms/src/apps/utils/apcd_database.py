@@ -930,7 +930,7 @@ def create_extension(form, iteration, sub_data):
                 user_id,
                 requestor_name,
                 requestor_email,
-                explanation_justification,
+                explanation_justification
                 ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
         conn = psycopg2.connect(
