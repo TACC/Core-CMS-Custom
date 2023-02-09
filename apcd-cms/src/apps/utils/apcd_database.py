@@ -898,16 +898,12 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['extension-type_{}'.format(iteration)]),
                 int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
                 "Pending",
-                None,
-                datetime.datetime.now().strftime('%Y-%m-%d'),
-                None,
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
                 _clean_value(form["requestor-name"]),
-                _clean_email(form["requestor-email"]),
+                form["requestor-email"],
                 _clean_value(form["justification"]),
-                None
                 )
         else:
             values = (
@@ -918,16 +914,13 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['extension-type']),
             int(form['applicable-data-period'].replace('-', '')),
             "Pending",
-            None,
-            datetime.datetime.now().strftime('%Y-%m-%d'),
-            None,
+
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
             _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            form["requestor-email"],
             _clean_value(form["justification"]),
-            None
             )            
         operation = """INSERT INTO extensions(
                 submitter_id,
@@ -937,17 +930,13 @@ def create_extension(form, iteration, sub_data):
                 extension_type,
                 applicable_data_period,
                 status,
-                outcome,
-                created_at,
-                updated_at,
                 submitter_code,
                 payor_code,
                 user_id,
                 requestor_name,
                 requestor_email,
                 explanation_justification,
-                notes
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
