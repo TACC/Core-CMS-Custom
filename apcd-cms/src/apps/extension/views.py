@@ -20,9 +20,9 @@ class ExtensionFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
             context = super(ExtensionFormView, self).get_context_data(*args, **kwargs)
 
-        user = self.request.user.username
+            user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+            submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
             self.request.session['submitters'] = submitters
 
