@@ -91,7 +91,9 @@ class ExceptionOtherFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
+        user = self.request.user.username
+
+        submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
         self.request.session['submitters'] = submitters
 
