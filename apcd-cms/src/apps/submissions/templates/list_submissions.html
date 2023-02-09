@@ -26,6 +26,7 @@
           {% for r in rows %}
               <tr>
                   <td>{{r.received_timestamp}}</td>
+                  <td>{{r.submission_id}}</td>
                   <td colspan="2">{{r.file_name}}</td>
                   <td>{{r.outcome}}</td>
                   <td>{{r.status}}</td>
