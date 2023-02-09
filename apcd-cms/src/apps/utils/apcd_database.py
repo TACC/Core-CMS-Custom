@@ -21,17 +21,7 @@ def get_users():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
-                users.user_id,
-                users.user_email,
-                users.user_name,
-                users.org_name,
-                users.role_id,
-                users.created_at,
-                users.updated_at,
-                users.notes
-                FROM users
-                ORDER BY users.org_name ASC
+        query = """SELECT * FROM users NATURAL JOIN roles ORDER BY users.org_name ASC
                 """
         cur = conn.cursor()
         cur.execute(query)
@@ -47,40 +37,6 @@ def get_users():
             conn.close()
             
 
-def get_users():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        query = """SELECT
-                users.user_id,
-                users.user_email,
-                users.user_name,
-                users.org_name,
-                users.role_id,
-                users.created_at,
-                users.updated_at,
-                users.notes
-                FROM users"""
-        cur = conn.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-    
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
             
 
 def get_user_role(user):
@@ -154,8 +110,10 @@ def get_registrations():
 
     finally:
         if cur is not None:
+            logger.error('cur close')
             cur.close()
         if conn is not None:
+            logger.error('conn close')
             conn.close()
 
 
@@ -701,6 +659,7 @@ def create_submitter(form, reg_data):
 def create_other_exception(form, sub_data):
     cur = None
     conn = None
+    values = ()
     try:
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -736,11 +695,11 @@ def create_other_exception(form, sub_data):
             _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
             "Pending",
-            datetime.datetime.now(),
+            datetime.datetime.now().strftime('%Y-%m-%d')
         )
-        cur.execute(operation, (values,))
+        cur.conn.cursor()
+        cur.execute(operation, values)
         conn.commit()
-        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -756,6 +715,7 @@ def create_other_exception(form, sub_data):
 def create_threshold_exception(form, sub_data):
     cur = None
     conn = None
+    values = ()
     try:
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -794,14 +754,14 @@ def create_threshold_exception(form, sub_data):
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
             _clean_value(form['field-threshold-exception']),
-           form['threshold-requested'],
+            _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
             "Pending",
             datetime.datetime.now(),
         )
-        cur.execute(operation, (values,))
+        cur = conn.cursor()
+        cur.execute(operation, values)
         conn.commit()
-        return cur.fetchall()
 
     except Exception as error:
         logger.error(error)
@@ -1169,12 +1129,15 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                apcd_orgs.official_name
+                apcd_orgs.official_name,
+                standard_codes.item_value
             FROM exceptions
             JOIN submitters
                 ON exceptions.submitter_id = submitters.submitter_id
             JOIN apcd_orgs
                 ON submitters.apcd_id = apcd_orgs.apcd_id
+            LEFT JOIN standard_codes 
+                ON exceptions.data_file = standard_codes.item_code AND list_name='submission_file_type'
             ORDER BY exceptions.created_at DESC
         """ 
         cur = conn.cursor()
