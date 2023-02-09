@@ -721,7 +721,7 @@ def create_other_exception(form, sub_data):
             request_type,
             requested_expiration_date,
             explanation_justification,
-            outcome,
+            status,
             created_at
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
@@ -779,7 +779,7 @@ def create_threshold_exception(form, sub_data):
             field_number,
             requested_threshold,
             explanation_justification,
-            outcome,
+            status,
             created_at
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
