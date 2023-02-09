@@ -660,7 +660,6 @@ def create_other_exception(form, sub_data):
     cur = None
     conn = None
     values = ()
-    values = ()
     try:
         conn = psycopg2.connect(
             host=APCD_DB['host'],
