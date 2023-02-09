@@ -30,7 +30,7 @@ class ExceptionThresholdFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = [(1, 'TESTGOLD', 10000000, 'thbrown', 'chcd'), (4, 'TESTMRTN', 10000003, 'thbrown', 'chcd')]
+        submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
         self.request.session['submitters'] = submitters
 
@@ -94,8 +94,7 @@ class ExceptionOtherFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = [(1, 'TESTGOLD', 10000000, 'thbrown', 'chcd'), (4, 'TESTMRTN', 10000003, 'thbrown', 'chcd')]
-
+        submitters = apcd_database.get_submitter_for_extend_or_except(user)
         self.request.session['submitters'] = submitters
 
         def _set_submitter(sub):
