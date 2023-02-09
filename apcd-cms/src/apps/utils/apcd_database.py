@@ -681,7 +681,7 @@ def create_other_exception(form, sub_data):
             explanation_justification,
             status,
             created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],
@@ -694,7 +694,6 @@ def create_other_exception(form, sub_data):
             _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
             "Pending",
-            datetime.datetime.now().strftime('%Y-%m-%d')
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -738,8 +737,7 @@ def create_threshold_exception(form, sub_data):
             requested_threshold,
             explanation_justification,
             status,
-            created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],
@@ -755,7 +753,6 @@ def create_threshold_exception(form, sub_data):
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
             "Pending",
-            datetime.datetime.now().strftime('%Y-%m-%d')
         )
         cur = conn.cursor()
         cur.execute(operation, values)
