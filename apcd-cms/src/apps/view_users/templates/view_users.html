@@ -53,15 +53,19 @@
 <script>
 /*filters by organization with dropdown*/
 function filterTableByOrganization() {
-  var dropdown, filter, table, tr, td, i;
+  var dropdown, filter, newinput, bestinput, table, tr, td, i;
   input = document.getElementById("organizationFilter");
-  filter = input.value.toUpperCase();
+  newinput = input.value.replace("&","");
+  bestinput = newinput.replace(",","");
+  console.log(bestinput)
+  filter = bestinput.toUpperCase();
+  console.log(filter)
   table = document.getElementById("usersTableBody");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      if (td.innerHTML.toUpperCase().replace("&","").replace(",","").search(filter) > -1) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";  
@@ -70,41 +74,14 @@ function filterTableByOrganization() {
   }
 }
 
-/***remove duplicates from dropdown
- */
+/***remove duplicates from dropdown */
+
  const options = []
 
 document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     if (options.includes(option.value)) option.remove()
     else options.push(option.value)
 })
-
-/*sorts dropdown list*/
-function sortlist()
-{
-    var cl = document.getElementById('organizationFilter');
-    var clTexts = new Array();
-
-    for(i = 1; i < cl.length; i++)
-    {
-        clTexts[i-1] =
-            cl.options[i].text.toUpperCase() + "," +
-            cl.options[i].text + "," +
-            cl.options[i].value;
-    }
-
-    clTexts.sort();
-
-    for(i = 1; i < cl.length; i++)
-    {
-        var parts = clTexts[i-1].split(',');
-        
-        cl.options[i].text = parts[1];
-        cl.options[i].value = parts[2];
-    }
-}
-
-sortlist();
 
 
 
