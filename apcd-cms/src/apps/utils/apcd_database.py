@@ -110,8 +110,10 @@ def get_registrations():
 
     finally:
         if cur is not None:
+            logger.error('cur close')
             cur.close()
         if conn is not None:
+            logger.error('conn close')
             conn.close()
 
 
