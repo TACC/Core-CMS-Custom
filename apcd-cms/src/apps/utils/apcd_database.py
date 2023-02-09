@@ -886,55 +886,6 @@ def get_all_submissions():
         if conn is not None:
             conn.close()
 
-def get_all_extensions():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        query = """
-            SELECT 
-                extensions.extension_id, 
-                extensions.submitter_id,
-                extensions.current_expected_date,
-                extensions.requested_target_date,
-                extensions.approved_expiration_date,
-                extensions.extension_type,
-                extensions.applicable_data_period,
-                extensions.status,
-                extensions.outcome,
-                extensions.created_at,
-                extensions.updated_at,
-                extensions.submitter_code,
-                extensions.payor_code,
-                extensions.user_id,
-                extensions.requestor_name,
-                extensions.requestor_email,
-                extensions.explanation_justification,
-                extensions.notes,
-                users.org_name
-            FROM extensions
-            JOIN submitter_users
-                ON extensions.submitter_id = submitter_users.submitter_id
-            JOIN users
-                ON submitter_users.user_id = users.user_id
-            ORDER BY extensions.created_at DESC
-        """ 
-        cur = conn.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
 
 def create_extension(form, iteration, sub_data):
     cur = None
@@ -950,16 +901,12 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['extension-type_{}'.format(iteration)]),
                 int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
                 "Pending",
-                None,
-                datetime.datetime.now().strftime('%Y-%m-%d'),
-                None,
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
                 _clean_value(form["requestor-name"]),
-                _clean_email(form["requestor-email"]),
+                form["requestor-email"],
                 _clean_value(form["justification"]),
-                None
                 )
         else:
             values = (
@@ -970,16 +917,13 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['extension-type']),
             int(form['applicable-data-period'].replace('-', '')),
             "Pending",
-            None,
-            datetime.datetime.now().strftime('%Y-%m-%d'),
-            None,
+
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
             _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            form["requestor-email"],
             _clean_value(form["justification"]),
-            None
             )            
         operation = """INSERT INTO extensions(
                 submitter_id,
@@ -989,17 +933,13 @@ def create_extension(form, iteration, sub_data):
                 extension_type,
                 applicable_data_period,
                 status,
-                outcome,
-                created_at,
-                updated_at,
                 submitter_code,
                 payor_code,
                 user_id,
                 requestor_name,
                 requestor_email,
                 explanation_justification,
-                notes
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1089,7 +1029,6 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                submitters.apcd_id,
                 apcd_orgs.official_name
             FROM extensions
             JOIN submitters
@@ -1151,7 +1090,7 @@ def get_all_exceptions():
             JOIN apcd_orgs
                 ON submitters.apcd_id = apcd_orgs.apcd_id
             LEFT JOIN standard_codes 
-                ON exceptions.data_file = standard_codes.item_code AND list_name='submission_file_type'
+                ON UPPER(exceptions.data_file) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
             ORDER BY exceptions.created_at DESC
         """ 
         cur = conn.cursor()
