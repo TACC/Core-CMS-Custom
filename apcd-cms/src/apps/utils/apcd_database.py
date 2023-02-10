@@ -250,7 +250,7 @@ def get_registration_entities(reg_id=None):
                 registration_entities.entity_name,
                 registration_entities.fein
                 FROM registration_entities WHERE registration_id = %s"""
-                cur = conn.cursor()
+        cur = conn.cursor()
         cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
