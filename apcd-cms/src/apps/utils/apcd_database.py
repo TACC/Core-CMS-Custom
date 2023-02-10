@@ -69,7 +69,7 @@ def get_user_role(user):
             conn.close()
 
 
-def get_registrations():
+def get_registrations(reg_id=None):
     cur = None
     conn = None
     try:
@@ -100,9 +100,9 @@ def get_registrations():
                 registrations.city,
                 registrations.state,
                 registrations.zip
-                FROM registrations"""
+                FROM registrations WHERE registration_id = %s"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:
@@ -110,10 +110,8 @@ def get_registrations():
 
     finally:
         if cur is not None:
-            logger.error('cur close')
             cur.close()
         if conn is not None:
-            logger.error('conn close')
             conn.close()
 
 
@@ -229,7 +227,7 @@ def update_registration(form, reg_id):
             conn.close()
 
 
-def get_registration_entities():
+def get_registration_entities(reg_id=None):
     cur = None
     conn = None
     try:
@@ -251,9 +249,9 @@ def get_registration_entities():
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
                 registration_entities.fein
-                FROM registration_entities"""
+                FROM registration_entities WHERE registration_id = %s"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:
@@ -418,7 +416,7 @@ def delete_registration_entity(reg_id, ent_id):
             conn.close()
 
 
-def get_registration_contacts():
+def get_registration_contacts(reg_id=None):
     cur = None
     conn = None
     try:
@@ -438,9 +436,9 @@ def get_registration_contacts():
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
-                FROM registration_contacts"""
+                FROM registration_contacts WHERE registration_id = %s"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:

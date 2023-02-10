@@ -53,15 +53,17 @@
 <script>
 /*filters by organization with dropdown*/
 function filterTableByOrganization() {
-  var dropdown, filter, table, tr, td, i;
+  var dropdown, filter, newinput, bestinput, table, tr, td, i;
   input = document.getElementById("organizationFilter");
-  filter = input.value.toUpperCase();
+  newinput = input.value.replace("&","");
+  bestinput = newinput.replace(",","");
+  filter = bestinput.toUpperCase();
   table = document.getElementById("usersTableBody");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      if (td.innerHTML.toUpperCase().replace("&","").replace(",","").search(filter) > -1) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";  
@@ -70,8 +72,8 @@ function filterTableByOrganization() {
   }
 }
 
-/***remove duplicates from dropdown
- */
+/***remove duplicates from dropdown */
+
  const options = []
 
 document.querySelectorAll('#organizationFilter > option').forEach((option) => {
@@ -105,6 +107,7 @@ function sortlist()
 }
 
 sortlist();
+
 
 
 
