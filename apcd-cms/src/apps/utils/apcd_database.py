@@ -113,7 +113,7 @@ def get_user_role(user):
             conn.close()
 
 
-def get_registrations():
+def get_registrations(reg_id=None):
     cur = None
     conn = None
     try:
@@ -125,7 +125,7 @@ def get_registrations():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
+        query = f"""SELECT
                 registrations.registration_id,
                 registrations.posted_date,
                 registrations.applicable_period_start,
@@ -144,7 +144,7 @@ def get_registrations():
                 registrations.city,
                 registrations.state,
                 registrations.zip
-                FROM registrations"""
+                FROM registrations {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -271,7 +271,7 @@ def update_registration(form, reg_id):
             conn.close()
 
 
-def get_registration_entities():
+def get_registration_entities(reg_id=None):
     cur = None
     conn = None
     try:
@@ -283,7 +283,7 @@ def get_registration_entities():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
+        query = f"""SELECT
                 registration_entities.total_claims_value,
                 registration_entities.registration_id,
                 registration_entities.claims_and_encounters_volume,
@@ -293,7 +293,7 @@ def get_registration_entities():
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
                 registration_entities.fein
-                FROM registration_entities"""
+                FROM registration_entities {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -460,7 +460,7 @@ def delete_registration_entity(reg_id, ent_id):
             conn.close()
 
 
-def get_registration_contacts():
+def get_registration_contacts(reg_id=None):
     cur = None
     conn = None
     try:
@@ -472,7 +472,7 @@ def get_registration_contacts():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT
+        query = f"""SELECT
                 registration_contacts.registration_contact_id,
                 registration_contacts.registration_id,
                 registration_contacts.notify_flag,
@@ -480,7 +480,7 @@ def get_registration_contacts():
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
-                FROM registration_contacts"""
+                FROM registration_contacts {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
