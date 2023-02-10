@@ -232,5 +232,4 @@ class RegistrationsTable(TemplateView):
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             context['rows'].append(_set_registration(registration, associated_entities, associated_contacts))
 
-        logger.error(context)
         return context
