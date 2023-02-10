@@ -57,7 +57,6 @@ function filterTableByOrganization() {
   input = document.getElementById("organizationFilter");
   newinput = input.value.replace("&","");
   bestinput = newinput.replace(",","");
-  console.log(bestinput)
   filter = bestinput.toUpperCase();
   console.log(filter)
   table = document.getElementById("usersTableBody");
