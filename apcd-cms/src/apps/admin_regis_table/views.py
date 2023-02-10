@@ -10,22 +10,15 @@ logger = logging.getLogger(__name__)
 
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
-    registrations_content = get_registrations()
-    registrations_entities = get_registration_entities()
-    registrations_contacts = get_registration_contacts()
-    
-    def post(
-            self,
-            request,
-            reg_content=registrations_content,
-            reg_ents=registrations_entities,
-            reg_conts=registrations_contacts
-    ):
+
+    def post(self, request):
 
         form = request.POST.copy()
-        reg_data = [reg for reg in reg_content if reg[0]==int(float(form['reg_id']))][0]
-        reg_ent_data = [reg_ent for reg_ent in reg_ents if reg_ent[1]==int(float(form['reg_id']))]
-        reg_cont_data = [reg_cont for reg_cont in reg_conts if reg_cont[1]==int(float(form['reg_id']))]
+        reg_id = int(float(form['reg_id']))
+
+        reg_content = get_registrations(reg_id)
+        reg_ents = get_registration_entities(reg_id)
+        reg_conts = get_registration_contacts(reg_id)
         
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
@@ -34,7 +27,7 @@ class RegistrationsTable(TemplateView):
                 return str(resp)
             return None
         
-        def _new_submitter(form, reg_data=reg_data):
+        def _new_submitter(form, reg_data=reg_content):
             errors = []
             
             sub_resp = create_submitter(form, reg_data)
@@ -45,13 +38,13 @@ class RegistrationsTable(TemplateView):
 
             return template
         
-        def _edit_registration(form, reg_data=reg_data, reg_ent=reg_ent_data, reg_cont=reg_cont_data):
+        def _edit_registration(form, reg_ent=reg_ents, reg_cont=reg_conts):
             errors = []
-            reg_resp = update_registration(form, reg_data[0])
+            reg_resp = update_registration(form, reg_id)
             if not _err_msg(reg_resp) and type(reg_resp) == int:
                 for iteration in range(1, 6):
-                    contact_resp = update_registration_contact(form, reg_data[0], iteration, len(reg_cont))
-                    entity_resp = update_registration_entity(form, reg_data[0], iteration, len(reg_ent))
+                    contact_resp = update_registration_contact(form, reg_id, iteration, len(reg_cont))
+                    entity_resp = update_registration_entity(form, reg_id, iteration, len(reg_ent))
                     if _err_msg(contact_resp):
                         errors.append(_err_msg(contact_resp))
                     if _err_msg(entity_resp):
@@ -70,15 +63,21 @@ class RegistrationsTable(TemplateView):
             template = _edit_registration(form)
         return HttpResponse(template.render({}, request))
 
+    def get(self, request, *args, **kwargs):
+        registrations_content = get_registrations()
+        registrations_entities = get_registration_entities()
+        registrations_contacts = get_registration_contacts()   
+
+        context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
+        template = loader.get_template(self.template_name)
+        return HttpResponse(template.render(context, request))
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
-        registrations_content = get_registrations()
-        registrations_entities = get_registration_entities()
-        registrations_contacts = get_registration_contacts()
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, registrations_content=registrations_content, registrations_entities=registrations_entities, registrations_contacts=registrations_contacts, *args, **kwargs):
+    def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
 
         def _set_registration(reg, reg_ents, reg_conts):
