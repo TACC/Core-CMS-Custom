@@ -899,7 +899,7 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
-                _clean_value(form["requestor-name"]),
+                _clean_email_from_form(form["requestor-name"]),
                 _clean_email_from_form(form["requestor-email"]),
                 _clean_value(form["justification"])
                 )
@@ -917,7 +917,7 @@ def create_extension(form, iteration, sub_data):
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
             _clean_value(form["requestor-name"]),
-            form["requestor-email"],
+            _clean_email_from_form(form["requestor-email"]),
             _clean_value(form["justification"])
             )            
         operation = """INSERT INTO extensions(
