@@ -1,8 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic import TemplateView
+from requests.auth import HTTPBasicAuth
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
+from apps.utils.utils import title_case
 import logging
 
 logger = logging.getLogger(__name__)
@@ -38,7 +40,7 @@ class ExceptionThresholdFormView(TemplateView):
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "org_name": sub[4]
+                "org_name": title_case(sub[4])
             }
 
         context["submitters"] = []
@@ -90,8 +92,9 @@ class ExceptionOtherFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ExceptionOtherFormView, self).get_context_data(*args, **kwargs)
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(self.request.user.username)
+        user = self.request.user.username
 
+        submitters = apcd_database.get_submitter_for_extend_or_except(user)
         self.request.session['submitters'] = submitters
 
         def _set_submitter(sub):
@@ -100,7 +103,7 @@ class ExceptionOtherFormView(TemplateView):
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "org_name": sub[4]
+                "org_name": title_case(sub[4])
             }
 
         context["submitters"] = []

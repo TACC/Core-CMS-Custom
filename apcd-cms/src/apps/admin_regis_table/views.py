@@ -13,6 +13,9 @@ class RegistrationsTable(TemplateView):
     registrations_content = get_registrations()
     registrations_entities = get_registration_entities()
     registrations_contacts = get_registration_contacts()
+    logger.error(registrations_content)
+    logger.error(registrations_content)
+    logger.error(registrations_content)
     
     def post(
             self,
@@ -73,9 +76,9 @@ class RegistrationsTable(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
-        registrations_content = get_registrations()
-        registrations_entities = get_registration_entities()
-        registrations_contacts = get_registration_contacts()
+        #registrations_content = get_registrations()
+        #registrations_entities = get_registration_entities()
+        #registrations_contacts = get_registration_contacts()
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content=registrations_content, registrations_entities=registrations_entities, registrations_contacts=registrations_contacts, *args, **kwargs):
@@ -233,4 +236,5 @@ class RegistrationsTable(TemplateView):
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             context['rows'].append(_set_registration(registration, associated_entities, associated_contacts))
 
+        logger.error(context)
         return context
