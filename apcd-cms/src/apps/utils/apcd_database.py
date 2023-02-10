@@ -692,7 +692,7 @@ def create_other_exception(form, sub_data):
             "Other",
             _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
-            "Pending",
+            "Pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -751,7 +751,7 @@ def create_threshold_exception(form, sub_data):
             _clean_value(form['field-threshold-exception']),
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
-            "Pending",
+            "Pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
