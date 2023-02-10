@@ -14,11 +14,11 @@ class RegistrationsTable(TemplateView):
     def post(self, request):
 
         form = request.POST.copy()
-        reg_id = int(float(form['reg_id']))
+        reg_id = int(form['reg_id'])
 
         reg_content = get_registrations(reg_id)
-        reg_ents = get_registration_entities(reg_id)
-        reg_conts = get_registration_contacts(reg_id)
+        reg_entities = get_registration_entities(reg_id)
+        reg_contacts = get_registration_contacts(reg_id)
         
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
@@ -38,13 +38,13 @@ class RegistrationsTable(TemplateView):
 
             return template
         
-        def _edit_registration(form, reg_ent=reg_ents, reg_cont=reg_conts):
+        def _edit_registration(form, reg_entities=reg_entities, reg_contacts=reg_contacts):
             errors = []
             reg_resp = update_registration(form, reg_id)
             if not _err_msg(reg_resp) and type(reg_resp) == int:
                 for iteration in range(1, 6):
-                    contact_resp = update_registration_contact(form, reg_id, iteration, len(reg_cont))
-                    entity_resp = update_registration_entity(form, reg_id, iteration, len(reg_ent))
+                    contact_resp = update_registration_contact(form, reg_id, iteration, len(reg_contacts))
+                    entity_resp = update_registration_entity(form, reg_id, iteration, len(reg_entities))
                     if _err_msg(contact_resp):
                         errors.append(_err_msg(contact_resp))
                     if _err_msg(entity_resp):
