@@ -1,24 +1,13 @@
-from apps.utils import apcd_database
-from apps.utils.apcd_groups import is_apcd_admin
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.views.generic import View
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage
-from requests.auth import HTTPBasicAuth
-import logging
 from django.views.generic.base import TemplateView
-import rt
 from apps.utils.apcd_database import get_all_extensions
 from apps.utils.apcd_groups import is_apcd_admin
-
+from apps.utils.utils import title_case
+from datetime import datetime
+import logging
 
 logger = logging.getLogger(__name__)
-
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class AdminExtensionsTable(TemplateView):
 
@@ -35,17 +24,17 @@ class AdminExtensionsTable(TemplateView):
 
         extension_content = get_all_extensions()
 
-        def _set_exceptions(extension):
+        def _set_extensions(extension):
             return {
-                'extension': extension[0],
+                'extension_id': extension[0],
                 'submitter_id': extension[1],
                 'current_expected_date': extension[2],
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
-                'extension_type': extension[5],
-                'applicable_data_period': extension[6],
-                'status': extension[7],
-                'outcome': extension[8],
+                'extension_type': title_case(extension[5]),
+                'applicable_data_period': _get_applicable_data_period(extension[6]),
+                'status': title_case(extension[7]),
+                'outcome': title_case(extension[8]),
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
@@ -56,14 +45,13 @@ class AdminExtensionsTable(TemplateView):
                 'explanation_justification': extension[16],
                 'notes': extension[17],
                 'org_name': extension[18]
-
             }
 
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Actions']
         extensions = []
 
         for extension in extension_content:
-            extensions.append(_set_exceptions(extension))
+            extensions.append(_set_extensions(extension))
 
         try:
             page_num = int(self.request.GET.get('page'))
@@ -82,3 +70,10 @@ class AdminExtensionsTable(TemplateView):
         context['num_pages'] = range(1, p.num_pages + 1)
 
         return context
+
+# function converts int value in the format YYYYMM to a string with abbreviated month and year
+def _get_applicable_data_period(value):
+    try: 
+        return datetime.strptime(str(value), '%Y%m').strftime('%b. %Y')
+    except:
+        return None

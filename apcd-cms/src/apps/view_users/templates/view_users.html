@@ -18,8 +18,7 @@
     <div class="filter-content">
       <span><b>Filter by Organization: </b></span>
       <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
-       
-        <option class="dropdown-text"></option>
+        <option class="dropdown-text" value="">All</option>
         {% for r in rows %}
         <option class="dropdown-text">{{r.org_name}}</option>
         {% endfor %}
@@ -41,44 +40,75 @@
                   <td>{{r.user_email}}</td>
                   <td>{{r.user_name}}</td>
                   <td>{{r.org_name}}</td>
-                  <td>{{r.role_id}}</td>
+                  <td>{{r.role_name}}</td>
+                  <td>{{r.active}}</td>
                   <td>{{r.created_at}}</td>
                   <td>{{r.updated_at}}</td>
-                  <td>
-                    {{r.notes}}
-                  </td>
+                  <td>{{r.notes}}</td>
               </tr>
           {% endfor %}
       </tbody>
   </table>
 </div>
 <script>
+/*filters by organization with dropdown*/
 function filterTableByOrganization() {
-  var dropdown, filter, table, tr, td, i;
+  var dropdown, filter, newinput, bestinput, table, tr, td, i;
   input = document.getElementById("organizationFilter");
-  filter = input.value.toUpperCase();
+  newinput = input.value.replace("&","");
+  bestinput = newinput.replace(",","");
+  filter = bestinput.toUpperCase();
   table = document.getElementById("usersTableBody");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[3];
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      if (td.innerHTML.toUpperCase().replace("&","").replace(",","").search(filter) > -1) {
         tr[i].style.display = "";
       } else {
-        tr[i].style.display = "none";
+        tr[i].style.display = "none";  
       }
-    }       
+    }  
   }
 }
 
-/***remove duplicates from dropdown
- */
+/***remove duplicates from dropdown */
+
  const options = []
 
 document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     if (options.includes(option.value)) option.remove()
     else options.push(option.value)
 })
+
+/*sorts dropdown list*/
+function sortlist()
+{
+    var cl = document.getElementById('organizationFilter');
+    var clTexts = new Array();
+
+    for(i = 1; i < cl.length; i++)
+    {
+        clTexts[i-1] =
+            cl.options[i].text.toUpperCase() + "," +
+            cl.options[i].text + "," +
+            cl.options[i].value;
+    }
+
+    clTexts.sort();
+
+    for(i = 1; i < cl.length; i++)
+    {
+        var parts = clTexts[i-1].split(',');
+        
+        cl.options[i].text = parts[1];
+        cl.options[i].value = parts[2];
+    }
+}
+
+sortlist();
+
+
 
 
 

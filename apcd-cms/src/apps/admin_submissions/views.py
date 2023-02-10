@@ -1,24 +1,12 @@
-from apps.utils import apcd_database
-from apps.utils.apcd_groups import is_apcd_admin
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.views.generic import View
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage
-from requests.auth import HTTPBasicAuth
-import logging
 from django.views.generic.base import TemplateView
-import rt
 from apps.utils.apcd_database import get_submission_logs, get_all_submissions
 from apps.utils.apcd_groups import is_apcd_admin
-
+from apps.utils.utils import title_case
+import logging
 
 logger = logging.getLogger(__name__)
-
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class AdminSubmissionsTable(TemplateView):
 
@@ -41,8 +29,8 @@ class AdminSubmissionsTable(TemplateView):
                 'apcd_id': submission[1],
                 'submitter_id': submission[2],
                 'file_name': submission[3],
-                'status': submission[4],
-                'outcome': submission[5],
+                'status': title_case(submission[4]),
+                'outcome': title_case(submission[5]),
                 'received_timestamp': submission[6],
                 'updated_at': submission[7],
                 'org_name': submission[8],
@@ -58,7 +46,8 @@ class AdminSubmissionsTable(TemplateView):
                     'submitter_id': submission_log[1],
                     'file_type': submission_log[2],
                     'validation_suite': submission_log[3],
-                    'outcome': submission_log[5]
+                    'outcome': title_case(submission_log[5]),
+                    'file_type_name': submission_log[6]
                 })
             
             return modal_content

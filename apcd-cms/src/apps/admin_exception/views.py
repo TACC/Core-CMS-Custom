@@ -1,24 +1,12 @@
-from apps.utils import apcd_database
-from apps.utils.apcd_groups import is_apcd_admin
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.views.generic import View
+from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage
-from requests.auth import HTTPBasicAuth
-import logging
 from django.views.generic.base import TemplateView
-import rt
 from apps.utils.apcd_database import get_all_exceptions
 from apps.utils.apcd_groups import is_apcd_admin
-
+from apps.utils.utils import title_case
+import logging
 
 logger = logging.getLogger(__name__)
-
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class AdminExceptionsTable(TemplateView):
 
@@ -40,9 +28,9 @@ class AdminExceptionsTable(TemplateView):
                 'exception_id': exception[0],
                 'submitter_id': exception[1],
                 'requestor_name': exception[2],
-                'request_type': exception[3],
+                'request_type': title_case(exception[3]),
                 'explanation_justification': exception[4],
-                'outcome': exception[5],
+                'outcome': title_case(exception[5]),
                 'created_at': exception[6],
                 'updated_at': exception[7],
                 'submitter_code': exception[8],
@@ -56,9 +44,10 @@ class AdminExceptionsTable(TemplateView):
                 'requested_expiration_date': exception[16],
                 'approved_threshold': exception[17],
                 'approved_expiration_date': exception[18],
-                'status': exception[19],
+                'status': title_case(exception[19]),
                 'notes': exception[20],
-                'org_name': exception[21]
+                'org_name': exception[21],
+                'data_file_name': exception[22]
             }
 
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Request Type', 'Outcome', 'Status', 'Actions']
