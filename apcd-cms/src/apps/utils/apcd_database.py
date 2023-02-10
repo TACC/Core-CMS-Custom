@@ -100,7 +100,7 @@ def get_registrations(reg_id=None):
                 registrations.city,
                 registrations.state,
                 registrations.zip
-                FROM registrations {f"WHERE registration_id = {str(reg_id) if reg_id is not None else ''}"}"""
+                FROM registrations {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -249,7 +249,7 @@ def get_registration_entities(reg_id=None):
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
                 registration_entities.fein
-                FROM registration_entities {f"WHERE registration_id = {str(reg_id) if reg_id is not None else ''}"}"""
+                FROM registration_entities {f"WHERE registration_id =  {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -436,7 +436,7 @@ def get_registration_contacts(reg_id=None):
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
-                FROM registration_contacts {f"WHERE registration_id = {str(reg_id) if reg_id is not None else ''}"}"""
+                FROM registration_contacts {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
