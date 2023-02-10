@@ -823,10 +823,13 @@ def get_submission_logs(submission_id):
         submission_logs.file_type,
         submission_logs.validation_suite,
         submission_logs.json_log,
-        submission_logs.outcome
+        submission_logs.outcome,
+        standard_codes.item_value
         FROM submission_logs
-        WHERE submission_id= %s
-        """
+        LEFT JOIN standard_codes 
+                ON UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
+        WHERE submission_id= (%s)
+        """ 
 
         cur = conn.cursor()
         cur.execute(query, (submission_id,))
