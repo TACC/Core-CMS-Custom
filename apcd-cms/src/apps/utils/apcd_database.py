@@ -81,7 +81,7 @@ def get_registrations(reg_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = f"""SELECT
+        query = """SELECT
                 registrations.registration_id,
                 registrations.posted_date,
                 registrations.applicable_period_start,
@@ -100,9 +100,9 @@ def get_registrations(reg_id=None):
                 registrations.city,
                 registrations.state,
                 registrations.zip
-                FROM registrations {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
+                FROM registrations WHERE registration_id = %s"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:
@@ -239,7 +239,7 @@ def get_registration_entities(reg_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = f"""SELECT
+        query = """SELECT
                 registration_entities.total_claims_value,
                 registration_entities.registration_id,
                 registration_entities.claims_and_encounters_volume,
@@ -249,9 +249,8 @@ def get_registration_entities(reg_id=None):
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
                 registration_entities.fein
-                FROM registration_entities {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
-        cur = conn.cursor()
-        cur.execute(query)
+                FROM registration_entities WHERE registration_id = %s"""
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:
@@ -428,7 +427,7 @@ def get_registration_contacts(reg_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = f"""SELECT
+        query = """SELECT
                 registration_contacts.registration_contact_id,
                 registration_contacts.registration_id,
                 registration_contacts.notify_flag,
@@ -436,9 +435,9 @@ def get_registration_contacts(reg_id=None):
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
-                FROM registration_contacts {f'WHERE registration_id = {reg_id}' if reg_id is not None else ''}"""
+                FROM registration_contacts WHERE registration_id = %s"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (reg_id if reg_id is not None else '',))
         return cur.fetchall()
 
     except Exception as error:
