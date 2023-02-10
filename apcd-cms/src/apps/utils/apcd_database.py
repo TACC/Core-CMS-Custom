@@ -886,66 +886,97 @@ def create_extension(form, iteration, sub_data):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            values = (
+        while iteration > 0:
+            if iteration > 1:
+                values = (
+                    _clean_value(sub_data[0]),
+                    _clean_date(form['current-expected-date_{}'.format(iteration)]),
+                    _clean_date(form['requested-target-date_{}'.format(iteration)]),
+                    None,
+                    _clean_value(form['extension-type_{}'.format(iteration)]),
+                    int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
+                    "Pending",
+                    _clean_value(sub_data[1]),
+                    _clean_value(sub_data[2]),
+                    _clean_value(sub_data[3]),
+                    _clean_email_from_form(form["requestor-name"]),
+                    _clean_email_from_form(form["requestor-email"]),
+                    _clean_value(form["justification"])
+                    )
+                operation = """INSERT INTO extensions(
+                    submitter_id,
+                    current_expected_date,
+                    requested_target_date,
+                    approved_expiration_date,
+                    extension_type,
+                    applicable_data_period,
+                    status,
+                    submitter_code,
+                    payor_code,
+                    user_id,
+                    requestor_name,
+                    requestor_email,
+                    explanation_justification
+                    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
+                conn = psycopg2.connect(
+                    host=APCD_DB['host'],
+                    dbname=APCD_DB['database'],
+                    user=APCD_DB['user'],
+                    password=APCD_DB['password'],
+                    port=APCD_DB['port'],
+                    sslmode='require'
+                )
+                cur = conn.cursor()
+                cur.execute(operation, values)
+                conn.commit()
+                iteration = iteration - 1
+            else:
+                values = (
                 _clean_value(sub_data[0]),
-                _clean_date(form['current-expected-date_{}'.format(iteration)]),
-                _clean_date(form['requested-target-date_{}'.format(iteration)]),
+                _clean_date(form['current-expected-date']),
+                _clean_date(form['requested-target-date']),
                 None,
-                _clean_value(form['extension-type_{}'.format(iteration)]),
-                int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
+                _clean_value(form['extension-type']),
+                int(form['applicable-data-period'].replace('-', '')),
                 "Pending",
+
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
-                _clean_email_from_form(form["requestor-name"]),
+                _clean_value(form["requestor-name"]),
                 _clean_email_from_form(form["requestor-email"]),
                 _clean_value(form["justification"])
+                )            
+                operation = """INSERT INTO extensions(
+                        submitter_id,
+                        current_expected_date,
+                        requested_target_date,
+                        approved_expiration_date,
+                        extension_type,
+                        applicable_data_period,
+                        status,
+                        submitter_code,
+                        payor_code,
+                        user_id,
+                        requestor_name,
+                        requestor_email,
+                        explanation_justification
+                        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
+                conn = psycopg2.connect(
+                    host=APCD_DB['host'],
+                    dbname=APCD_DB['database'],
+                    user=APCD_DB['user'],
+                    password=APCD_DB['password'],
+                    port=APCD_DB['port'],
+                    sslmode='require'
                 )
-        else:
-            values = (
-            _clean_value(sub_data[0]),
-            _clean_date(form['current-expected-date']),
-            _clean_date(form['requested-target-date']),
-            None,
-            _clean_value(form['extension-type']),
-            int(form['applicable-data-period'].replace('-', '')),
-            "Pending",
-
-            _clean_value(sub_data[1]),
-            _clean_value(sub_data[2]),
-            _clean_value(sub_data[3]),
-            _clean_value(form["requestor-name"]),
-            _clean_email_from_form(form["requestor-email"]),
-            _clean_value(form["justification"])
-            )            
-        operation = """INSERT INTO extensions(
-                submitter_id,
-                current_expected_date,
-                requested_target_date,
-                approved_expiration_date,
-                extension_type,
-                applicable_data_period,
-                status,
-                submitter_code,
-                payor_code,
-                user_id,
-                requestor_name,
-                requestor_email,
-                explanation_justification
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        cur.execute(operation, values)
-        conn.commit()
+                cur = conn.cursor()
+                cur.execute(operation, values)
+                conn.commit()
+                iteration = iteration - 1
+                
     except Exception as error:
         logger.error(error)
         return error
