@@ -1,30 +1,18 @@
-from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group
-from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.views.generic import View
-from requests.auth import HTTPBasicAuth
-import logging
+from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
-import rt
 from apps.utils.apcd_database import get_submissions, get_submission_logs
-from apps.utils.apcd_groups import is_apcd_admin
+from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
 from apps.utils.utils import title_case
+import logging
 
 logger = logging.getLogger(__name__)
-
-RT_HOST = getattr(settings, 'RT_HOST', '')
-RT_UN = getattr(settings, 'RT_UN', '')
-RT_PW = getattr(settings, 'RT_PW', '')
-RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class SubmissionsTable(TemplateView):
 
     template_name = 'list_submissions.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(SubmissionsTable, self).dispatch(request, *args, **kwargs)
 
