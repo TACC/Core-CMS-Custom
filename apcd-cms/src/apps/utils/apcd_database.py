@@ -688,7 +688,7 @@ def create_other_exception(form, sub_data):
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
-            _clean_email_from_form(form['requestor-email']),
+            _clean_email(form['requestor-email']),
             "Other",
             _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
@@ -744,7 +744,7 @@ def create_threshold_exception(form, sub_data):
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
-            _clean_email_from_form(form['requestor-email']),
+            _clean_email(form['requestor-email']),
             "Threshold",
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
@@ -898,8 +898,8 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
-                _clean_email_from_form(form["requestor-name"]),
-                _clean_email_from_form(form["requestor-email"]),
+                _clean_value(form["requestor-name"]),
+                _clean_email(form["requestor-email"]),
                 _clean_value(form["justification"])
                 )
         else:
@@ -916,7 +916,7 @@ def create_extension(form, iteration, sub_data):
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
             _clean_value(form["requestor-name"]),
-            _clean_email_from_form(form["requestor-email"]),
+            _clean_email(form["requestor-email"]),
             _clean_value(form["justification"])
             )            
         operation = """INSERT INTO extensions(
@@ -1136,9 +1136,6 @@ def _clean_email(email):
 
 def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
-
-def _clean_email_from_form(email):
-    return re.sub('[^a-zA-Z0-9 \.\-\,\@]', '', str(email))
 
 def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
