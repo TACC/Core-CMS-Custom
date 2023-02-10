@@ -669,7 +669,6 @@ def create_other_exception(form, sub_data):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
@@ -680,9 +679,8 @@ def create_other_exception(form, sub_data):
             request_type,
             requested_expiration_date,
             explanation_justification,
-            outcome,
-            created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            status
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],
@@ -690,14 +688,13 @@ def create_other_exception(form, sub_data):
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
+            _clean_email_from_form(form['requestor-email']),
             "Other",
             _clean_date(form['expiration-date']),
             _clean_value(form['justification']),
-            "Pending",
-            datetime.datetime.now().strftime('%Y-%m-%d')
+            "Pending"
         )
-        cur.conn.cursor()
+        cur = conn.cursor()
         cur.execute(operation, values)
         conn.commit()
 
@@ -725,7 +722,6 @@ def create_threshold_exception(form, sub_data):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        cur = conn.cursor()
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
@@ -739,9 +735,8 @@ def create_threshold_exception(form, sub_data):
             field_number,
             requested_threshold,
             explanation_justification,
-            outcome,
-            created_at
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            status
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],
@@ -749,15 +744,14 @@ def create_threshold_exception(form, sub_data):
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
+            _clean_email_from_form(form['requestor-email']),
             "Threshold",
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
             _clean_value(form['field-threshold-exception']),
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
-            "Pending",
-            datetime.datetime.now(),
+            "Pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -828,10 +822,13 @@ def get_submission_logs(submission_id):
         submission_logs.file_type,
         submission_logs.validation_suite,
         submission_logs.json_log,
-        submission_logs.outcome
+        submission_logs.outcome,
+        standard_codes.item_value
         FROM submission_logs
-        WHERE submission_id= %s
-        """
+        LEFT JOIN standard_codes 
+                ON UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
+        WHERE submission_id= (%s)
+        """ 
 
         cur = conn.cursor()
         cur.execute(query, (submission_id,))
@@ -901,9 +898,9 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
-                _clean_value(form["requestor-name"]),
-                form["requestor-email"],
-                _clean_value(form["justification"]),
+                _clean_email_from_form(form["requestor-name"]),
+                _clean_email_from_form(form["requestor-email"]),
+                _clean_value(form["justification"])
                 )
         else:
             values = (
@@ -919,8 +916,8 @@ def create_extension(form, iteration, sub_data):
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
             _clean_value(form["requestor-name"]),
-            form["requestor-email"],
-            _clean_value(form["justification"]),
+            _clean_email_from_form(form["requestor-email"]),
+            _clean_value(form["justification"])
             )            
         operation = """INSERT INTO extensions(
                 submitter_id,
@@ -935,7 +932,7 @@ def create_extension(form, iteration, sub_data):
                 user_id,
                 requestor_name,
                 requestor_email,
-                explanation_justification,
+                explanation_justification
                 ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """
         conn = psycopg2.connect(
@@ -1139,6 +1136,9 @@ def _clean_email(email):
 
 def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
+
+def _clean_email_from_form(email):
+    return re.sub('[^a-zA-Z0-9 \.\-\,\@]', '', str(email))
 
 def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
