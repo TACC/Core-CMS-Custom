@@ -916,23 +916,24 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form["requestor-name"]),
             _clean_email_from_form(form["requestor-email"]),
             _clean_value(form["justification"])
-            )            
+            )   
+
         operation = """INSERT INTO extensions(
-                submitter_id,
-                current_expected_date,
-                requested_target_date,
-                approved_expiration_date,
-                extension_type,
-                applicable_data_period,
-                status,
-                submitter_code,
-                payor_code,
-                user_id,
-                requestor_name,
-                requestor_email,
-                explanation_justification
-                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """
+        submitter_id,
+        current_expected_date,
+        requested_target_date,
+        approved_expiration_date,
+        extension_type,
+        applicable_data_period,
+        status,
+        submitter_code,
+        payor_code,
+        user_id,
+        requestor_name,
+        requestor_email,
+        explanation_justification
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
@@ -943,7 +944,8 @@ def create_extension(form, iteration, sub_data):
         )
         cur = conn.cursor()
         cur.execute(operation, values)
-        conn.commit()
+        conn.commit()         
+                
     except Exception as error:
         logger.error(error)
         return error

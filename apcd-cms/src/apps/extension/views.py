@@ -60,7 +60,7 @@ class ExtensionFormView(TemplateView):
                     break
 
             for iteration in range(max_iterations):
-                exten_resp = apcd_database.create_extension(form, iteration, submitter)
+                exten_resp = apcd_database.create_extension(form, iteration + 1, submitter)
                 if _err_msg(exten_resp):
                     errors.append(_err_msg(exten_resp))
 
