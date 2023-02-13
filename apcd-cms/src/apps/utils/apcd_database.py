@@ -152,7 +152,7 @@ def create_registration(form):
             datetime.datetime.now(),
             None,
             None,
-            True if 'types_of_files_eligibility_enrollment' in form else False,
+            True,
             True if 'types_of_files_provider' in form else False,
             True if 'types_of_files_medical' in form else False,
             True if 'types_of_files_pharmacy' in form else False,
