@@ -438,8 +438,7 @@
                     minlength="10"
                     maxlength="10"
                     pattern="\d{2}-\d{7}"
-                    required
-                    value="{{ entity.fein }}"
+                    {% if entity.fein %} value="{{ entity.fein }}" {% endif %}
                     />
 
                     <div id="help-text-fein" class="help-text">
@@ -461,8 +460,7 @@
                     minlength="5"
                     maxlength="10"
                     pattern="^[1-9]\d{4}|^[1-9]\d{9}"
-                    required
-                    value="{{ entity.license }}"
+                    {% if entity.license %} value="{{ entity.license }}" {% endif %}
                     />
 
                     <div id="help-text-license_number" class="help-text">
@@ -484,8 +482,7 @@
                     minlength="5"
                     maxlength="5"
                     pattern="^[1-9]\d{4}"
-                    required
-                    value="{{ entity.naic }}"
+                    {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
                     />
 
                     <div id="help-text-naic_company_code" class="help-text">

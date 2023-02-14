@@ -321,17 +321,19 @@
     </script>
     {# To require at least one "entity" identifier value #}
     <script id="form-entity_id-required" type="module">
-      const inputs = Array.from(
-        document.querySelectorAll(`
-        input[name=fein{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=license_number{% if r %}_{{r.reg_id}}{% endif %}],
-        input[name=naic_company_code{% if r %}_{{r.reg_id}}{% endif %}]`)
-      );
-      const inputListener = e => {
-        inputs.filter(i => i !== e.target)
-              .forEach(i => (i.required = !e.target.value.length));
-      };
+      for (let ent_no = 1; ent_no < 6; ent_no++) {
+        const inputs = Array.from(
+          document.querySelectorAll(`
+          input[name=fein_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
+          input[name=license_number_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
+          input[name=naic_company_code_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}]`)
+        );
+        const inputListener = e => {
+          inputs.filter(i => i !== e.target)
+                .forEach(i => (i.required = !e.target.value.length));
+        };
 
-      inputs.forEach(i => i.addEventListener('input', inputListener));
+        inputs.forEach(i => i.addEventListener('input', inputListener));
+      }
     </script>
 </aside>
