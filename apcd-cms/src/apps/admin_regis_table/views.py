@@ -106,11 +106,11 @@ class RegistrationsTable(TemplateView):
                 'claim_val': reg_ent[0],
                 'ent_id': reg_ent[3],
                 'claim_and_enc_vol': reg_ent[2],
-                'license': reg_ent[4],
-                'naic': reg_ent[5],
+                'license': reg_ent[4] if reg_ent[4] else None,
+                'naic': reg_ent[5] if reg_ent[5] else None,
                 'no_covered': reg_ent[6],
                 'ent_name': reg_ent[7],
-                'fein': reg_ent[8]
+                'fein': reg_ent[8] if reg_ent[8] else None
             }
         def _set_contacts(reg_cont):
 
