@@ -272,7 +272,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
         if iteration > 1:
             if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
                 return
-            str_end = f'{reg_id}_{iteration}' if from_update_reg else iteration
+            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
             values = (
                 reg_id,
                 _set_int(form['total_claims_value_{}'.format(str_end)]),
@@ -284,7 +284,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
                 _clean_value(form['fein_{}'.format(str_end)])
             )
         else:            
-            str_end = f'_{reg_id}_{iteration}' if from_update_reg else ''
+            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
             values = (
                 reg_id,
                 _set_int(form[f'total_claims_value{str_end}']),
@@ -336,12 +336,12 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
     values = ()
     try:
         if not _acceptable_entity(form, iteration, reg_id):
-            if iteration <= no_entities:
+            if iteration <= no_entities: # entity is not in form but was in original entity list -> need to delete
                 return delete_registration_entity(reg_id, form[f'ent_id_{iteration}'])
             return
-        if iteration > no_entities:
+        if iteration > no_entities: # contact is in form but not in original list -> need to create
             return create_registration_entity(form, reg_id, iteration, True)
-        str_end = f'{reg_id}_{iteration}'
+        str_end = f'{iteration}_{reg_id}'
         values = (
             _set_int(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
@@ -459,7 +459,7 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
         if iteration > 1:
             if not _acceptable_contact(form, iteration, reg_id if from_update_reg else None):
                 return
-            str_end = f'{reg_id}_{iteration}' if from_update_reg else iteration
+            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
             values = (
                 reg_id,
                 True if 'contact_notifications_{}'.format(str_end) in form else False,
@@ -469,7 +469,7 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
                 _clean_email(form['contact_email_{}'.format(str_end)])
             )
         else:
-            str_end = f'_{reg_id}_{iteration}' if from_update_reg else ''
+            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
             values = (
                 reg_id,
                 True if f'contact_notifications{str_end}' in form else False,
@@ -517,12 +517,12 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
     values = ()
     try:
         if not _acceptable_contact(form, iteration, reg_id):
-            if iteration < no_contacts: # contact is not in form but was in original contact list -> need to delete
+            if iteration <= no_contacts: # contact is not in form but was in original contact list -> need to delete
                 return delete_registration_contact(reg_id, form[f'cont_id_{iteration}'])
             return
         if iteration > no_contacts: # contact is in form but not in original list -> need to create
             return create_registration_contact(form, reg_id, iteration)
-        str_end = f'{reg_id}_{iteration}'
+        str_end = f'{iteration}_{reg_id}'
         values = (
             True if 'contact_notifications_{}'.format(str_end) in form else False,
             _clean_value(form['contact_type_{}'.format(str_end)]),
@@ -1098,7 +1098,7 @@ def get_all_exceptions():
             conn.close()
 
 def _acceptable_entity(form, iteration, reg_id=None):
-    str_end = f'{reg_id}_{iteration}' if reg_id else iteration
+    str_end = f'{iteration}{ f"_{reg_id}" if reg_id else "" }'
     required_keys = [
         'total_claims_value_{}'.format(str_end),
         'claims_encounters_volume_{}'.format(str_end),
@@ -1119,7 +1119,7 @@ def _acceptable_entity(form, iteration, reg_id=None):
 
 
 def _acceptable_contact(form, iteration, reg_id=None):
-    str_end = f'{reg_id}_{iteration}' if reg_id else iteration
+    str_end = f'{iteration}{ f"_{reg_id}" if reg_id else "" }'
     required_keys = [
         'contact_type_{}'.format(str_end),
         'contact_name_{}'.format(str_end),
