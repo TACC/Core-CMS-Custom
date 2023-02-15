@@ -195,24 +195,40 @@ def update_registration(form, reg_id):
             sslmode='require'
         )
         cur = conn.cursor()
-        operation = f"""UPDATE registrations
+        operation = """UPDATE registrations
             SET
-            file_pv = {True if 'types_of_files_provider' in form else False},
-            file_mc = {True if 'types_of_files_medical' in form else False},
-            file_pc = {True if 'types_of_files_pharmacy' in form else False},
-            file_dc = {True if 'types_of_files_dental' in form else False},
-            submitting_for_self = {True if form['on-behalf-of'] == 'true' else False},
-            submission_method = '{_clean_value(form['submission_method'])}',
-            org_type = '{_clean_value(form['type'])}',
-            business_name = '{_clean_value(form['business-name'])}',
-            mail_address = '{_clean_value(form['mailing-address'])}',
-            city = '{_clean_value(form['city'])}',
-            state = '{form['state'][:2]}',
-            zip = '{form['zip_code']}',
-            updated_at='{datetime.datetime.now()}'
-        WHERE registration_id = {reg_id}
+            file_pv = %s,
+            file_mc = %s,
+            file_pc = %s,
+            file_dc = %s,
+            submitting_for_self = %s,
+            submission_method = %s,
+            org_type = %s,
+            business_name = %s,
+            mail_address = %s,
+            city = %s,
+            state = %s,
+            zip = %s,
+            updated_at= %s
+        WHERE registration_id = %s
         RETURNING registration_id"""
-        cur.execute(operation)
+        values = (
+            True if 'types_of_files_provider' in form else False,
+            True if 'types_of_files_medical' in form else False,
+            True if 'types_of_files_pharmacy' in form else False,
+            True if 'types_of_files_dental' in form else False,
+            True if form['on-behalf-of'] == 'true' else False,
+            _clean_value(form['submission_method']),
+            _clean_value(form['type']),
+            _clean_value(form['business-name']),
+            _clean_value(form['mailing-address']),
+            _clean_value(form['city']),
+            form['state'][:2],
+            form['zip_code'],
+            datetime.datetime.now(),
+            reg_id
+        )
+        cur.execute(operation, values)
         conn.commit()
         return cur.fetchone()[0]
 
@@ -339,7 +355,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             if iteration <= no_entities: # entity is not in form but was in original entity list -> need to delete
                 return delete_registration_entity(reg_id, form[f'ent_id_{iteration}'])
             return
-        if iteration > no_entities: # contact is in form but not in original list -> need to create
+        if iteration > no_entities: # entity is in form but not in original list -> need to create
             return create_registration_entity(form, reg_id, iteration, True)
         str_end = f'{iteration}_{reg_id}'
         values = (
@@ -349,7 +365,9 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['naic_company_code_{}'.format(str_end)]),
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
-            _clean_value(form['fein_{}'.format(str_end)])
+            _clean_value(form['fein_{}'.format(str_end)]),
+            reg_id,
+            form[f'ent_id_{iteration}']
         )
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -359,19 +377,19 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""UPDATE registration_entities
+        operation = """UPDATE registration_entities
             SET
-            total_claims_value = {values[0]},
-            claims_and_encounters_volume = {values[1]},
-            license_number = {values[2]},
-            naic_company_code = {values[3]},
-            total_covered_lives = {values[4]},
-            entity_name = '{values[5]}',
-            fein = {values[6]}
-            WHERE registration_id = {reg_id} AND registration_entity_id = {form[f'ent_id_{iteration}']}
+            total_claims_value = %s,
+            claims_and_encounters_volume = %s,
+            license_number = %s,
+            naic_company_code = %s,
+            total_covered_lives = %s,
+            entity_name = %s,
+            fein = %s
+            WHERE registration_id = %s AND registration_entity_id = %s
         """
         cur = conn.cursor()
-        cur.execute(operation)
+        cur.execute(operation, values)
         conn.commit()
 
     except Exception as error:
@@ -398,8 +416,12 @@ def delete_registration_entity(reg_id, ent_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""DELETE FROM registration_entities
-            WHERE registration_id = {reg_id} AND registration_entity_id = {ent_id}
+        values = (
+            reg_id,
+            ent_id
+        )
+        operation = """DELETE FROM registration_entities
+            WHERE registration_id = %s AND registration_entity_id = %s
         """
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -528,7 +550,9 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
             _clean_value(form['contact_type_{}'.format(str_end)]),
             _clean_value(form['contact_name_{}'.format(str_end)]),
             re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
-            _clean_email(form['contact_email_{}'.format(str_end)])
+            _clean_email(form['contact_email_{}'.format(str_end)]),
+            reg_id,
+            form[f'cont_id_{iteration}']
         )
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -538,14 +562,14 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""UPDATE registration_contacts
+        operation = """UPDATE registration_contacts
             SET
-            notify_flag = {values[0]},
-            contact_type = '{values[1]}',
-            contact_name = '{values[2]}',
-            contact_phone = {values[3]},
-            contact_email = '{values[4]}'
-            WHERE registration_id = {reg_id} AND registration_contact_id = {form[f'cont_id_{iteration}']}
+            notify_flag = %s,
+            contact_type = %s,
+            contact_name = %s,
+            contact_phone = %s,
+            contact_email = %s
+            WHERE registration_id = %s AND registration_contact_id = %s
         """
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -575,8 +599,12 @@ def delete_registration_contact(reg_id, cont_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""DELETE FROM registration_contacts
-            WHERE registration_id = {reg_id} AND registration_contact_id = {cont_id}
+        values = (
+            reg_id,
+            cont_id
+        )
+        operation = """DELETE FROM registration_contacts
+            WHERE registration_id = %s AND registration_contact_id = %s
         """
         cur = conn.cursor()
         cur.execute(operation, values)
