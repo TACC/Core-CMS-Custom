@@ -1,6 +1,6 @@
 from django.conf import settings
 import psycopg2
-import datetime
+from datetime import datetime
 import re
 import logging
 
@@ -21,7 +21,9 @@ def get_users():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT * FROM users NATURAL JOIN roles ORDER BY users.org_name ASC
+        query = """SELECT * FROM users 
+                NATURAL JOIN roles 
+                ORDER BY users.org_name ASC
                 """
         cur = conn.cursor()
         cur.execute(query)
@@ -51,9 +53,11 @@ def get_user_role(user):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = """SELECT roles.role_name FROM roles WHERE role_id
-                    IN (SELECT users.role_id FROM users
-                    WHERE user_id = %s)"""
+        operation = """SELECT roles.role_name FROM roles 
+                    WHERE role_id
+                    IN (
+                        SELECT users.role_id FROM users
+                        WHERE user_id = %s)"""
         cur = conn.cursor()
         cur.execute(operation, (user,))
         row = cur.fetchone()
@@ -149,7 +153,7 @@ def create_registration(form):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
-            datetime.datetime.now(),
+            datetime.now(),
             None,
             None,
             True,
@@ -225,7 +229,7 @@ def update_registration(form, reg_id):
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
-            datetime.datetime.now(),
+            datetime.now(),
             reg_id
         )
         cur.execute(operation, values)
@@ -664,7 +668,7 @@ def create_submitter(form, reg_data):
             form['submit_code'],
             _set_int(form['payor_code']),
             form['encryption_key'],
-            datetime.datetime.now(),
+            datetime.now(),
             'new'
         )
         cur.execute(operation, values)
@@ -807,11 +811,11 @@ def get_submissions(user):
             sslmode='require'
         )
 
-        query = """SELECT
-            *
-            FROM submissions
+        query = """SELECT * FROM submissions
             WHERE submitter_id
-            IN (SELECT submitter_users.submitter_id FROM submitter_users WHERE user_id = %s )
+            IN (
+                SELECT submitter_users.submitter_id FROM submitter_users 
+                WHERE user_id = %s )
         """
 
         cur = conn.cursor()
@@ -843,13 +847,13 @@ def get_submission_logs(submission_id):
 
    
         query = """SELECT
-        submission_logs.log_id,
-        submission_logs.submission_id,
-        submission_logs.file_type,
-        submission_logs.validation_suite,
-        submission_logs.json_log,
-        submission_logs.outcome,
-        standard_codes.item_value
+            submission_logs.log_id,
+            submission_logs.submission_id,
+            submission_logs.file_type,
+            submission_logs.validation_suite,
+            submission_logs.json_log,
+            submission_logs.outcome,
+            standard_codes.item_value
         FROM submission_logs
         LEFT JOIN standard_codes 
                 ON UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
@@ -947,19 +951,19 @@ def create_extension(form, iteration, sub_data):
             )   
 
         operation = """INSERT INTO extensions(
-        submitter_id,
-        current_expected_date,
-        requested_target_date,
-        approved_expiration_date,
-        extension_type,
-        applicable_data_period,
-        status,
-        submitter_code,
-        payor_code,
-        user_id,
-        requestor_name,
-        requestor_email,
-        explanation_justification
+            submitter_id,
+            current_expected_date,
+            requested_target_date,
+            approved_expiration_date,
+            extension_type,
+            applicable_data_period,
+            status,
+            submitter_code,
+            payor_code,
+            user_id,
+            requestor_name,
+            requestor_email,
+            explanation_justification
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
@@ -998,7 +1002,12 @@ def get_submitter_for_extend_or_except(user):
         )
         cur = conn.cursor()
         query = """
-                SELECT submitter_users.submitter_id, submitters.submitter_code, submitters.payor_code, submitter_users.user_id, apcd_orgs.official_name
+                SELECT 
+                    submitter_users.submitter_id, 
+                    submitters.submitter_code, 
+                    submitters.payor_code, 
+                    submitter_users.user_id, 
+                    apcd_orgs.official_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
