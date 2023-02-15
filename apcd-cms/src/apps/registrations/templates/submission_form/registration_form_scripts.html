@@ -321,7 +321,7 @@
     </script>
     {# To require at least one "entity" identifier value #}
     <script id="form-entity_id-required" type="module">
-      for (let ent_no = 1; ent_no < 6; ent_no++) { 
+      for (let ent_no = 1; ent_no < 6; ent_no++) {
         const inputs = Array.from(
           document.querySelectorAll(`
           input[name=fein_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
