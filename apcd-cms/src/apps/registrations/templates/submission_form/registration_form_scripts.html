@@ -328,6 +328,7 @@
           input[name=license_number_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
           input[name=naic_company_code_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}]`)
         );
+        
         const inputListener = e => {
           inputs.filter(i => i !== e.target)
                 .forEach(i => (i.required = !e.target.value.length));
