@@ -547,7 +547,7 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
                 return delete_registration_contact(reg_id, form[f'cont_id_{iteration}'])
             return
         if iteration > no_contacts: # contact is in form but not in original list -> need to create
-            return create_registration_contact(form, reg_id, iteration)
+            return create_registration_contact(form, reg_id, iteration, True)
         str_end = f'{iteration}_{reg_id}'
         values = (
             True if 'contact_notifications_{}'.format(str_end) in form else False,
