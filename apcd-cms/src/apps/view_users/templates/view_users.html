@@ -72,7 +72,7 @@ function filterTableByOrganization() {
   }
 }
 
-/***remove duplicates from dropdown */
+/* remove duplicates from dropdown */
 
 const options = []
 
@@ -80,8 +80,6 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     if (options.includes(option.value)) option.remove()
     else options.push(option.value)
 })
-
-
 
 </script>
 
