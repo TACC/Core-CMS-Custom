@@ -1,17 +1,13 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.conf import settings
-from django.shortcuts import redirect, render
-from django.template import Template, Context
 from apps.utils.apcd_database import get_submissions, get_submission_logs
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
 import logging
-import requests
 
 logger = logging.getLogger(__name__)
+
 
 class SubmissionsTable(TemplateView):
 
@@ -57,7 +53,6 @@ class SubmissionsTable(TemplateView):
 
             return modal_content
 
-
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['rows'] = []
 
@@ -68,45 +63,8 @@ class SubmissionsTable(TemplateView):
         return context
 
 
-# @method_decorator(login_required, name='dispatch')
-# class SubmissionsView(TemplateView):
-#     """
-#     Main workbench view.
-#     """
-#     template_name = 'submit_file.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super(SubmissionsView, self).get_context_data(**kwargs)
-
-
-#         response = requests.get('{0}/workbench/'.format( \
-#             getattr(settings, 'CEP_AUTH_VERIFICATION_ENDPOINT', 'http://django:6000')),
-#             cookies={'coresessionid': self.request.COOKIES.get('coresessionid')})
-
-#         context['is_submitter'] = True
-#         context['workbench'] = response.text
-
-#         return context
-
-#     def dispatch(self, request, *args, **kwargs):
-
-#         if not has_apcd_group(request.user):
-#             return render(request, 'submit_file_unauthorized.html')
-
-#         return super(SubmissionsView, self).dispatch(request, *args, **kwargs)
-
 @login_required
-def submit_file_view(request):
+def check_submitter_access(request):
+    logger.info("Checking submitter access for user: %s", request.user.username)
 
-    if not has_apcd_group(request.user):
-        return render(request, 'submit_file_unauthorized.html')
-
-    response = requests.get('{0}/workbench/'.format(
-        getattr(settings, 'CEP_AUTH_VERIFICATION_ENDPOINT', 'http://django:6000')),
-        cookies={'coresessionid': request.COOKIES.get('coresessionid')})
-    assert response.status_code == 200
-
-    template = Template(response.content)
-    context = Context({"stooges": ["Larry", "Curly", "Moe"]})
-
-    return HttpResponse(template.render(context))
+    return JsonResponse({"is_submitter": has_apcd_group(request.user)})
