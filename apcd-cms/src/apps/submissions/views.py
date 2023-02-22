@@ -109,4 +109,4 @@ def submit_file_view(request):
     template = Template(response.content)
     context = {}
 
-    return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context))
