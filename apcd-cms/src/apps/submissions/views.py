@@ -64,7 +64,7 @@ class SubmissionsTable(TemplateView):
 
 
 @login_required
-def check_submitter_access(request):
+def check_submitter_role(request):
     logger.info("Checking submitter access for user: %s", request.user.username)
 
     return JsonResponse({"is_submitter": has_apcd_group(request.user)})
