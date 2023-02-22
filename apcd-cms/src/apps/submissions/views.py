@@ -107,6 +107,6 @@ def submit_file_view(request):
     assert response.status_code == 200
 
     template = Template(response.content)
-    context = Context({})
+    context = Context({"stooges": ["Larry", "Curly", "Moe"]})
 
     return HttpResponse(template.render(context))
