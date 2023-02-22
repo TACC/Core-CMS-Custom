@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.shortcuts import redirect, render
-from djangotemplate import Template, Context
+from django.template import Template, Context
 from apps.utils.apcd_database import get_submissions, get_submission_logs
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
@@ -101,7 +101,7 @@ def submit_file_view(request):
     if not has_apcd_group(request.user):
         return render(request, 'submit_file_unauthorized.html')
 
-    response = requests.get('{0}/workbench/'.format( \
+    response = requests.get('{0}/workbench/'.format(
         getattr(settings, 'CEP_AUTH_VERIFICATION_ENDPOINT', 'http://django:6000')),
         cookies={'coresessionid': request.COOKIES.get('coresessionid')})
     assert response.status_code == 200
