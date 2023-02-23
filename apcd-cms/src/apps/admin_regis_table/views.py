@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
@@ -226,10 +227,12 @@ class RegistrationsTable(TemplateView):
             }
 
         context['header'] = ['Business Name', 'Type', 'Location', 'Submission Method', 'Registration Status', 'Files to Submit', 'Actions']
-        context['rows'] = []
+        registration_table_entries = []
         for registration in registrations_content:
             associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
-            context['rows'].append(_set_registration(registration, associated_entities, associated_contacts))
+            registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
 
+        context.update(paginator(self.request, registration_table_entries))
+        context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context

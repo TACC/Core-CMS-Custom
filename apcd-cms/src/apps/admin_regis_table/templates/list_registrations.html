@@ -34,7 +34,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
                   <td>
@@ -71,6 +71,7 @@
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %}
 </div>
 <script>
   function filterTableByStatus() {
