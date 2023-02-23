@@ -21,7 +21,6 @@ class AdminSubmissionsTable(TemplateView):
     def get_context_data(self, *args, **kwargs):
 
         context = super(AdminSubmissionsTable, self).get_context_data(*args, **kwargs)
-        import datetime
 
         submission_content = get_all_submissions()
 
