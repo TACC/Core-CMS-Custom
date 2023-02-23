@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_submission_logs, get_all_submissions
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
+from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
@@ -20,6 +21,7 @@ class AdminSubmissionsTable(TemplateView):
     def get_context_data(self, *args, **kwargs):
 
         context = super(AdminSubmissionsTable, self).get_context_data(*args, **kwargs)
+        import datetime
 
         submission_content = get_all_submissions()
 
@@ -61,19 +63,6 @@ class AdminSubmissionsTable(TemplateView):
             submission_logs = get_submission_logs(submission[0])
             submission_with_logs.append(_set_submissions(submission, submission_logs))
 
-        try:
-            page_num = int(self.request.GET.get('page'))
-        except:
-            page_num = 1
-
-        p = Paginator(submission_with_logs, 50)
-
-        try:
-            page = p.page(page_num)
-        except EmptyPage:
-            page = p.page(1)
-
-        context['page'] = page
-        context['page_num'] = int(page_num)
-
+        context.update(paginator(self.request, submission_with_logs))
+        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
         return context
