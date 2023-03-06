@@ -33,182 +33,195 @@
           <form action="" method="POST">
             {% csrf_token %}
             <h4>Extension Information</h4>
-              <div class="field-wrapper textinput required">
-                <div class="field-errors" style="display: none"></div>
-                <label for="extension-type">
-                  Extension Type<span class="asterisk">*</span>
-                </label>
-                <div class="field-errors" style="display: none"></div>
-                  <select name='extension-type' required='required' class="choicefield" id='extension-type'>
-                    <option class="dropdown-text" value="regular">Regularly Scheduled Extension</option>
-                    <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
-                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)</option>
-                </select>
-                </div>
-              <div id="extension-block_1">
-              <div class="o-grid o-grid--col-auto-count" >
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="extension-type">
+                Extension Type<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+              <select name='extension-type' required='required' class="choicefield" id='extension-type'>
+                <option class="dropdown-text" value="regular">Regularly Scheduled Extension</option>
+                <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
+                <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
+                </option>
+              </select>
+            </div>
+            <div id="extension-block_1">
+              <div class="o-grid o-grid--col-auto-count">
                 <div class="field-wrapper numberinput required" id="date-row">
                   <div class="field-errors" style="display: none"></div>
-      
-                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup name="date-sup">1</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+
+                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup
+                      name="date-sup">1</sup></label><label name="extension-date-asterisk"><span
+                      class="asterisk">*</span></label>
                   </label>
-      
-                  <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
-                    id="applicable-data-period" pattern="\d{4}-\d{2}" required />
+
+                  <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric"
+                    inputmode="numeric" style="width:18ch" id="applicable-data-period" pattern="\d{4}-\d{2}" required />
                   <div id="help-text-applicable-data-period" class="help-text">
                     Enter month and year
                   </div>
                 </div>
-                  <div class="field-wrapper numberinput required" id="date-row">
-                    <div class="field-errors" style="display: none"></div>
-      
-                    <label for="current-expected-date" name="date-row">Current Expected Date<sup>2</sup>
-                    </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-      
-                    <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
-                      inputmode="numeric" required />
-                  </div>
-                  <div class="field-wrapper numberinput required" id="date-row">
-                    <div class="field-errors" style="display: none"></div>
-      
-                    <label for="request" name="date-row">Requested Target Date<sup>3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-      
-                    <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
-                      inputmode="numeric" required />
-                  </div>
+                <div class="field-wrapper numberinput required" id="date-row">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="current-expected-date" name="date-row">Current Expected Date<sup>2</sup>
+                  </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+
+                  <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
+                    inputmode="numeric" required />
+                </div>
+                <div class="field-wrapper numberinput required" id="date-row">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="request" name="date-row">Requested Target Date<sup>3</sup></label><label
+                    name="extension-date-asterisk"><span class="asterisk">*</span></label>
+
+                  <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
+                    inputmode="numeric" required />
                 </div>
               </div>
-            <h4 id="extension-header_2" style="display:none"><hr/>Extension Information 2</h4>
+            </div>
+            <h4 id="extension-header_2" style="display:none">
+              <hr />Extension Information 2
+            </h4>
             <div id="extension-block_2"></div>
-            <h4 id="extension-header_3" style="display:none"><hr/>Extension Information 3</h4>
+            <h4 id="extension-header_3" style="display:none">
+              <hr />Extension Information 3
+            </h4>
             <div id="extension-block_3"></div>
-            <h4 id="extension-header_4" style="display:none"><hr/>Extension Information 4</h4>
+            <h4 id="extension-header_4" style="display:none">
+              <hr />Extension Information 4
+            </h4>
             <div id="extension-block_4"></div>
-            <h4 id="extension-header_5" style="display:none"><hr/>Extension Information 5</h4>
+            <h4 id="extension-header_5" style="display:none">
+              <hr />Extension Information 5
+            </h4>
             <div id="extension-block_5"></div>
-            <button class="c-button c-button--primary" id="extension-add-btn" type="button">+ Add Another Extension Request
+            <button class="c-button c-button--primary" id="extension-add-btn" type="button">+ Add Another Extension
+              Request
             </button>
             <button class="c-button c-button--secondary" id="extension-drop-btn" type="button">- Remove Last Extension
               Request</button>
-      
-              <hr />
-      
-              <h4>Justification</h4>
-        
-              <div class="field-wrapper textarea required">
-                Provide rationale for the exception request, outlining the reasons why the
-                organization is unable to comply with the relevant requirements. Provide as
-                much detail as possible regarding the exception request, indicating the
-                specific submission requirements for which relief is being sought. If applicable,
-                indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
-                    id="justification-asterisk">*</span></label>
-        
-                <div class="field-errors" style="display: none"></div>
-        
-                <textarea name="justification" cols="40" rows="10" class="textinput" type="text" id="justification"
-                  minlength="2" maxlength="2000" required></textarea>
-                <div class="help-text">
-                  2000 character limit
-                </div>
+
+            <hr />
+
+            <h4>Justification</h4>
+
+            <div class="field-wrapper textarea required">
+              Provide rationale for the exception request, outlining the reasons why the
+              organization is unable to comply with the relevant requirements. Provide as
+              much detail as possible regarding the exception request, indicating the
+              specific submission requirements for which relief is being sought. If applicable,
+              indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
+                  id="justification-asterisk">*</span></label>
+
+              <div class="field-errors" style="display: none"></div>
+
+              <textarea name="justification" cols="40" rows="10" class="textinput" type="text" id="justification"
+                minlength="2" maxlength="2000" required></textarea>
+              <div class="help-text">
+                2000 character limit
               </div>
-              <hr />
-      
-              <h4>Acknowledgment of Terms</h4>
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper textinput required">
-                  <label for="requestor-name">
-                    Requestor Name<span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-        
-                  <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
-                </div>
-                <div class="field-wrapper emailinput required">
-                  <label for="requestor-email">
-                    Requestor Email<span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-        
-                  <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
-                    id="requestor-email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$" />
-                </div>
-              </div>
-              <div class="field-wrapper textinput required"><label>
-                  I request an exception on behalf of:
-                </label></div>
-        
+            </div>
+            <hr />
+
+            <h4>Acknowledgment of Terms</h4>
+            <div class="o-grid o-grid--col-auto-count">
               <div class="field-wrapper textinput required">
-                <label for="business-name">
-                  Business Name<span class="asterisk">*</span>
+                <label for="requestor-name">
+                  Requestor Name<span class="asterisk">*</span>
                 </label>
                 <div class="field-errors" style="display: none"></div>
-                  <select name='business-name' required='required' class="choicefield" id='business-name'>
-                  {% for submitter in submitters %}
-                    <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
-                  {% endfor %} 
-                </select>
-      
+
+                <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
               </div>
-        
-              <div class="field-wrapper checkbox required">
+              <div class="field-wrapper emailinput required">
+                <label for="requestor-email">
+                  Requestor Email<span class="asterisk">*</span>
+                </label>
                 <div class="field-errors" style="display: none"></div>
-                <label for="accept-terms"> I understand and acknowledge that the Texas Department
-                  of Insurance (TDI) may review the validity of the
-                  information submitted on this form.</label>
-                <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox" required
-                    id="accept-terms" />
-                  Accept<span class="asterisk">*</span></label>
+
+                <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
+                  id="requestor-email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$" />
               </div>
-        
-        
-              <div class="button-wrapper submit">
-                <button class="form-button" type="submit" value="Submit">
-                  Submit
-                </button>
-              </div>
+            </div>
+            <div class="field-wrapper textinput required"><label>
+                I request an exception on behalf of:
+              </label></div>
+
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+              <select name='business-name' required='required' class="choicefield" id='business-name'>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                  {{submitter.submitter_id}}</option>
+                {% endfor %}
+              </select>
+
+            </div>
+
+            <div class="field-wrapper checkbox required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="accept-terms"> I understand and acknowledge that the Texas Department
+                of Insurance (TDI) may review the validity of the
+                information submitted on this form.</label>
+              <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
+                  required id="accept-terms" />
+                Accept<span class="asterisk">*</span></label>
+            </div>
+
+
+            <div class="button-wrapper submit">
+              <button class="form-button" type="submit" value="Submit">
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       </div>
-      
+
 
       <div class="form-success" style="display: none">
         <p>Thank you for your request.</p>
       </div>
-  {# Hidden links for future pages #}
-  {# TODO: Allow this template to render CMS admin-entered markup #}
-    <aside class="row" hidden>
-      <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-        <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-        <p><a href="/forms/exception">Exception Request</a></p>
+      <aside class="row" hidden>
+        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-        <p><a href="/forms/extension">Extension Request</a></p>
+          <p><a href="/forms/exception">Exception Request</a></p>
 
-        <p><a href="/workbench/dashboard">Dashboard</a></p>
-      </div>
-    </aside>
+          <p><a href="/forms/extension">Extension Request</a></p>
 
-  {# Scripts #}
-  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
-  <aside>
-    <!-- To let user add and remove entities -->
-    {# RFE: Do not duplicate entity markup #}
-    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
-    <script id="form-add-remove-extension" type="module">
-      const addExtensionBtn = document.getElementById("extension-add-btn");
-      const dropExtensionBtn = document.getElementById("extension-drop-btn");
-      const btnStatus = (() => {
-        addExtensionBtn.disabled = ( extension == 5 ? true : false );
-        dropExtensionBtn.disabled = ( extension == 1 ? true : false );
-      });
-      let extension = 1;
-      btnStatus();
+          <p><a href="/workbench/dashboard">Dashboard</a></p>
+        </div>
+      </aside>
 
-      addExtensionBtn.addEventListener("click", () => {
-        if (extension < 5) extension += 1;
-        let extensionBlock = document.getElementById(`extension-block_${extension}`);
-        document.getElementById(`extension-header_${extension}`).style.display = 'block';
-        extensionBlock.innerHTML = `
+      {# Scripts #}
+      {# WARNING: Many are cruft that created this now-static markup, but not all #}
+      <aside>
+        <!-- To let user add and remove entities -->
+        {# RFE: Do not duplicate entity markup #}
+        {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+        <script id="form-add-remove-extension" type="module">
+          const addExtensionBtn = document.getElementById("extension-add-btn");
+          const dropExtensionBtn = document.getElementById("extension-drop-btn");
+          const btnStatus = (() => {
+            addExtensionBtn.disabled = (extension == 5 ? true : false);
+            dropExtensionBtn.disabled = (extension == 1 ? true : false);
+          });
+          let extension = 1;
+          btnStatus();
+
+          addExtensionBtn.addEventListener("click", () => {
+            if (extension < 5) extension += 1;
+            let extensionBlock = document.getElementById(`extension-block_${extension}`);
+            document.getElementById(`extension-header_${extension}`).style.display = 'block';
+            extensionBlock.innerHTML = `
         <div id="extension-block_${extension}">
           <div class="field-wrapper textinput required">
             <div class="field-errors" style="display: none"></div>
@@ -255,43 +268,43 @@
           </div>
         </div>
         `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
+            const inputs = Array.from(
+              document.querySelectorAll(`
             input[name=extension-type_${extension}],
             input[name=applicable-data-period_${extension}],
             input[name=current-expected-date_${extension}],
             input[name=requested-target-date_${extension}]
           `)
-        );
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
+            );
+            const inputListener = e => {
+              inputs.filter(i => i !== e.target)
                 .forEach(i => (i.required = !e.target.value.length));
-        };
-        inputs.forEach(i => i.addEventListener('input', inputListener));
-        btnStatus();
-      });
+            };
+            inputs.forEach(i => i.addEventListener('input', inputListener));
+            btnStatus();
+          });
 
-      dropExtensionBtn.addEventListener("click", () => {
-        document.getElementById(`extension-header_${extension}`).style.display = 'none';
-        let extensionBlock = document.getElementById(`extension-block_${extension}`);
-        extensionBlock.innerHTML = '';
-        if (extension > 1) extension -= 1;
-        btnStatus();
-      });
-    </script>
+          dropExtensionBtn.addEventListener("click", () => {
+            document.getElementById(`extension-header_${extension}`).style.display = 'none';
+            let extensionBlock = document.getElementById(`extension-block_${extension}`);
+            extensionBlock.innerHTML = '';
+            if (extension > 1) extension -= 1;
+            btnStatus();
+          });
+        </script>
 
 
-  {# Footnotes #}
-  <div class="o-section o-section--style-light">
-    <hr />
-    <p>
-      <small
-        >¹ Applicable data period – month/year in which claims data was adjudicated.<br />
-        ² Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
-        ³ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
-        </small
-      >
-    </p>
-    <hr />
-</div>
-{% endblock %}
+        {# Footnotes #}
+        <div class="o-section o-section--style-light">
+          <hr />
+          <p>
+            <small>¹ Applicable data period – month/year in which claims data was adjudicated.<br />
+              ² Current expected date – day/month/year in which applicable data was expected within the submission
+              window.<br />
+              ³ Requested target date – requested day/month/year by which the data should be received (the extension
+              date).<br />
+            </small>
+          </p>
+          <hr />
+        </div>
+        {% endblock %}
