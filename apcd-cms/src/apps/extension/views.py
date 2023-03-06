@@ -21,7 +21,7 @@ class ExtensionFormView(TemplateView):
 
             user = self.request.user.username
 
-            submitters =apcd_database.get_submitter_for_extend_or_except(user)
+            submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
 
             self.request.session['submitters'] = submitters
@@ -52,7 +52,8 @@ class ExtensionFormView(TemplateView):
             
             form = request.POST.copy()
             errors= []
-            submitters = request.session.get('submitters')   
+            submitters = request.session.get('submitters')
+            
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
 

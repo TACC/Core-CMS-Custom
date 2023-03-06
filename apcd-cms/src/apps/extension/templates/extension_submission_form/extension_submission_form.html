@@ -25,17 +25,95 @@
         the timeliness of the request.
       </p>
 
-      <div class="forms">
+        {% if has_sub_id %}
+        <div class="forms">
 
-        <div class="form-wrapper">
-          <form action="" method="POST">
-            {% csrf_token %}
-
-            {% if has_sub_id %}
-
-            <hr />
+          <div class="form-wrapper">
+            <form action="" method="POST">
+              {% csrf_token %}
+        <hr/>
+        <h4>Extension Information</h4>
+        
+          <div class="field-wrapper textinput required">
+            <div class="field-errors" style="display: none"></div>
+  
+            <label for="extension-type">
+              Extension Type<span class="asterisk">*</span>
+            </label>
+  
+            <input type="text" name="extension-type" class="textinput" id="extension-type" minlength="1" maxlength="50"
+              required />
+              <div id="help-text-extension-type" class="help-text">
+                50 character limit
+              </div>
+          </div>
+          <div id="extension-block_1">
+          <div class="o-grid o-grid--col-auto-count" >
+            <div class="field-wrapper numberinput required" id="date-row">
+              <div class="field-errors" style="display: none"></div>
+  
+              <label for="applicable-data-period" name="date-row">Applicable Data Period<sup name="date-sup">3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+              </label>
+  
+              <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
+                id="applicable-data-period" pattern="\d{4}-\d{2}" required />
+              <div id="help-text-applicable-data-period" class="help-text">
+                Enter month and year
+              </div>
+            </div>
+              <div class="field-wrapper numberinput required" id="date-row">
+                <div class="field-errors" style="display: none"></div>
+  
+                <label for="current-expected-date" name="date-row">Current Expected Date<sup>4</sup>
+                </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+  
+                <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
+                  inputmode="numeric" required />
+              </div>
+              <div class="field-wrapper numberinput required" id="date-row">
+                <div class="field-errors" style="display: none"></div>
+  
+                <label for="request" name="date-row">Requested Target Date<sup>5</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+  
+                <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
+                  inputmode="numeric" required />
+              </div>
+          </div>
+        </div>
+            <h4 id="extension-header_2" style="display:none"><hr/>Extension Information 2</h4>
+            <div id="extension-block_2"></div>
+            <h4 id="extension-header_3" style="display:none"><hr/>Extension Information 3</h4>
+            <div id="extension-block_3"></div>
+            <h4 id="extension-header_4" style="display:none"><hr/>Extension Information 4</h4>
+            <div id="extension-block_4"></div>
+            <h4 id="extension-header_5" style="display:none"><hr/>Extension Information 5</h4>
+            <div id="extension-block_5"></div>
+            <button class="c-button c-button--primary" id="extension-add-btn" type="button">+ Add Another Extension Request
+            </button>
+            <button class="c-button c-button--secondary" id="extension-drop-btn" type="button">- Remove Last Extension
+              Request</button>
       
-            <h4>Acknowledgment of Terms</h4>
+              <hr />
+      
+              <h4>Justification</h4>
+        
+              <div class="field-wrapper textarea required">
+                Provide rationale for the exception request, outlining the reasons why the
+                organization is unable to comply with the relevant requirements. Provide as
+                much detail as possible regarding the exception request, indicating the
+                specific submission requirements for which relief is being sought. If applicable,
+                indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
+                    id="justification-asterisk">*</span></label>
+        
+                <div class="field-errors" style="display: none"></div>
+        
+                <textarea name="justification" cols="40" rows="10" class="textinput" type="text" id="justification"
+                  minlength="2" maxlength="2000" required></textarea>
+                <div class="help-text">
+                  2000 character limit
+                </div>
+              </div>
+              <h4>Acknowledgment of Terms</h4>
             <div class="o-grid o-grid--col-auto-count">
               <div class="field-wrapper textinput required">
                 <label for="requestor-name">
@@ -69,89 +147,7 @@
                     <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
                   {% endfor %}   
                 </select>
-            </div>
-            <hr/>
-            <h4>Extension Information</h4>
-            
-              <div class="field-wrapper textinput required">
-                <div class="field-errors" style="display: none"></div>
-      
-                <label for="extension-type">
-                  Extension Type<span class="asterisk">*</span>
-                </label>
-      
-                <input type="text" name="extension-type" class="textinput" id="extension-type" minlength="1" maxlength="50"
-                  required />
-                  <div id="help-text-extension-type" class="help-text">
-                    50 character limit
-                  </div>
-              </div>
-              <div id="extension-block_1">
-              <div class="o-grid o-grid--col-auto-count" >
-                <div class="field-wrapper numberinput required" id="date-row">
-                  <div class="field-errors" style="display: none"></div>
-      
-                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup name="date-sup">3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-                  </label>
-      
-                  <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
-                    id="applicable-data-period" pattern="\d{4}-\d{2}" required />
-                  <div id="help-text-applicable-data-period" class="help-text">
-                    Enter month and year
-                  </div>
-                </div>
-                  <div class="field-wrapper numberinput required" id="date-row">
-                    <div class="field-errors" style="display: none"></div>
-      
-                    <label for="current-expected-date" name="date-row">Current Expected Date<sup>4</sup>
-                    </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-      
-                    <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
-                      inputmode="numeric" required />
-                  </div>
-                  <div class="field-wrapper numberinput required" id="date-row">
-                    <div class="field-errors" style="display: none"></div>
-      
-                    <label for="request" name="date-row">Requested Target Date<sup>5</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-      
-                    <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
-                      inputmode="numeric" required />
-                  </div>
-              </div>
-            </div>
-            <h4 id="extension-header_2" style="display:none"><hr/>Extension Information 2</h4>
-            <div id="extension-block_2"></div>
-            <h4 id="extension-header_3" style="display:none"><hr/>Extension Information 3</h4>
-            <div id="extension-block_3"></div>
-            <h4 id="extension-header_4" style="display:none"><hr/>Extension Information 4</h4>
-            <div id="extension-block_4"></div>
-            <h4 id="extension-header_5" style="display:none"><hr/>Extension Information 5</h4>
-            <div id="extension-block_5"></div>
-            <button class="c-button c-button--primary" id="extension-add-btn" type="button">+ Add Another Extension Request
-            </button>
-            <button class="c-button c-button--secondary" id="extension-drop-btn" type="button">- Remove Last Extension
-              Request</button>
-      
-              <hr />
-      
-              <h4>Justification</h4>
-        
-              <div class="field-wrapper textarea required">
-                Provide rationale for the exception request, outlining the reasons why the
-                organization is unable to comply with the relevant requirements. Provide as
-                much detail as possible regarding the exception request, indicating the
-                specific submission requirements for which relief is being sought. If applicable,
-                indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
-                    id="justification-asterisk">*</span></label>
-        
-                <div class="field-errors" style="display: none"></div>
-        
-                <textarea name="justification" cols="40" rows="10" class="textinput" type="text" id="justification"
-                  minlength="2" maxlength="2000" required></textarea>
-                <div class="help-text">
-                  2000 character limit
-                </div>
-              </div>        
+            </div>      
               <div class="field-wrapper checkbox required">
                 <div class="field-errors" style="display: none"></div>
                 <label for="accept-terms"> I understand and acknowledge that the Texas Department
@@ -172,12 +168,23 @@
       <div class="form-success" style="display: none">
         <p>Thank you for your request.</p>
       </div>
+      {# Footnotes #}
+      <div class="o-section o-section--style-light">
+        <hr />
+        <p>
+          <small
+            >¹ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
+            ² Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
+          </small>
+        </p>
+        <hr />
+    </div>
             {% else %}
             <hr />
             <p class="c-message c-message--error">
-                You have not registered as a submitter. Fill out <a href="/register/request-to-submit/">this form</a> to register. For help, <a href="/workbench/dashboard">submit a ticket</a>.
+                We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
             </p>
-            <a class="c-button c-button--primary" href="/">Go to Homepage</a>
+            <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
         </div>
             {% endif %}
 
@@ -292,15 +299,4 @@
     </script>
 
 
-  {# Footnotes #}
-  <div class="o-section o-section--style-light">
-    <hr />
-    <p>
-      <small
-        >¹ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
-        ² Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
-      </small>
-    </p>
-    <hr />
-</div>
 {% endblock %}

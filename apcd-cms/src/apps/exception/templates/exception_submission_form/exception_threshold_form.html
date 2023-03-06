@@ -21,8 +21,7 @@
         <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
           website.</a>
       </p>
-      <hr />
-
+      {% if has_sub_id %}
       <div class="forms">
 
         <div class="form-wrapper">
@@ -185,10 +184,27 @@
             </div>
           </form>
         </div>
+      </div>
+      {# Footnotes #}
+      <div class="o-section o-section--style-light">
+        <hr />
+        <small>
+          <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br />
+          <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br />
+        </small>
+        <hr />
+      </div>
         <div class="form-success" style="display: none">
           <p>Thank you for your request.</p>
         </div>
-        </div>
+        {% else %}
+        <hr />
+        <p class="c-message c-message--error">
+            We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
+        </p>
+        <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
+    </div>
+        {% endif %}
 
 
 
@@ -231,14 +247,4 @@
               });
               </script>
           </aside>
-
-          {# Footnotes #}
-          <div class="o-section o-section--style-light">
-            <hr />
-            <small>
-              <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br />
-              <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br />
-            </small>
-            <hr />
-          </div>
           {% endblock %}

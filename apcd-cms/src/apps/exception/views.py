@@ -48,6 +48,9 @@ class ExceptionThresholdFormView(TemplateView):
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
 
+            if submitter[0] != None:
+                context['has_sub_id'] = True
+
         return context
 
     def post(self, request):
@@ -95,6 +98,7 @@ class ExceptionOtherFormView(TemplateView):
         user = self.request.user.username
 
         submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        
         self.request.session['submitters'] = submitters
 
         def _set_submitter(sub):
@@ -110,6 +114,8 @@ class ExceptionOtherFormView(TemplateView):
 
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
+            if submitter[0] != None:
+                context['has_sub_id'] = True
 
         return context
 
