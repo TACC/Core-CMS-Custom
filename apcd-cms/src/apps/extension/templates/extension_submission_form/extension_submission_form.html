@@ -50,7 +50,7 @@
                 <div class="field-wrapper numberinput required" id="date-row">
                   <div class="field-errors" style="display: none"></div>
       
-                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup name="date-sup">3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup name="date-sup">1</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
                   </label>
       
                   <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
@@ -62,7 +62,7 @@
                   <div class="field-wrapper numberinput required" id="date-row">
                     <div class="field-errors" style="display: none"></div>
       
-                    <label for="current-expected-date" name="date-row">Current Expected Date<sup>4</sup>
+                    <label for="current-expected-date" name="date-row">Current Expected Date<sup>2</sup>
                     </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
       
                     <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
@@ -71,7 +71,7 @@
                   <div class="field-wrapper numberinput required" id="date-row">
                     <div class="field-errors" style="display: none"></div>
       
-                    <label for="request" name="date-row">Requested Target Date<sup>5</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+                    <label for="request" name="date-row">Requested Target Date<sup>3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
       
                     <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
                       inputmode="numeric" required />
@@ -226,7 +226,7 @@
             <div class="field-wrapper numberinput required" id="date-row">
               <div class="field-errors" style="display: none"></div>
 
-              <label for="applicable-data-period_${extension}" name="date-row">Applicable Data Period<sup>3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+              <label for="applicable-data-period_${extension}" name="date-row">Applicable Data Period<sup>1</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
               </label>
 
               <input type="month" name="applicable-data-period_${extension}" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
@@ -238,7 +238,7 @@
             <div class="field-wrapper numberinput required" id="date-row">
               <div class="field-errors" style="display: none"></div>
 
-              <label for="current-expected-date_${extension}" name="date-row">Current Expected Date<sup>4</sup>
+              <label for="current-expected-date_${extension}" name="date-row">Current Expected Date<sup>2</sup>
               </label><label><span class="asterisk">*</span></label>
 
               <input type="date" name="current-expected-date_${extension}" class="numeric" id="current-expected-date_${extension}"
@@ -247,7 +247,7 @@
             <div class="field-wrapper numberinput required" id="date-row_${extension}">
               <div class="field-errors" style="display: none"></div>
 
-              <label for="requested-target-date_${extension}" name="date-row_${extension}">Requested Target Date<sup>5</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
+              <label for="requested-target-date_${extension}" name="date-row_${extension}">Requested Target Date<sup>3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
 
               <input type="date" name="requested-target-date_${extension}" class="numeric" id="requested-target-date_${extension}"
                 inputmode="textinput" required />
@@ -286,11 +286,9 @@
     <hr />
     <p>
       <small
-        >¹ Federal Employer Identification Number (FEIN)<br />
-        ² National Association of Insurance Commissioners (NAIC)<br />
-        ³ Applicable data period – month/year in which claims data was adjudicated.<br />
-        ⁴ Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
-        ⁵ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
+        >¹ Applicable data period – month/year in which claims data was adjudicated.<br />
+        ² Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
+        ³ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
         </small
       >
     </p>
