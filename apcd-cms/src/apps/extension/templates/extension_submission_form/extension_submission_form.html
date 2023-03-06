@@ -25,13 +25,52 @@
         the timeliness of the request.
       </p>
 
-      <hr />
-
       <div class="forms">
 
         <div class="form-wrapper">
           <form action="" method="POST">
             {% csrf_token %}
+
+            {% if has_sub_id %}
+
+            <hr />
+      
+            <h4>Acknowledgment of Terms</h4>
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput required">
+                <label for="requestor-name">
+                  Requestor Name<span class="asterisk">*</span>
+                </label>
+                <div class="field-errors" style="display: none"></div>
+      
+                <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
+              </div>
+              <div class="field-wrapper emailinput required">
+                <label for="requestor-email">
+                  Requestor Email<span class="asterisk">*</span>
+                </label>
+                <div class="field-errors" style="display: none"></div>
+      
+                <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
+                  id="requestor-email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$" />
+              </div>
+            </div>
+            <div class="field-wrapper textinput required"><label>
+                I request an exception on behalf of:
+              </label></div>
+      
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+                <select name='business-name' required='required' class="choicefield" id='business-name'>
+                  {% for submitter in submitters %}
+                    <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
+                  {% endfor %}   
+                </select>
+            </div>
+            <hr/>
             <h4>Extension Information</h4>
             
               <div class="field-wrapper textinput required">
@@ -112,46 +151,7 @@
                 <div class="help-text">
                   2000 character limit
                 </div>
-              </div>
-              <hr />
-      
-              <h4>Acknowledgment of Terms</h4>
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper textinput required">
-                  <label for="requestor-name">
-                    Requestor Name<span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-        
-                  <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
-                </div>
-                <div class="field-wrapper emailinput required">
-                  <label for="requestor-email">
-                    Requestor Email<span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-        
-                  <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
-                    id="requestor-email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$" />
-                </div>
-              </div>
-              <div class="field-wrapper textinput required"><label>
-                  I request an exception on behalf of:
-                </label></div>
-        
-              <div class="field-wrapper textinput required">
-                <label for="business-name">
-                  Business Name<span class="asterisk">*</span>
-                </label>
-                <div class="field-errors" style="display: none"></div>
-                  <select name='business-name' required='required' class="choicefield" id='business-name'>
-                  {% for submitter in submitters %}
-                    <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
-                  {% endfor %} 
-                </select>
-      
-              </div>
-        
+              </div>        
               <div class="field-wrapper checkbox required">
                 <div class="field-errors" style="display: none"></div>
                 <label for="accept-terms"> I understand and acknowledge that the Texas Department
@@ -160,9 +160,7 @@
                 <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox" required
                     id="accept-terms" />
                   Accept<span class="asterisk">*</span></label>
-              </div>
-        
-        
+              </div>     
               <div class="button-wrapper submit">
                 <button class="form-button" type="submit" value="Submit">
                   Submit
@@ -171,11 +169,21 @@
           </form>
         </div>
       </div>
-      
-
       <div class="form-success" style="display: none">
         <p>Thank you for your request.</p>
       </div>
+            {% else %}
+            <hr />
+            <p class="c-message c-message--error">
+                You have not registered as a submitter. Fill out <a href="/register/request-to-submit/">this form</a> to register. For help, <a href="/workbench/dashboard">submit a ticket</a>.
+            </p>
+            <a class="c-button c-button--primary" href="/">Go to Homepage</a>
+        </div>
+            {% endif %}
+
+
+
+           
   {# Hidden links for future pages #}
   {# TODO: Allow this template to render CMS admin-entered markup #}
     <aside class="row" hidden>
@@ -283,32 +291,15 @@
       });
     </script>
 
-    <!-- To require at least one "entity" identifier value -->
-    <script id="form-entity-id-required" type="module">
-      const inputs = Array.from(
-        document.querySelectorAll('input[name=fein], input[name=license-number], input[name=naic-company-code]')
-      );
-      const inputListener = e => {
-        inputs.filter(i => i !== e.target)
-              .forEach(i => (i.required = !e.target.value.length));
-      };
-
-      inputs.forEach(i => i.addEventListener('input', inputListener));
-    </script>
-  </aside>
 
   {# Footnotes #}
   <div class="o-section o-section--style-light">
     <hr />
     <p>
       <small
-        >¹ Federal Employer Identification Number (FEIN)<br />
-        ² National Association of Insurance Commissioners (NAIC)<br />
-        ³ Applicable data period – month/year in which claims data was adjudicated.<br />
-        ⁴ Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
-        ⁵ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
-        </small
-      >
+        >¹ Requested target date – requested day/month/year by which the data should be received (the extension date).<br />
+        ² Current expected date – day/month/year in which applicable data was expected within the submission window.<br />
+      </small>
     </p>
     <hr />
 </div>
