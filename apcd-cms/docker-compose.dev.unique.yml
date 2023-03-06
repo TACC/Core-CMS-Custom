@@ -1,4 +1,4 @@
-# To isolate APCD CMS development into its own database and volumes
+# To isolate local APCD CMS development into its own database and volumes
 
 # NOTE: The extends keyword is NOT in Compose version v3, but IS in latest spec
 # SEE: https://docs.docker.com/compose/extends/#extending-services
