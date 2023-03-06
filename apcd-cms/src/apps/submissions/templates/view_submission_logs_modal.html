@@ -1,0 +1,43 @@
+<div id="viewSubmissionLogsModal_{{r.submission_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">View Logs</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&#xe912;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <dl>
+              <h4 class="title">Logs</h4>
+              {% if not r.view_modal_content %}
+              <div class="modal-section">
+                No logs found for this submission
+              </div>
+              {% else %}
+                {% for log in r.view_modal_content %}
+                  <div class="modal-section">
+                      <dl class="c-data-list--is-vert c-data-list--is-wide">
+                          <dt class="c-data-list__key">Log ID</dt>
+                          <dd class="c-data-list__value">{{log.log_id}}</dd>                    
+                          <dt class="c-data-list__key">File Type</dt>                
+                          <dd class="c-data-list__value">{{log.file_type_name}}</dd>
+                          <dt class="c-data-list__key">Validation Suite</dt>                
+                          <dd class="c-data-list__value">{{log.validation_suite}}</dd>
+                          <dt class="c-data-list__key">Outcome</dt>                
+                          <dd class="c-data-list__value">{{log.outcome}}</dd>
+                      </dl>
+                      <hr>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -19,13 +19,13 @@ Extensions of the [Core CMS] project
 
 ### Prequisites for Running the CMS
 
-See [Core-CMS](https://github.com/TACC/Core-CMS#prequisites-for-running-the-cms).
+See [Core-CMS](https://github.com/TACC/Core-CMS#prequisites-for-running-the-cms) "Prequisites for Running the CMS" section.
 
 ### Code Configuration
 
 #### Settings
 
-See [Core-CMS](https://github.com/TACC/Core-CMS#settings).
+See [Core-CMS](https://github.com/TACC/Core-CMS#settings) "Settings" section.
 
 ## Running the CMS
 
@@ -57,7 +57,7 @@ When porting a downstream CMS project from [Core CMS Resources], the contents of
 
 ## Automatic Builds
 
-Automatic builds should occur on pushes to each CMS directory e.g. `apcd-cms`.
+Automatic builds (not deploys) should occur on pushes to each CMS directory e.g. `apcd-cms`.
 
 
 <!-- Link Aliases -->

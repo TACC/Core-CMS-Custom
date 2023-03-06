@@ -1,0 +1,11 @@
+dt {
+    flex-basis: 25%;
+}
+
+dd {
+    flex-basis: 75%;
+}
+
+.modal-content {
+    height: 550px;
+}

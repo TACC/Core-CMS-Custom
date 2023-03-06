@@ -1,0 +1,32 @@
+<div id="viewRegistrationModal_{{r.reg_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">User Notes</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <p>{{modal_content}}</p> -->
+        <div>
+          <dl>
+            <h4>Organization</h4>
+            {{r.view_modal_content.city}}
+            <hr>
+            <h4>Roles</h4>
+            
+            <hr>
+            <h4>Notes</h4>
+                        
+            <hr>
+            <h4>Contact Information</h4>
+            
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

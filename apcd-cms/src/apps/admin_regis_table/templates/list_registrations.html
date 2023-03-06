@@ -5,392 +5,100 @@
 
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
   <h1>List Registrations</h1>
   <hr />
-  <p style="margin-bottom: 30px">This is a list of all completed registration forms, they are requesting to become a data submitter.</p>
+  <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
   <hr />
-
-<table class="registration-table">
-    <thead>
-        <tr>
-            {% for k in header %}
-            <th>{{k}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for r in rows %}
-            <tr>
-                <td>{{r.biz_name}}</td>
-                <td>{{r.type}}</td>
-                <td>{{r.location}}</td>
-                <td>{{r.sub_method}}</td>
-                <td>{{r.reg_status}}</td>
-                <td>
-                  <ul class='no-bullets'>
-                    {% for file_type in r.files_type %}
-                      {% if file_type != None %}
-                        <li>{{file_type}}</li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
-                </td>
-                <td>
-                  {# FAQ: So cell "has layout" on narrow screen layout #}
-                  &nbsp;
-                  {# FAQ: Action functionality not available yet #}
-                  {# <a href='' data-toggle="modal" data-target="#myModal">View</a> #}
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h4 class="modal-title">View Registration</h4>
-      </div>
-
-      <div class="modal-body">
-       <!-- <p>{{modal_content}}</p> -->
-        <div class="forms cms-plugin cms-plugin-2309" id="">
-          <div class="description">
-           <h4>Organization</h4>
-          </div>
-
-          <div class="form-wrapper">
-            <form action="/forms/submit/" method="POST" class="js-wrapElements-container">
-              <div class="form-errors" style="display:none;"></div>
-        
-              <div class="field-wrapper radioselect required" id="on-behalf-of_0--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                <label for="on-behalf-of_0">
-                    On behalf of:
-                </label>
-                Self
-              </div>
-        
-              <div class="field-wrapper select required" id="type--wrapper">
-                <div class="field-errors" style="display:none;"></div>  
-                <label for="type">
-                    Type
-                </label>
-                Insurance Carrier                
-              </div>
-        
-              <div class="field-wrapper textinput required" id="business-name--wrapper">
-                <div class="field-errors" style="display:none;"></div> 
-                <label for="business-name">
-                    Business Name<span class="asterisk">*</span>
-                </label>                
-                A Business Name
-              </div>
-        
-              <div class="field-wrapper textinput required" id="mailing-address--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                <label for="mailing-address">
-                    Mailing Address<span class="asterisk">*</span>
-                </label>                
-                0001 Business Cir. Suite 02
-              </div>
-        
-              <div class="field-wrapper textinput required" id="city--wrapper">
-                <div class="field-errors" style="display:none;"></div>  
-                <label for="city">
-                    City<span class="asterisk">*</span>
-                </label>
-                City
-              </div>
-        
-              <div class="field-wrapper select required" id="state--wrapper">
-                <div class="field-errors" style="display:none;"></div>  
-                <label for="state">
-                    State<span class="asterisk">*</span>
-                </label>
-                TX                
-              </div>
-        
-              <div class="field-wrapper textinput required" id="zip_code--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                <label for="zip_code">
-                    Zip Code<span class="asterisk">*</span>
-                </label>
-                00001
-              </div>
-        <!-- More HTML5 attributes are added via JavaScript based on the "Custom Field Name" value. -->
-
-<!--<div data-script="unnest-markup" data-target-rel="grandparent" data-emptied="true"></div>-->
-            
-              <hr>
-              <h4>File Submission</h4>
-              <div class="field-wrapper required">
-                  <label>Types of Files<!-- no space --><span class="asterisk">*</span>
-                  </label>
-                  <div class="help-text">At least one of the following types must be selected.</div>
-              </div>
-              <div class="js-wrapElements-wrapper">
-                <div class="field-wrapper radioselect required js-wrapElements-starter" id="types_of_files_elligibility_enrollment_0--wrapper">
-                    <div class="field-errors" style="display:none;"></div>
-                    <label for="types_of_files_elligibility_enrollment_0">
-                        Eligibility/Enrollment*<span class="asterisk">*</span>
-                    </label>             
-              <ul id="types_of_files_elligibility_enrollment" class="radioselect">
-                <li><label for="types_of_files_elligibility_enrollment_0"><input type="radio" name="types_of_files_elligibility_enrollment" value="Yes" class="radioselect" required="" id="types_of_files_elligibility_enrollment_0" checked="" disabled=True>
-                Yes</label>
-                </li>
-                <li><label for="types_of_files_elligibility_enrollment_1"><input type="radio" name="types_of_files_elligibility_enrollment" value="No" class="radioselect" required="" id="types_of_files_elligibility_enrollment_1" disabled=True>
-                No</label>
-                </li>
-              </ul>
-            </div>
-            <div class="field-wrapper radioselect required" id="types_of_files_provider_0--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                
-                <label for="types_of_files_provider_0">
-                    Provider<span class="asterisk">*</span>
-                </label>
-                
-                <ul id="types_of_files_provider" class="radioselect">
-                  <li><label for="types_of_files_provider_0"><input type="radio" name="types_of_files_provider" value="Yes" class="radioselect" required="" id="types_of_files_provider_0" disabled=True>
-                  Yes</label>
-
-                  </li>
-                  <li><label for="types_of_files_provider_1"><input type="radio" name="types_of_files_provider" value="No" class="radioselect" required="" id="types_of_files_provider_1" checked="" disabled=True>
-                  No</label>
-
-                  </li>
-                </ul>
-            </div>
-            <div class="field-wrapper radioselect required" id="types_of_files_medical_0--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                
-                <label for="types_of_files_medical_0">
-                    Medical<span class="asterisk">*</span>
-                </label>
-                
-                <ul id="types_of_files_medical" class="radioselect">
-                  <li><label for="types_of_files_medical_0"><input type="radio" name="types_of_files_medical" value="Yes" class="radioselect" required="" id="types_of_files_medical_0" disabled=True>
-                  Yes</label>
-
-                  </li>
-                  <li><label for="types_of_files_medical_1"><input type="radio" name="types_of_files_medical" value="No" class="radioselect" required="" id="types_of_files_medical_1" checked="" disabled=True>
-                  No</label>
-
-                  </li>
-                </ul>  
-            </div>
-            <div class="field-wrapper radioselect required" id="types_of_files_pharmacy_0--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                
-                <label for="types_of_files_pharmacy_0">
-                    Pharmacy<span class="asterisk">*</span>
-                </label>
-                
-                <ul id="types_of_files_pharmacy" class="radioselect">
-                  <li><label for="types_of_files_pharmacy_0"><input type="radio" name="types_of_files_pharmacy" value="Yes" class="radioselect" required="" id="types_of_files_pharmacy_0" disabled=True>
-                  Yes</label>
-                  </li>
-                  <li><label for="types_of_files_pharmacy_1"><input type="radio" name="types_of_files_pharmacy" value="No" class="radioselect" required="" id="types_of_files_pharmacy_1" checked="" disabled=True>
-                  No</label>
-                  </li>
-                </ul>  
-            </div>
-            <div class="field-wrapper radioselect required" id="types_of_files_dental_0--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                <label for="types_of_files_dental_0">
-                    Dental<span class="asterisk">*</span>
-                </label>
-                <ul id="types_of_files_dental" class="radioselect">
-                <li><label for="types_of_files_dental_0"><input type="radio" name="types_of_files_dental" value="Yes" class="radioselect" required="" id="types_of_files_dental_0" disabled=True>
-                Yes</label>
-
-                </li>
-                <li><label for="types_of_files_dental_1"><input type="radio" name="types_of_files_dental" value="No" class="radioselect" required="" id="types_of_files_dental_1" checked="" disabled=True>
-                No</label>
-                </li>
-                </ul>
-            </div>
-          </div>
-          <div class="field-wrapper required">
-            <label>Submission Method<!-- no space --><span class="asterisk">*</span>
-            </label>
-          </div>
-          <div class="js-wrapElements-wrapper">
-            <div class="field-wrapper radioselect required js-wrapElements-starter" id="submit_methods_sftp_0--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="submit_methods_sftp_0">
-                SFTP⁵<span class="asterisk">*</span>
-              </label>
-              <ul id="submit_methods_sftp" class="radioselect">
-                <li><label for="submit_methods_sftp_0"><input type="radio" name="submit_methods_sftp" value="Yes" class="radioselect" required="" id="submit_methods_sftp_0" checked="" disabled=True>
-                Yes</label>
-
-                </li>
-                <li><label for="submit_methods_sftp_1"><input type="radio" name="submit_methods_sftp" value="No" class="radioselect" required="" id="submit_methods_sftp_1" disabled=True>
-                No</label>
-
-                </li>
-              </ul>
-            </div>
-            <div class="field-wrapper radioselect required" id="submit_methods_https_0--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="submit_methods_https_0">
-                HTTPS⁶**<span class="asterisk">*</span>
-              </label>
-              <ul id="submit_methods_https" class="radioselect">
-                <li><label for="submit_methods_https_0"><input type="radio" name="submit_methods_https" value="Yes" class="radioselect" required="" id="submit_methods_https_0" checked="" disabled=True>
-                Yes</label>
-
-                </li>
-                <li><label for="submit_methods_https_1"><input type="radio" name="submit_methods_https" value="No" class="radioselect" required="" id="submit_methods_https_1" disabled=True>
-                No</label>
-
-                </li>
-              </ul>
-            </div>
-            <div class="field-wrapper radioselect required" id="submit_methods_usb_0--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="submit_methods_usb_0">
-                Encrypted USB⁷ drive***<span class="asterisk">*</span>
-              </label>
-              <ul id="submit_methods_usb" class="radioselect">
-                <li><label for="submit_methods_usb_0"><input type="radio" name="submit_methods_usb" value="Yes" class="radioselect" required="" id="submit_methods_usb_0" disabled=True>
-                Yes</label>
-
-                </li>
-                <li><label for="submit_methods_usb_1"><input type="radio" name="submit_methods_usb" value="No" class="radioselect" required="" id="submit_methods_usb_1" checked="" disabled=True>
-                No</label>
-
-                </li>
-              </ul>                                
-            </div>
-          </div>
-          <hr>
-          <h4>Entity/Entities Being Registered <small>(If single company, enter the same organization as above.)</small></h4>
-          <h5>Entity One</h5>
-          <h6>Identity</h6>
-          <div class="field-wrapper textinput required" id="entity_number_code--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              
-              <label for="entity_number_code">
-                  Name<span class="asterisk">*</span>
-              </label>
-              A Business Name                                   
-          </div>
-          <div class="field-wrapper required">
-            <label>Number/Code<!-- no space --><span class="asterisk">*</span>
-            <!-- Notice "asterisk" (not "asterisk--important" like others) -->
-            </label>
-            <div class="help-text">Provide all available identifiers. At least one of the following is required.</div>
-          </div>
-          <div class="js-wrapElements-wrapper">
-            <div class="field-wrapper textinput js-wrapElements-starter" id="fein2--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="fein2">
-                FEIN²
-              </label>
-              11-1111111
-            </div>
-            <div class="field-wrapper textinput " id="license_number--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="license_number">
-                License Number
-              </label>
-              1111111110                
-            </div>
-            <div class="field-wrapper textinput " id="naic_company_code--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              <label for="naic_company_code">
-                NAIC³ Company Code
-              </label>
-              12345
-            </div>
-          </div>
-          <h6>Coverage Estimates <small>(Inclusive of all claims as of December 31 of previous year.)</small></h6>
-          <div class="field-wrapper numberinput required" id="total_covered_lives--wrapper">
-            <div class="field-errors" style="display:none;"></div>  
-            <label for="total_covered_lives">
-              Total Covered Lives<span class="asterisk">*</span>
-            </label>
-            23
-          </div>
-          <div class="field-wrapper numberinput required" id="claims_encounters_volume--wrapper">
-            <div class="field-errors" style="display:none;"></div>
-            <label for="claims_encounters_volume">
-              Claims and Encounters Volume<span class="asterisk">*</span>
-            </label>
-            100
-          </div>
-          <div class="field-wrapper numberinput required js-prepend--field-wrapper" id="total_claims_value--wrapper">
-            <div class="field-errors" style="display:none;"></div>
-            <label for="total_claims_value">
-              Total Claims Value (USD⁴)<span class="asterisk">*</span>
-            </label>
-            252365
-          </div>                
-          <hr>
-          <h4>Contact Information</h4>
-          <h5>Contact One</h5>
-          <div class="js-wrapElements-wrapper">
-            <div class="field-wrapper textinput required js-wrapElements-starter" id="contact_type--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              
-              <label for="contact_type">
-                  Role<span class="asterisk">*</span>
-              </label>
-              Executive Administrator
-            </div>
-            <div class="field-wrapper textinput required" id="name--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-                <label for="name">
-                    Name<span class="asterisk">*</span>
-                </label>
-                Administrator 1
-            </div>
-            <div class="field-wrapper telephoneinput required" id="contact_phone--wrapper">
-              <div class="field-errors" style="display:none;"></div>
-              
-              <label for="contact_phone">
-                  Phone<span class="asterisk">*</span>
-              </label>
-              (123)456-7890
-            </div>
-            <div class="field-wrapper emailinput required" id="contact_email--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                
-                <label for="contact_email">
-                    Email<span class="asterisk">*</span>
-                </label>
-                administrator1@business_name.domain.com
-            </div>
-            <div class="field-wrapper checkboxinput " id="contact_notifications--wrapper">
-                <div class="field-errors" style="display:none;"></div>
-                
-                    <input type="checkbox" name="contact_notifications" class="booleanfield" id="contact_notifications" disabled=True>
-                
-                <label for="contact_notifications">
-                    Select to receive system notifications
-                </label>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        <option class="dropdown-text">All</option>
+        <option class="dropdown-text">Received</option>
+        <option class="dropdown-text">Processing</option>
+        <option class="dropdown-text">Complete</option>
+      </select>
     </div>
-
   </div>
+  <table id="registrationTable" class="registration-table">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody>
+          {% for r in rows %}
+              <tr>
+                  <td>{{r.biz_name}}</td>
+                  <td>
+                    {% if r.type == 'Pbm'%}
+                      Pharmacy Benefit Manager (PBM)
+                    {% else %}
+                      {{r.type}}
+                    {% endif %}
+                  </td>
+                  <td>{{r.location}}</td>
+                  <td>{{r.sub_method}}</td>
+                  <td>{{r.reg_status}}</td>
+                  <td>
+                    <ul class='no-bullets'>
+                      {% for file_type in r.files_type %}
+                        {% if file_type != None %}
+                          <li>{{file_type}}</li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </td>
+                  <td>
+                    {% include "view_registration_modal.html" %}
+                    {% include "edit_registration_modal.html" %}
+                    {% include "create_submitter_modal.html" %}<br />
+                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                      <option value="">Select Action</option>
+                      <option value="viewRegistration">View Record</option>
+                      <option value="editRegistration">Edit Record</option>
+                      <option value="createSubmitter">Create Submitter</option>
+                    </select>
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
 </div>
-
-</div>
+<script>
+  function filterTableByStatus() {
+    var dropdown, filter, table, rows, status, i;
+    dropdown = document.getElementById("statusFilter");
+    filter =  dropdown.value;
+    table = document.getElementById("registrationTable");
+    rows = table.getElementsByTagName("tr");
+    [...rows].slice(1).forEach(row => {
+      status = row.getElementsByTagName("td")[4];
+      if (status.innerText != filter && filter != 'All') {
+        row.style.display = "none";
+      } else {
+        row.style.display = "";
+      }
+    })
+  }
+  function openAction(reg_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${reg_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
+</script>
 
 {% endblock %}
