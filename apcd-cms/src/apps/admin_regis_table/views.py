@@ -16,7 +16,7 @@ class RegistrationsTable(TemplateView):
         form = request.POST.copy()
         reg_id = int(form['reg_id'])
 
-        reg_content = get_registrations(reg_id)[0]
+        reg_data = get_registrations(reg_id)[0]
         reg_entities = get_registration_entities(reg_id)
         reg_contacts = get_registration_contacts(reg_id)
         
@@ -27,7 +27,7 @@ class RegistrationsTable(TemplateView):
                 return str(resp)
             return None
         
-        def _new_submitter(form, reg_data=reg_content):
+        def _new_submitter(form, reg_data=reg_data):
             errors = []
             
             sub_resp = create_submitter(form, reg_data)
