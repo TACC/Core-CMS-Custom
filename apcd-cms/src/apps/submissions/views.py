@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from apps.utils.apcd_database import get_submissions, get_submission_logs
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
+from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
@@ -54,11 +55,14 @@ class SubmissionsTable(TemplateView):
             return modal_content
 
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        context['rows'] = []
+        submission_with_logs = []
 
         for submission in submission_content:
             submission_logs = get_submission_logs(submission[0])
-            context['rows'].append(_set_submissions(submission, submission_logs))
+            submission_with_logs.append(_set_submissions(submission, submission_logs))
+
+        context.update(paginator(self.request, submission_with_logs))
+        context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context
 

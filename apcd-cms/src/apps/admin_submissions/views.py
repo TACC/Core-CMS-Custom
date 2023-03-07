@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-from django.core.paginator import Paginator, EmptyPage
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_submission_logs, get_all_submissions
 from apps.utils.apcd_groups import is_apcd_admin
@@ -55,7 +54,6 @@ class AdminSubmissionsTable(TemplateView):
 
 
         context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        context['rows'] = [] 
         submission_with_logs = []
 
         for submission in submission_content:
