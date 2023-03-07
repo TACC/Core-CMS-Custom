@@ -1,70 +1,7 @@
 /*! @tacc/core-styles 1.0.0+ | MIT | github.com/TACC/Core-Styles */
-.c-page-list,.pagination {
-    --item-width:2em;
-    --item-buffer:3px;
-    --item-border:var(--global-border-width--normal)
-}
-.c-page-list,.pagination {
-    align-items:baseline;
+@import url("https://unpkg.com/@tacc/core-styles@0.10.0/dist/components/c-page.css");
+
+.c-page-list {
     justify-content: center;
     padding-top: 20px;
-    display:flex;
-    flex-direction:row;
-    font-size:14px;
-    list-style:none
 }
-ul.c-page-list {
-    list-style:none
-}
-.c-page-link--always-click {
-    box-sizing:content-box;
-    position:relative
-}
-.c-page-link--always-click:after,.c-page-link--always-click:before {
-    --width:var(--item-buffer);
-    --vert-offset:calc(var(--item-border)*-1);
-    --horz-offset:calc(100% + var(--item-border));
-    bottom:var(--vert-offset);content:"";position:absolute;
-    top:var(--vert-offset);width:var(--width)
-}
-.c-page-link--always-click.c-button {
-    overflow:visible
-}
-.c-page-link--always-click:before {
-    right:var(--horz-offset)
-}
-.c-page-link--always-click:after {
-    left:var(--horz-offset)
-}
-.c-page-item {
-    margin-inline:var(--item-buffer)
-}
-.c-page-item:first-child {
-    margin-left:0
-}
-.c-page-item:last-child {
-    margin-right:0
-}
-.c-page-item--etcetera {
-    cursor:default;
-    margin-inline:2px;
-    min-width:var(--item-width);
-    text-align:center
-}
-.c-page-end,.pagination a,.pagination span {
-    padding:4px 12px
-}
-.c-page-link {
-    line-height:1.2;
-    min-width:var(--item-width);
-    padding:5px 0
-}
-.pagination {
-    margin-block:var(--global-space--x-large);
-    margin-inline:auto;
-    width:-moz-fit-content;
-    width:fit-content
-}
-/*.pagination a,.pagination span {
-    padding-block:0
-}*/
