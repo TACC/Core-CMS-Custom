@@ -1,0 +1,7 @@
+/*! @tacc/core-styles 1.0.0+ | MIT | github.com/TACC/Core-Styles */
+@import url("https://unpkg.com/@tacc/core-styles@0.10.0/dist/components/c-page.css");
+
+.c-page-list {
+    justify-content: center;
+    padding-top: 20px;
+}
