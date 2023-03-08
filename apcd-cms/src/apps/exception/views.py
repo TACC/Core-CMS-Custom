@@ -52,7 +52,6 @@ class ExceptionThresholdFormView(TemplateView):
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
 
-
         return context
 
     def post(self, request):
@@ -122,8 +121,6 @@ class ExceptionOtherFormView(TemplateView):
 
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
-            if submitter[0] != None:
-                context['has_sub_id'] = True
 
         return context
 
