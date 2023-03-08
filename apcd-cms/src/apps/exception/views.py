@@ -1,7 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic import TemplateView
-from requests.auth import HTTPBasicAuth
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
@@ -16,11 +15,16 @@ class ExceptionFormView(TemplateView):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionFormView, self).dispatch(request, *args, **kwargs)
-
 class ExceptionThresholdFormView(TemplateView):
-    template_name = "exception_submission_form/exception_threshold_form.html"
+    def get_template_names(self):
+        submitters = self.request.session.get("submitters")
+        ## If no submitter_id for user, should not show form but show error page
+        if all(submitter[0] is None for submitter in submitters):
+            return ["exception_submission_form/exception_err_no_sub_id.html"]
+        else:
+            return ["exception_submission_form/exception_threshold_form.html"]
 
-    def dipatch(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionThresholdFormView, self).dispatch(request, *args, **kwargs)
@@ -30,7 +34,7 @@ class ExceptionThresholdFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = [ (2, 'TESTGOLD', 10000001, 'gmunoz1', 'CHCD'), (3, 'TESTGOLD', 10000002, 'gmunoz1', 'CHCD'), (1, 'TESTGOLD', 10000000, 'gmunoz1', 'CHCD') ]
 
         self.request.session['submitters'] = submitters
 
@@ -48,8 +52,6 @@ class ExceptionThresholdFormView(TemplateView):
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
 
-            if submitter[0] != None:
-                context['has_sub_id'] = True
 
         return context
 
@@ -85,9 +87,15 @@ class ExceptionThresholdFormView(TemplateView):
             del request.session['submitters']
             return HttpResponseRedirect('/')
 class ExceptionOtherFormView(TemplateView):
-    template_name = "exception_submission_form/exception_other_form.html"
+    def get_template_names(self):
+        submitters = self.request.session.get("submitters")
+        ## If no submitter_id for user should not show form but show error page
+        if all(submitter[0] is None for submitter in submitters):
+            return ["exception_submission_form/exception_err_no_sub_id.html"]
+        else:
+            return ["exception_submission_form/exception_other_form.html"]
 
-    def dipatch(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionOtherFormView, self).dispatch(request, *args, **kwargs)
@@ -97,7 +105,7 @@ class ExceptionOtherFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = [ (2, 'TESTGOLD', 10000001, 'gmunoz1', 'CHCD'), (3, 'TESTGOLD', 10000002, 'gmunoz1', 'CHCD'), (1, 'TESTGOLD', 10000000, 'gmunoz1', 'CHCD') ]
         
         self.request.session['submitters'] = submitters
 

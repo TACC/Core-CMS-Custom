@@ -1,0 +1,30 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/forms/css/exception_submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <div class="row">
+    <div class="col">
+      <h1>Request an Exception</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted only by entities who are
+        eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
+        and associated regulations. Please review the legislation and regulation before
+        submitting this form. Links to both can be found on the
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
+          website.</a>
+      </p>
+      <hr />
+      <p class="c-message c-message--error">
+          We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
+      </p>
+      <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
+  </div>
+  {% endblock %}
