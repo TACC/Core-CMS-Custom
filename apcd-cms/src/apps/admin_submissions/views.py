@@ -44,7 +44,7 @@ class AdminSubmissionsTable(TemplateView):
                 **t,
                 'outcome': title_case(t['outcome'])
             } for t in s['view_modal_content']]
-        } for s in enumerate(submission_content[offset:offset + limit])]
+        } for s in submission_content[offset:offset + limit]]
 
         if page_num == 1:
             submission_content = submission_content_updated + submission_content[offset + limit:]
