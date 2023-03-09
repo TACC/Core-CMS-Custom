@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
-from apps.utils.apcd_database import get_submission_logs, get_all_submissions
+from apps.utils.apcd_database import get_all_submissions_and_logs
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -21,45 +22,32 @@ class AdminSubmissionsTable(TemplateView):
 
         context = super(AdminSubmissionsTable, self).get_context_data(*args, **kwargs)
 
-        submission_content = get_all_submissions()
+        submission_content = get_all_submissions_and_logs()
 
-        def _set_submissions(submission, submission_logs):
-            return {
-                'submission_id': submission[0],
-                'apcd_id': submission[1],
-                'submitter_id': submission[2],
-                'file_name': submission[3],
-                'status': title_case(submission[4]),
-                'outcome': title_case(submission[5]),
-                'received_timestamp': submission[6],
-                'updated_at': submission[7],
-                'org_name': submission[8],
-                'view_modal_content': _set_submission_logs(submission_logs)
-            }
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
 
-        def _set_submission_logs(submission_logs):
+        limit = 50
+        offset = limit * (page_num - 1)
 
-            modal_content = []
-            for submission_log in submission_logs:
-                modal_content.append({
-                    'log_id': submission_log[0],
-                    'submitter_id': submission_log[1],
-                    'file_type': submission_log[2],
-                    'validation_suite': submission_log[3],
-                    'outcome': title_case(submission_log[5]),
-                    'file_type_name': submission_log[6]
-                })
-            
-            return modal_content
-
+        # modifies the object fields for display, only modifies the entries that will be displayed 
+        # on the current page using offset and limit
+        submission_content = [{
+            **s,
+            'status': title_case(s['status']),
+            'outcome': title_case(s['outcome']),
+            'received_timestamp': datetime.strptime(s['received_timestamp'], '%Y-%m-%dT%H:%M:%S.%f'),
+            'updated_at': datetime.strptime(s['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+            'view_modal_content': [{
+                **t,
+                'outcome': title_case(t['outcome'])
+            } for t in s['view_modal_content']]
+        } if (i >= offset and i < offset + limit) else {**s} for i,s in enumerate(submission_content) ]
 
         context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        submission_with_logs = []
 
-        for submission in submission_content:
-            submission_logs = get_submission_logs(submission[0])
-            submission_with_logs.append(_set_submissions(submission, submission_logs))
-
-        context.update(paginator(self.request, submission_with_logs))
+        context.update(paginator(self.request, submission_content))
         context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
         return context
