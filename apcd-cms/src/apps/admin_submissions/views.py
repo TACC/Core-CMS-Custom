@@ -32,9 +32,9 @@ class AdminSubmissionsTable(TemplateView):
         limit = 50
         offset = limit * (page_num - 1)
 
-        # modifies the object fields for display, only modifies the entries that will be displayed 
+        # modifies the object fields for display, only modifies a subset of entries that will be displayed 
         # on the current page using offset and limit
-        submission_content = [{
+        submission_content_updated = [{
             **s,
             'status': title_case(s['status']),
             'outcome': title_case(s['outcome']),
@@ -44,7 +44,12 @@ class AdminSubmissionsTable(TemplateView):
                 **t,
                 'outcome': title_case(t['outcome'])
             } for t in s['view_modal_content']]
-        } if (i >= offset and i < offset + limit) else {**s} for i,s in enumerate(submission_content) ]
+        } for s in enumerate(submission_content[offset:offset + limit])]
+
+        if page_num == 1:
+            submission_content = submission_content_updated + submission_content[offset + limit:]
+        else: 
+            submission_content = submission_content[0:offset] + submission_content_updated + submission_content[offset + limit:]
 
         context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
 
