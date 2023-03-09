@@ -18,7 +18,7 @@ class ViewUsersTable(TemplateView):
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
-
+        actions = 'View'
 
 
         def _set_user(usr):
@@ -36,7 +36,11 @@ class ViewUsersTable(TemplateView):
     
                 }
 
-
+        def _set_modal_content(usr):
+            return {
+                'notes': usr[7],
+                
+            }
         
         
 
@@ -44,5 +48,6 @@ class ViewUsersTable(TemplateView):
         context['rows'] = []
         for user in user_content:
             user_view = [usr for usr in user_content if usr[1] == user[0]]
+            context['rows'].append(_set_user(user,))
 
         return context
