@@ -25,7 +25,6 @@
       </p>
 
       <hr />
-      {% if has_sub_id %}
       <div class="forms">
         <div class="description">
           <h4>Exception Time Period</h4>
@@ -133,13 +132,6 @@
       <div class="form-success" style="display: none">
         <p>Thank you for your request.</p>
       </div>
-      {% else %}
-      <p class="c-message c-message--error">
-          We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
-      </p>
-      <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
-  </div>
-      {% endif %}
 
 
       {# Hidden links for future pages #}
@@ -188,5 +180,6 @@
           <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
         </small>
         <hr />
+      </div>
       </div>
       {% endblock %}
