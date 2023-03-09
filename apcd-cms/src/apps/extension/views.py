@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class ExtensionFormView(TemplateView):      
+class ExtensionFormView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
