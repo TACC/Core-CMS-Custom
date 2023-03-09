@@ -56,7 +56,6 @@ class ExtensionFormView(TemplateView):
             form = request.POST.copy()
             errors= []
             submitters = request.session.get('submitters')
-            
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
 
