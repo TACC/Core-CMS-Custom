@@ -25,7 +25,6 @@
         the timeliness of the request.
       </p>
 
-        {% if has_sub_id %}
         <div class="forms">
 
           <div class="form-wrapper">
@@ -168,6 +167,7 @@
       <div class="form-success" style="display: none">
         <p>Thank you for your request.</p>
       </div>
+    </div>
       {# Footnotes #}
       <div class="o-section o-section--style-light">
         <hr />
@@ -179,16 +179,6 @@
         </p>
         <hr />
     </div>
-            {% else %}
-            <hr />
-            <p class="c-message c-message--error">
-                We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
-            </p>
-            <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
-        </div>
-            {% endif %}
-
-
 
            
   {# Hidden links for future pages #}
@@ -217,6 +207,7 @@
       const btnStatus = (() => {
         addExtensionBtn.disabled = ( extension == 5 ? true : false );
         dropExtensionBtn.disabled = ( extension == 1 ? true : false );
+        
       });
       let extension = 1;
       btnStatus();
