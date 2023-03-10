@@ -5,7 +5,7 @@ from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
 import logging
-from datetime import datetime
+from dateutil import parser
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +38,8 @@ class AdminSubmissionsTable(TemplateView):
             **s,
             'status': title_case(s['status']),
             'outcome': title_case(s['outcome']),
-            'received_timestamp': datetime.strptime(s['received_timestamp'], '%Y-%m-%dT%H:%M:%S.%f'),
-            'updated_at': datetime.strptime(s['updated_at'], '%Y-%m-%dT%H:%M:%S.%f'),
+            'received_timestamp': parser.parse(s['received_timestamp']),
+            'updated_at': parser.parse(s['updated_at']),
             'view_modal_content': [{
                 **t,
                 'outcome': title_case(t['outcome'])

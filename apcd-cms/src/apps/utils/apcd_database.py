@@ -958,7 +958,8 @@ def get_all_submissions_and_logs():
         """
         cur = conn.cursor()
         cur.execute(query)
-        return cur.fetchall()
+        results = [row[0] for row in cur.fetchall()]
+        return results
     finally:
         if cur is not None:
             cur.close()
