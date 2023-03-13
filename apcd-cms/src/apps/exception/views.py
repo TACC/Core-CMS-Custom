@@ -80,10 +80,8 @@ class ExceptionThresholdFormView(TemplateView):
                 )
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
 class ExceptionOtherFormView(TemplateView):
     def get_template_names(self):
@@ -132,6 +130,7 @@ class ExceptionOtherFormView(TemplateView):
             submitters = request.session.get('submitters')
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
+            logger.debug(print(submitter))
             if _err_msg(submitter):
                 errors.append(_err_msg(submitter))
 
@@ -150,10 +149,8 @@ class ExceptionOtherFormView(TemplateView):
                 )
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
 
 def _err_msg(resp):

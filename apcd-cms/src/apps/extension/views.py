@@ -44,10 +44,8 @@ class ExtensionFormView(TemplateView):
    
         ## If no submitter_id for user should not show form but show error page
         if submitters and all((submitter[0] is not None for submitter in submitters)):
-            del self.request.session['submitters']
             return ["extension_submission_form/extension_submission_form.html"]
         else:
-            del self.request.session['submitters']
             return ["extension_submission_form/extension_err_no_sub_id.html"]
 
     def post(self, request):
@@ -79,10 +77,8 @@ class ExtensionFormView(TemplateView):
                 template = loader.get_template('extension_submission_form/extension_form_success.html')
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
 
 
