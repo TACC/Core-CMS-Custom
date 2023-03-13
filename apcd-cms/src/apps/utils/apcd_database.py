@@ -295,7 +295,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
             values = (
                 reg_id,
-                _set_int(form['total_claims_value_{}'.format(str_end)]),
+                float(form['total_claims_value_{}'.format(str_end)]),
                 _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
                 _set_int(form['license_number_{}'.format(str_end)]),
                 _set_int(form['naic_company_code_{}'.format(str_end)]),
@@ -307,7 +307,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
             values = (
                 reg_id,
-                _set_int(form[f'total_claims_value{str_end}']),
+                float(form[f'total_claims_value{str_end}']),
                 _set_int(form[f'claims_encounters_volume{str_end}']),
                 _set_int(form[f'license_number{str_end}']),
                 _set_int(form[f'naic_company_code{str_end}']),
@@ -363,7 +363,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             return create_registration_entity(form, reg_id, iteration, True)
         str_end = f'{iteration}_{reg_id}'
         values = (
-            _set_int(form['total_claims_value_{}'.format(str_end)]),
+            float(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
             _set_int(form['license_number_{}'.format(str_end)]),
             _set_int(form['naic_company_code_{}'.format(str_end)]),
