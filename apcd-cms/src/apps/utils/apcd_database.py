@@ -797,6 +797,42 @@ def create_threshold_exception(form, sub_data):
         if conn is not None:
             conn.close()
 
+def get_cdl_exceptions(file_type):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """ SELECT c1.item_code as field_list_code, 
+        c1.item_value AS field_list_value, 
+        c2.item_value AS threshold_value 
+        FROM standard_codes c1 
+        LEFT JOIN standard_codes c2 
+            ON c2.item_code = c1.item_code 
+        WHERE c1.list_name=%s AND c2.list_name=%s """
+
+        cur = conn.cursor()
+        file_type = _clean_value(file_type)
+        field_list = 'field_list_' + file_type
+        threshold_list = 'threshold_list_' + file_type
+        cur.execute(query, (field_list, threshold_list))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 
 def get_submissions(user):
     cur = None

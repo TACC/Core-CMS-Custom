@@ -31,8 +31,8 @@
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
 
-              <h2> Threshold Request Details</h2>
-              <p>Select submission file type for your requested threshold reduction:
+              <h4> Threshold Request File Type</h4>
+              <p>Select submission file type for your requested threshold reduction.
 
               </p>
             </div>
@@ -42,7 +42,8 @@
                 <label for="file_type">File Type <span class="asterisk">*</span></label>
 
 
-                <select name="file_type" required="required" class="choicefield" id="file_type">
+                <select name="file_type" required="required" class="choicefield" id="file_type" placeholder="--Choose File Type--" value="none">
+                  <option value="">-- Choose File Type --</option>
                   <option value="dc">Dental Claims</option>
 
                   <option value="mc">
@@ -85,21 +86,20 @@
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
               <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper input required id=field-threshold-exception name=field-threshold-exception">
+                <div class="field-wrapper select required">
                   <div class="field-errors" style="display: none"></div>
                   <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
 
-                  <input type="text" name="field-threshold-exception" required class="textinput"
-                    id="field-threshold-exception" placeholder="CDLXX000" minlength="8"
-                    maxlength="8" title="Must have 8 characters">
-                  <div id="help-text-threshold-required" class="help-text">
-                    Format CDLXX000
+                  <select name="field-threshold-exception" required="required" class="choicefield" id="field-threshold-exception">
+                    {% for cdl in cdls %}
+                    <option class="dropdown-text" value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>
+                    {% endfor %} 
+                  </select>
                   </div>
 
-                </div>
                 <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
                   <label for="threshold-requested">
-                    Threshold Reduction <span class="asterisk">*</span>
+                    Requested Threshold Percentage <span class="asterisk">*</span>
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
@@ -108,7 +108,7 @@
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
                   <div id="help-text-threshold-requested-required" class="help-text">
-                    Must be less than maximum percentage for this field code
+                    Must be less than the required threshold for this field code.
                   </div>
                 </div>
               </div>
@@ -184,10 +184,10 @@
               </button>
             </div>
           </form>
+          </div>
         </div>
         <div class="form-success" style="display: none">
           <p>Thank you for your request.</p>
-        </div>
         </div>
 
 
@@ -230,6 +230,19 @@
                   $('#expiration-date').attr('max', maxDate);
               });
               </script>
+              <!-- To fetch CDL codes on file type input change -->
+              <script>
+                const fileTypeSelect = document.querySelector('#file_type');
+                const form = document.getElementById('threshold-form');
+                fileTypeSelect.addEventListener('change', function(event) {
+                  selectedFileType = event.target.value;
+                  if (selectedFileType != '') {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', `/submissions/threshold-exception?file_type=${selectedFileType}`);
+                    xhr.send();
+                  }
+                });
+              </script>
           </aside>
 
           {# Footnotes #}
@@ -241,4 +254,7 @@
             </small>
             <hr />
           </div>
+        </div>
+      </div>
+      </div>
           {% endblock %}
