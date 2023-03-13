@@ -25,7 +25,6 @@
       </p>
 
       <hr />
-
       <div class="forms">
         <div class="description">
           <h4>Exception Time Period</h4>
@@ -35,7 +34,6 @@
         <div class="form-wrapper">
           <form action="" method="POST" id="other-exception">
             {% csrf_token %}
-            <div>
               <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
@@ -44,9 +42,7 @@
                 <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
-            </div>
         </div>
-      </div>
 
       <hr />
 
@@ -175,5 +171,6 @@
           <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
         </small>
         <hr />
+      </div>
       </div>
       {% endblock %}
