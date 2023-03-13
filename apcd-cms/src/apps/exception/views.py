@@ -130,7 +130,7 @@ class ExceptionOtherFormView(TemplateView):
             submitters = request.session.get('submitters')
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
-            logger.debug(print(submitter))
+            
             if _err_msg(submitter):
                 errors.append(_err_msg(submitter))
 
