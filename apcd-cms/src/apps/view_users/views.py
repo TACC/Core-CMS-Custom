@@ -3,7 +3,6 @@ from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_users
 from apps.utils.apcd_groups import is_apcd_admin
 import logging
-import datetime
 
 logger = logging.getLogger(__name__)
 
