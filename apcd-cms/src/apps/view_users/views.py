@@ -30,8 +30,8 @@ class ViewUsersTable(TemplateView):
                     'updated_at': usr[6],
                     'notes': usr[7],
                     'active': usr[8],
-                    'role_name': usr[9],
-      
+                    'role_name': usr[9]
+            }
 
         context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'Role', 'Active', 'Created', 'Updated', 'Notes']
         context['rows'] = []
