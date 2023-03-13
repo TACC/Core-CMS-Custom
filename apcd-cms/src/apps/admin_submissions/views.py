@@ -38,8 +38,8 @@ class AdminSubmissionsTable(TemplateView):
             **s,
             'status': title_case(s['status']),
             'outcome': title_case(s['outcome']),
-            'received_timestamp': parser.parse(s['received_timestamp']),
-            'updated_at': parser.parse(s['updated_at']),
+            'received_timestamp': parser.parse(s['received_timestamp']) if s['received_timestamp'] else None,
+            'updated_at': parser.parse(s['updated_at']) if s['updated_at'] else None,
             'view_modal_content': [{
                 **t,
                 'outcome': title_case(t['outcome'])
