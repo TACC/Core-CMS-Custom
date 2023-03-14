@@ -21,8 +21,6 @@
         <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
           website.</a>
       </p>
-      <hr />
-
       <div class="forms">
 
         <div class="form-wrapper">
@@ -30,43 +28,42 @@
             {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
-
-              <h4> Threshold Request File Type</h4>
-              <p>Select submission file type for your requested threshold reduction.
+              <hr />
+              <p>Select submission file type for your requested threshold reduction:
 
               </p>
             </div>
-              <div class="field-wrapper select required">
-                <div class="field-errors" style="display: none"></div>
+            <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
 
-                <label for="file_type">File Type <span class="asterisk">*</span></label>
+              <label for="file_type">File Type <span class="asterisk">*</span></label>
 
 
                 <select name="file_type" required="required" class="choicefield" id="file_type" placeholder="--Choose File Type--" value="none">
                   <option value="">-- Choose File Type --</option>
                   <option value="dc">Dental Claims</option>
 
-                  <option value="mc">
-                    Medical Claims
-                  </option>
+                <option value="mc">
+                  Medical Claims
+                </option>
 
-                  <option value="me">
-                    Member Eligibility
-                  </option>
+                <option value="me">
+                  Member Eligibility
+                </option>
 
-                  <option value="pc">
-                    Pharmacy Claims
-                  </option>
+                <option value="pc">
+                  Pharmacy Claims
+                </option>
 
-                  <option value="pv">
-                    Provider
-                  </option>
-                </select>
-                <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
-                  exception form submission.
-                </div>
+                <option value="pv">
+                  Provider
+                </option>
+              </select>
+              <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
+                exception form submission.
               </div>
-              <hr />
+            </div>
+            <hr />
 
 
             <div id="exception_block_1">
@@ -120,13 +117,14 @@
                 organization is unable to comply with the relevant requirements. Provide as
                 much detail as possible regarding the exception request, indicating the
                 specific submission requirements for which relief is being sought. If applicable,
-                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span class="asterisk"
-                    id="justification-asterisk" style="padding-left: 0; margin-left: 0;">*</span></label></p>
+                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
+                    class="asterisk" id="justification-asterisk"
+                    style="padding-left: 0; margin-left: 0;">*</span></label></p>
 
               <div class="field-errors" style="display: none"></div>
 
-              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form" type="justification"
-                id="justification" minlength="2" maxlength="2000" required></textarea>
+              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form"
+                type="justification" id="justification" minlength="2" maxlength="2000" required></textarea>
               <div class="help-text">
                 2000 character limit
               </div>
@@ -153,21 +151,22 @@
               </div>
             </div>
             <div class="field-wrapper textinput required"><label>
-              I request an exception on behalf of:
-            </label></div>
+                I request an exception on behalf of:
+              </label></div>
 
-          <div class="field-wrapper textinput required">
-            <label for="business-name">
-              Business Name<span class="asterisk">*</span>
-            </label>
-            <div class="field-errors" style="display: none"></div>
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
               <select name='business-name' required='required' class="choicefield" id='business-name'>
-              {% for submitter in submitters %}
-                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
-              {% endfor %} 
-            </select>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                  {{submitter.submitter_id}}</option>
+                {% endfor %}
+              </select>
 
-          </div>
+            </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -193,21 +192,21 @@
 
 
 
-        {# Hidden links for future pages #}
-        {# TODO: Allow this template to render CMS admin-entered markup #}
-        <aside class="row" hidden>
-          <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-            <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+      {# Hidden links for future pages #}
+      {# TODO: Allow this template to render CMS admin-entered markup #}
+      <aside class="row" hidden>
+        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-            <p><a href="/submissions/exception">Exception Request</a></p>
+          <p><a href="/submissions/exception">Exception Request</a></p>
 
-            <p><a href="/submissions/extension-request">Extension Request</a></p>
+          <p><a href="/submissions/extension-request">Extension Request</a></p>
 
-            <p><a href="/workbench/dashboard">Dashboard</a></p>
-          </div>
-        </aside>
+          <p><a href="/workbench/dashboard">Dashboard</a></p>
+        </div>
+      </aside>
 
-        {# Scripts #}
+      {# Scripts #}
 
         <aside>
           <!-- To require exception is not longer than a year -->
