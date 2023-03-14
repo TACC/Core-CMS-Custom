@@ -8,39 +8,45 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class ExtensionFormView(TemplateView):
-    template_name = 'extension_submission_form/extension_submission_form.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExtensionFormView, self).dispatch(request, *args, **kwargs)
-   
+
     def get_context_data(self, *args, **kwargs):
-            context = super(ExtensionFormView, self).get_context_data(*args, **kwargs)
+        context = super(ExtensionFormView, self).get_context_data(*args, **kwargs)
+        
+        user = self.request.user.username
+        
+        submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
-            user = self.request.user.username
+        self.request.session['submitters'] = submitters
 
-            submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        def _set_submitter(sub):
+            return {
+                "submitter_id": sub[0],
+                "submitter_code": sub[1],
+                "payor_code": sub[2],
+                "user_name": sub[3],
+                "org_name": title_case(sub[4])
+            }
+        context["submitters"] = []
 
-            self.request.session['submitters'] = submitters
+        for submitter in submitters: 
+            context['submitters'].append(_set_submitter(submitter))
+        return context
 
-            def _set_submitter(sub):
-                return {
-                    "submitter_id": sub[0],
-                    "submitter_code": sub[1],
-                    "payor_code": sub[2],
-                    "user_name": sub[3],
-                    "org_name": title_case(sub[4])
-                }
-
-            context['submitters'] = []
-
-            for submitter in submitters: 
-                context['submitters'].append(_set_submitter(submitter))
-
-            return context      
-
+    def get_template_names(self):
+        submitters = self.request.session.get("submitters")
+   
+        ## If no submitter_id for user should not show form but show error page
+        if submitters and all((submitter[0] is not None for submitter in submitters)):
+            return ["extension_submission_form/extension_submission_form.html"]
+        else:
+            return ["extension_submission_form/extension_err_no_sub_id.html"]
 
     def post(self, request):
         if (request.user.is_authenticated) and has_apcd_group(request.user):
@@ -71,10 +77,8 @@ class ExtensionFormView(TemplateView):
                 template = loader.get_template('extension_submission_form/extension_form_success.html')
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
 
 
