@@ -34,22 +34,15 @@ class AdminSubmissionsTable(TemplateView):
 
         # modifies the object fields for display, only modifies a subset of entries that will be displayed 
         # on the current page using offset and limit
-        submission_content_updated = [{
-            **s,
-            'status': title_case(s['status']),
-            'outcome': title_case(s['outcome']),
-            'received_timestamp': parser.parse(s['received_timestamp']) if s['received_timestamp'] else None,
-            'updated_at': parser.parse(s['updated_at']) if s['updated_at'] else None,
-            'view_modal_content': [{
+        for s in submission_content[offset:offset + limit]:
+            s['status'] = title_case(s['status'])
+            s['outcome'] = title_case(s['outcome'])
+            s['received_timestamp'] = parser.parse(s['received_timestamp']) if s['received_timestamp'] else None
+            s['updated_at'] = parser.parse(s['updated_at']) if s['updated_at'] else None
+            s['view_modal_content'] = [{
                 **t,
                 'outcome': title_case(t['outcome'])
-            } for t in s['view_modal_content']]
-        } for s in submission_content[offset:offset + limit]]
-
-        if page_num == 1:
-            submission_content = submission_content_updated + submission_content[offset + limit:]
-        else: 
-            submission_content = submission_content[0:offset] + submission_content_updated + submission_content[offset + limit:]
+            } for t in (s['view_modal_content'] or [])]
 
         context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
 
