@@ -12,12 +12,53 @@ class ViewUsersTable(TemplateView):
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           return HttpResponseRedirect('/')
+        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
+           #return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
+        user_content = [
+            (
+                6,
+                4,
+                'aw@heck.org',
+                'Jon Heck',
+                'UHC & Nop',
+                'no create',
+                'none update',
+                'no notes',
+                't',
+                'submitter'
+
+            ),
+            (
+                5,
+                4,
+                'aw@heck.org',
+                'Jon Heck',
+                't and (t)',
+                'no create',
+                'none update',
+                'no notes',
+                't',
+                'submitter'
+
+            ),
+             (
+                 5,
+                 4,
+                'aw@heck.org',
+                'Jon Heck',
+                'UHC',
+                'no create',
+                'none update',
+                'no notes',
+                't',
+                'submitter'
+            ),           
+            
+        ]
 
 
 
