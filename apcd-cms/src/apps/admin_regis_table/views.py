@@ -241,6 +241,6 @@ class RegistrationsTable(TemplateView):
         if filter is not None and filter != 'All':
             context['selected_filter'] = filter
             registration_table_entries = table_filter(filter, registration_table_entries, 'reg_status')
-        context.update(paginator(self.request, registration_table_entries, 2))
+        context.update(paginator(self.request, registration_table_entries))
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context
