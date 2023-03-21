@@ -60,7 +60,6 @@ input[name^="contact_phone"] {
 /* Field Content */
 
 /* to remove 'scroll arrows' from numeric input fields */
-input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
