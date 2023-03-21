@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.table_filter import table_filter
+from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
 import logging
 
