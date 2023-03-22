@@ -1,3 +1,5 @@
+{% load static %}
+
 <aside>
     {# To let user add and remove entities #}
     {# RFE: Do not duplicate entity markup #}
@@ -337,4 +339,6 @@
         inputs.forEach(i => i.addEventListener('input', inputListener));
       }
     </script>
+    {# To check for blank space only in text inputs #}
+    <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script> 
 </aside>
