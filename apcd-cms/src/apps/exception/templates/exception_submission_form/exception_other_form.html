@@ -161,6 +161,23 @@
               $('#expiration-date').attr('max', maxDate);
           });
         </script>
+        <!-- Checks that input is not only whitespaces -->
+        <script>
+          const form = document.querySelector('#other-exception');
+          const button = document.getElementById('form-button')
+          form.addEventListener('submit', function(e) {
+            const inputFields = form.querySelectorAll('input, select, textarea');
+            for (let i = 0; i < inputFields.length -1; i++) {
+              const inputValue = inputFields[i].value.trim();
+              if (inputValue === '') {
+                e.preventDefault();
+                inputFields[i].style.border = '1px solid red';
+                inputFields[i].focus();
+                inputFields[i].innerHTML = 'This field is required.';
+              }
+            }
+          });
+        </script>
       </aside>
 
       {# Footnotes #}
