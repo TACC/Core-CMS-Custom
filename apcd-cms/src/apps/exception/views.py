@@ -40,9 +40,6 @@ class ExceptionThresholdFormView(TemplateView):
 
         context['file_type'] = file_type
 
-        logger.debug(print(
-            "To make sure the file type from drop down populates correctly to get field codes: " 
-            + (file_type)))
 
         cdls = apcd_database.get_cdl_exceptions(file_type)
 
