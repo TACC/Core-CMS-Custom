@@ -56,3 +56,10 @@ input[name^="contact_phone"] {
     /* NOTE: A span 2 seems like enough, but only span 3+ does the job */
     grid-row: span 3;
 }
+
+/* Field Content */
+
+/* to remove 'scroll arrows' from numeric input fields */
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
