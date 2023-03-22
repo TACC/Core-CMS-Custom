@@ -38,10 +38,14 @@ class ExceptionThresholdFormView(TemplateView):
 
         file_type = self.request.GET.get('file_type')
 
+        context['file_type'] = file_type
+
+
         cdls = apcd_database.get_cdl_exceptions(file_type)
 
         self.request.session['submitters'] = submitters
         self.request.session['cdls'] = cdls
+        self.request.session['file_type'] = file_type
 
         def _set_submitter(sub):
             return {
