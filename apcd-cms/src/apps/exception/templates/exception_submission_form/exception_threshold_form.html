@@ -239,7 +239,6 @@
             helpText.innerHTML = ''
             selectedFileType = event.target.value;
             if (selectedFileType != '') {
-              window.location.href = `/submissions/threshold-exception?file_type=${selectedFileType}`;
               const xhr = new XMLHttpRequest();
               xhr.open('GET', `/submissions/threshold-exception?file_type=${selectedFileType}`);
               xhr.send();
