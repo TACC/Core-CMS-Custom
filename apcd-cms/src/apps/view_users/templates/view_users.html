@@ -41,12 +41,10 @@
                   <td>{{r.org_name}}</td>
                   <td>{{r.role_name}}</td>
                   <td>{{r.active}}</td>
+                  <td>{{r.user_number}}</td>
                   <td>
-                    {% include "view_user_modal.html" %}<br />
-                    <select id='actionsDropdown_{{r.user_id}}' class='status-filter' onchange="openAction('{{r.user_id}}')">
-                      <option value="">Select Action</option>
-                      <option value="viewUser">View Record</option>
-                    </select>
+                    {% include "view_user_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
                   </td>
               </tr>
           {% endfor %}
@@ -84,20 +82,20 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
 })
 
 /* action function to view or edit record */
-
+/*
 function openAction(user_id) {
     var actionsDropdown, selectedOption, modal_id;
     actionsDropdown = document.getElementById(`actionsDropdown_${user_id}`);
     /* grabs dropdown option number selected by user via selectedIndex, 
       then grabs actual value associated with that option via 
       options[index].value */
-    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+  /*  selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
     console.log(selectedOption);
     modal_id = `${selectedOption}Modal_${user_id}`;
     $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
-    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
-  }
-
+  /*  actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+/*  }
+*/
 </script>
 
 {% endblock %}

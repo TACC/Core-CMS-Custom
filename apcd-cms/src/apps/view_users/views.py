@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
+
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
@@ -31,6 +32,7 @@ class ViewUsersTable(TemplateView):
                 'none update',
                 'no notes',
                 't',
+                11,
                 'submitter'
 
             ),
@@ -44,6 +46,7 @@ class ViewUsersTable(TemplateView):
                 'none update',
                 'no notes',
                 't',
+                10,
                 'submitter'
 
             ),
@@ -57,6 +60,7 @@ class ViewUsersTable(TemplateView):
                 'none update',
                 'no notes',
                 't',
+                9,
                 'submitter'
             ),           
             
@@ -66,6 +70,7 @@ class ViewUsersTable(TemplateView):
 
         def _set_user(usr):
             return {
+                    'view_modal_content': _set_modal_content(usr),
                     'role_id': usr[0],
                     'user_id': usr[1],
                     'user_email': usr[2],
@@ -75,8 +80,8 @@ class ViewUsersTable(TemplateView):
                     'updated_at': usr[6],
                     'notes': usr[7],
                     'active': usr[8],
-                    'role_name': usr[9],
-                    'view_modal_content': _set_modal_content(usr),
+                    'user_number': usr[9],
+                    'role_name': usr[10],
     
                 }
 
@@ -91,12 +96,13 @@ class ViewUsersTable(TemplateView):
                     'updated_at': usr[6],
                     'notes': usr[7],
                     'active': usr[8],
-                    'role_name': usr[9],                
+                    'user_number': usr[9],
+                    'role_name': usr[10],                
             }
         
         
 
-        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Active', 'Action']
+        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Active', 'Number', 'Action']
         context['rows'] = []
         for user in user_content:
             user_view = [usr for usr in user_content if usr[1] == user[0]]
