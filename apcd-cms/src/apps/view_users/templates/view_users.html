@@ -57,7 +57,6 @@ function filterTableByOrganization() {
   var dropdown, filter, newinput, bestinput, table, tr, td, i;
   input = document.getElementById("organizationFilter");
   filter = input.value.replace("&", "&amp;").replace("(", "").replace(")","");
-  console.log(filter);
   table = document.getElementById("usersTableBody");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
@@ -81,21 +80,12 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     else options.push(option.value)
 })
 
-/* action function to view or edit record */
-/*
-function openAction(user_id) {
-    var actionsDropdown, selectedOption, modal_id;
-    actionsDropdown = document.getElementById(`actionsDropdown_${user_id}`);
-    /* grabs dropdown option number selected by user via selectedIndex, 
-      then grabs actual value associated with that option via 
-      options[index].value */
-  /*  selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
-    console.log(selectedOption);
-    modal_id = `${selectedOption}Modal_${user_id}`;
-    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
-  /*  actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
-/*  }
-*/
+for (const td of document.querySelectorAll("tr>td:nth-child(5)")) {
+    if (td.textContent == "True") td.textContent = "Active";
+}
+for (const td of document.querySelectorAll("tr>td:nth-child(5)")) {
+    if (td.textContent == "False") td.textContent = "Inactive";
+}
 </script>
 
 {% endblock %}
