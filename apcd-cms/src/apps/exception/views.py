@@ -36,13 +36,7 @@ class ExceptionThresholdFormView(TemplateView):
 
         submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
-        file_type = self.request.GET.get('file_type')
-
- 
-
-
         self.request.session['submitters'] = submitters
-
 
         def _set_submitter(sub):
             return {
