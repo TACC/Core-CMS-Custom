@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
-
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
