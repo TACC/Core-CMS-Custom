@@ -20,7 +20,6 @@ class ViewUsersTable(TemplateView):
 
         def _set_user(usr):
             return {
-                   
                     'role_id': usr[0],
                     'user_id': usr[1],
                     'user_email': usr[2],
