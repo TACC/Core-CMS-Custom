@@ -79,13 +79,6 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     if (options.includes(option.value)) option.remove()
     else options.push(option.value)
 })
-
-for (const td of document.querySelectorAll("tr>td:nth-child(5)")) {
-    if (td.textContent == "True") td.textContent = "Active";
-}
-for (const td of document.querySelectorAll("tr>td:nth-child(5)")) {
-    if (td.textContent == "False") td.textContent = "Inactive";
-}
 </script>
 
 {% endblock %}

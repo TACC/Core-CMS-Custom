@@ -28,7 +28,7 @@ class ViewUsersTable(TemplateView):
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
-                    'active': usr[8],
+                    'active': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
                 }
