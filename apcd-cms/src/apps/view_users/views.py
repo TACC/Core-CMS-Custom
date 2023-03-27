@@ -35,7 +35,7 @@ class ViewUsersTable(TemplateView):
 
 
 
-        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Active', 'User Number', 'See More']
+        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
         context['rows'] = []
         for user in user_content:
             context['rows'].append(_set_user(user,))
