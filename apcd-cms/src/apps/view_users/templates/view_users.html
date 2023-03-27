@@ -37,14 +37,15 @@
           {% for r in rows %}
               <tr>
                   <td>{{r.user_id}}</td>
-                  <td>{{r.user_email}}</td>
                   <td>{{r.user_name}}</td>
                   <td>{{r.org_name}}</td>
                   <td>{{r.role_name}}</td>
                   <td>{{r.active}}</td>
-                  <td>{{r.created_at}}</td>
-                  <td>{{r.updated_at}}</td>
-                  <td>{{r.notes}}</td>
+                  <td>{{r.user_number}}</td>
+                  <td>
+                    {% include "view_user_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
+                  </td>
               </tr>
           {% endfor %}
       </tbody>
@@ -59,7 +60,7 @@ function filterTableByOrganization() {
   table = document.getElementById("usersTableBody");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
+    td = tr[i].getElementsByTagName("td")[2];
     if (td) {
       if (td.innerHTML.replace("(", "").replace(")","").search(filter) > -1) {
         tr[i].style.display = "";
@@ -78,7 +79,6 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     if (options.includes(option.value)) option.remove()
     else options.push(option.value)
 })
-
 </script>
 
 {% endblock %}
