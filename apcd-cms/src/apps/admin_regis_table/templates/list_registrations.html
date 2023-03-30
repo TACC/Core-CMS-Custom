@@ -18,10 +18,9 @@
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
-        <option class="dropdown-text">All</option>
-        <option class="dropdown-text">Received</option>
-        <option class="dropdown-text">Processing</option>
-        <option class="dropdown-text">Complete</option>
+        {% for option in filter_options %}
+          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
       </select>
     </div>
   </div>
@@ -34,7 +33,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
                   <td>
@@ -71,22 +70,18 @@
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %}
 </div>
 <script>
   function filterTableByStatus() {
-    var dropdown, filter, table, rows, status, i;
+    var dropdown, filter, xhr;
     dropdown = document.getElementById("statusFilter");
     filter =  dropdown.value;
-    table = document.getElementById("registrationTable");
-    rows = table.getElementsByTagName("tr");
-    [...rows].slice(1).forEach(row => {
-      status = row.getElementsByTagName("td")[4];
-      if (status.innerText != filter && filter != 'All') {
-        row.style.display = "none";
-      } else {
-        row.style.display = "";
-      }
-    })
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', `/administration/list-registration-requests/?filter=${filter}`);
+    xhr.send();
+    window.location.href = `/administration/list-registration-requests/?filter=${filter}`;
+    window.location.load();
   }
   function openAction(reg_id) {
     var actionsDropdown, selectedOption, modal_id;

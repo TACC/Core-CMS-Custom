@@ -295,7 +295,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
             values = (
                 reg_id,
-                _set_int(form['total_claims_value_{}'.format(str_end)]),
+                float(form['total_claims_value_{}'.format(str_end)]),
                 _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
                 _set_int(form['license_number_{}'.format(str_end)]),
                 _set_int(form['naic_company_code_{}'.format(str_end)]),
@@ -307,7 +307,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
             values = (
                 reg_id,
-                _set_int(form[f'total_claims_value{str_end}']),
+                float(form[f'total_claims_value{str_end}']),
                 _set_int(form[f'claims_encounters_volume{str_end}']),
                 _set_int(form[f'license_number{str_end}']),
                 _set_int(form[f'naic_company_code{str_end}']),
@@ -363,7 +363,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             return create_registration_entity(form, reg_id, iteration, True)
         str_end = f'{iteration}_{reg_id}'
         values = (
-            _set_int(form['total_claims_value_{}'.format(str_end)]),
+            float(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
             _set_int(form['license_number_{}'.format(str_end)]),
             _set_int(form['naic_company_code_{}'.format(str_end)]),
@@ -797,7 +797,6 @@ def create_threshold_exception(form, sub_data):
         if conn is not None:
             conn.close()
 
-
 def get_submissions(user):
     cur = None
     conn = None
@@ -873,6 +872,63 @@ def get_submission_logs(submission_id):
         if conn is not None:
             conn.close()
 
+def get_user_submissions_and_logs(user):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT json_build_object(
+                'submission_id', submissions.submission_id,
+                'submitter_id', submissions.submitter_id,
+                'file_name', submissions.zip_file_name,
+                'status', submissions.status,
+                'outcome', submissions.outcome,
+                'received_timestamp', submissions.received_timestamp,
+                'updated_at', submissions.updated_at,
+                'view_modal_content', (
+                    SELECT COALESCE(json_agg(json_build_object(
+                        'log_id', submission_logs.log_id,
+                        'submission_id', submission_logs.submission_id,
+                        'file_type', submission_logs.file_type,
+                        'validation_suite', submission_logs.validation_suite,
+                        'outcome', submission_logs.outcome,
+                        'file_type_name', (
+                            SELECT standard_codes.item_value FROM standard_codes
+                            WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
+                            LIMIT 1
+                        )
+                    )), '[]'::json)
+                )
+            )
+            FROM submissions
+            LEFT JOIN submission_logs
+                ON submissions.submission_id = submission_logs.submission_id
+            WHERE submissions.submitter_id
+            IN (
+                SELECT submitter_users.submitter_id FROM submitter_users 
+                WHERE submitter_users.user_id = %s )
+            GROUP BY (submissions.submission_id)
+            ORDER BY submissions.received_timestamp DESC
+        """
+        cur = conn.cursor()
+        cur.execute(query, (user,))
+        results = [row[0] for row in cur.fetchall()]
+        return results
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()  
+
+
 def get_all_submissions():
     cur = None
     conn = None
@@ -910,6 +966,61 @@ def get_all_submissions():
         if conn is not None:
             conn.close()
 
+def get_all_submissions_and_logs():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT json_build_object(
+                'submission_id', submissions.submission_id,
+                'apcd_id', submissions.apcd_id,
+                'submitter_id', submissions.submitter_id,
+                'file_name', submissions.zip_file_name,
+                'status', submissions.status,
+                'outcome', submissions.outcome,
+                'received_timestamp', submissions.received_timestamp,
+                'updated_at', submissions.updated_at,
+                'org_name', apcd_orgs.official_name,
+                'view_modal_content', (
+                    SELECT COALESCE(json_agg(json_build_object(
+                        'log_id', submission_logs.log_id,
+                        'submission_id', submission_logs.submission_id,
+                        'file_type', submission_logs.file_type,
+                        'validation_suite', submission_logs.validation_suite,
+                        'outcome', submission_logs.outcome,
+                        'file_type_name', (
+                            SELECT standard_codes.item_value FROM standard_codes
+                            WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
+                            LIMIT 1
+                        )
+                    )), '[]'::json)
+                )
+            )
+            FROM submissions
+            JOIN apcd_orgs
+                ON submissions.apcd_id = apcd_orgs.apcd_id
+            LEFT JOIN submission_logs
+                ON submissions.submission_id = submission_logs.submission_id
+            GROUP BY (submissions.submission_id, apcd_orgs.official_name)
+            ORDER BY submissions.received_timestamp DESC
+        """
+        cur = conn.cursor()
+        cur.execute(query)
+        results = [row[0] for row in cur.fetchall()]
+        return results
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def create_extension(form, iteration, sub_data):
     cur = None

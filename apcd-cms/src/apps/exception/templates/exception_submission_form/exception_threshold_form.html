@@ -21,8 +21,6 @@
         <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
           website.</a>
       </p>
-      <hr />
-
       <div class="forms">
 
         <div class="form-wrapper">
@@ -30,42 +28,43 @@
             {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
-
-              <h2> Threshold Request Details</h2>
+              <hr />
               <p>Select submission file type for your requested threshold reduction:
 
               </p>
             </div>
-              <div class="field-wrapper select required">
-                <div class="field-errors" style="display: none"></div>
+            <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
 
-                <label for="file_type">File Type <span class="asterisk">*</span></label>
+              <label for="file_type">File Type <span class="asterisk">*</span></label>
 
 
-                <select name="file_type" required="required" class="choicefield" id="file_type">
-                  <option value="dc">Dental Claims</option>
+              <select name="file_type" required="required" class="choicefield" id="file_type"
+               value="none">
+                <option value="">-- Choose File Type --</option>
+                <option value="dc">Dental Claims</option>
 
-                  <option value="mc">
-                    Medical Claims
-                  </option>
+                <option value="mc">
+                  Medical Claims
+                </option>
 
-                  <option value="me">
-                    Member Eligibility
-                  </option>
+                <option value="me">
+                  Member Eligibility
+                </option>
 
-                  <option value="pc">
-                    Pharmacy Claims
-                  </option>
+                <option value="pc">
+                  Pharmacy Claims
+                </option>
 
-                  <option value="pv">
-                    Provider
-                  </option>
-                </select>
-                <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
-                  exception form submission.
-                </div>
+                <option value="pv">
+                  Provider
+                </option>
+              </select>
+              <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
+                exception form submission.
               </div>
-              <hr />
+            </div>
+            <hr />
 
 
             <div id="exception_block_1">
@@ -90,16 +89,16 @@
                   <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
 
                   <input type="text" name="field-threshold-exception" required class="textinput"
-                    id="field-threshold-exception" placeholder="CDLXX000" minlength="8"
-                    maxlength="8" title="Must have 8 characters">
+                  id="field-threshold-exception" placeholder="CDLXX000" minlength="8" maxlength="8"
+                  title="Must have 8 characters"/>
                   <div id="help-text-threshold-required" class="help-text">
                     Format CDLXX000
-                  </div>
+                </div>
 
                 </div>
                 <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
                   <label for="threshold-requested">
-                    Threshold Reduction <span class="asterisk">*</span>
+                    Requested Threshold Percentage <span class="asterisk">*</span>
                   </label>
                   <div class="field-errors" style="display: none"></div>
                   <div class="s-affixed-input-wrapper">
@@ -120,13 +119,14 @@
                 organization is unable to comply with the relevant requirements. Provide as
                 much detail as possible regarding the exception request, indicating the
                 specific submission requirements for which relief is being sought. If applicable,
-                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span class="asterisk"
-                    id="justification-asterisk" style="padding-left: 0; margin-left: 0;">*</span></label></p>
+                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
+                    class="asterisk" id="justification-asterisk"
+                    style="padding-left: 0; margin-left: 0;">*</span></label></p>
 
               <div class="field-errors" style="display: none"></div>
 
-              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form" type="justification"
-                id="justification" minlength="2" maxlength="2000" required></textarea>
+              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form"
+                type="justification" id="justification" minlength="2" maxlength="2000" required></textarea>
               <div class="help-text">
                 2000 character limit
               </div>
@@ -153,21 +153,22 @@
               </div>
             </div>
             <div class="field-wrapper textinput required"><label>
-              I request an exception on behalf of:
-            </label></div>
+                I request an exception on behalf of:
+              </label></div>
 
-          <div class="field-wrapper textinput required">
-            <label for="business-name">
-              Business Name<span class="asterisk">*</span>
-            </label>
-            <div class="field-errors" style="display: none"></div>
+            <div class="field-wrapper textinput required">
+              <label for="business-name">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
               <select name='business-name' required='required' class="choicefield" id='business-name'>
-              {% for submitter in submitters %}
-                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
-              {% endfor %} 
-            </select>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                  {{submitter.submitter_id}}</option>
+                {% endfor %}
+              </select>
 
-          </div>
+            </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -185,31 +186,37 @@
             </div>
           </form>
         </div>
-        <div class="form-success" style="display: none">
-          <p>Thank you for your request.</p>
+      </div>
+      <div class="form-success" style="display: none">
+        <p>Thank you for your request.</p>
+      </div>
+
+
+
+      {# Hidden links for future pages #}
+      {# TODO: Allow this template to render CMS admin-entered markup #}
+      <aside class="row" hidden>
+        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+          <p><a href="/submissions/exception">Exception Request</a></p>
+
+          <p><a href="/submissions/extension-request">Extension Request</a></p>
+
+          <p><a href="/workbench/dashboard">Dashboard</a></p>
         </div>
-        </div>
+      </aside>
 
-
-
-
-        {# Hidden links for future pages #}
-        {# TODO: Allow this template to render CMS admin-entered markup #}
-        <aside class="row" hidden>
-          <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-            <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
-
-            <p><a href="/submissions/exception">Exception Request</a></p>
-
-            <p><a href="/submissions/extension-request">Extension Request</a></p>
-
-            <p><a href="/workbench/dashboard">Dashboard</a></p>
-          </div>
-        </aside>
-
-        {# Scripts #}
+      {# Scripts #}
 
         <aside>
+          <!-- To check for blank space only in text inputs-->
+          <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+          <!--Adds blank space listener to all text input fields on page load #-->
+          <script>
+          const formTextInputs = document.querySelectorAll('input[type=text], textarea');
+          noEmptyInputs(formTextInputs);
+          </script> 
           <!-- To require exception is not longer than a year -->
             <script id="form-exception_length_less_than_year" type="module">
               $(function(){
@@ -236,8 +243,8 @@
           <div class="o-section o-section--style-light">
             <hr />
             <small>
-              <sup>*</sup> Exceptions cannot be granted for periods longer than a year<br />
-              <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38"<br />
+              <sup>*</sup> Exceptions cannot be granted for periods longer than a year.<br />
+              <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
             </small>
             <hr />
           </div>

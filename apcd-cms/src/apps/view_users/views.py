@@ -6,7 +6,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
     user_content = get_users()
@@ -18,8 +17,6 @@ class ViewUsersTable(TemplateView):
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
-        actions = 'View'
-
 
         def _set_user(usr):
             return {
@@ -31,23 +28,16 @@ class ViewUsersTable(TemplateView):
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
-                    'active': usr[8],
-                    'role_name': usr[9],
-    
+                    'active': 'Active' if usr[8] else 'Inactive',
+                    'user_number': usr[9],
+                    'role_name': usr[10],
                 }
 
-        def _set_modal_content(usr):
-            return {
-                'notes': usr[7],
-                
-            }
-        
-        
 
-        context['header'] = ['User ID', 'Email', 'Name', 'Organization', 'Role', 'Active', 'Created', 'Updated', 'Notes']
+
+        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
         context['rows'] = []
         for user in user_content:
-            user_view = [usr for usr in user_content if usr[1] == user[0]]
             context['rows'].append(_set_user(user,))
 
         return context
