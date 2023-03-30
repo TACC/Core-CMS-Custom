@@ -1,0 +1,84 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'view_users_table/css/core-styles.c-form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>View Users</h1>
+  <hr />
+  <p style="margin-bottom: 30px">View submitted users.</p>
+  <hr />
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>View Users by Organization: </b></span>
+      <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
+        <option class="dropdown-text" value="">All</option>
+        {% for r in rows %}
+        <option class="dropdown-text">{{r.org_name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody id="usersTableBody">
+          {% for r in rows %}
+              <tr>
+                  <td>{{r.user_id}}</td>
+                  <td>{{r.user_name}}</td>
+                  <td>{{r.org_name}}</td>
+                  <td>{{r.role_name}}</td>
+                  <td>{{r.active}}</td>
+                  <td>{{r.user_number}}</td>
+                  <td>
+                    {% include "view_user_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+<script>
+/*filters by organization with dropdown*/
+function filterTableByOrganization() {
+  var dropdown, filter, newinput, bestinput, table, tr, td, i;
+  input = document.getElementById("organizationFilter");
+  filter = input.value.replace("&", "&amp;").replace("(", "").replace(")","");
+  table = document.getElementById("usersTableBody");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      if (td.innerHTML.replace("(", "").replace(")","").search(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";  
+      }
+    }  
+  }
+}
+
+/* remove duplicates from dropdown */
+
+const options = []
+
+document.querySelectorAll('#organizationFilter > option').forEach((option) => {
+    if (options.includes(option.value)) option.remove()
+    else options.push(option.value)
+})
+</script>
+
+{% endblock %}

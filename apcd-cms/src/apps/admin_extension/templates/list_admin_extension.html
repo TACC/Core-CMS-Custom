@@ -1,0 +1,70 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'submissions/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'submissions/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_submissions/css/admin_table.css' %}">
+<link rel="stylesheet" href="{% static 'admin_extension/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>View Extension Requests</h1>
+  <hr />
+  <p style="margin-bottom: 30px">All submitted extension requests</p>
+  <hr />
+  <table id="submissionTable" class="submission-table">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody>
+          {% for r in page %}
+              <tr>
+                <td>{{r.created_at}}</td>
+                <td>{{r.org_name}} - {{r.submitter_id}}</td>
+                <td>{{r.requestor_name}}</td>
+                <td>{{r.extension_type}}</td>
+                <td>{{r.outcome}}</td>
+                <td>{{r.status}}</td>
+                  <td>
+                    {% include "view_admin_extension_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewAdminExtensionsModal_{{r.extension_id}}" data-backdrop="static">View Details</a>
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  <div class="pagination">
+    {% if page.has_previous %}
+        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.previous_page_number}}"><</a>
+    {% endif %}
+
+    {% if page.number|add:'-2' > 0 %}
+        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.number|add:'-2'}}">&hellip;</a>
+    {% endif %}
+    
+    {% for i in page.paginator.page_range %}
+        {% if i > page.number|add:'-2' and i < page.number|add:'2' %}
+            <a class="{% if i == page_num %}active{% endif %} " href="{% url 'admin_extension:admin_extensions' %}?page={{i}}">{{i}}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page.paginator.num_pages >= page.number|add:'2' %}
+        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.number|add:'2'}}">&hellip;</a>
+        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.paginator.num_pages}}">{{page.paginator.num_pages}}</a>
+    {% endif %}
+
+    {% if page.has_next %}
+        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.next_page_number}}">></a>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

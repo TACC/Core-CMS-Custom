@@ -1,0 +1,30 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'forms/css/extension_submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <div class="row">
+    <div class="col">
+      <h1>Request an Extension</h1>
+      <hr />
+
+      <p style="margin-bottom: 30px">
+        This form should be completed and submitted by data submitters to request
+        an extension to the deadline for submitting either a regular submission or
+        a corrected resubmission. Please review the
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+          target="_blank">Data Submission Guide</a> for details about completing and submitting this form, especially
+        regarding the timeliness of the request.
+      </p>
+      <hr />
+      <p class="c-message c-message--error">
+          We have not found a submitter code on file for your account. For assistance, please <a href="/workbench/dashboard">submit a ticket</a>.
+      </p>
+      <a class="c-button c-button--primary" href="/workbench/dashboard">Go to Dashboard</a>
+  </div>
+  {% endblock %}

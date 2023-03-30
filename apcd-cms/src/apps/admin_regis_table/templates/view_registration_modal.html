@@ -1,0 +1,106 @@
+<div id="viewRegistrationModal_{{r.reg_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">View Registration</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <p>{{modal_content}}</p> -->
+        <div>
+          <dl>
+            <h4>Organization</h4>
+            <dd>          
+              <dl class="c-data-list--is-vert c-data-list--is-wide">
+                <dt class="c-data-list__key">On behalf of</dt>
+                <dd class="c-data-list__value">
+                  {% if r.view_modal_content.for_self %} 
+                    Self
+                  {% else %}
+                    Other
+                  {% endif %}
+                </dd>
+                <dt class="c-data-list__key">Type</dt>
+                <dd class="c-data-list__value">{{r.view_modal_content.type}}</dd>                       
+                <dt class="c-data-list__key">Business Name</dt>                
+                <dd class="c-data-list__value">{{r.view_modal_content.biz_name}}</dd>
+                <dt class="c-data-list__key">Mailing Address</dt>                
+                <dd class="c-data-list__value">{{r.view_modal_content.address}}</dd>
+                <dd class="c-data-list__value">{{r.view_modal_content.city}}, {{r.view_modal_content.state}}</dd>
+                <dd class="c-data-list__value">{{r.view_modal_content.zip}}</dd>
+              </dl>
+            </dd>
+            <hr>
+            <h4>File Submission</h4>
+            <dd>
+              <dl class="c-data-list--is-vert c-data-list--is-wide">
+                <dt class="c-data-list__key">Types of Files</dt>
+                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
+                  {% if file_type_selected %}
+                    <dd class="c-data-list__value">{{file_type}}</dd>
+                  {% endif %}
+                {% endfor %}
+                <dt class="c-data-list__key">Submission Method</dt>
+                <dd class="c-data-list__value">{{r.view_modal_content.sub_method}}</dd>
+              </dl>
+            </dd>
+            <hr>
+            <h4>Entity/Entities Being Registered</h4>
+            <dd>
+              {% for entity in r.view_modal_content.entities%}
+                <h5>Entity {{forloop.counter}}</h5>
+                <dl class="c-data-list--is-vert c-data-list--is-wide">
+                  <dt class="c-data-list__key">Name</dt>
+                  <dd class="c-data-list__value">{{entity.ent_name}}</dd>                                 
+                  <dt class="c-data-list__key">FEIN</dt>
+                  <dd class="c-data-list__value">{{entity.fein}}</dd>
+                  <dt class="c-data-list__key">License Number</dt>
+                  <dd class="c-data-list__value">{{entity.license}}</dd>
+                  <dt class="c-data-list__key">NAIC Company Code</dt>
+                  <dd class="c-data-list__value">{{entity.naic}}</dd>
+                  <h6>Coverage Estimates <small>(Inclusive of all claims as of December 31 of previous year.)</small></h6>
+                  <dt class="c-data-list__key">Total Covered Lives</dt>
+                  <dd class="c-data-list__value">{{entity.no_covered}}</dd>
+                  <dt class="c-data-list__key">Claims and Encounters Volume</dt>
+                  <dd class="c-data-list__value">{{entity.claim_and_enc_vol}}</dd>
+                  <dt class="c-data-list__key">Total Claims Value (USD)</dt>
+                  <dd class="c-data-list__value">{{entity.claim_val}}</dd>
+                </dl>
+              {% endfor %}
+            </dd>             
+            <hr>
+            <h4>Contact Information</h4>
+            <dd>
+            {% for contact in r.view_modal_content.contacts %}
+              <h5>Contact {{forloop.counter}}</h5>
+              <dl class="c-data-list--is-vert c-data-list--is-wide">
+                <dt class="c-data-list__key">Role</dt>
+                <dd class="c-data-list__value">{{contact.role}}</dd>
+                <dt class="c-data-list__key">Name<dt>
+                <dd class="c-data-list__value">{{contact.name}}</dd>
+                <dt class="c-data-list__key">Phone</dt>
+                <dd class="c-data-list__value">{{contact.phone}}</dd>
+                <dt class="c-data-list__key">Email</dt>
+                <dd class="c-data-list__value">{{contact.email}}</dd>
+                <dt> 
+                  <i>
+                    Should
+                    {% if not contact.notif %}
+                      <strong>not</strong>
+                    {% endif %}
+                    receive system notifications
+                  </i>
+                </dt>
+              </dl>
+            {% endfor %}
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
