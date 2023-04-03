@@ -1,4 +1,13 @@
+{% load static %}
+
 <aside>
+    {# To check for blank space only in text inputs #}
+    <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+    {# Adds blank space listener to all text input fields on page load #}
+    <script>
+      const formTextInputs = document.querySelectorAll('input[type=text]');
+      noEmptyInputs(formTextInputs);
+    </script> 
     {# To let user add and remove entities #}
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
@@ -183,6 +192,10 @@
                 .forEach(i => (i.required = !e.target.value.length));
         };
         inputs.forEach(i => i.addEventListener('input', inputListener));
+
+        const addEntityNameInput = document.querySelectorAll(`input[name=entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}]`);
+        noEmptyInputs(addEntityNameInput);
+
         btnStatus();
       });
 
@@ -308,6 +321,13 @@
               </div>
             </div>
         `;
+
+        const addContactTextInputs = document.querySelectorAll(`
+          input[name=contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}],
+          input[name=contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}]
+        `);
+        noEmptyInputs(addContactTextInputs);
+
         btnStatus();
       });
 
