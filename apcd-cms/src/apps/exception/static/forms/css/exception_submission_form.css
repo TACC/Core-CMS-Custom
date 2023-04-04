@@ -14,13 +14,12 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
 }
 
 /* Field Widths */
-#threshold-requested {
-  min-width: 25ch;
+#threshold-requested, #expiration-date {
+  min-width: 15ch;
 }
 /* Field Layouts */
 
-[id^="extension_block_"] {
-  --max-col-width: 15ch;
+[id^="exception_block"] {
 
   /* Expectations:
         - automatically enough columns
@@ -31,5 +30,5 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
   display: grid;
   column-gap: var(--global-space--grid-gap);
   grid-template-columns: repeat(auto-fill, var(--max-col-width));
-  max-width: calc(var(--global-space--grid-gap) + var(--max-col-width) * 3);
+  max-width: calc(var(--global-space--grid-gap) + var(--max-col-width) * 2);
 }

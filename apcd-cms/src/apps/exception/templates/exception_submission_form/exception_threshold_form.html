@@ -75,6 +75,18 @@
                 find threshold field codes and minimum threshold percentages for your threshold reduction request.
 
               </p>
+              <div class="field-wrapper select required" >
+                <div class="field-errors" style="display: none"></div>
+                <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
+
+                <select name="field-threshold-exception" required="required" class="choicefield" 
+                id="field-threshold-exception">
+                  <!-- Populates in script -->
+                  <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
+                  <option class="dropdown-text" value={{cdl.field_list_code}}></option>
+                </select>
+              </div>
+              <div class="o-grid o-grid--col-auto-count">
               <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
@@ -83,23 +95,14 @@
                 <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper select required">
+                
+
+                <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
-                  <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
-
-                  <select name="field-threshold-exception" required="required" class="choicefield" 
-                  id="field-threshold-exception">
-                    <!-- Populates in script -->
-                    <option class="dropdown-text" value={{cdl.field_list_code}}></option>
-                  </select>
-                </div>
-
-                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
                   <label for="threshold-requested">
                     Requested Threshold Percentage <span class="asterisk">*</span>
                   </label>
-                  <div class="field-errors" style="display: none"></div>
+                  
                   <div class="s-affixed-input-wrapper">
                     <input type="number" name="threshold-requested" class="textinput" id="threshold-requested"
                       inputmode="numeric" min="0" max="99" required />
@@ -209,6 +212,14 @@
       {# Scripts #}
 
       <aside>
+        <!--To check for blank space only in text inputs #}-->
+        <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        {# Adds blank space listener to all text input fields on page load #}
+        <script>
+          const formTextInputs = document.querySelectorAll('input[type=text], textarea');
+          noEmptyInputs(formTextInputs);          
+        </script> 
         <!-- To require exception is not longer than a year -->
         <script id="form-exception_length_less_than_year" type="module">
           $(function () {
@@ -238,14 +249,32 @@
             /*Clears help text when file type changes*/
             helpText.innerHTML = ''
             selectedFileType = event.target.value;
-            if (selectedFileType != '') {
-              const xhr = new XMLHttpRequest();
-              xhr.open('GET', `/submissions/threshold-exception?file_type=${selectedFileType}`);
-              xhr.send();
-              fieldTypeSelect.innerHTML =
-                `<option class=dropdown-text value=''>Select a Field Type</option>
-                {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
-            }
+
+          });
+        </script>
+        <script>
+          $(document).ready(function() {
+            $('#file_type').change(function() {
+              var file_type = $(this).val();
+              $.ajax({
+                url: '/submissions/threshold-exception',
+                type: 'GET',
+                data: {
+                  'file_type': file_type
+                },
+                success: function(response) {
+                  if (selectedFileType != '') {
+                    fieldTypeSelect.innerHTML =
+                      `<option class=dropdown-text value=''>-- Select a Field Type --</option>
+                      {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
+                  }
+                  console.log(response);
+                },
+                error: function(xhr, status, error) {
+                  console.log(error);
+                }
+              });
+            });
           });
         </script>
         <!-- To change help text for requested threshold percentage -->
