@@ -254,7 +254,7 @@
             $('#file_type').change(function() {
               var file_type = $(this).val();
               $.ajax({
-                url: '/submissions/threshold-exception',
+                url: '/submissions/threshold-exception/',
                 type: 'GET',
                 data: {
                   'file_type': file_type
