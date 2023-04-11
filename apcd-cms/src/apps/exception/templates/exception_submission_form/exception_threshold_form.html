@@ -265,7 +265,6 @@
                       `<option class=dropdown-text value=''>-- Select a Field Type --</option>
                       {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
                   }
-                  console.log(response);
                 },
                 error: function(xhr, status, error) {
                   console.log(error);
