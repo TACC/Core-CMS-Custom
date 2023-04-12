@@ -13,7 +13,7 @@
       <h1>Threshold Exception Request</h1>
       <hr />
 
-      <p style="margin-bottom: 30px">
+      <p>
         This form should be completed and submitted only by entities who are
         eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
         and associated regulations. Please review the legislation and regulation before
@@ -29,6 +29,7 @@
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
               <hr />
+              <h4>File Type</h4>
               <p>Select submission file type for your requested threshold reduction:
 
               </p>
@@ -61,20 +62,27 @@
                 </option>
               </select>
               <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
-                exception form submission.
+                form submission.
               </div>
             </div>
             <hr />
 
 
-            <div id="exception_block_1">
+            
               <h4>Requested Threshold Reduction</h4>
-              <p>Please reference this <a
-                  href=https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf>data
-                  submission guide</a> to
-                find threshold field codes and minimum threshold percentages for your threshold reduction request.
+              <div id="exception_block_1">
+              <div class="field-wrapper select required" >
+                <div class="field-errors" style="display: none"></div>
+                <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
 
-              </p>
+                <select name="field-threshold-exception" required="required" class="choicefield" 
+                id="field-threshold-exception">
+                  <!-- Populates in script -->
+                  <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
+                  <option class="dropdown-text" value={{cdl.field_list_code}}></option>
+                </select>
+              </div>
+              <div class="o-grid o-grid--col-auto-count">
               <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
@@ -83,31 +91,21 @@
                 <input type="date" name="expiration-date" class="numeric" id="expiration-date" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper input required id=field-threshold-exception name=field-threshold-exception">
+                
+
+                <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
-                  <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
-
-                  <input type="text" name="field-threshold-exception" required class="textinput"
-                  id="field-threshold-exception" placeholder="CDLXX000" minlength="8" maxlength="8"
-                  title="Must have 8 characters"/>
-                  <div id="help-text-threshold-required" class="help-text">
-                    Format CDLXX000
-                </div>
-
-                </div>
-                <div class="field-wrapper numberinput required s-affixed-input-wrapper--suffix">
                   <label for="threshold-requested">
                     Requested Threshold Percentage <span class="asterisk">*</span>
                   </label>
-                  <div class="field-errors" style="display: none"></div>
+                  
                   <div class="s-affixed-input-wrapper">
                     <input type="number" name="threshold-requested" class="textinput" id="threshold-requested"
                       inputmode="numeric" min="0" max="99" required />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
-                  <div id="help-text-threshold-requested-required" class="help-text">
-                    Must be less than maximum percentage for this field code
+                  <!-- Populates in script-->
+                  <div id="help-text-threshold-requested" class="help-text">
                   </div>
                 </div>
               </div>
@@ -120,8 +118,8 @@
                 much detail as possible regarding the exception request, indicating the
                 specific submission requirements for which relief is being sought. If applicable,
                 indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
-                    class="asterisk" id="justification-asterisk"
-                    style="padding-left: 0; margin-left: 0;">*</span></label></p>
+                    class="asterisk" id="justification-asterisk">
+                    *</span></label></p>
 
               <div class="field-errors" style="display: none"></div>
 
@@ -209,43 +207,97 @@
 
       {# Scripts #}
 
-        <aside>
-          <!-- To check for blank space only in text inputs-->
-          <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
-          <!--Adds blank space listener to all text input fields on page load #-->
-          <script>
+      <aside>
+        <!--To check for blank space only in text inputs #}-->
+        <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        {# Adds blank space listener to all text input fields on page load #}
+        <script>
           const formTextInputs = document.querySelectorAll('input[type=text], textarea');
-          noEmptyInputs(formTextInputs);
-          </script> 
-          <!-- To require exception is not longer than a year -->
-            <script id="form-exception_length_less_than_year" type="module">
-              $(function(){
-                  var dtToday = new Date();
-                  
-                  var month = dtToday.getMonth() + 1;
-                  var day = dtToday.getDate();
-                  var year = dtToday.getFullYear();
-                  if(month < 10)
-                      month = '0' + month.toString();
-                  if(day < 10)
-                      day = '0' + day.toString();
-                  
-                  var minDate = dtToday.toISOString().substr(0, 10);
-                  $('#expiration-date').attr('min', minDate);
-                  year = year + 1;
-                  var maxDate = year + '-' + month + '-' + day;    
-                  $('#expiration-date').attr('max', maxDate);
-              });
-              </script>
-          </aside>
+          noEmptyInputs(formTextInputs);          
+        </script> 
+        <!-- To require exception is not longer than a year -->
+        <script id="form-exception_length_less_than_year" type="module">
+          $(function () {
+            var dtToday = new Date();
 
-          {# Footnotes #}
-          <div class="o-section o-section--style-light">
-            <hr />
-            <small>
-              <sup>*</sup> Exceptions cannot be granted for periods longer than a year.<br />
-              <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
-            </small>
-            <hr />
-          </div>
-          {% endblock %}
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+              month = '0' + month.toString();
+            if (day < 10)
+              day = '0' + day.toString();
+
+            var minDate = dtToday.toISOString().substr(0, 10);
+            $('#expiration-date').attr('min', minDate);
+            year = year + 1;
+            var maxDate = year + '-' + month + '-' + day;
+            $('#expiration-date').attr('max', maxDate);
+          });
+        </script>
+        <!-- To fetch CDL codes on file type input change -->
+        <script>
+          const fileTypeSelect = document.querySelector('#file_type');
+          const fieldTypeSelect = document.querySelector('#field-threshold-exception');
+          const helpText = document.getElementById('help-text-threshold-requested')
+          fileTypeSelect.addEventListener('change', function (event) {
+            /*Clears help text when file type changes*/
+            helpText.innerHTML = '';
+            selectedFileType = event.target.value;
+            fieldTypeSelect.innerHTML = '';
+
+          });
+        </script>
+        <script>
+          $(document).ready(function() {
+            $('#file_type').change(function() {
+              var file_type = $(this).val();
+              $.ajax({
+                url: '/submissions/threshold-exception/',
+                type: 'GET',
+                data: {
+                  'file_type': file_type
+                },
+                success: function(response) {
+                  if (selectedFileType != '') {
+                    fieldTypeSelect.innerHTML =
+                      `<option class=dropdown-text value=''>-- Select a Field Type --</option>
+                      {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
+                  }
+                },
+                error: function(xhr, status, error) {
+                  console.log(error);
+                }
+              });
+            });
+          });
+        </script>
+        <!-- To change help text for requested threshold percentage -->
+        <script>
+          fieldTypeSelect.addEventListener('change', function (event) {
+            selectedFieldType = event.target.value;
+            if (selectedFieldType != '') {
+              {% for cdl in cdls %}
+                if (selectedFieldType == "{{cdl.field_list_code}}") {
+                  helpText.innerHTML = "Must be less than the {{cdl.threshold_value}}% required."
+                }
+              {% endfor %}
+            }
+          });
+        </script>
+      </aside>
+
+      {# Footnotes #}
+      <div class="o-section o-section--style-light">
+        <hr />
+        <small>
+          <sup>*</sup> Exceptions cannot be granted for periods longer than a year.<br />
+          <sup>**</sup>Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
+        </small>
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
