@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_users
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.utils.utils import table_filter
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,13 +32,25 @@ class ViewUsersTable(TemplateView):
                     'active': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
+                    'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
                 }
-
 
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
         context['rows'] = []
+        context['filter_options'] = ['All']
+        table_entries = []
         for user in user_content:
-            context['rows'].append(_set_user(user,))
+            table_entries.append(_set_user(user,))
+            context['filter_options'].append(user[4])
+
+        filter = self.request.GET.get('filter')
+
+        context['selected_filter'] = None
+        if filter is not None and filter != 'All':
+            context['selected_filter'] = filter
+            table_entries = table_filter(filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+
+        context['rows'] = table_entries
 
         return context
