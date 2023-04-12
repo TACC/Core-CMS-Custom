@@ -36,7 +36,15 @@ class ExceptionThresholdFormView(TemplateView):
 
         submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
+        file_type = self.request.GET.get('file_type')
+
+        context['file_type'] = file_type
+
+        cdls =  apcd_database.get_cdl_exceptions(file_type)
+
         self.request.session['submitters'] = submitters
+        self.request.session['cdls'] = cdls
+        self.request.session['file_type'] = file_type
 
         def _set_submitter(sub):
             return {
@@ -47,10 +55,22 @@ class ExceptionThresholdFormView(TemplateView):
                 "org_name": title_case(sub[4])
             }
 
+        def _set_cdl(file_type):
+            return {
+                "field_list_code": file_type[0],
+                "field_list_value": file_type[1],
+                "threshold_value": file_type[2]
+            }
+
         context["submitters"] = []
 
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
+
+        context["cdls"] = []
+
+        for cdl in cdls:
+            context['cdls'].append(_set_cdl(cdl))
 
         return context
 
