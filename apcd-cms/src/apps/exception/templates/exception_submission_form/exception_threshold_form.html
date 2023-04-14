@@ -30,7 +30,6 @@
             <div class="exception-header-1">
               <hr />
               <h4>File Type</h4>
-              <h4>File Type</h4>
               <p>Select submission file type for your requested threshold reduction:
 
               </p>
@@ -64,19 +63,13 @@
               </select>
               <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
                 form submission.
-                form submission.
               </div>
             </div>
             <hr />
 
 
             
-            
               <h4>Requested Threshold Reduction</h4>
-              <div id="exception_block_1">
-              <div class="field-wrapper select required" >
-                <div class="field-errors" style="display: none"></div>
-                <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
               <div id="exception_block_1">
               <div class="field-wrapper select required" >
                 <div class="field-errors" style="display: none"></div>
@@ -101,22 +94,16 @@
                 
 
                 <div class="field-wrapper numberinput required">
-                
-
-                <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
                   <label for="threshold-requested">
                     Requested Threshold Percentage <span class="asterisk">*</span>
                   </label>
-                  
                   
                   <div class="s-affixed-input-wrapper">
                     <input type="number" name="threshold-requested" class="textinput" id="threshold-requested"
                       inputmode="numeric" min="0" max="99" required />
                     <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
-                  <!-- Populates in script-->
-                  <div id="help-text-threshold-requested" class="help-text">
                   <!-- Populates in script-->
                   <div id="help-text-threshold-requested" class="help-text">
                   </div>
@@ -131,8 +118,6 @@
                 much detail as possible regarding the exception request, indicating the
                 specific submission requirements for which relief is being sought. If applicable,
                 indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
-                    class="asterisk" id="justification-asterisk">
-                    *</span></label></p>
                     class="asterisk" id="justification-asterisk">
                     *</span></label></p>
 
@@ -222,12 +207,6 @@
 
       {# Scripts #}
 
-      <aside>
-        <!--To check for blank space only in text inputs #}-->
-        <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        {# Adds blank space listener to all text input fields on page load #}
-        <script>
       <aside>
         <!--To check for blank space only in text inputs #}-->
         <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
