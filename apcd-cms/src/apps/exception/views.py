@@ -55,6 +55,13 @@ class ExceptionThresholdFormView(TemplateView):
                 "org_name": title_case(sub[4])
             }
 
+        def _set_cdl(file_type):
+            return {
+                "field_list_code": file_type[0],
+                "field_list_value": file_type[1],
+                "threshold_value": file_type[2]
+            }
+
         context["submitters"] = []
 
         for submitter in submitters:
