@@ -252,20 +252,18 @@
         <script>
           $(document).ready(function() {
             $('#file_type').change(function() {
-              var file_type = $(this).val();
+              let file_type = $(this).val();
+              let cdls;
               $.ajax({
-                url: '/submissions/threshold-exception/',
+                url: 'get-cdls/' + file_type,
                 type: 'GET',
-                data: {
-                  'file_type': file_type
-                },
                 success: function(response) {
                   if (selectedFileType != '') {
+                    console.log(cdls);
                     fieldTypeSelect.innerHTML =
                       `<option class=dropdown-text value=''>-- Select a Field Type --</option>
                       {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
                   }
-                  console.log(response);
                 },
                 error: function(xhr, status, error) {
                   console.log(error);

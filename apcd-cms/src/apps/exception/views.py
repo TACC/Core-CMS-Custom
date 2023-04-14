@@ -34,16 +34,15 @@ class ExceptionThresholdFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = [ (2, 'TESTGOLD', 10000001, 'gmunoz1', 'CHCD'), (3, 'TESTGOLD', 10000002, 'gmunoz1', 'CHCD'), (1, 'TESTGOLD', 10000000, 'gmunoz1', 'CHCD') ]
 
         file_type = self.request.GET.get('file_type')
 
         context['file_type'] = file_type
 
-        cdls =  apcd_database.get_cdl_exceptions(file_type)
 
         self.request.session['submitters'] = submitters
-        self.request.session['cdls'] = cdls
+        
         self.request.session['file_type'] = file_type
 
         def _set_submitter(sub):
@@ -55,22 +54,11 @@ class ExceptionThresholdFormView(TemplateView):
                 "org_name": title_case(sub[4])
             }
 
-        def _set_cdl(file_type):
-            return {
-                "field_list_code": file_type[0],
-                "field_list_value": file_type[1],
-                "threshold_value": file_type[2]
-            }
-
         context["submitters"] = []
 
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
 
-        context["cdls"] = []
-
-        for cdl in cdls:
-            context['cdls'].append(_set_cdl(cdl))
 
         return context
 
@@ -172,6 +160,56 @@ class ExceptionOtherFormView(TemplateView):
             return response
         else:
             return HttpResponseRedirect('/')
+
+def get_cdls(self, request, file_type):
+        # cdls = super(ExceptionThresholdFormView, self).get_cdls(file_type)
+    # put the db call here, returning a static list for testing
+    cdls =  [('CDLME001', 'Data Submitter Code', '100'),
+('CDLME004', 'Member\nInsurance/Product\nCategory Code', '90'),
+('CDLME005', 'Start Year of\nSubmission ', '100'),
+('CDLME006', 'Start Month\nof Submission ', '100'),
+('CDLME007', 'Insured Group or Policy Number', '80'),
+('CDLME009', 'Medicaid AID Category ', '50'),
+('CDLME011', 'Plan Specific Contract Number', '60'),
+('CDLME012', 'Subscriber Last Name ', '100'),
+('CDLME013', 'Subscriber First Name ', '100'),
+('CDLME015', 'Sequence Number ', '100'),
+('CDLME017', 'Individual Relationship\nCode', '90'),
+('CDLME018', 'Member Gender ', '90'),
+('CDLME019', 'Member Date of Birth ', '90'),
+('CDLME020', 'Member Last Name ', '100'),
+('CDLME021', 'Member First Name ', '100'),
+('CDLME023', 'Member Street Address', '60'),
+('CDLME024', 'Member City Name ', '60'),
+('CDLME025', 'Member State or Province', '80'),
+('CDLME026', 'Member ZIP Code ', '80'),
+('CDLME036', 'Medical Coverage\nUnder This Plan', '90'),
+('CDLME037', 'Pharmacy Coverage\nUnder This Plan', '90'),
+('CDLME039', 'Behavioral Health\nCoverage Under This\nPlan', '90'),
+('CDLME040', 'Primary Insurance Indicator', '100'),
+('CDLME041', 'Coverage Type ', '50'),
+('CDLME045', 'Group Name ', '60'),
+('CDLME050', 'Plan Effective Date ', '90'),
+('CDLME061', 'Carrier Specific Unique\nMember ID', '95'),
+('CDLME062', 'Carrier Specific Unique\nSubscriber ID', '95'),
+('CDLME064', 'High Deductible Plan Indicator', '50'),
+('CDLME899', 'Record Type ', '100')]
+        
+    def _set_cdl(cdlCall):
+        return {
+            "field_list_code": cdlCall[0],
+            "field_list_value": cdlCall[1],
+            "threshold_value": cdlCall[2]
+        }
+# request.session['cdls'] = cdls
+# request.session['file_type'] = file_type
+
+    cdls['cdls'] = []
+
+    for cdl in cdls:
+        cdls['cdls'].append(_set_cdl(cdl))
+
+    return cdls
 
 def _err_msg(resp):
     if hasattr(resp, "pgerror"):
