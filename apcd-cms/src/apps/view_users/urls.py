@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 from apps.view_users.views import ViewUsersTable
 
 app_name = 'administration'
