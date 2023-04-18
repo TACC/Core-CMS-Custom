@@ -1,10 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.views.generic import TemplateView
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -40,10 +41,9 @@ class ExceptionThresholdFormView(TemplateView):
 
         context['file_type'] = file_type
 
-        cdls =  apcd_database.get_cdl_exceptions(file_type)
 
         self.request.session['submitters'] = submitters
-        self.request.session['cdls'] = cdls
+        
         self.request.session['file_type'] = file_type
 
         def _set_submitter(sub):
@@ -67,10 +67,6 @@ class ExceptionThresholdFormView(TemplateView):
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
 
-        context["cdls"] = []
-
-        for cdl in cdls:
-            context['cdls'].append(_set_cdl(cdl))
 
         return context
 
@@ -172,6 +168,25 @@ class ExceptionOtherFormView(TemplateView):
             return response
         else:
             return HttpResponseRedirect('/')
+
+def get_cdls(request):
+    file_type = request.GET.get('file_type')
+
+    cdls = apcd_database.get_cdl_exceptions(file_type)
+    
+    cdlsResponse = []
+
+    ## To make cdlsResponse into a list to pass to the script
+    for cdl in cdls:
+        cdls_dict = {
+        "field_list_code": cdl[0],
+        "field_list_value": cdl[1],
+        "threshold_value": cdl[2]
+    }
+        cdlsResponse.append(cdls_dict)
+
+    return JsonResponse((cdlsResponse), safe=False)
+
 
 def _err_msg(resp):
     if hasattr(resp, "pgerror"):
