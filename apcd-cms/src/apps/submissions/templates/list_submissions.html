@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'submissions/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'submissions/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
@@ -14,6 +15,27 @@
   <hr />
   <p style="margin-bottom: 30px">A list of submissions by a user</p>
   <hr />
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        {% for option in filter_options %}
+          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      <span><b>Sort by: </b></span>
+      <select id="dateSort" class="status-filter" onchange="sortByDate()">
+        <option class="dropdown-text" {% if not selected_sort %}selected{% endif %} disabled hidden>-- --</option>
+        {% for option, display_text in sort_options.items %}
+          <option class="dropdown-text" value={{option}} {% if option == selected_sort %}selected{% endif %}>{{ display_text }}</option>
+        {% endfor %}
+      </select>
+      {% if selected_filter or selected_sort %}
+        <button onclick="clearSelections()">Clear Options</button>
+      {% endif %}
+    </div>
+  </div>
+
   <table id="submissionTable" class="submission-table">
       <thead>
           <tr>
@@ -41,4 +63,44 @@
 
   {% include 'paginator.html' %}
 </div>
+<script>
+    function filterTableByStatus() {
+        var filterDropdown, filterValue, url_params, url, xhr;
+        filterDropdown = document.getElementById("statusFilter");
+        filterValue =  filterDropdown.value;
+        url_params = `?filter=${filterValue}`;
+        {% if selected_sort %}
+            url_params = `?filter=${filterValue}&sort={{selected_sort}}`;
+        {% endif %}
+        url = `/submissions/list-submissions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function sortByDate() {
+        var sortDropdown, sortValue, url_params, url, xhr;
+        sortDropdown = document.getElementById('dateSort');
+        sortValue =  sortDropdown.value;
+        url_params = `?sort=${sortValue}`;
+        {% if selected_filter %}
+            url_params = `?filter={{selected_filter}}&sort=${sortValue}`;
+        {% endif %}
+        url = `/submissions/list-submissions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/submissions/list-submissions/')
+        xhr.send()
+        window.location.href = '/submissions/list-submissions/';
+        window.location.load();
+    }
+</script>  
 {% endblock %}
