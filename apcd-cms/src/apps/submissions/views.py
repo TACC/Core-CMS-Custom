@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
 from apps.utils.apcd_database import get_user_submissions_and_logs
 from apps.utils.apcd_groups import has_apcd_group
-from apps.utils.utils import title_case
+from apps.utils.utils import title_case, table_filter
 from apps.components.paginator.paginator import paginator
 import logging
 from dateutil import parser
@@ -50,8 +50,30 @@ class SubmissionsTable(TemplateView):
 
 
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
+        context['filter_options'] = ['All', 'In Process', 'Complete']
+        context['sort_options'] = {'newDate': 'Date: Newest to Oldest', 'oldDate': 'Date: Oldest to Newest'}
 
-        context.update(paginator(self.request, submission_content))
+        filter = self.request.GET.get('filter')
+        dateSort = self.request.GET.get('sort')
+
+        def getDate(row):
+            date = row['received_timestamp']
+            return date if date is not None else parser.parse('1-1')
+
+        if dateSort is not None:
+            context['selected_sort'] = dateSort
+            submission_content[offset:offset + limit] = sorted(submission_content[offset:offset + limit], key=lambda row:getDate(row), reverse=(dateSort == 'newDate'))
+
+        context['selected_filter'] = None
+        if filter is not None and filter != 'All':
+            context['selected_filter'] = filter
+            submission_content[offset:offset + limit] = table_filter(filter, submission_content[offset:offset + limit], 'status')
+
+        queryStr = '?'
+        if len(self.request.META['QUERY_STRING']) > 0:
+            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
+        context['query_str'] = queryStr
+        context.update(paginator(self.request, submission_content, 3))
         context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context
