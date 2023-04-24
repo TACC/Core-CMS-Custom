@@ -28,10 +28,26 @@ class SubmissionsTable(TemplateView):
 
         submission_content = get_user_submissions_and_logs(user)
 
+        filter = self.request.GET.get('filter')
+        dateSort = self.request.GET.get('sort')
+
+        def getDate(row):
+            date = row['received_timestamp']
+            return parser.parse(date) if date is not None else parser.parse('1-1')
+
+        if dateSort is not None:
+            context['selected_sort'] = dateSort
+            submission_content = sorted(submission_content, key=lambda row:getDate(row), reverse=(dateSort == 'newDate'))
+
         try:
             page_num = int(self.request.GET.get('page'))
         except:
             page_num = 1
+
+        context['selected_filter'] = None
+        if filter is not None and filter != 'All':
+            context['selected_filter'] = filter
+            submission_content = table_filter(filter, submission_content, 'status')
 
         limit = 50
         offset = limit * (page_num - 1)
@@ -51,29 +67,13 @@ class SubmissionsTable(TemplateView):
 
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['filter_options'] = ['All', 'In Process', 'Complete']
-        context['sort_options'] = {'newDate': 'Date: Newest to Oldest', 'oldDate': 'Date: Oldest to Newest'}
-
-        filter = self.request.GET.get('filter')
-        dateSort = self.request.GET.get('sort')
-
-        def getDate(row):
-            date = row['received_timestamp']
-            return date if date is not None else parser.parse('1-1')
-
-        if dateSort is not None:
-            context['selected_sort'] = dateSort
-            submission_content[offset:offset + limit] = sorted(submission_content[offset:offset + limit], key=lambda row:getDate(row), reverse=(dateSort == 'newDate'))
-
-        context['selected_filter'] = None
-        if filter is not None and filter != 'All':
-            context['selected_filter'] = filter
-            submission_content[offset:offset + limit] = table_filter(filter, submission_content[offset:offset + limit], 'status')
+        context['sort_options'] = {'newDate': 'Newest', 'oldDate': 'Oldest'}
 
         queryStr = '?'
         if len(self.request.META['QUERY_STRING']) > 0:
             queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
-        context.update(paginator(self.request, submission_content, 3))
+        context.update(paginator(self.request, submission_content))
         context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context

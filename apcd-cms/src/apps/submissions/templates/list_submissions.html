@@ -25,7 +25,7 @@
       </select>
       <span><b>Sort by: </b></span>
       <select id="dateSort" class="status-filter" onchange="sortByDate()">
-        <option class="dropdown-text" {% if not selected_sort %}selected{% endif %} disabled hidden>-- --</option>
+        <option class="dropdown-text" {% if not selected_sort %}selected{% else %}hidden{% endif %} disabled> </option>
         {% for option, display_text in sort_options.items %}
           <option class="dropdown-text" value={{option}} {% if option == selected_sort %}selected{% endif %}>{{ display_text }}</option>
         {% endfor %}
