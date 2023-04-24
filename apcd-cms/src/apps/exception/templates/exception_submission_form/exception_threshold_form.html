@@ -252,38 +252,40 @@
         <script>
           $(document).ready(function() {
             $('#file_type').change(function() {
-              var file_type = $(this).val();
+              let file_type = $(this).val();
+              let cdls;
               $.ajax({
-                url: '/submissions/threshold-exception/',
+                url: "{% url 'exception:get-cdls' %}",
                 type: 'GET',
                 data: {
                   'file_type': file_type
                 },
                 success: function(response) {
+                  let cdls = response;
                   if (selectedFileType != '') {
-                    fieldTypeSelect.innerHTML =
-                      `<option class=dropdown-text value=''>-- Select a Field Type --</option>
-                      {% for cdl in cdls %}<option class=dropdown-text value={{cdl.field_list_code}}>{{cdl.field_list_value}} : {{cdl.field_list_code}}</option>{% endfor %}`
+                    let dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
+                    for (let i = 0; i < cdls.length; i++) {
+                      dropDownHTML = dropDownHTML + 
+                      `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
                   }
+                  fieldTypeSelect.innerHTML = dropDownHTML;
+                  //To change help text for requested threshold percentage
+                  fieldTypeSelect.addEventListener('change', function (event) {
+                    selectedFieldType = event.target.value;
+                    if (selectedFieldType != '') {
+                      for (let i = 0; i < cdls.length; i++)
+                        if (selectedFieldType == cdls[i].field_list_code) {
+                          helpText.innerHTML = `Must be less than the ${cdls[i].threshold_value}% required.`
+                        }
+                    }
+                  });
+                }
                 },
                 error: function(xhr, status, error) {
                   console.log(error);
                 }
               });
             });
-          });
-        </script>
-        <!-- To change help text for requested threshold percentage -->
-        <script>
-          fieldTypeSelect.addEventListener('change', function (event) {
-            selectedFieldType = event.target.value;
-            if (selectedFieldType != '') {
-              {% for cdl in cdls %}
-                if (selectedFieldType == "{{cdl.field_list_code}}") {
-                  helpText.innerHTML = "Must be less than the {{cdl.threshold_value}}% required."
-                }
-              {% endfor %}
-            }
           });
         </script>
       </aside>
