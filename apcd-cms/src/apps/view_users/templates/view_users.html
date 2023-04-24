@@ -33,7 +33,7 @@
           </tr>
       </thead>
       <tbody id="usersTableBody">
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.user_id}}</td>
                   <td>{{r.user_name}}</td>
@@ -49,6 +49,7 @@
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %} 
 </div>
 <script>
 /*filters by organization with dropdown*/
