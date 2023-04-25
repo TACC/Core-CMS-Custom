@@ -51,7 +51,6 @@ class ViewUsersTable(TemplateView):
             context['selected_filter'] = filter
             table_entries = table_filter(filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
-        
         context.update(paginator(self.request, table_entries))
         context['pagination_url_namespaces'] = 'administration:view_users'
         
