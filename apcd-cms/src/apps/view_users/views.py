@@ -38,7 +38,6 @@ class ViewUsersTable(TemplateView):
 
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
-        
         context['filter_options'] = ['All']
         table_entries = []
         for user in user_content:
