@@ -22,6 +22,9 @@
           <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
+      {% if selected_filter %}
+        <button onclick="clearSelections()">Clear Filter</button>
+      {% endif %}
     </div>
   </div>
   <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
@@ -62,6 +65,14 @@ function filterTableByOrganization() {
   xhr.send();
   window.location.href = `/administration/view-users/?filter=${filter}`;
   window.location.load();
+}
+function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/administration/view-users/')
+        xhr.send()
+        window.location.href = '/administration/view-users/';
+        window.location.load();
 }
 
 /* remove duplicates from dropdown */
