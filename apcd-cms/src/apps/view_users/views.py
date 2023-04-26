@@ -5,7 +5,6 @@ from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
 import logging
-import datetime
 
 logger = logging.getLogger(__name__)
 
