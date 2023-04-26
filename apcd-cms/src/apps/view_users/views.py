@@ -5,6 +5,7 @@ from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
 import logging
+import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,9 @@ class ViewUsersTable(TemplateView):
         table_entries = []
         for user in user_content:
             table_entries.append(_set_user(user,))
-            context['filter_options'].append(user[4])
+            org_name = user[4]
+            if org_name not in context['filter_options']:  # prevent duplicates
+                context['filter_options'].append(user[4])
 
         filter = self.request.GET.get('filter')
 
@@ -53,5 +56,5 @@ class ViewUsersTable(TemplateView):
 
         context.update(paginator(self.request, table_entries))
         context['pagination_url_namespaces'] = 'administration:view_users'
-        
+
         return context
