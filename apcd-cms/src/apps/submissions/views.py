@@ -33,7 +33,7 @@ class SubmissionsTable(TemplateView):
 
         def getDate(row):
             date = row['received_timestamp']
-            return parser.parse(date) if date is not None else parser.parse('1-1')
+            return parser.parse(date) if date is not None else parser.parse('1-1-3005') # put 'None' date entries all together at top/bottom depending on direction of sort
 
         if dateSort is not None:
             context['selected_sort'] = dateSort
@@ -67,13 +67,13 @@ class SubmissionsTable(TemplateView):
 
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['filter_options'] = ['All', 'In Process', 'Complete']
-        context['sort_options'] = {'newDate': 'Newest', 'oldDate': 'Oldest'}
+        context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
         queryStr = '?'
         if len(self.request.META['QUERY_STRING']) > 0:
             queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
-        context.update(paginator(self.request, submission_content))
+        context.update(paginator(self.request, submission_content, limit))
         context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context
