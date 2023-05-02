@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_all_submissions_and_logs
 from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.utils import title_case
+from apps.utils.utils import title_case, table_filter
 from apps.components.paginator.paginator import paginator
 import logging
 from dateutil import parser
@@ -29,6 +29,11 @@ class AdminSubmissionsTable(TemplateView):
         except:
             page_num = 1
 
+        context['selected_filter'] = None
+        if filter is not None and filter != 'All':
+            context['selected_filter'] = filter
+            submission_content = table_filter(filter, submission_content, 'status')
+
         limit = 50
         offset = limit * (page_num - 1)
 
@@ -45,7 +50,13 @@ class AdminSubmissionsTable(TemplateView):
             } for t in (s['view_modal_content'] or [])]
 
         context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
+        context['filter_options'] = ['All', 'In Process', 'Complete']
+        context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
-        context.update(paginator(self.request, submission_content))
+        queryStr = '?'
+        if len(self.request.META['QUERY_STRING']) > 0:
+            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
+        context['query_str'] = queryStr
+        context.update(paginator(self.request, submission_content, limit))
         context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
         return context
