@@ -86,15 +86,12 @@
             <div class="field-errors" style="display: none"></div>
             <label for="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> License Number </label>
             <input
-              type="text"
+              type="number"
               name="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               placeholder="1234567890"
-              class="textinput"
+              class="integerfield"
               id="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               inputmode="numeric"
-              minlength="5"
-              maxlength="10"
-              pattern="^[1-9]\\d{4}|^[1-9]\\d{9}"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
@@ -105,15 +102,12 @@
             <div class="field-errors" style="display: none"></div>
             <label for="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> NAIC<sup>6</sup> Company Code </label>
             <input
-              type="text"
+              type="number"
               name="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               placeholder="12345"
-              class="textinput"
+              class="integerfield"
               id="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               inputmode="numeric"
-              minlength="5"
-              maxlength="5"
-              pattern="^[1-9]\\d{4}"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">

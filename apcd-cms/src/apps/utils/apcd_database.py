@@ -96,7 +96,6 @@ def get_registrations(reg_id=None):
                 registrations.file_pc,
                 registrations.file_dc,
                 registrations.submitting_for_self,
-                registrations.submission_method,
                 registrations.registration_status,
                 registrations.org_type,
                 registrations.business_name,
@@ -142,7 +141,6 @@ def create_registration(form):
             file_pc,
             file_dc,
             submitting_for_self,
-            submission_method,
             registration_status,
             org_type,
             business_name,
@@ -150,7 +148,7 @@ def create_registration(form):
             city,
             state,
             zip
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
@@ -162,7 +160,6 @@ def create_registration(form):
             True if 'types_of_files_pharmacy' in form else False,
             True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['submission_method']),
             'Received',
             _clean_value(form['type']),
             _clean_value(form['business-name']),
@@ -206,7 +203,6 @@ def update_registration(form, reg_id):
             file_pc = %s,
             file_dc = %s,
             submitting_for_self = %s,
-            submission_method = %s,
             org_type = %s,
             business_name = %s,
             mail_address = %s,
@@ -222,7 +218,6 @@ def update_registration(form, reg_id):
             True if 'types_of_files_pharmacy' in form else False,
             True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['submission_method']),
             _clean_value(form['type']),
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
@@ -646,14 +641,13 @@ def create_submitter(form, reg_data):
             file_mc,
             file_pc,
             file_dc,
-            submission_method,
             submitting_for_self,
             submitter_code,
             payor_code,
             encryption_key,
             created_at,
             status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             reg_data[0],
@@ -663,7 +657,6 @@ def create_submitter(form, reg_data):
             reg_data[4],
             reg_data[7],
             reg_data[8],
-            reg_data[10],
             reg_data[9],
             form['submit_code'],
             _set_int(form['payor_code']),
