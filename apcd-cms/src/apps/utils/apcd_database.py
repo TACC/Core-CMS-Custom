@@ -90,11 +90,6 @@ def get_registrations(reg_id=None):
                 registrations.posted_date,
                 registrations.applicable_period_start,
                 registrations.applicable_period_end,
-                registrations.file_me,
-                registrations.file_pv,
-                registrations.file_mc,
-                registrations.file_pc,
-                registrations.file_dc,
                 registrations.submitting_for_self,
                 registrations.registration_status,
                 registrations.org_type,
@@ -135,11 +130,6 @@ def create_registration(form):
             posted_date,
             applicable_period_start,
             applicable_period_end,
-            file_me,
-            file_pv,
-            file_mc,
-            file_pc,
-            file_dc,
             submitting_for_self,
             registration_status,
             org_type,
@@ -148,17 +138,12 @@ def create_registration(form):
             city,
             state,
             zip
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
             None,
             None,
-            True,
-            True if 'types_of_files_provider' in form else False,
-            True if 'types_of_files_medical' in form else False,
-            True if 'types_of_files_pharmacy' in form else False,
-            True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
             _clean_value(form['type']),
@@ -198,10 +183,6 @@ def update_registration(form, reg_id):
         cur = conn.cursor()
         operation = """UPDATE registrations
             SET
-            file_pv = %s,
-            file_mc = %s,
-            file_pc = %s,
-            file_dc = %s,
             submitting_for_self = %s,
             org_type = %s,
             business_name = %s,
@@ -213,10 +194,6 @@ def update_registration(form, reg_id):
         WHERE registration_id = %s
         RETURNING registration_id"""
         values = (
-            True if 'types_of_files_provider' in form else False,
-            True if 'types_of_files_medical' in form else False,
-            True if 'types_of_files_pharmacy' in form else False,
-            True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
             _clean_value(form['type']),
             _clean_value(form['business-name']),
@@ -263,7 +240,12 @@ def get_registration_entities(reg_id=None):
                 registration_entities.naic_company_code,
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
-                registration_entities.fein
+                registration_entities.fein,
+                registration_entities.file_me,
+                registration_entities.file_pv,
+                registration_entities.file_mc,
+                registration_entities.file_pc,
+                registration_entities.file_dc,
                 FROM registration_entities {f"WHERE registration_id =  {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
@@ -296,7 +278,12 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
                 _set_int(form['naic_company_code_{}'.format(str_end)]),
                 _set_int(form['total_covered_lives_{}'.format(str_end)]),
                 _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)])
+                _clean_value(form['fein_{}'.format(str_end)]),
+                True,
+                True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+                True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+                True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+                True if 'types_of_files_dental_{}'.format(str_end) in form else False
             )
         else:            
             str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
@@ -308,7 +295,12 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
                 _set_int(form[f'naic_company_code{str_end}']),
                 _set_int(form[f'total_covered_lives{str_end}']),
                 _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}'])
+                _clean_value(form[f'fein{str_end}']),
+                True,
+                True if 'types_of_files_provider{}'.format(str_end) in form else False,
+                True if 'types_of_files_medical{}'.format(str_end) in form else False,
+                True if 'types_of_files_pharmacy{}'.format(str_end) in form else False,
+                True if 'types_of_files_dental{}'.format(str_end) in form else False
             )
 
         operation = """INSERT INTO registration_entities(
@@ -319,8 +311,13 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             naic_company_code,
             total_covered_lives,
             entity_name,
-            fein
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+            fein,
+            file_me,
+            file_pv,
+            file_mc,
+            file_pc,
+            file_dc
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -365,6 +362,10 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
+            form['types_of_files_provider_{}'.format(str_end)],
+            form['types_of_files_medical_{}'.format(str_end)],
+            form['types_of_files_pharmacy_{}'.format(str_end)],
+            form['types_of_files_dental_{}'.format(str_end)],
             reg_id,
             form[f'ent_id_{iteration}']
         )
@@ -384,7 +385,11 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             naic_company_code = %s,
             total_covered_lives = %s,
             entity_name = %s,
-            fein = %s
+            fein = %s,
+            file_pv = %s,
+            file_mc = %s,
+            file_pc = %s,
+            file_dc = %s
             WHERE registration_id = %s AND registration_entity_id = %s
         """
         cur = conn.cursor()

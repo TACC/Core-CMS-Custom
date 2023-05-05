@@ -66,274 +66,9 @@ class RegistrationsTable(TemplateView):
         return HttpResponse(template.render({}, request))
 
     def get(self, request, *args, **kwargs):
-        import datetime
-        registrations_content = [
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                False,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'received',                           #registration_status
-                'insurance carrier',                #org_type
-                'BRule Insurance Company',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            ),
-            (
-                2,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                False,                               #submitting_for_self
-                'processing',                           #registration_status
-                'pbm',                #org_type
-                'Clay Tenant Once Company',    #business_name
-                '440 Wood and Drive',              #mail_address
-                'Indianapolis',                      #city
-                'NY',                               #state
-                '24444     '                        #zip
-            ),
-            (
-                3,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'complete',                        #registration_status
-                'insurance carrier',                #org_type
-                'Magentation Insurance Company',    #business_name
-                '742 Oddland Drive',              #mail_address
-                'Indipolis',                      #city
-                'MI',                               #state
-                '62784     '                        #zip
-            ),
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                False,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'received',                           #registration_status
-                'insurance carrier',                #org_type
-                'Golden Rule Insurance Co',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            ),
-            (
-                2,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                False,                               #submitting_for_self
-                'processing',                           #registration_status
-                'pbm',                #org_type
-                'CTenant Insurance Company',    #business_name
-                '440 Wood and Drive',              #mail_address
-                'Indianapolis',                      #city
-                'NY',                               #state
-                '24444     '                        #zip
-            ),
-            (
-                3,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'complete',                        #registration_status
-                'insurance carrier',                #org_type
-                'Magenta Conditn Insurance Company',    #business_name
-                '742 Oddland Drive',              #mail_address
-                'Indipolis',                      #city
-                'MI',                               #state
-                '62784     '                        #zip
-            ),
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                False,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'received',                           #registration_status
-                'insurance carrier',                #org_type
-                'Goden Rule Insurance Company',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            ),
-            (
-                2,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                False,                               #submitting_for_self
-                'processing',                           #registration_status
-                'pbm',                #org_type
-                'Clay enant Insurance Company',    #business_name
-                '440 Wood and Drive',              #mail_address
-                'Indianapolis',                      #city
-                'NY',                               #state
-                '24444     '                        #zip
-            ),
-            (
-                3,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'complete',                        #registration_status
-                'insurance carrier',                #org_type
-                'Magenta Condition Insurance Company',    #business_name
-                '742 Oddland Drive',              #mail_address
-                'Indipolis',                      #city
-                'MI',                               #state
-                '62784     '                        #zip
-            ),
-            (
-                1,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                False,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'received',                           #registration_status
-                'insurance carrier',                #org_type
-                'Golden Rule Insurance Company',    #business_name
-                '7440 Woodland Drive',              #mail_address
-                'Indianpolis',                      #city
-                'IN',                               #state
-                '46278     '                        #zip
-            ),
-            (
-                2,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                False,                               #submitting_for_self
-                'processing',                           #registration_status
-                'pbm',                #org_type
-                'Clay Tenant Insurance Company',    #business_name
-                '440 Wood and Drive',              #mail_address
-                'Indianapolis',                      #city
-                'NY',                               #state
-                '24444     '                        #zip
-            ),
-            (
-                3,                                  #registration_id
-                datetime.date(2022, 8, 3),          #posted_date
-                12023,                              #applicable_period_start
-                122023,                             #applicable_period_end
-                True,                               #file_me
-                True,                               #file_pv
-                True,                               #file_mc
-                True,                               #file_pc
-                False,                              #file_dc
-                True,                               #submitting_for_self
-                'complete',                        #registration_status
-                'insurance carrier',                #org_type
-                'Magenta Condition Insurance Company',    #business_name
-                '742 Oddland Drive',              #mail_address
-                'Indipolis',                      #city
-                'MI',                               #state
-                '62784     '                        #zip
-            )
-        ]
-        registrations_entities = [
-            (
-                5, 1, 5, 46, 11111, None, 5, 'Garretts Test Business 2', '11-0001111'
-            ),
-            (
-                5, 2, 50000, 47, 11010, 21101, 1, 'A Second Test Entity', '00-0000000'
-            )
-        ]
-        registrations_contacts = [
-            (
-                52,
-                1,
-                False,
-                'Test Role',
-                'Garrett Test Tester',
-                '2222222222',
-                'notarealemail@emailplace.com'
-            ),
-            (
-                53,
-                1,
-                False,
-                'A 2nd Test Role',
-                'Test Garrett 2 Test',
-                '15555555555',
-                'testemail@testemail.net'
-            ),
-            (
-                54,
-                2,
-                True,
-                'A 3rd and final test role',
-                'Test 3rd Role Name Garrett',
-                '0000000000',
-                'email@gmail.com'
-            )
-        ]   
+        registrations_content = get_registrations()
+        registrations_entities = get_registration_entities()
+        registrations_contacts = get_registration_contacts()   
 
         context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
         template = loader.get_template(self.template_name)
@@ -354,21 +89,14 @@ class RegistrationsTable(TemplateView):
                     'pbm': 'Pharmacy Benefit Manager (PBM)'
             }
             return {
-                    'biz_name': reg[12],
-                    'type': org_types[reg[11]] if (reg[11] and reg[11] in org_types.keys()) else None,
+                    'biz_name': reg[7],
+                    'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
                     'location': '{city}, {state}'.format
                         (
-                            city=reg[14],
-                            state=reg[15]
+                            city=reg[9],
+                            state=reg[10]
                         ),
-                    'files_type': [
-                        "Medical" if reg[6] else None,
-                        "Provider" if reg[5] else None,
-                        "Eligibility/Enrollment" if reg[4] else None,
-                        "Pharmacy" if reg[7] else None,
-                        "Dental" if reg[8] else None
-                    ],
-                    'reg_status': reg[10].title(),
+                    'reg_status': reg[5].title(),
                     'reg_id': reg[0],
                     'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
                 }
@@ -381,7 +109,14 @@ class RegistrationsTable(TemplateView):
                 'naic': reg_ent[5] if reg_ent[5] else None,
                 'no_covered': reg_ent[6],
                 'ent_name': reg_ent[7],
-                'fein': reg_ent[8] if reg_ent[8] else None
+                'fein': reg_ent[8] if reg_ent[8] else None,
+                'files_type': {
+                    "Eligibility/Enrollment": reg_ent[9],
+                    "Provider": reg_ent[10],
+                    "Medical": reg_ent[11],
+                    "Pharmacy": reg_ent[12],
+                    "Dental": reg_ent[13]
+                }
             }
         def _set_contacts(reg_cont):
 
@@ -406,24 +141,17 @@ class RegistrationsTable(TemplateView):
                 'role': reg_cont[3],
                 'name': reg_cont[4],
                 'phone': format_phone_number(reg_cont[5]),
-                'email': reg_cont[6]
+                'email': reg_cont[6],
             }
         def _set_modal_content(reg, reg_ent, reg_cont, org_types):
             return {
-                'biz_name': reg[12],
-                'type': reg[11].title() if reg[12] else None,
-                'city': reg[14],
-                'state': reg[15],
-                'address': reg[13],
-                'zip': reg[16],
-                'files_type': {
-                        "Eligibility/Enrollment": reg[4],
-                        "Provider": reg[5],
-                        "Medical": reg[6],
-                        "Pharmacy": reg[7],
-                        "Dental": reg[8]
-                },
-                'for_self': reg[9],
+                'biz_name': reg[7],
+                'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
+                'city': reg[9],
+                'state': reg[10],
+                'address': reg[8],
+                'zip': reg[11],
+                'for_self': reg[4],
                 'entities': [_set_entities(ent) for ent in reg_ent],
                 'contacts': [_set_contacts(cont) for cont in reg_cont],
                 'org_types': org_types,
@@ -486,7 +214,7 @@ class RegistrationsTable(TemplateView):
                 ],
             }
 
-        context['header'] = ['Business Name', 'Type', 'Location', 'Registration Status', 'Files to Submit', 'Actions']
+        context['header'] = ['Business Name', 'Type', 'Location', 'Registration Status', 'Actions']
         context['filter_options'] = ['All', 'Received', 'Processing', 'Complete']
         registration_table_entries = []
         for registration in registrations_content:
