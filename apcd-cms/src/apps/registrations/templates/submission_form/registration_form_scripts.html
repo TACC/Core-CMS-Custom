@@ -95,7 +95,7 @@
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
-              Enter a 5 or 10 digit number.
+              Enter digits only.
             </div>
           </div>
           <div class="field-wrapper textinput">
@@ -111,10 +111,75 @@
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
-              Enter a 5 digit number.
+              Enter digits only.
             </div>
           </div>
         </div>
+        <h6>File Submission</h6>
+        <div class="field-wrapper required">
+        <label>
+            Types of Files<span class="asterisk">*</span>
+        </label>
+        <div class="help-text">
+            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+        </div>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_files" class="checkboxselectmultiple">
+                <li>
+                    <label for="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                    ><input
+                        type="checkbox"
+                        name="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        required
+                        id="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        checked=""
+                        disabled
+                    />Eligibility/Enrollment*</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Provider</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Medical</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Pharmacy</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Dental</label
+                    >
+                </li>
+            </ul>
+        </div>
+
         <h6>
           Coverage Estimates
           <small>(Inclusive of all claims as of December 31 of previous year.)</small>

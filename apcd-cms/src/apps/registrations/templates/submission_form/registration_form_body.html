@@ -235,89 +235,6 @@
             />
         </div>
         <hr />
-        <h4>File Submission</h4>
-        <div class="field-wrapper required">
-        <label>
-            Types of Files<span class="asterisk">*</span>
-        </label>
-        <div class="help-text">
-            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
-        </div>
-        </div>
-
-        <div class="field-wrapper checkboxselectmultiple required">
-            <div class="field-errors" style="display: none"></div>
-
-            <ul id="types_of_files" class="checkboxselectmultiple">
-            <li>
-                <label for="types_of_files_eligibility_enrollment"
-                ><input
-                    type="checkbox"
-                    name="types_of_files_eligibility_enrollment"
-                    required
-                    id="types_of_files_eligibility_enrollment"
-                    checked=""
-                    disabled
-                />Eligibility/Enrollment*</label
-                >
-            </li>
-            {% if r.view_modal_content %}
-                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
-                {% if not forloop.first %}
-                    <li>
-                    <label for="types_of_files_{{ file_type|lower }}"
-                        ><input
-                        type="checkbox"
-                        name="types_of_files_{{ file_type|lower }}"
-                        id="types_of_files_{{ file_type|lower }}"
-                        {% if file_type_selected %}checked{% endif %}
-                        />{{ file_type }}</label
-                    >
-                    </li>
-                {% endif %}
-                {% endfor %}
-            {% else %}
-                <li>
-                <label for="types_of_files_provider"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_provider"
-                    id="types_of_files_provider"
-                    />Provider</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_medical"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_medical"
-                    id="types_of_files_medical"
-                    />Medical</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_pharmacy"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_pharmacy"
-                    id="types_of_files_pharmacy"
-                    />Pharmacy</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_dental"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_dental"
-                    id="types_of_files_dental"
-                    />Dental</label
-                >
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-
-        <hr />
         {% if r.view_modal_content %}
             <h4>Entity/Entities Being Registered</h4>
             {% for entity in r.view_modal_content.entities %}
@@ -411,6 +328,49 @@
                     </div>
                 </div>
                 </div>
+                <h6>File Submission</h6>
+                <div class="field-wrapper required">
+                <label>
+                    Types of Files<span class="asterisk">*</span>
+                </label>
+                <div class="help-text">
+                    Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                </div>
+                </div>
+
+                <div class="field-wrapper checkboxselectmultiple required">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <ul id="types_of_files" class="checkboxselectmultiple">
+                        <li>
+                            <label for="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                            ><input
+                                type="checkbox"
+                                name="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                                required
+                                id="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                                checked=""
+                                disabled
+                            />Eligibility/Enrollment*</label
+                            >
+                        </li>
+                        {% for file_type, file_type_selected in r.view_modal_content.entities.files_type.items %}
+                        {% if not forloop.first %}
+                        <li>
+                            <label for="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                ><input
+                                type="checkbox"
+                                name="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                id="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                {% if file_type_selected %}checked{% endif %}
+                                />{{ file_type }}</label
+                            >
+                            </li>
+                        {% endif %}
+                    {% endfor %}                
+                    </ul>
+                </div>
+
                 <h6>
                 Coverage Estimates
                 <small
@@ -523,7 +483,6 @@
                 is required.
                 </div>
             </div>
-
             <div class="o-grid o-grid--col-auto-count">
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
@@ -586,6 +545,71 @@
                 </div>
                 </div>
             </div>
+            <h6>File Submission</h6>
+            <div class="field-wrapper required">
+            <label>
+                Types of Files<span class="asterisk">*</span>
+            </label>
+            <div class="help-text">
+                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+            </div>
+            </div>
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+    
+                <ul id="types_of_files" class="checkboxselectmultiple">
+                    <li>
+                        <label for="types_of_files_eligibility_enrollment"
+                        ><input
+                            type="checkbox"
+                            name="types_of_files_eligibility_enrollment"
+                            required
+                            id="types_of_files_eligibility_enrollment"
+                            checked=""
+                            disabled
+                        />Eligibility/Enrollment*</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_provider"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_provider"
+                            id="types_of_files_provider"
+                            />Provider</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_medical"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_medical"
+                            id="types_of_files_medical"
+                            />Medical</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_pharmacy"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_pharmacy"
+                            id="types_of_files_pharmacy"
+                            />Pharmacy</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_dental"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_dental"
+                            id="types_of_files_dental"
+                            />Dental</label
+                        >
+                    </li>
+                </ul>
+            </div>
+
             <h6>
                 Coverage Estimates
                 <small
