@@ -36,29 +36,13 @@
           {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
-                  <td>
-                    {% if r.type == 'Pbm'%}
-                      Pharmacy Benefit Manager (PBM)
-                    {% else %}
-                      {{r.type}}
-                    {% endif %}
-                  </td>
+                  <td>{{r.type}}</td>
                   <td>{{r.location}}</td>
-                  <td>{{r.sub_method}}</td>
                   <td>{{r.reg_status}}</td>
-                  <td>
-                    <ul class='no-bullets'>
-                      {% for file_type in r.files_type %}
-                        {% if file_type != None %}
-                          <li>{{file_type}}</li>
-                        {% endif %}
-                      {% endfor %}
-                    </ul>
-                  </td>
                   <td>
                     {% include "view_registration_modal.html" %}
                     {% include "edit_registration_modal.html" %}
-                    {% include "create_submitter_modal.html" %}<br />
+                    {% include "create_submitter_modal.html" %}
                     <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
                       <option value="">Select Action</option>
                       <option value="viewRegistration">View Record</option>

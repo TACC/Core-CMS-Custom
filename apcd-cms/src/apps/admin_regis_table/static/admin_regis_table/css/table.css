@@ -122,8 +122,6 @@
     .registration-table td:nth-of-type(1):before { content: "Business Name"; }
     .registration-table td:nth-of-type(2):before { content: "Type"; }
     .registration-table td:nth-of-type(3):before { content: "Location"; }
-    .registration-table td:nth-of-type(4):before { content: "Submission"; }
-    .registration-table td:nth-of-type(5):before { content: "Registration Status"; }
-    .registration-table td:nth-of-type(6):before { content: "Files to Submit"; }
-    .registration-table td:nth-of-type(7):before { content: "Actions"; }
+    .registration-table td:nth-of-type(4):before { content: "Registration Status"; }
+    .registration-table td:nth-of-type(5):before { content: "Actions"; }
 }
