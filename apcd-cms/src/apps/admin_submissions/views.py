@@ -24,6 +24,17 @@ class AdminSubmissionsTable(TemplateView):
 
         submission_content = get_all_submissions_and_logs()
 
+        filter = self.request.GET.get('filter')
+        dateSort = self.request.GET.get('sort')
+
+        def getDate(row):
+            date = row['received_timestamp']
+            return parser.parse(date) if date is not None else parser.parse('1-1-3005') # put 'None' date entries all together at top/bottom depending on direction of sort
+
+        if dateSort is not None:
+            context['selected_sort'] = dateSort
+            submission_content = sorted(submission_content, key=lambda row:getDate(row), reverse=(dateSort == 'newDate'))
+
         try:
             page_num = int(self.request.GET.get('page'))
         except:
