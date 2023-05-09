@@ -775,13 +775,13 @@ def create_threshold_exception(form, sub_data):
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
-            "Threshold",
+            "threshold",
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
             _clean_value(form['field-threshold-exception']),
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
-            "Pending"
+            "pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -1071,7 +1071,7 @@ def create_extension(form, iteration, sub_data):
                 None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
                 int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
-                "Pending",
+                "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
@@ -1087,7 +1087,7 @@ def create_extension(form, iteration, sub_data):
             None,
             _clean_value(form['extension-type']),
             int(form['applicable-data-period'].replace('-', '')),
-            "Pending",
+            "pending",
 
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
