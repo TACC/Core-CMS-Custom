@@ -245,7 +245,7 @@ def get_registration_entities(reg_id=None):
                 registration_entities.file_pv,
                 registration_entities.file_mc,
                 registration_entities.file_pc,
-                registration_entities.file_dc,
+                registration_entities.file_dc
                 FROM registration_entities {f"WHERE registration_id =  {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
