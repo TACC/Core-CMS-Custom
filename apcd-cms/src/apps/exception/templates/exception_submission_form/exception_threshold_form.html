@@ -18,7 +18,7 @@
         eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
         and associated regulations. Please review the legislation and regulation before
         submitting this form. Links to both can be found on the
-        <a href="https://sph.uth.edu/research/centers/chcd/apcd/" target="_blank">Texas All-Payor Claims Database
+        <a href="https://sph.uth.edu/research/centers/chcd/apcd/#TID-44be0947-bee9-41b1-b81a-ddea0b971e14-3" target="_blank">Texas All-Payor Claims Database
           website.</a>
       </p>
       <div class="forms">
@@ -30,7 +30,7 @@
             <div class="exception-header-1">
               <hr />
               <h4>File Type</h4>
-              <p>Select submission file type for your requested threshold reduction:
+              <p>Select submission file type for your requested threshold reduction.
 
               </p>
             </div>
@@ -73,11 +73,11 @@
               <div id="exception_block_1">
               <div class="field-wrapper select required" >
                 <div class="field-errors" style="display: none"></div>
-                <label for="field-threshold-exception">Field Code <span class="asterisk">*</span></label>
+                <label for="field-threshold-exception_1">Field Code <span class="asterisk">*</span></label>
 
-                <select name="field-threshold-exception" required="required" class="choicefield" 
-                id="field-threshold-exception">
-                  <!-- Populates in script -->
+                <select name="field-threshold-exception_1" required="required" class="choicefield" 
+                id="field-threshold-exception_1">
+                  <!-- Populates in jQuery script -->
                   <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
                   <option class="dropdown-text" value={{cdl.field_list_code}}></option>
                 </select>
@@ -248,22 +248,17 @@
             $('#expiration-date').attr('max', maxDate);
           });
         </script>
+        <!-- Broke out functions necessary for dynamic drop down and help text related to CDLs-->
         <script>
-          function changeDropDownValues(value) {
-            if (value.length == 0)
-              fieldSelect = Array.of(document.querySelectorAll(`#field-threshold-exception_${exceptions}`))
-              fieldSelect.forEach (element => {
-                element.innerHTML = ""
-          });
-          };
+      
+      //Disables and enables buttons based on number of exception blocks
           function btnStatus(exceptions) {            
             let addExceptionBtn = document.getElementById("exception-add-btn");
             let dropExceptionBtn = document.getElementById("exception-drop-btn");
             addExceptionBtn.disabled = (exceptions == 5 ? true : false);
             dropExceptionBtn.disabled = (exceptions == 1 ? true : false);
-            console.log(exceptions + " In button status");
           };
-
+        // Adds inner HTML to previously hidden exception blocks 
           function addException(exceptions) {
             if (exceptions < 5) {
               exceptions += 1;
@@ -295,182 +290,161 @@
                       <input type="number" name="threshold-requested_${exceptions}" class="textinput" id="threshold-requested_${exceptions}"
                         inputmode="numeric" min="0" max="99" required />
                       <span class="s-affixed-input-wrapper__suffix">%</span></div>
-                    </div>
+
                     <!-- Populates in script-->
                     <div id="help-text-threshold-requested_${exceptions}" class="help-text">
                     </div>
+                  </div>
                   </div>`
               };
               return exceptions
             };
-
+        // Removes inner HTML to added exception blocks and sets display to hidden 
           function removeException(exceptions) {
             if (exceptions > 1) {
               let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
               let exceptionHeader = document.getElementById(`exception_header_${exceptions}`);
   
               exceptionBlock.innerHTML = "";
+            // Required or it will show the header for that block when remove button clicked
               exceptionHeader.style.display = "none";
               exceptions = exceptions - 1;
             };
             return exceptions
           };
-          // To fetch CDL codes on file type input change
+        // Removes helper text and field select options 
+          function clearDataOnFileChange() {
+            helpText = Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
+            fieldDropDown = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
+            for (let i = 0; i < fieldDropDown.length; i++) {
+                fieldDropDown[i].innerHTML = "";
+            };
+            for (let i = 0; i < helpText.length; i++) {
+              helpText[i].innerHTML = "";
+            };
+          };
+          // Gets cdl data from AJAX
           function getDynamicCDLData(file_type) {
-            let cdls;
-            let selectedFileType = file_type;
+            helpText = Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
+            fieldDropDown = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
             $.ajax({
-              url: "{% url 'exception:get-cdls' %}",
-              type: 'GET',
-              data: {
-                'file_type': file_type
+                url: "{% url 'exception:get-cdls' %}",
+                type: 'GET',
+                data: {
+                  'file_type': file_type
+                },
+                success: function(response) {
+                  let cdls = response;
+                  if (file_type != '') {
+                    dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
+                    for (let i = 0; i < cdls.length; i++) {
+                      dropDownHTML = dropDownHTML + 
+                      `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
+                  };
+                  // Loop over each fieldTypeSelect element and set its innerHTML to the dropDownHTML
+                  for (let i = 0; i < fieldDropDown.length; i++) {
+                      fieldDropDown[i].innerHTML = dropDownHTML;
+                  };
+                };
               },
-              success: function(response) {
-                cdls = response;
-                if (selectedFileType != '') {
-                  let dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
-                  for (let i = 0; i < cdls.length; i++) {
-                    dropDownHTML = dropDownHTML + 
-                    `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
-                  }
-                  return dropDownHTML;
-                }
-              },
-              error: function() {
-                console.log("Error retrieving CDLs");
+              error: function(xhr, status, error) {
+                console.log(error);
+              }
+          });
+        };
+        // To access previously hiddenexception blocks and populate with info from AJAX call.
+        // Ppulates based on sliced id name of select element to get exception block number
+          function getDynamicCDLDataforNewBlock(file_type, exceptions) {
+            helpText = document.getElementById(`help-text-threshold-requested_${exceptions}`)
+            fieldDropDown = document.getElementById(`field-threshold-exception_${exceptions}`);
+            $.ajax({
+                url: "{% url 'exception:get-cdls' %}",
+                type: 'GET',
+                data: {
+                  'file_type': file_type
+                },
+                success: function(response) {
+                  let cdls = response;
+                  if (file_type != '') {
+                    dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
+                    for (let i = 0; i < cdls.length; i++) {
+                      dropDownHTML = dropDownHTML + 
+                      `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
+                      fieldDropDown.innerHTML = dropDownHTML;
+                      };
+                  };
+                },
+              error: function(xhr, status, error) {
+                console.log(error);
               }
             });
           };
-          function getAllFieldDropDowns() {
-            let fieldTypeSelect;
-            fieldTypeSelect = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
-            // Loop over each fieldTypeSelect element and clear
-            for (let i = 0; i < fieldTypeSelect.length; i++) {
-                fieldTypeSelect[i].innerHTML = "";
+          // Gets helper text from AJAX call and populates based on sliced id name of help text to get
+          // exception block number
+          function getHelpText(fieldSelection, file_type, exceptions) {
+            helpText = document.getElementById(`help-text-threshold-requested_${exceptions}`);
+            $.ajax({
+                url: "{% url 'exception:get-cdls' %}",
+                type: 'GET',
+                data: {
+                  'file_type': file_type
+                },
+                success: function(response) {
+                  let cdls = response;
+                  //To change help text for requested threshold percentage
+                    for (let i = 0; i < cdls.length; i++)
+                      if (fieldSelection == cdls[i].field_list_code) {
+                          helpText.innerHTML = "";
+                          helpText.innerHTML = `Must be less than the ${cdls[i].threshold_value}% required.`
+                      };
+                  },
+                error: function(xhr, status, error) {
+                  console.log(error);
+                }
+              });
             };
-            return fieldTypeSelect;
-          };
-          function getAllThresholdHelpTxt() {
-            let helpThresholdText; 
-            helpThresholdText =  Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
-            for (let i = 0; i < helpThresholdText.length; i++) {
-                helpThresholdText[i].innerHTML = "";
-            };
-            return helpText;
-          };
 
           $(document).ready(function() {
             let exceptions = 1;
             btnStatus(exceptions);
-            let fileTypeSelect = $('#file_type').val();
 
             $('#exception-add-btn').click(function() {
+              let file_type = $("#file_type").val();
               addException(exceptions);
+            // To track how many exception blocks there are for button logic
               exceptions = addException(exceptions);
               btnStatus(exceptions);
-              getDynamicCDLData(fileTypeSelect);
+              getDynamicCDLDataforNewBlock(file_type, exceptions);
+            // Gets help text for additional added blocks
+              $('[id^="field-threshold-exception"]').change(function() {
+                let fieldSelection = $(this).val();
+              // Gets exception number by id name
+                let exceptionsNum = $(this).attr('id').slice(-1); 
+                let file_type = $('#file_type').val();
+                getHelpText(fieldSelection, file_type, exceptionsNum);
+              });
             });
+
             $('#exception-drop-btn').click(function() {
               removeException(exceptions);
+            // To track how many exception blocks there are for button logic
               exceptions = removeException(exceptions);
               btnStatus(exceptions);
             });
-            // addExceptionBtn.addEventListener("click", () => {
-            //   if (exceptions < 5) exceptions += 1;
-            //   let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
-            //   document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
-            //   exceptionBlock.innerHTML = `
-            //     <div class="field-wrapper select required" >
-            //       <div class="field-errors" style="display: none"></div>
-            //         <label for="field-threshold-exception_${exceptions}">Field Code <span class="asterisk">*</span></label>
-            //         <select name="field-threshold-exception_${exceptions}" required="required" class="choicefield" 
-            //         id="field-threshold-exception_${exceptions}">
-            //           <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
-
-            //           <option class="dropdown-text" value={{cdl.field_list_code}}></option>
-            //         </select>
-            //     </div>
-            //     <div class="o-grid o-grid--col-auto-count">
-            //       <div class="field-wrapper numberinput required">
-            //         <div class="field-errors" style="display: none"></div>
-            //         <label for="expiration-date_${exceptions}">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
-            //         <input type="date" name="expiration-date_${exceptions}" class="numeric" id="expiration-date_${exceptions}" inputmode="numeric"
-            //           pattern="\d{4}-\d{2}-\d{2}" required />
-            //       </div>
-                  
-            //     <div class="field-wrapper numberinput required">
-            //       <div class="field-errors" style="display: none"></div>
-            //       <label for="threshold-requested_${exceptions}">
-            //         Requested Threshold Percentage <span class="asterisk">*</span>
-            //       </label>
-                  
-            //       <div class="s-affixed-input-wrapper">
-            //         <input type="number" name="threshold-requested_${exceptions}" class="textinput" id="threshold-requested_${exceptions}"
-            //           inputmode="numeric" min="0" max="99" required />
-            //         <span class="s-affixed-input-wrapper__suffix">%</span>
-            //       </div>
-            //         <!-- Populates in script-->
-            //       <div id="help-text-threshold-requested_${exceptions}" class="help-text">
-            //       </div>
-            //     </div>
-            //   </div>`
                     
-          //     $('#file_type').change(function() {
-          //     let file_type = $(this).val();
-          //     let cdls;
-          //     let helpText;
-          //     let fieldTypeSelect;
+            $('#file_type').change(function() {
+              clearDataOnFileChange()
+              let file_type = $(this).val();
+              getDynamicCDLData(file_type);
+            });
 
-          //     /*Clears help text when file type changes*/
-          //     helpText = Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
-          //     fieldTypeSelect = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
-          //     for (var i; i <= fieldTypeSelect.length; i++) {
-          //       getAllFieldDropDowns(fieldTypeSelect[i])
-          //     }
-          //     for (var i; i <= fieldTypeSelect.length; i++) {
-          //       getAllThresholdHelpTxt(fieldTypeSelect[i])
-          //     }
-          //     $.ajax({
-          //       url: "{% url 'exception:get-cdls' %}",
-          //       type: 'GET',
-          //       data: {
-          //         'file_type': file_type
-          //       },
-          //       success: function(response) {
-          //         let cdls = response;
-          //         if (file_type != '') {
-          //           let dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
-          //           for (let i = 0; i < cdls.length; i++) {
-          //             dropDownHTML = dropDownHTML + 
-          //             `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
-                      
-          //         }
-          //         // Loop over each fieldTypeSelect element and set its innerHTML to the dropDownHTML
-          //         for (let i = 0; i < fieldTypeSelect.length; i++) {
-          //             fieldTypeSelect[i].innerHTML = "";
-          //             fieldTypeSelect[i].innerHTML = dropDownHTML;
-
-        
-          //         //To change help text for requested threshold percentage
-          //         fieldTypeSelect[i].addEventListener('change', function (event) {
-          //           selectedFieldType = event.target.value;
-
-          //             if (event.target.value != '') {
-          //               for (let j = 0; j < cdls.length; j++)
-          //                 if (event.target.value == cdls[j].field_list_code) {
-          //                   for (let k = 0; k < helpText.length; k++)
-          //                     if (helpText[i].id = `help-text-threshold-requested${exceptions}` ) {
-          //                     helpText[i].innerHTML = "";
-          //                     helpText[i].innerHTML = `Must be less than the ${cdls[j].threshold_value}% required.`
-          //                 }
-          //             }}})};
-          //       }
-          //       },
-          //       error: function(xhr, status, error) {
-          //         console.log(error);
-          //       }
-          //    });
-          //   });
+            $('[id^="field-threshold-exception"]').change(function() {
+              let fieldSelection = $(this).val();
+            // Gets exception number by id name
+              let exceptionsNum = $(this).attr('id').slice(-1); 
+              let file_type = $('#file_type').val();
+              getHelpText(fieldSelection, file_type, exceptionsNum);
+            });
           });
         </script>
       </aside>
