@@ -18,10 +18,19 @@
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
-        {% for option in filter_options %}
-          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
+        {% for option in status_options %}
+          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
+      <span><b>Filter by Organization: </b></span>
+      <select id="organizationFilter" class="status-filter org-filter" onchange="filterTableByOrganization()">
+        {% for option in org_options %}
+          <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      {% if selected_status or selected_org %}
+        <button onclick="clearSelections()">Clear Options</button>
+      {% endif %}
     </div>
   </div>
   <table id="registrationTable" class="registration-table">
@@ -58,15 +67,44 @@
 </div>
 <script>
   function filterTableByStatus() {
-    var dropdown, filter, xhr;
+    var dropdown, statusFilter, xhr, url_params, url;
     dropdown = document.getElementById("statusFilter");
-    filter =  dropdown.value;
+    statusFilter =  dropdown.value;
+    url_params = `?status=${statusFilter}`;
+    {% if selected_org %}
+      url_params += `&org={{selected_org}}`;
+    {% endif %}
+    url = `/administration/list-registration-requests/${url_params}`;
     xhr = new XMLHttpRequest();
-    xhr.open('GET', `/administration/list-registration-requests/?filter=${filter}`);
+    xhr.open('GET', url);
     xhr.send();
-    window.location.href = `/administration/list-registration-requests/?filter=${filter}`;
+    window.location.href = url;
     window.location.load();
   }
+  function filterTableByOrganization() {
+    var input, orgFilter, xhr, url_params, url;
+    input = document.getElementById("organizationFilter");
+    orgFilter = input.value.replace("&", encodeURIComponent('&'));
+    url_params = `?org=${orgFilter}`;
+    {% if selected_status %}
+      url_params = `?status={{selected_status}}&org=${orgFilter}`;
+    {% endif %}
+    url = `/administration/list-registration-requests/${url_params}`;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    window.location.href = url;
+    window.location.load();
+  }
+  function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/administration/list-registration-requests/')
+        xhr.send()
+        window.location.href = '/administration/list-registration-requests/';
+        window.location.load();
+    }
+
   function openAction(reg_id) {
     var actionsDropdown, selectedOption, modal_id;
     actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
