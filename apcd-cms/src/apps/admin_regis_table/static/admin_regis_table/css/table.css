@@ -61,6 +61,9 @@
     background-position: right 6px top 50%; /* 5px design * 1.2 design-to-app ratio */
     background-size: auto 10px; /* ~8px design * 1.2 design-to-app ratio (rounded) */
 }
+.status-filter.org-filter {
+    width: max-content;
+}
 
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
