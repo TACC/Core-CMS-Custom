@@ -69,18 +69,16 @@
         >
             {% if r.view_modal_content %}
                 {% for type, display_text in r.view_modal_content.org_types.items %}
-                <option value="{{ type|lower }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
+                <option value="{{ type }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
                     {{display_text}}
                 </option>
                 {% endfor %}
             {% else %}
-            <option value="Insurance Carrier">Insurance Carrier</option>
-
-                <option value="Plan Administrator">
+                <option value="carrier">Insurance Carrier</option>
+                <option value="tpa_aso">
                     Plan Administrator¹ (TPA/ASO)
                 </option>
-
-                <option value="PBM">
+                <option value="pbm">
                     Pharmacy Benefit Manager (PBM)
                 </option>
             {% endif %}
@@ -235,162 +233,6 @@
             />
         </div>
         <hr />
-        <h4>File Submission</h4>
-        <div class="field-wrapper required">
-        <label>
-            Types of Files<span class="asterisk">*</span>
-        </label>
-        <div class="help-text">
-            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
-        </div>
-        </div>
-
-        <div class="field-wrapper checkboxselectmultiple required">
-            <div class="field-errors" style="display: none"></div>
-
-            <ul id="types_of_files" class="checkboxselectmultiple">
-            <li>
-                <label for="types_of_files_eligibility_enrollment"
-                ><input
-                    type="checkbox"
-                    name="types_of_files_eligibility_enrollment"
-                    required
-                    id="types_of_files_eligibility_enrollment"
-                    checked=""
-                    disabled
-                />Eligibility/Enrollment*</label
-                >
-            </li>
-            {% if r.view_modal_content %}
-                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
-                {% if not forloop.first %}
-                    <li>
-                    <label for="types_of_files_{{ file_type|lower }}"
-                        ><input
-                        type="checkbox"
-                        name="types_of_files_{{ file_type|lower }}"
-                        id="types_of_files_{{ file_type|lower }}"
-                        {% if file_type_selected %}checked{% endif %}
-                        />{{ file_type }}</label
-                    >
-                    </li>
-                {% endif %}
-                {% endfor %}
-            {% else %}
-                <li>
-                <label for="types_of_files_provider"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_provider"
-                    id="types_of_files_provider"
-                    />Provider</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_medical"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_medical"
-                    id="types_of_files_medical"
-                    />Medical</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_pharmacy"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_pharmacy"
-                    id="types_of_files_pharmacy"
-                    />Pharmacy</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_dental"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_dental"
-                    id="types_of_files_dental"
-                    />Dental</label
-                >
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-        <div class="field-wrapper required">
-        <label
-            >Submission Method<span class="asterisk"
-            >*</span
-            >
-        </label>
-        <div class="help-text">
-            At least one of the following must be selected.
-        </div>
-        </div>
-
-
-        <div class="field-wrapper checkboxselectmultiple required">
-            <div class="field-errors" style="display: none"></div>
-
-            <ul id="submission_method" class="checkboxselectmultiple">
-            {% if r.view_modal_content %}
-                {% for sub, display_value in r.view_modal_content.sub_methods.items %}
-                <li>
-                    <label for="submission_method_{{ sub }}"
-                    ><input
-                        type="radio"
-                        name="submission_method"
-                        value="{{ display_value }}"
-                        class="radioselect"
-                        required
-                        id="submission_method_{{ sub }}"
-                        {{ r.view_modal_content.sub_method }}
-                        {% if sub|upper == r.view_modal_content.sub_method %}checked{% endif %}
-                    />{{ display_value }}</label
-                    >
-                </li>
-                {% endfor %}
-            {% else %}
-                <li>
-                <label for="submission_method_sftp"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="SFTP"
-                    class="radioselect"
-                    required
-                    id="submission_method_sftp"
-                    checked=""
-                    /><span>SFTP<sup>2</sup></span></label
-                >
-                </li>
-                <li>
-                <label for="submission_method_https"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="HTTPS"
-                    class="radioselect"
-                    required
-                    id="submission_method_https"
-                    /><span>HTTPS<sup>3</sup>**</span></label
-                >
-                </li>
-                <li>
-                <label for="submission_method_usb"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="Encrypted USB Drive"
-                    class="radioselect"
-                    required
-                    id="submission_method_usb"
-                    /><span>Encrypted USB<sup>4</sup> drive***</span></label
-                >
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-        <hr />
         {% if r.view_modal_content %}
             <h4>Entity/Entities Being Registered</h4>
             {% for entity in r.view_modal_content.entities %}
@@ -451,20 +293,17 @@
                     <label for="license_number_{{forloop.counter}}_{{r.reg_id}}"> License Number </label>
 
                     <input
-                    type="text"
+                    type="number"
                     name="license_number_{{forloop.counter}}_{{r.reg_id}}"
                     placeholder="1234567890"
-                    class="textinput"
+                    class="integerfield"
                     id="license_number_{{forloop.counter}}_{{r.reg_id}}"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="10"
-                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
                     {% if entity.license %} value="{{ entity.license }}" {% endif %}
                     />
 
                     <div id="help-text-license_number" class="help-text">
-                    Enter a 5 or 10 digit number.
+                    Enter digits only.
                     </div>
                 </div>
                 <div class="field-wrapper textinput">
@@ -473,23 +312,63 @@
                     <label for="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"> NAIC<sup>6</sup> Company Code </label>
 
                     <input
-                    type="text"
+                    type="number"
                     name="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
                     placeholder="12345"
-                    class="textinput"
+                    class="integerfield"
                     id="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="5"
-                    pattern="^[1-9]\d{4}"
                     {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
                     />
 
                     <div id="help-text-naic_company_code" class="help-text">
-                    Enter a 5 digit number.
+                    Enter digits only.
                     </div>
                 </div>
                 </div>
+                <h6>File Submission</h6>
+                <div class="field-wrapper required">
+                <label>
+                    Types of Files<span class="asterisk">*</span>
+                </label>
+                <div class="help-text">
+                    Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                </div>
+                </div>
+
+                <div class="field-wrapper checkboxselectmultiple required">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <ul id="types_of_files" class="checkboxselectmultiple">
+                        <li>
+                            <label for="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                            ><input
+                                type="checkbox"
+                                name="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                                required
+                                id="types_of_files_eligibility_enrollment_{{forloop.counter}}_{{r.reg_id}}"
+                                checked=""
+                                disabled
+                            />Eligibility/Enrollment*</label
+                            >
+                        </li>
+                        {% for file_type, file_type_selected in r.view_modal_content.entities.files_type.items %}
+                        {% if not forloop.first %}
+                        <li>
+                            <label for="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                ><input
+                                type="checkbox"
+                                name="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                id="types_of_files_{{ file_type|lower }}_{{forloop.counter}}_{{r.reg_id}}"
+                                {% if file_type_selected %}checked{% endif %}
+                                />{{ file_type }}</label
+                            >
+                            </li>
+                        {% endif %}
+                    {% endfor %}                
+                    </ul>
+                </div>
+
                 <h6>
                 Coverage Estimates
                 <small
@@ -602,7 +481,6 @@
                 is required.
                 </div>
             </div>
-
             <div class="o-grid o-grid--col-auto-count">
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
@@ -632,20 +510,17 @@
                 <label for="license_number"> License Number </label>
 
                 <input
-                    type="text"
+                    type="number"
                     name="license_number"
                     placeholder="1234567890"
-                    class="textinput"
+                    class="integerfield"
                     id="license_number"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="10"
-                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
                     required
                 />
 
                 <div id="help-text-license_number" class="help-text">
-                    Enter a 5 or 10 digit number.
+                    Enter digits only.
                 </div>
                 </div>
                 <div class="field-wrapper textinput">
@@ -654,23 +529,85 @@
                 <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
 
                 <input
-                    type="text"
+                    type="number"
                     name="naic_company_code"
                     placeholder="12345"
-                    class="textinput"
+                    class="integerfield"
                     id="naic_company_code"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="5"
-                    pattern="^[1-9]\d{4}"
                     required
                 />
 
                 <div id="help-text-naic_company_code" class="help-text">
-                    Enter a 5 digit number.
+                    Enter digits only.
                 </div>
                 </div>
             </div>
+            <h6>File Submission</h6>
+            <div class="field-wrapper required">
+            <label>
+                Types of Files<span class="asterisk">*</span>
+            </label>
+            <div class="help-text">
+                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+            </div>
+            </div>
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+    
+                <ul id="types_of_files" class="checkboxselectmultiple">
+                    <li>
+                        <label for="types_of_files_eligibility_enrollment"
+                        ><input
+                            type="checkbox"
+                            name="types_of_files_eligibility_enrollment"
+                            required
+                            id="types_of_files_eligibility_enrollment"
+                            checked=""
+                            disabled
+                        />Eligibility/Enrollment*</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_provider"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_provider"
+                            id="types_of_files_provider"
+                            />Provider</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_medical"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_medical"
+                            id="types_of_files_medical"
+                            />Medical</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_pharmacy"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_pharmacy"
+                            id="types_of_files_pharmacy"
+                            />Pharmacy</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_dental"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_dental"
+                            id="types_of_files_dental"
+                            />Dental</label
+                        >
+                    </li>
+                </ul>
+            </div>
+
             <h6>
                 Coverage Estimates
                 <small
