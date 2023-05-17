@@ -79,7 +79,6 @@
                 id="field-threshold-exception_1">
                   <!-- Populates in jQuery script -->
                   <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
-                  <option class="dropdown-text" value={{cdl.field_list_code}}></option>
                 </select>
               </div>
               <div class="o-grid o-grid--col-auto-count">
@@ -314,19 +313,17 @@
           };
         // Removes helper text and field select options 
           function clearDataOnFileChange() {
-            helpText = Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
-            fieldDropDown = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
+            helpText = Array.from($('[id^="help-text-threshold-requested"]'));
+            fieldDropDown = Array.from($('[id^="field-threshold-exception"]'));
             for (let i = 0; i < fieldDropDown.length; i++) {
                 fieldDropDown[i].innerHTML = "";
-            };
-            for (let i = 0; i < helpText.length; i++) {
-              helpText[i].innerHTML = "";
+                helpText[i].innerHTML = "";
             };
           };
           // Gets cdl data from AJAX
           function getDynamicCDLData(file_type) {
-            helpText = Array.from(document.querySelectorAll('[id^="help-text-threshold-requested"]'));
-            fieldDropDown = Array.from(document.querySelectorAll('[id^="field-threshold-exception"]'));
+            helpText = Array.from($('[id^="help-text-threshold-requested"]'));
+            fieldDropDown = Array.from($('[id^="field-threshold-exception"]'));
             $.ajax({
                 url: "{% url 'exception:get-cdls' %}",
                 type: 'GET',
@@ -336,16 +333,14 @@
                 success: function(response) {
                   let cdls = response;
                   if (file_type != '') {
-                    dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
-                    for (let i = 0; i < cdls.length; i++) {
-                      dropDownHTML = dropDownHTML + 
-                      `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
-                  };
                   // Loop over each fieldTypeSelect element and set its innerHTML to the dropDownHTML
-                  for (let i = 0; i < fieldDropDown.length; i++) {
-                      fieldDropDown[i].innerHTML = dropDownHTML;
+                    for (let i = 0; i < fieldDropDown.length; i++) {
+                      fieldDropDown[i].options.add(new Option('-- Select a Field Type --', ""));
+                      for (let j = 0; j < cdls.length; j++) {
+                      fieldDropDown[i].options.add(new Option(`${cdls[j].field_list_value}: ${cdls[j].field_list_code}`, `${cdls[j].field_list_code}`));
+                    };
                   };
-                };
+                }; 
               },
               error: function(xhr, status, error) {
                 console.log(error);
@@ -355,8 +350,8 @@
         // To access previously hiddenexception blocks and populate with info from AJAX call.
         // Ppulates based on sliced id name of select element to get exception block number
           function getDynamicCDLDataforNewBlock(file_type, exceptions) {
-            helpText = document.getElementById(`help-text-threshold-requested_${exceptions}`)
-            fieldDropDown = document.getElementById(`field-threshold-exception_${exceptions}`);
+            helpText = $(`#help-text-threshold-requested_${exceptions}`)
+            fieldDropDown = $(`#field-threshold-exception_${exceptions}`);
             $.ajax({
                 url: "{% url 'exception:get-cdls' %}",
                 type: 'GET',
@@ -366,19 +361,24 @@
                 success: function(response) {
                   let cdls = response;
                   if (file_type != '') {
-                    dropDownHTML = `<option class='dropdown-text value=''>-- Select a Field Type --</option>`
+                    fieldDropDown.empty(); // Clear existing options
+                    fieldDropDown.append($('<option>', {
+                      value: '',
+                      text: '-- Select a Field Type --'
+                    }));
                     for (let i = 0; i < cdls.length; i++) {
-                      dropDownHTML = dropDownHTML + 
-                      `<option class="dropdown-text" value="${cdls[i].field_list_code}">${cdls[i].field_list_value}: ${cdls[i].field_list_code}</option>`;
-                      fieldDropDown.innerHTML = dropDownHTML;
-                      };
-                  };
+                      fieldDropDown.append($('<option>', {
+                        value: cdls[i].field_list_code,
+                        text: `${cdls[i].field_list_value}: ${cdls[i].field_list_code}`
+                      }));
+                    }
+                  }
                 },
-              error: function(xhr, status, error) {
-                console.log(error);
-              }
-            });
-          };
+                error: function(xhr, status, error) {
+                  console.log(error);
+                }
+              });
+            };
           // Gets helper text from AJAX call and populates based on sliced id name of help text to get
           // exception block number
           function getHelpText(fieldSelection, file_type, exceptions) {
