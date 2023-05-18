@@ -226,7 +226,7 @@ class RegistrationsTable(TemplateView):
 
         def getDate(row):
             date = row[1]
-            return parser.parse(date) if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
+            return date if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
 
         registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
 
@@ -237,7 +237,7 @@ class RegistrationsTable(TemplateView):
             registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
             org_name = registration[7]
             if org_name not in context['org_options']:
-                context['org_options'].append(org_name)            
+                context['org_options'].append(org_name)
 
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
