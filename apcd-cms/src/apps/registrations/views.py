@@ -45,6 +45,9 @@ class SubmissionFormView(View):
                     errors.append(_err_msg(contact_resp))
                 if _err_msg(entity_resp):
                     errors.append(_err_msg(entity_resp))
+                if len(errors) > 0:
+                    break  # if there is an error in any entity and/or contact, don't write any others
+                            # anything already written will be deleted
         else:
             errors.append(_err_msg(reg_resp))
 
