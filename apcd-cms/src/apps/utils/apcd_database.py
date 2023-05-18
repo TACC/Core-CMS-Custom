@@ -146,7 +146,7 @@ def create_registration(form):
             None,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -195,7 +195,7 @@ def update_registration(form, reg_id):
         RETURNING registration_id"""
         values = (
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -218,6 +218,35 @@ def update_registration(form, reg_id):
         if conn is not None:
             conn.close()
 
+
+def delete_registration(reg_id):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        operation = """DELETE FROM registrations
+            WHERE registration_id = %s
+        """
+        cur = conn.cursor()
+        cur.execute(operation, reg_id)
+        conn.commit()
+
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def get_registration_entities(reg_id=None):
     cur = None
@@ -266,42 +295,24 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
-            values = (
-                reg_id,
-                float(form['total_claims_value_{}'.format(str_end)]),
-                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-                _set_int(form['license_number_{}'.format(str_end)]),
-                _set_int(form['naic_company_code_{}'.format(str_end)]),
-                _set_int(form['total_covered_lives_{}'.format(str_end)]),
-                _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)]),
-                True,
-                True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental_{}'.format(str_end) in form else False
-            )
-        else:            
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
-            values = (
-                reg_id,
-                float(form[f'total_claims_value{str_end}']),
-                _set_int(form[f'claims_encounters_volume{str_end}']),
-                _set_int(form[f'license_number{str_end}']),
-                _set_int(form[f'naic_company_code{str_end}']),
-                _set_int(form[f'total_covered_lives{str_end}']),
-                _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}']),
-                True,
-                True if 'types_of_files_provider{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental{}'.format(str_end) in form else False
-            )
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+            return
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        values = (
+            reg_id,
+            float(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)]),
+            True,
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+        )
 
         operation = """INSERT INTO registration_entities(
             registration_id,
@@ -333,6 +344,8 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
 
     except Exception as error:
         logger.error(error)
+        delete_registration(reg_id)  # delete any associated records already written in database on error
+        delete_registration_contact(reg_id)
         return error
 
     finally:
@@ -407,7 +420,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             conn.close()
 
 
-def delete_registration_entity(reg_id, ent_id):
+def delete_registration_entity(reg_id, ent_id=None):
     cur = None
     conn = None
     values = ()
@@ -420,15 +433,12 @@ def delete_registration_entity(reg_id, ent_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        values = (
-            reg_id,
-            ent_id
-        )
-        operation = """DELETE FROM registration_entities
-            WHERE registration_id = %s AND registration_entity_id = %s
+        operation = f"""DELETE FROM registration_entities
+            WHERE registration_id = {str(reg_id)} 
+            {f"AND registration_entity_id = {str(ent_id)}" if ent_id is not None else ''}
         """
         cur = conn.cursor()
-        cur.execute(operation, values)
+        cur.execute(operation)
         conn.commit()
 
     except Exception as error:
@@ -528,6 +538,8 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
 
     except Exception as error:
         logger.error(error)
+        delete_registration(reg_id)  # delete any associated records already written in database on error
+        delete_registration_entity(reg_id)
         return error
 
     finally:
@@ -590,7 +602,7 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
             conn.close()
 
 
-def delete_registration_contact(reg_id, cont_id):
+def delete_registration_contact(reg_id, cont_id=None):
     cur = None
     conn = None
     values = ()
@@ -603,15 +615,12 @@ def delete_registration_contact(reg_id, cont_id):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        values = (
-            reg_id,
-            cont_id
-        )
-        operation = """DELETE FROM registration_contacts
-            WHERE registration_id = %s AND registration_contact_id = %s
+        operation = f"""DELETE FROM registration_contacts
+            WHERE registration_id = {str(reg_id)} 
+            {f"AND registration_contact_id = {str(cont_id)}" if cont_id is not None else ''}
         """
         cur = conn.cursor()
-        cur.execute(operation, values)
+        cur.execute(operation)
         conn.commit()
 
     except Exception as error:
