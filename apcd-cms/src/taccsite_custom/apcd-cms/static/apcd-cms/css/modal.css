@@ -1,0 +1,34 @@
+.modal {
+    /* WARNING: The body line-height changes in Core-Styles v2 */
+    line-height: 1.4; /* mimic body in Core-Styles v0.13 (Core-CMS v3.10) */
+}
+
+.modal-dialog {
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    /* To mimic Bootstrap, overwrite Core-Styles v0.13, mirror Core-CMS v3.9 */
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+}
+.modal-body {
+    height: 60vh;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.modal-title {
+    margin-top: unset; /* overwrite site.css h4 */
+    font-size: var(--global-font-size--large); /* revert to site.css h4 */
+}
+.modal-header {
+    align-items: center; /* overwrite Bootstrap */
+}
+.modal-header .close span {
+    font-size: 1.5em;
+}
