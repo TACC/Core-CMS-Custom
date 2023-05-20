@@ -1,4 +1,4 @@
-# Core-CMS v3.11.0 candidate
+# v3.11.0 candidate
 FROM taccwma/core-cms:c35486d
 
 WORKDIR /code
