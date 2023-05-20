@@ -1,3 +1,4 @@
+# v3.9.2 + 25 commits of v3.10.0
 FROM taccwma/core-cms:64a72e2
 
 WORKDIR /code
