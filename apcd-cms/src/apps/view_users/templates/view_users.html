@@ -58,6 +58,7 @@
           {% endfor %}
       </tbody>
   </table>
+  <h4 id="emptyMessage" style="display: none;">No records found.</h4>
 </div>
 <script>
 /*filters by organization with dropdown*/
@@ -109,8 +110,23 @@ document.querySelectorAll('#organizationFilter > option').forEach((option) => {
     else options.push(option.value)
 })
 
-/*Sort Table function*/
 
+
+/*Check if table Empty*/
+window.addEventListener('DOMContentLoaded', function() {
+  checkTableEmpty();
+});
+
+function checkTableEmpty() {
+  var table = document.getElementById('usersTableBody');
+  var emptyMessage = document.getElementById('emptyMessage');
+
+  if (table.rows.length <= 0) {
+    emptyMessage.style.display = 'block';
+  } else {
+    emptyMessage.style.display = 'none';
+  }
+}
 
 
 </script>
