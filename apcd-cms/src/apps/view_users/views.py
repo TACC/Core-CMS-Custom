@@ -12,12 +12,85 @@ class ViewUsersTable(TemplateView):
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           return HttpResponseRedirect('/')
+        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
+           #return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
+
+        user_content = [
+            (
+                6,
+                4,
+                'ben@arby.org',
+                'Ken Bek',
+                'UGT',
+                '10/22/33',
+                '11/22/23',
+                'notes here',
+                True,
+                7,
+                'submitter'
+        
+            ),
+            (
+                6,
+                4,
+                'ben@arby.org',
+                'Ben Hek',
+                'Dunstreet',
+                '10/22/33',
+                '11/22/23',
+                'notes here',
+                False,
+                7,
+                'admin'
+        
+            ),
+            (
+                6,
+                4,
+                'ben@arby.org',
+                'Ren Shek',
+                'Dunstreet',
+                '10/22/33',
+                '11/22/23',
+                'notes here',
+                True,
+                7,
+                'submitter'
+        
+            ),
+            (
+                6,
+                4,
+                'ben@arby.org',
+                'Len Jek',
+                'UGT',
+                '10/22/33',
+                '11/22/23',
+                'notes here',
+                False,
+                7,
+                'admin'
+        
+            ),
+            (
+                6,
+                4,
+                'ben@arby.org',
+                'Ron Ma',
+                'P',
+                '10/22/33',
+                '11/22/23',
+                'notes here',
+                False,
+                7,
+                'admin'
+        
+            ),
+        ]
 
         def _set_user(usr):
             return {
@@ -29,7 +102,7 @@ class ViewUsersTable(TemplateView):
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
-                    'active': 'Active' if usr[8] else 'Inactive',
+                    'status': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
                     'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
@@ -44,12 +117,20 @@ class ViewUsersTable(TemplateView):
             table_entries.append(_set_user(user,))
             context['filter_options'].append(user[4])
 
-        filter = self.request.GET.get('filter')
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
 
-        context['selected_filter'] = None
-        if filter is not None and filter != 'All':
-            context['selected_filter'] = filter
-            table_entries = table_filter(filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+        context['selected_status'] = None
+        if status_filter is not None and status_filter !='All':
+            context['selected_status'] = status_filter
+            table_entries = table_filter(status_filter, table_entries, 'status')
+
+
+
+        context['selected_org'] = None
+        if org_filter is not None and org_filter != 'All':
+            context['selected_org'] = org_filter
+            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
         context['rows'] = table_entries
 
