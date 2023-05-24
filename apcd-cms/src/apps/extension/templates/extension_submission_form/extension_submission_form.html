@@ -41,8 +41,8 @@
                 <div class="field-errors" style="display: none"></div>
                 <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
                   {% for submitter in submitters %}
-                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - Submitter ID:
-                    {{submitter.submitter_id}} Payor: {{submitter.payor_code}}</option>
+                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                    {{submitter.submitter_id}} Payor Code: {{submitter.payor_code}}</option>
                   {% endfor %}
                 </select>
                 </div>
@@ -60,14 +60,22 @@
                   </select>
                 </div>
               
+                <h6>Submission Dates</h6>
+                <div class="o-grid o-grid--col-auto-count">
                 <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
-
-                  <label for="requested-target-date_1">Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
-
+                  <label for="requested-target-date_1" >Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
                   <input type="date" name="requested-target-date_1" class="numeric" id="requested-target-date_1"
                     inputmode="numeric" required />
                 </div>
+                  <div class="field-wrapper">
+                      <label for="current-expected-date_1"> Your current expected due date is: </label>
+                      <div name="current-expected-date_1" type="date" id="current-expected-date_1"> 12/05/2023</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <label for="app-data-period_1"> The data period is through the end of: </label>
+                    <div name="app-data-period_1" type="date" id="app-data-period_1">12-05-2023</div>
+                  </div>
               </div>
             <h4 id="extension-header_2" style="display:none">
               <hr />Extension Information 2
@@ -237,14 +245,25 @@
                     </option>
                   </select>
                 </div>
-              
-                <div class="field-wrapper numberinput required">
+
+                <h6>Submission Dates ${extension}</h6>
+                <div class="o-grid o-grid--col-auto-count">
+                  <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
 
                   <label for="requested-target-date_${extension}">Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
 
                   <input type="date" name="requested-target-date_${extension}" class="numeric" id="requested-target-date_${extension}"
                     inputmode="numeric" required />
+                </div>
+                  <div class="field-wrapper">
+                      <label for="current-expected-date_${extension}"> Your current expected due date is: </label>
+                      <div name="current-expected-date_${extension}" type="date" id="current-expected-date_${extension}"> 12/05/2023</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <label for="app-data-period_${extension}"> The data period is through the end of: </label>
+                    <div name="app-data-period_${extension}" type="date" id="app-data-period_${extension}">12-05-2023</div>
+                  </div>
                 </div>
               </div>
         `;

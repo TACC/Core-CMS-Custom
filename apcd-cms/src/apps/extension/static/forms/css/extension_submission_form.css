@@ -1,4 +1,10 @@
 /* Field Widths */
+select {
+    overflow: hidden;
+    white-space:pre;
+    text-overflow: ellipsis;
+  }
+  
 input[name^="requested-target-date"] {
     --length: 25ch;
     box-sizing: content-box;
