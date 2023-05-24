@@ -1,0 +1,6 @@
+.git
+.cache
+# HELP: Why ignore these?
+# HELP: Is ignoring tese why DemData failed as a Core-CMS-Custom project?
+# **/secrets.py
+# **/settings_local.py
