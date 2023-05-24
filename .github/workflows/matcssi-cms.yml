@@ -38,4 +38,4 @@ jobs:
         with:
           context: matcssi_cms
           push: true
-          tags: taccwma/matcssi_cms:${{ steps.vars.outputs.sha_short }}
+          tags: taccwma/matcssi-cms:${{ steps.vars.outputs.sha_short }}
