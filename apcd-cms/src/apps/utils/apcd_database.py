@@ -773,13 +773,13 @@ def create_threshold_exception(form, sub_data):
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
-            "Threshold",
+            "threshold",
             _clean_date(form['expiration-date']),
             _clean_value(form['file_type']),
             _clean_value(form['field-threshold-exception']),
             _clean_value(form['threshold-requested']),
             _clean_value(form['justification']),
-            "Pending"
+            "pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
