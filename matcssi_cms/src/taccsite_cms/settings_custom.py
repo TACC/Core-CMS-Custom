@@ -13,7 +13,7 @@ LOGO = [
     "",
     "/",
     "_self",
-    "MatCSSI Logo for CMS/Portal",
+    "MATCSSI Logo for CMS/Portal",
     "anonymous",
     "True"
 ]
