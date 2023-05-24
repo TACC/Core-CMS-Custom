@@ -1063,13 +1063,10 @@ def create_extension(form, iteration, sub_data):
     try:
         if iteration > 1:
             values = (
-                _clean_value(sub_data[0]),
-                _clean_date(form['current-expected-date_{}'.format(iteration)]),
+                _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
-                None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
-                int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
-                "Pending",
+                "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
@@ -1079,14 +1076,10 @@ def create_extension(form, iteration, sub_data):
                 )
         else:
             values = (
-            _clean_value(sub_data[0]),
-            _clean_date(form['current-expected-date']),
-            _clean_date(form['requested-target-date']),
-            None,
-            _clean_value(form['extension-type']),
-            int(form['applicable-data-period'].replace('-', '')),
-            "Pending",
-
+            _clean_value(form['business-name_{}'.format(iteration)]),
+            _clean_date(form['requested-target-date_{}'.format(iteration)]),
+            _clean_value(form['extension-type_{}'.format(iteration)]),
+            "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
@@ -1097,11 +1090,8 @@ def create_extension(form, iteration, sub_data):
 
         operation = """INSERT INTO extensions(
             submitter_id,
-            current_expected_date,
             requested_target_date,
-            approved_expiration_date,
             extension_type,
-            applicable_data_period,
             status,
             submitter_code,
             payor_code,
@@ -1109,7 +1099,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1152,13 +1142,11 @@ def get_submitter_for_extend_or_except(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    apcd_orgs.official_name
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                JOIN apcd_orgs
-                    ON submitters.apcd_id = apcd_orgs.apcd_id
-                ORDER BY submitters.apcd_id, submitter_users.submitter_id
+                ORDER BY submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
