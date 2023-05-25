@@ -1,7 +1,16 @@
 # CUSTOM SETTINGS VALUES.
 # TACC WMA CMS SITE:
-# *.democemocratizing-site.TACC.UTEXAS.EDU
+# *.DEMOCTRATIZING-SITE.TACC.UTEXAS.EDU
+# https://democratizingdata.ai/
 
+########################
+# TACC: PORTAL
+########################
+
+# Does this CMS site have a portal (default value: True)?
+INCLUDES_CORE_PORTAL = False
+INCLUDES_PORTAL_NAV = False
+INCLUDES_SEARCH_BAR = False
 
 ########################
 # DJANGO CMS SETTINGS
@@ -10,38 +19,77 @@
 CMS_TEMPLATES = (
     ('standard.html', 'Standard'),
     ('fullwidth.html', 'Full Width'),
-    ('guide.html', 'Guide'),
-    ('guides/getting_started.tam.html', 'Guide: Getting Started'),
-    ('guides/data_transfer.html', 'Guide: Data Transfer'),
-    ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
-    ('guides/portal_technology.html', 'Guide: Portal Technology Stack')
 )
+
+########################
+# TACC: BRANDING
+########################
+
+# LOOK INTO THIS SOLUTION.
+# from taccsite_cms.settings import TACC_BRANDING, UTEXAS_BRANDING, NSF_BRANDING
+
+TACC_BRANDING = [
+    "tacc",
+    "epoc-cms/img/org_logos/tacc-white.png",
+    "branding-tacc",
+    "https://www.tacc.utexas.edu/",
+    "_blank",
+    "TACC Logo",
+    "anonymous",
+    "True"
+]
+
+UTEXAS_BRANDING = [
+    "utexas",
+    "epoc-cms/img/org_logos/utaustin-white.png",
+    "branding-utaustin",
+    "https://www.utexas.edu/",
+    "_blank",
+    "University of Texas at Austin Logo",
+    "anonymous",
+    "True"
+]
+
+# NSF_BRANDING = [
+#     "nsf",
+#     "epoc-cms/img/org_logos/nsf-white.png",
+#     "branding-nsf",
+#     "https://www.nsf.gov/",
+#     "_blank",
+#     "NSF Logo",
+#     "anonymous",
+#     "True"
+# ]
+
+# CUSTOM_BRANDING = [
+#     "epoc",
+#     "epoc-cms/img/org_logos/esnet-white-logo.png",
+#     "branding-logo--short",
+#     "https://www.es.net/",
+#     "_blank",
+#     "ESnet Logo",
+#     "anonymous",
+#     "True",
+# ]
+
+# BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, CUSTOM_BRANDING ]
+BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ]
 
 ########################
 # TACC: LOGOS
 ########################
 
-LOGO = [ 
+LOGO = [
     "demdata",
-    "demdata-cms/img/org_logos/tacc-white.png",
+    "demdata-cms/img/org_logos/Demo-Data.svg",
     "",
     "/",
     "_self",
-    "Demdata Logo for CMS/Portal",
+    "Democratizing Data Logo",
     "anonymous",
     "True"
 ]
 
 FAVICON = {
-    "img_file_src": "demdata-cms/img/favicons/favicon.ico"
+    "img_file_src": "demdata-cms/img/favicons/Favicon_64x64.svg"
 }
-
-########################
-# DJANGO (EMAIL)
-########################
-
-# Set on server, NOT here
-# https://confluence.tacc.utexas.edu/x/coR9E
-# EMAIL_BACKEND = "..."
-# EMAIL_HOST = "..."
-# DEFAULT_FROM_EMAIL = "..."
