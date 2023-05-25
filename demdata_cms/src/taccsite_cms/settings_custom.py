@@ -30,7 +30,7 @@ CMS_TEMPLATES = (
 
 TACC_BRANDING = [
     "tacc",
-    "epoc-cms/img/org_logos/tacc-white.png",
+    "site_cms/img/org_logos/tacc-white.png",
     "branding-tacc",
     "https://www.tacc.utexas.edu/",
     "_blank",
@@ -41,7 +41,7 @@ TACC_BRANDING = [
 
 UTEXAS_BRANDING = [
     "utexas",
-    "epoc-cms/img/org_logos/utaustin-white.png",
+    "site_cms/img/org_logos/utaustin-white.png",
     "branding-utaustin",
     "https://www.utexas.edu/",
     "_blank",
@@ -52,7 +52,7 @@ UTEXAS_BRANDING = [
 
 # NSF_BRANDING = [
 #     "nsf",
-#     "epoc-cms/img/org_logos/nsf-white.png",
+#     "site_cms/img/org_logos/nsf-white.png",
 #     "branding-nsf",
 #     "https://www.nsf.gov/",
 #     "_blank",
@@ -61,19 +61,7 @@ UTEXAS_BRANDING = [
 #     "True"
 # ]
 
-# CUSTOM_BRANDING = [
-#     "epoc",
-#     "epoc-cms/img/org_logos/esnet-white-logo.png",
-#     "branding-logo--short",
-#     "https://www.es.net/",
-#     "_blank",
-#     "ESnet Logo",
-#     "anonymous",
-#     "True",
-# ]
-
-# BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, CUSTOM_BRANDING ]
-BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ]
+# BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, NSF_BRANDING ]
 
 ########################
 # TACC: LOGOS
