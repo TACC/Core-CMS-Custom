@@ -1,6 +1,5 @@
-# v3.11.0 candidate
-# https://github.com/TACC/Core-CMS/pull/638
-FROM taccwma/core-cms:c35486d
+# v3.11.0-beta.2
+FROM taccwma/core-cms:f3994b3
 
 WORKDIR /code
 
