@@ -1,4 +1,4 @@
-name: Democratizing Data CMS Builds 
+name: DemData CMS Builds
 on:
   workflow_dispatch:
   push:
