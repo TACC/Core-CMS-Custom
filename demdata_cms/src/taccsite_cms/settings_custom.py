@@ -82,3 +82,10 @@ LOGO = [
 FAVICON = {
     "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg"
 }
+
+########################
+# TACC: CORE STYLES
+########################
+
+# Only use integer numbers (not "v1", not "0.11.0")
+TACC_CORE_STYLES_VERSION = 2
