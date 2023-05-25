@@ -1205,12 +1205,10 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                apcd_orgs.official_name
+                submitters.org_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
-            JOIN apcd_orgs
-                ON submitters.apcd_id = apcd_orgs.apcd_id
             ORDER BY extensions.created_at DESC
         """ 
         cur = conn.cursor()
