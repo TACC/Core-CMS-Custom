@@ -62,6 +62,7 @@ UTEXAS_BRANDING = [
 # ]
 
 # BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, NSF_BRANDING ]
+BRANDING = []
 
 ########################
 # TACC: LOGOS
