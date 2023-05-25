@@ -1,4 +1,4 @@
-name: MATCSSI CMS Builds
+name: Example CMS Builds
 on:
   workflow_dispatch:
   push:
