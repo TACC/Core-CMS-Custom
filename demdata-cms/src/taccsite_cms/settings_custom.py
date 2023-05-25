@@ -81,7 +81,7 @@ BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ]
 
 LOGO = [
     "demdata",
-    "demdata-cms/img/org_logos/Demo-Data.svg",
+    "demdata_cms/img/org_logos/Demo-Data.svg",
     "",
     "/",
     "_self",
@@ -91,5 +91,5 @@ LOGO = [
 ]
 
 FAVICON = {
-    "img_file_src": "demdata-cms/img/favicons/Favicon_64x64.svg"
+    "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg"
 }
