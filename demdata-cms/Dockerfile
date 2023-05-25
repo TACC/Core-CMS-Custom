@@ -1,4 +1,5 @@
-FROM taccwma/core-cms:977ecc0
+# https://github.com/TACC/Core-CMS/pull/606
+FROM taccwma/core-cms:3285f4a
 
 WORKDIR /code
 
