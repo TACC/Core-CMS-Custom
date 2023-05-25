@@ -18,9 +18,8 @@
     <div class="filter-content">
       <span><b>View Users by Organization: </b></span>
       <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
-        <option class="dropdown-text" value="">All</option>
-        {% for r in rows %}
-        <option class="dropdown-text">{{r.org_name}}</option>
+        {% for option in filter_options %}
+          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
     </div>
@@ -34,7 +33,7 @@
           </tr>
       </thead>
       <tbody id="usersTableBody">
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.user_id}}</td>
                   <td>{{r.user_name}}</td>
@@ -50,35 +49,20 @@
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %} 
 </div>
 <script>
 /*filters by organization with dropdown*/
 function filterTableByOrganization() {
-  var dropdown, filter, newinput, bestinput, table, tr, td, i;
+  var filter, xhr;
   input = document.getElementById("organizationFilter");
-  filter = input.value.replace("&", "&amp;").replace("(", "").replace(")","");
-  table = document.getElementById("usersTableBody");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[2];
-    if (td) {
-      if (td.innerHTML.replace("(", "").replace(")","").search(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";  
-      }
-    }  
-  }
+  filter = input.value.replace("&", encodeURIComponent('&'));
+  xhr = new XMLHttpRequest();
+  xhr.open('GET', `/administration/view-users/?filter=${filter}`);
+  xhr.send();
+  window.location.href = `/administration/view-users/?filter=${filter}`;
+  window.location.load();
 }
-
-/* remove duplicates from dropdown */
-
-const options = []
-
-document.querySelectorAll('#organizationFilter > option').forEach((option) => {
-    if (options.includes(option.value)) option.remove()
-    else options.push(option.value)
-})
 </script>
 
 {% endblock %}

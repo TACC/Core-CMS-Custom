@@ -61,6 +61,9 @@
     background-position: right 6px top 50%; /* 5px design * 1.2 design-to-app ratio */
     background-size: auto 10px; /* ~8px design * 1.2 design-to-app ratio (rounded) */
 }
+.status-filter.org-filter {
+    width: max-content;
+}
 
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
@@ -122,8 +125,6 @@
     .registration-table td:nth-of-type(1):before { content: "Business Name"; }
     .registration-table td:nth-of-type(2):before { content: "Type"; }
     .registration-table td:nth-of-type(3):before { content: "Location"; }
-    .registration-table td:nth-of-type(4):before { content: "Submission"; }
-    .registration-table td:nth-of-type(5):before { content: "Registration Status"; }
-    .registration-table td:nth-of-type(6):before { content: "Files to Submit"; }
-    .registration-table td:nth-of-type(7):before { content: "Actions"; }
+    .registration-table td:nth-of-type(4):before { content: "Registration Status"; }
+    .registration-table td:nth-of-type(5):before { content: "Actions"; }
 }

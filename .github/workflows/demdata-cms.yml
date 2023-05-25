@@ -1,17 +1,17 @@
-name: Democratizing Data CMS Builds 
+name: DemData CMS Builds
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - 'demdata-cms/**'
+      - 'demdata_cms/**'
 
 jobs:
   build_commit:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demdata-cms
+        working-directory: demdata_cms
     steps:
       - uses: actions/checkout@v2
       - name: Get shortsha
@@ -36,6 +36,6 @@ jobs:
       - uses: docker/build-push-action@v3
         name: Build & push commit tagged Docker image
         with:
-          context: demdata-cms
+          context: demdata_cms
           push: true
           tags: taccwma/demdata-cms:${{ steps.vars.outputs.sha_short }}

@@ -13,14 +13,17 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
   -moz-appearance:textfield;
 }
 
-/* Field Widths */
-#threshold-requested {
-  min-width: 25ch;
+/* Field Sizes */
+[id^="threshold-requested"], [id^="expiration-date"] {
+  min-width: 15ch;
+}
+/* To make sure sup values are not cut off when set as a label*/
+label[name^="date-row"] {
+  margin-top: 1rem;
 }
 /* Field Layouts */
 
-[id^="extension_block_"] {
-  --max-col-width: 15ch;
+[id^="exception_block"] {
 
   /* Expectations:
         - automatically enough columns
@@ -31,5 +34,5 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
   display: grid;
   column-gap: var(--global-space--grid-gap);
   grid-template-columns: repeat(auto-fill, var(--max-col-width));
-  max-width: calc(var(--global-space--grid-gap) + var(--max-col-width) * 3);
+  max-width: calc(var(--global-space--grid-gap) + var(--max-col-width) * 2);
 }
