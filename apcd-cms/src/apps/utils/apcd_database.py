@@ -737,19 +737,43 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, sub_data):
+def create_threshold_exception(form, iteration, sub_data):
     cur = None
     conn = None
     values = ()
     try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
+        if iteration > 1:
+            values = (
+                _clean_value(form["business-name"]),
+                sub_data[1],
+                sub_data[2],
+                sub_data[3],
+                _clean_value(form['requestor-name']),
+                _clean_email(form['requestor-email']),
+                "threshold",
+                _clean_date(form['expiration-date_{}'.format(iteration)]),
+                _clean_value(form['file_type']),
+                _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+                _clean_value(form['threshold-requested_{}'.format(iteration)]),
+                _clean_value(form['justification']),
+                "pending"
+            )
+        else:
+            values = (
+                _clean_value(form["business-name"]),
+                sub_data[1],
+                sub_data[2],
+                sub_data[3],
+                _clean_value(form['requestor-name']),
+                _clean_email(form['requestor-email']),
+                "threshold",
+                _clean_date(form['expiration-date']),
+                _clean_value(form['file_type']),
+                _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+                _clean_value(form['threshold-requested']),
+                _clean_value(form['justification']),
+                "pending"
+            )
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
@@ -766,20 +790,14 @@ def create_threshold_exception(form, sub_data):
             status
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
-        values = (
-            form["business-name"],
-            sub_data[1],
-            sub_data[2],
-            sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
-            "threshold",
-            _clean_date(form['expiration-date']),
-            _clean_value(form['file_type']),
-            _clean_value(form['field-threshold-exception']),
-            _clean_value(form['threshold-requested']),
-            _clean_value(form['justification']),
-            "pending"
+
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
         )
         cur = conn.cursor()
         cur.execute(operation, values)
