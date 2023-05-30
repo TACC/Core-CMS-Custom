@@ -1,17 +1,17 @@
-name: DemData CMS Builds
+name: MATCSSI CMS Builds
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - 'demdata_cms/**'
+      - 'matcssi_cms/**'
 
 jobs:
   build_commit:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demdata_cms
+        working-directory: matcssi_cms
     steps:
       - uses: actions/checkout@v2
       - name: Get shortsha
@@ -36,6 +36,6 @@ jobs:
       - uses: docker/build-push-action@v3
         name: Build & push commit tagged Docker image
         with:
-          context: demdata_cms
+          context: matcssi_cms
           push: true
-          tags: taccwma/demdata-cms:${{ steps.vars.outputs.sha_short }}
+          tags: taccwma/matcssi-cms:${{ steps.vars.outputs.sha_short }}
