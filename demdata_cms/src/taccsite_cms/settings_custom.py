@@ -62,7 +62,8 @@ UTEXAS_BRANDING = [
 # ]
 
 # BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, NSF_BRANDING ]
-BRANDING = []
+BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ] # this matches prod 2022
+# BRANDING = [] # prod 2022 hides bar via snippet CSS but should also do this
 
 ########################
 # TACC: LOGOS
@@ -88,4 +89,4 @@ FAVICON = {
 ########################
 
 # Only use integer numbers (not "v1", not "0.11.0")
-TACC_CORE_STYLES_VERSION = 2
+TACC_CORE_STYLES_VERSION = 0
