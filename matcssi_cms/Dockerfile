@@ -1,8 +1,7 @@
-# v3.11.0-beta.2
-FROM taccwma/core-cms:f3994b3
+# v3.9.3
+FROM taccwma/core-cms:4ef3608
 
 WORKDIR /code
 
-COPY /src/apps /code/apps
 COPY /src/taccsite_custom /code/taccsite_custom
 COPY /src/taccsite_cms /code/taccsite_cms
