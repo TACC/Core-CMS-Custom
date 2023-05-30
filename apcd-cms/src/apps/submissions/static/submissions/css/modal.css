@@ -1,0 +1,24 @@
+.title {
+    margin-top: 0;
+}
+
+.modal-section {
+    width: 100%;
+}
+
+dl {
+    display: flex;
+    flex-flow: row wrap;
+    padding-left: 0;
+  }
+
+dt {
+    flex-basis: 20%;
+    padding: 0;
+}
+
+dd {
+    flex-basis: 80%;
+    margin: 0;
+    padding: 0;
+}

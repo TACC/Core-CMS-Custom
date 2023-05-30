@@ -1,0 +1,50 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static '/forms/css/exception_submission_form.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <div class="row">
+    <div class="col">
+      <h1>Request an Exception</h1>
+      {% csrf_token %}
+
+      <hr />
+      <p class="description">Please choose the type of exception to submit. If your entity requires a reporting
+        threshold
+        reduction, please select the threshold option.
+        For all other exceptions, please select other.
+      </p>
+      <div class="o-grid--col-auto-count">
+        <a href="../threshold-exception/"><button class="form-button " type="button" onclick="redirect()"
+            id="threshold-exception-btn" value="Submit">
+            Threshold Exception
+          </button></a>
+        <a href="../other-exception/"><button class="form-button " type="button" onclick="redirect()"
+            id="other-exception-btn" value="Submit">
+            Other Exception
+          </button></a>
+      </div>
+
+      {# Hidden links for future pages #}
+      {# TODO: Allow this template to render CMS admin-entered markup #}
+      <aside class="row" hidden>
+        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+
+          <p><a href="/submission/exception">Exception Request</a></p>
+
+          <p><a href="/submission/extension-request">Extension Request</a></p>
+
+          <p><a href="/workbench/dashboard">Dashboard</a></p>
+        </div>
+
+
+        {# Scripts #}
+      </aside>
+
+      {% endblock %}

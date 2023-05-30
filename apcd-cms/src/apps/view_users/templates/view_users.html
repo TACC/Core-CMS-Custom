@@ -1,0 +1,68 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>View Users</h1>
+  <hr />
+  <p style="margin-bottom: 30px">View submitted users.</p>
+  <hr />
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>View Users by Organization: </b></span>
+      <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
+        {% for option in filter_options %}
+          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody id="usersTableBody">
+          {% for r in page %}
+              <tr>
+                  <td>{{r.user_id}}</td>
+                  <td>{{r.user_name}}</td>
+                  <td>{{r.org_name}}</td>
+                  <td>{{r.role_name}}</td>
+                  <td>{{r.active}}</td>
+                  <td>{{r.user_number}}</td>
+                  <td>
+                    {% include "view_user_modal.html" %}
+                    <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
+                  </td>
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% include 'paginator.html' %} 
+</div>
+<script>
+/*filters by organization with dropdown*/
+function filterTableByOrganization() {
+  var filter, xhr;
+  input = document.getElementById("organizationFilter");
+  filter = input.value.replace("&", encodeURIComponent('&'));
+  xhr = new XMLHttpRequest();
+  xhr.open('GET', `/administration/view-users/?filter=${filter}`);
+  xhr.send();
+  window.location.href = `/administration/view-users/?filter=${filter}`;
+  window.location.load();
+}
+</script>
+
+{% endblock %}

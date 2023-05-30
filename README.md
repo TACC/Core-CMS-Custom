@@ -25,7 +25,14 @@ See [Core-CMS](https://github.com/TACC/Core-CMS#prequisites-for-running-the-cms)
 
 #### Settings
 
-See [Core-CMS](https://github.com/TACC/Core-CMS#settings) "Settings" section.
+1. Understand how settings are organized. See [Core-CMS](https://github.com/TACC/Core-CMS#settings) "Settings" section.
+2. **If** the project you work on has a `taccsite_cms/secrets.default.py`, **then**:
+
+    ```bash
+    cd custom-project-dir
+    cp taccsite_cms/secrets.default.py taccsite_cms/secrets.py
+    ```
+3. Create a `settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
 ## Running the CMS
 
@@ -45,7 +52,7 @@ make start
 
 ## Porting from [Core CMS Resources]
 
-When porting a downstream CMS project from [Core CMS Resources], the contents of a specific project's custom assets should be copied to [`./custom-project-dir/src/taccsite_custom`](./src/taccsite_custom/). The `settings_custom.py` from the CMS project directory should be moved to [`./custom-project-dir/src/taccsite_cms`](./src/taccsite_cms/) since that is where the file would be placed during a CMS build process from Jenkins.
+When porting a downstream CMS project from [Core CMS Resources], the contents of a specific project's custom assets should be copied to [`./custom_project-dir/src/taccsite_custom`](./src/taccsite_custom/). The `settings_custom.py` from the CMS project directory should be moved to [`./custom-project-dir/src/taccsite_cms`](./src/taccsite_cms/) since that is where the file would be placed during a CMS build process from Jenkins.
 
 
 ## Automatic Builds

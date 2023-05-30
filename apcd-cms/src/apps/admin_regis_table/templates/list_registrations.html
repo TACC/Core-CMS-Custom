@@ -3,8 +3,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'admin_regis_table/css/modal.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -13,7 +14,26 @@
   <hr />
   <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
   <hr />
-  <table class="registration-table">
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        {% for option in status_options %}
+          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      <span><b>Filter by Organization: </b></span>
+      <select id="organizationFilter" class="status-filter org-filter" onchange="filterTableByOrganization()">
+        {% for option in org_options %}
+          <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      {% if selected_status or selected_org %}
+        <button onclick="clearSelections()">Clear Options</button>
+      {% endif %}
+    </div>
+  </div>
+  <table id="registrationTable" class="registration-table">
       <thead>
           <tr>
               {% for k in header %}
@@ -22,32 +42,80 @@
           </tr>
       </thead>
       <tbody>
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
                   <td>{{r.type}}</td>
                   <td>{{r.location}}</td>
-                  <td>{{r.sub_method}}</td>
                   <td>{{r.reg_status}}</td>
                   <td>
-                    <ul class='no-bullets'>
-                      {% for file_type in r.files_type %}
-                        {% if file_type != None %}
-                          <li>{{file_type}}</li>
-                        {% endif %}
-                      {% endfor %}
-                    </ul>
-                  </td>
-                  <td>
-                    {# FAQ: So cell "has layout" on narrow screen layout #}
-                    &nbsp;
                     {% include "view_registration_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewRegistrationModal_{{r.reg_id}}" data-backdrop="static">View</a>
+                    {% include "edit_registration_modal.html" %}
+                    {% include "create_submitter_modal.html" %}
+                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                      <option value="">Select Action</option>
+                      <option value="viewRegistration">View Record</option>
+                      <option value="editRegistration">Edit Record</option>
+                      <option value="createSubmitter">Create Submitter</option>
+                    </select>
                   </td>
               </tr>
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %}
 </div>
+<script>
+  function filterTableByStatus() {
+    var dropdown, statusFilter, xhr, url_params, url;
+    dropdown = document.getElementById("statusFilter");
+    statusFilter =  dropdown.value;
+    url_params = `?status=${statusFilter}`;
+    {% if selected_org %}
+      url_params += `&org={{selected_org}}`;
+    {% endif %}
+    url = `/administration/list-registration-requests/${url_params}`;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    window.location.href = url;
+    window.location.load();
+  }
+  function filterTableByOrganization() {
+    var input, orgFilter, xhr, url_params, url;
+    input = document.getElementById("organizationFilter");
+    orgFilter = input.value.replace("&", encodeURIComponent('&'));
+    url_params = `?org=${orgFilter}`;
+    {% if selected_status %}
+      url_params = `?status={{selected_status}}&org=${orgFilter}`;
+    {% endif %}
+    url = `/administration/list-registration-requests/${url_params}`;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    window.location.href = url;
+    window.location.load();
+  }
+  function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/administration/list-registration-requests/')
+        xhr.send()
+        window.location.href = '/administration/list-registration-requests/';
+        window.location.load();
+    }
+
+  function openAction(reg_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${reg_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
+</script>
 
 {% endblock %}

@@ -35,20 +35,6 @@
               </dl>
             </dd>
             <hr>
-            <h4>File Submission</h4>
-            <dd>
-              <dl class="c-data-list--is-vert c-data-list--is-wide">
-                <dt class="c-data-list__key">Types of Files</dt>
-                {% for file_type in r.view_modal_content.files_type %}
-                  {% if file_type != None %}
-                    <dd class="c-data-list__value">{{file_type}}</dd>
-                  {% endif %}
-                {% endfor %}
-                <dt class="c-data-list__key">Submission Method</dt>
-                <dd class="c-data-list__value">{{r.view_modal_content.sub_method}}</dd>
-              </dl>
-            </dd>
-            <hr>
             <h4>Entity/Entities Being Registered</h4>
             <dd>
               {% for entity in r.view_modal_content.entities%}
@@ -62,6 +48,18 @@
                   <dd class="c-data-list__value">{{entity.license}}</dd>
                   <dt class="c-data-list__key">NAIC Company Code</dt>
                   <dd class="c-data-list__value">{{entity.naic}}</dd>
+                  <h6>File Submission</h6>
+                  <dd>
+                    <dl class="c-data-list--is-vert c-data-list--is-wide">
+                      <dt class="c-data-list__key">Types of Files</dt>
+                      {% for file_type, file_type_selected in entity.files_type.items %}
+                        {% if file_type_selected %}
+                          <dd class="c-data-list__value">{{file_type}}</dd>
+                        {% endif %}
+                      {% endfor %}
+                    </dl>
+                  </dd>
+      
                   <h6>Coverage Estimates <small>(Inclusive of all claims as of December 31 of previous year.)</small></h6>
                   <dt class="c-data-list__key">Total Covered Lives</dt>
                   <dd class="c-data-list__value">{{entity.no_covered}}</dd>
