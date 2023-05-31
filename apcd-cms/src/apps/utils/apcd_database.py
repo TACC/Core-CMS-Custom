@@ -742,38 +742,21 @@ def create_threshold_exception(form, iteration, sub_data):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            values = (
-                _clean_value(form["business-name"]),
-                sub_data[1],
-                sub_data[2],
-                sub_data[3],
-                _clean_value(form['requestor-name']),
-                _clean_email(form['requestor-email']),
-                "threshold",
-                _clean_date(form['expiration-date_{}'.format(iteration)]),
-                _clean_value(form['file_type']),
-                _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
-                _clean_value(form['threshold-requested_{}'.format(iteration)]),
-                _clean_value(form['justification']),
-                "pending"
-            )
-        else:
-            values = (
-                _clean_value(form["business-name"]),
-                sub_data[1],
-                sub_data[2],
-                sub_data[3],
-                _clean_value(form['requestor-name']),
-                _clean_email(form['requestor-email']),
-                "threshold",
-                _clean_date(form['expiration-date']),
-                _clean_value(form['file_type']),
-                _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
-                _clean_value(form['threshold-requested']),
-                _clean_value(form['justification']),
-                "pending"
-            )
+        values = (
+            _clean_value(form["business-name"]),
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
+            "threshold",
+            _clean_date(form['expiration-date_{}'.format(iteration)]),
+            _clean_value(form['file_type']),
+            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+            _clean_value(form['threshold-requested_{}'.format(iteration)]),
+            _clean_value(form['justification']),
+            "pending"
+        )
         operation = """INSERT INTO exceptions(
             submitter_id,
             submitter_code,
