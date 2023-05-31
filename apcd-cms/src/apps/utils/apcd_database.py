@@ -218,36 +218,6 @@ def update_registration(form, reg_id):
         if conn is not None:
             conn.close()
 
-
-def delete_registration(reg_id):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        operation = """DELETE FROM registrations
-            WHERE registration_id = %s
-        """
-        cur = conn.cursor()
-        cur.execute(operation, reg_id)
-        conn.commit()
-
-    except Exception as error:
-        logger.error(error)
-        return error
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
 def get_registration_entities(reg_id=None):
     cur = None
     conn = None
@@ -344,8 +314,6 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
 
     except Exception as error:
         logger.error(error)
-        delete_registration(reg_id)  # delete any associated records already written in database on error
-        delete_registration_contact(reg_id)
         return error
 
     finally:
@@ -420,7 +388,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             conn.close()
 
 
-def delete_registration_entity(reg_id, ent_id=None):
+def delete_registration_entity(reg_id, ent_id):
     cur = None
     conn = None
     values = ()
@@ -433,12 +401,15 @@ def delete_registration_entity(reg_id, ent_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""DELETE FROM registration_entities
-            WHERE registration_id = {str(reg_id)} 
-            {f"AND registration_entity_id = {str(ent_id)}" if ent_id is not None else ''}
+        values = (
+            reg_id,
+            ent_id
+        )
+        operation = """DELETE FROM registration_entities
+            WHERE registration_id = %s AND registration_entity_id = %s
         """
         cur = conn.cursor()
-        cur.execute(operation)
+        cur.execute(operation, values)
         conn.commit()
 
     except Exception as error:
@@ -538,8 +509,6 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
 
     except Exception as error:
         logger.error(error)
-        delete_registration(reg_id)  # delete any associated records already written in database on error
-        delete_registration_entity(reg_id)
         return error
 
     finally:
@@ -602,7 +571,7 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
             conn.close()
 
 
-def delete_registration_contact(reg_id, cont_id=None):
+def delete_registration_contact(reg_id, cont_id):
     cur = None
     conn = None
     values = ()
@@ -615,12 +584,15 @@ def delete_registration_contact(reg_id, cont_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        operation = f"""DELETE FROM registration_contacts
-            WHERE registration_id = {str(reg_id)} 
-            {f"AND registration_contact_id = {str(cont_id)}" if cont_id is not None else ''}
+        values = (
+            reg_id,
+            cont_id
+        )
+        operation = """DELETE FROM registration_contacts
+            WHERE registration_id = %s AND registration_contact_id = %s
         """
         cur = conn.cursor()
-        cur.execute(operation)
+        cur.execute(operation, values)
         conn.commit()
 
     except Exception as error:
