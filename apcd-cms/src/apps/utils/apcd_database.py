@@ -742,20 +742,13 @@ def create_threshold_exception(form, iteration, sub_data):
     conn = None
     values = ()
     try:
-        values = (
-            _clean_value(form["business-name"]),
-            sub_data[1],
-            sub_data[2],
-            sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
-            "threshold",
-            _clean_date(form['expiration-date_{}'.format(iteration)]),
-            _clean_value(form['file_type']),
-            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
-            _clean_value(form['threshold-requested_{}'.format(iteration)]),
-            _clean_value(form['justification']),
-            "pending"
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
         )
         operation = """INSERT INTO exceptions(
             submitter_id,
@@ -773,14 +766,20 @@ def create_threshold_exception(form, iteration, sub_data):
             status
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
-
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
+        values = (
+            _clean_value(form["business-name"]),
+            sub_data[1],
+            sub_data[2],
+            sub_data[3],
+            _clean_value(form['requestor-name']),
+            _clean_email(form['requestor-email']),
+            "threshold",
+            _clean_date(form['expiration-date_{}'.format(iteration)]),
+            _clean_value(form['file_type']),
+            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+            _clean_value(form['threshold-requested_{}'.format(iteration)]),
+            _clean_value(form['justification']),
+            "pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -1153,12 +1152,10 @@ def get_submitter_for_extend_or_except(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    apcd_orgs.official_name
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                JOIN apcd_orgs
-                    ON submitters.apcd_id = apcd_orgs.apcd_id
                 ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()
