@@ -737,7 +737,7 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, sub_data):
+def create_threshold_exception(form, iteration, sub_data):
     cur = None
     conn = None
     values = ()
@@ -767,17 +767,17 @@ def create_threshold_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["business-name"],
+            _clean_value(form["business-name"]),
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "threshold",
-            _clean_date(form['expiration-date']),
+            _clean_date(form['expiration-date_{}'.format(iteration)]),
             _clean_value(form['file_type']),
-            _clean_value(form['field-threshold-exception']),
-            _clean_value(form['threshold-requested']),
+            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+            _clean_value(form['threshold-requested_{}'.format(iteration)]),
             _clean_value(form['justification']),
             "pending"
         )
@@ -1146,7 +1146,7 @@ def get_submitter_for_extend_or_except(user):
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                ORDER BY submitter_users.submitter_id
+                ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
