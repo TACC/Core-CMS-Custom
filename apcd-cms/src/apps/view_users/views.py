@@ -12,87 +12,14 @@ class ViewUsersTable(TemplateView):
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
-        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           #return HttpResponseRedirect('/')
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+           return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
 
-        user_content = [
-            (
-                6,
-                4,
-                'Rob@arby.org',
-                'Robert Smith',
-                'UGT',
-                '10/22/33',
-                '11/22/23',
-                'notes here',
-                True,
-                7,
-                'submitter'
-
-                    ),
-        (
-         6,
-         4,
-         'simon@arby.org',
-         'Simon Gallup',
-         'Dunstreet',
-         '10/22/33',
-         '11/22/23',
-         'notes here',
-         False,
-         2,
-         'admin'
- 
-     ),
-     (
-         6,
-         4,
-         'rog@arby.org',
-         'Roger ODonnel',
-         'Dunstreet',
-         '10/22/33',
-         '11/22/23',
-         'notes here',
-         True,
-         3,
-         'submitter'
- 
-     ),
-     (
-         6,
-         4,
-         'jace@arby.org',
-         'Jason Cooper',
-         'UGT',
-         '10/22/33',
-         '11/22/23',
-         'notes here',
-         False,
-         6,
-         'admin'
- 
-     ),
-     (
-         6,
-         4,
-         'rere@arby.org',
-         'Reeves Gabrels',
-         'P',
-         '10/22/33',
-         '11/22/23',
-         'notes here',
-         False,
-         5,
-         'admin'
- 
-     ),
- 
-        ]
-        
+       
         def _set_user(usr):
             return {
                     'role_id': usr[0],
