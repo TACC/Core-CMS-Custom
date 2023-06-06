@@ -23,10 +23,10 @@
             event.target.setCustomValidity('Please fill in at least one Number/Code.');
           }
         }));
-        idGroup.forEach(i => i.addEventListener('input', function (event) {
+        idGroup.forEach(i => i.addEventListener('change', function (event) {
           idGroup.forEach(j => {
             j.required = true;
-            if (!event.target.validity.valueMissing) { // if value exists, no other inputs in this group are required
+            if (!event.target.validity.valueMissing || idGroup.some(input => input.value.length > 0)) { // if value exists, no other inputs in this group are required
               j.setCustomValidity('');
               j.required = false;
             }
