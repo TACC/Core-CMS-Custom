@@ -1221,6 +1221,104 @@ def get_all_extensions():
         if conn is not None:
             conn.close()
 
+def get_sorted_status_extensions(status):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                extensions.extension_id, 
+                extensions.submitter_id,
+                extensions.current_expected_date,
+                extensions.requested_target_date,
+                extensions.approved_expiration_date,
+                extensions.extension_type,
+                extensions.applicable_data_period,
+                extensions.status,
+                extensions.outcome,
+                extensions.created_at,
+                extensions.updated_at,
+                extensions.submitter_code,
+                extensions.payor_code,
+                extensions.user_id,
+                extensions.requestor_name,
+                extensions.requestor_email,
+                extensions.explanation_justification,
+                extensions.notes,
+                submitters.org_name
+            FROM extensions
+            JOIN submitters
+                ON extensions.submitter_id = submitters.submitter_id
+            WHERE LOWER(extensions.status) = %s
+            ORDER BY extensions.created_at DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query, (status,))
+        return cur.fetchall()
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_sorted_org_extensions(org):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+            SELECT 
+                extensions.extension_id, 
+                extensions.submitter_id,
+                extensions.current_expected_date,
+                extensions.requested_target_date,
+                extensions.approved_expiration_date,
+                extensions.extension_type,
+                extensions.applicable_data_period,
+                extensions.status,
+                extensions.outcome,
+                extensions.created_at,
+                extensions.updated_at,
+                extensions.submitter_code,
+                extensions.payor_code,
+                extensions.user_id,
+                extensions.requestor_name,
+                extensions.requestor_email,
+                extensions.explanation_justification,
+                extensions.notes,
+                submitters.org_name
+            FROM extensions
+            JOIN submitters
+                ON extensions.submitter_id = submitters.submitter_id
+            WHERE LOWER(submitters.org_name) = %s
+            ORDER BY extensions.created_at DESC
+        """ 
+        cur = conn.cursor()
+        cur.execute(query, (org,))
+        return cur.fetchall()
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_all_exceptions():
     cur = None
     conn = None
