@@ -146,7 +146,7 @@ def create_registration(form):
             None,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -195,7 +195,7 @@ def update_registration(form, reg_id):
         RETURNING registration_id"""
         values = (
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -217,7 +217,6 @@ def update_registration(form, reg_id):
             cur.close()
         if conn is not None:
             conn.close()
-
 
 def get_registration_entities(reg_id=None):
     cur = None
@@ -266,42 +265,24 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
-            values = (
-                reg_id,
-                float(form['total_claims_value_{}'.format(str_end)]),
-                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-                _set_int(form['license_number_{}'.format(str_end)]),
-                _set_int(form['naic_company_code_{}'.format(str_end)]),
-                _set_int(form['total_covered_lives_{}'.format(str_end)]),
-                _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)]),
-                True,
-                True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental_{}'.format(str_end) in form else False
-            )
-        else:            
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
-            values = (
-                reg_id,
-                float(form[f'total_claims_value{str_end}']),
-                _set_int(form[f'claims_encounters_volume{str_end}']),
-                _set_int(form[f'license_number{str_end}']),
-                _set_int(form[f'naic_company_code{str_end}']),
-                _set_int(form[f'total_covered_lives{str_end}']),
-                _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}']),
-                True,
-                True if 'types_of_files_provider{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental{}'.format(str_end) in form else False
-            )
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+            return
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        values = (
+            reg_id,
+            float(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)]),
+            True,
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+        )
 
         operation = """INSERT INTO registration_entities(
             registration_id,
