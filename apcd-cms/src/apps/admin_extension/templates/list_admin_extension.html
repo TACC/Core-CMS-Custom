@@ -3,27 +3,33 @@
 
 {% block content %}
 
+
 <link rel="stylesheet" href="{% static 'admin_extension/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'submissions/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/core-styles.c-form.css' %}">
 <link rel="stylesheet" href="{% static 'admin_extension/css/modal.css' %}">
+
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
   <h1>View Extension Requests</h1>
-  <hr />
   <p style="margin-bottom: 30px">All submitted extension requests</p>
   <hr />
   <div class="filter-container">
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
-      <select id="statusFilter" class="status-filter" value="all">
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
         {% for option in status_options %}
           <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
+      </div>
+      </div>
+      <div class="filter-container">
+      <div class="filter-content">
       <span><b>Filter by Organization: </b></span>
-      <select id="organizationFilter" class="status-filter org-filter" value="all">
+      <select id="organizationFilter" class="status-filter org-filter" onchange="sortByOrg()">
+        <option class="dropdown-text" value={{selected_org.all}} {% if not selected_org %}selected{% else %} hidden {% endif %} disabled></option>
         {% for option in org_options %}
           <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
@@ -50,225 +56,92 @@
                 <td class="extension_type">{{r.extension_type}}</td>
                 <td class="outcome">{{r.outcome}}</td>
                 <td class="status">{{r.status}}</td>
-                  <td class="modal_cell">
-                    {% include "view_admin_extension_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewAdminExtensionsModal_{{r.extension_id}}" data-backdrop="static">View Details</a>
-                  </td>
-              </tr>
+                <td class="approved-expiration-date">{{r.approved_expiration_date}}</td>
+                <td>
+                  {% include "view_admin_extension_modal.html" %}
+                  {% include "edit_extension_modal.html" %}                   
+                    <select id='actionsDropdown_{{r.extension_id}}' class="modal-cell" onchange="openAction('{{r.extension_id}}')">
+                      <div class="filter-container">
+                        <div class="filter-content">
+                          <option value="">Select Action</option>
+                          <option value="viewAdminExtensions">View Record</option>
+                          <option value="editExtension">Edit Record</option>
+                        </div>
+                      </div>
+                    </select>
+                </td>
+                </tr>
           {% endfor %}
       </tbody>
   </table>
-
-  <div class="pagination">
-    {% if page.has_previous %}
-        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.previous_page_number}}"><</a>
-    {% endif %}
-
-    {% if page.number|add:'-2' > 0 %}
-        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.number|add:'-2'}}">&hellip;</a>
-    {% endif %}
-    
-    {% for i in page.paginator.page_range %}
-        {% if i > page.number|add:'-2' and i < page.number|add:'2' %}
-            <a class="{% if i == page_num %}active{% endif %} " href="{% url 'admin_extension:admin_extensions' %}?page={{i}}">{{i}}</a>
-        {% endif %}
-    {% endfor %}
-
-    {% if page.paginator.num_pages >= page.number|add:'2' %}
-        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.number|add:'2'}}">&hellip;</a>
-        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.paginator.num_pages}}">{{page.paginator.num_pages}}</a>
-    {% endif %}
-
-    {% if page.has_next %}
-        <a href="{% url 'admin_extension:admin_extensions' %}?page={{page.next_page_number}}">></a>
-    {% endif %}
-</div>
+  {% include 'paginator.html' %}
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   
-function filterTableByStatus(status) {
-  let tableBody = $('#extensionTableBody');
-  console.log(status);
-    $.ajax({
-        url: "{% url 'admin_extension:status' %}",
-        type: 'POST',
-        data: {
-          'status': status
-        },
-        success: function(response) {
-          let tableEntries = response;
-          tableBody.empty();
-          tableEntries.forEach(function(extension) {
-          let row = `
-            <tr>
-            <td>${extension.created_at}</td>
-            <td>${extension.org_name} - ${extension.submitter_id}</td>
-            <td>${extension.requestor_name}</td>
-            <td>${extension.extension_type}</td>
-            <td>${extension.outcome}</td>
-            <td>${extension.status}</td>
-            <td>
-              {% include "view_admin_extension_modal.html" %}
-              <a href='' data-toggle="modal" data-target="#viewAdminExtensionsModal_${extension.extension_id}" data-backdrop="static">View Details</a>
-            </td>
-            </tr>`;
-          tableBody.append(row);
-                  });
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-            statusSort = 'all';
-            return statusSort;
-        }
-        });
-      };
-function filterTableByOrg(org) {
-  let tableBody = $('#extensionTableBody');
-    $.ajax({
-        url: "{% url 'admin_extension:org' %}",
-        type: 'GET',
-        data: {
-          'org': org
-        },
-        success: function(response) {           
-          let tableEntries = response;
-          tableBody.empty();
-          tableEntries.forEach(function(extension) {
-            let row = `
-              <tr>
-              <td>${extension.created_at}</td>
-              <td>${extension.org_name} - ${extension.submitter_id}</td>
-              <td>${extension.requestor_name}</td>
-              <td>${extension.extension_type}</td>
-              <td>${extension.outcome}</td>
-              <td>${extension.status}</td>
-              <td>
-                {% include "view_admin_extension_modal.html" %}
-                <a href='' data-toggle="modal" data-target="#viewAdminExtensionsModal_${extension.extension_id}" data-backdrop="static">View Details</a>
-              </td>
-              </tr>`;
-            tableBody.append(row);
-          // Manually initialize the modal functionality for the newly added rows
-
-          });
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-        }
-        });
-      };
-function filterTableByStatusOrg(status, org) {
-  let tableBody = $('#extensionTableBody');
-    $.ajax({
-        url: "{% url 'admin_extension:status_org' %}",
-        type: 'GET',
-        data: {
-          'status': status,
-          'org': org
-        },
-        success: function(response) {
-          let tableEntries = response;
-          tableBody.empty();
-          tableEntries.forEach(function(extension) {
-          let row = `
-            <tr>
-            <td>${extension.created_at}</td>
-            <td>${extension.org_name} - ${extension.submitter_id}</td>
-            <td>${extension.requestor_name}</td>
-            <td>${extension.extension_type}</td>
-            <td>${extension.outcome}</td>
-            <td>${extension.status}</td>
-            <td>
-              {% include "view_admin_extension_modal.html" %}
-              <a href='' data-toggle="modal" data-target="#viewAdminExtensionsModal_${extension.extension_id}" data-backdrop="static">View Details</a>
-            </td>
-            </tr>`;
-          tableBody.append(row);
-                  });
-        },
-        error: function(xhr, status, error) {
-            console.log(error);
-            statusSort = 'all';
-            return statusSort;
-        }
-        });
-      };
-
-//     url_params = `?status=${statusFilter}`;
-//     {% if selected_org %}
-//       url_params += `&org={{selected_org}}`;
-//     {% endif %}
-//     url = `'/administration/list-extensions/${url_params}`;
-//     xhr = new XMLHttpRequest();
-//     xhr.open('GET', url);
-//     xhr.send();
-//     window.location.href = url;
-//     window.location.load();
-//   }
-//   function filterTableByOrganization() {
-//     var input, orgFilter, xhr, url_params, url;
-//     input = document.getElementById("organizationFilter");
-//     orgFilter = input.value.replace("&", encodeURIComponent('&'));
-//     url_params = `?org=${orgFilter}`;
-//     {% if selected_status %}
-//       url_params = `?status={{selected_status}}&org=${orgFilter}`;
-//     {% endif %}
-//     url = `/administration/list-extensions/${url_params}`;
-//     xhr = new XMLHttpRequest();
-//     xhr.open('GET', url);
-//     xhr.send();
-//     window.location.href = url;
-//     window.location.load();
-//   }
-  function clearSelections() {
+  function filterTableByStatus() {
+        var statusDropdown, statusValue, url_params, url, xhr;
+        statusDropdown = document.getElementById("statusFilter");
+        statusValue =  statusDropdown.value;
+        url_params = `?status=${statusValue}`;
+        {% if selected_org %}
+            url_params = `?status=${statusValue}&org={{selected_org}}`;
+        {% endif %}
+        url = `/administration/list-extensions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function sortByOrg() {
+        var orgDropdown, orgValue, url_params, url, xhr;
+        orgDropdown = document.getElementById('organizationFilter');
+        orgValue =  orgDropdown.value;
+        url_params = `?org=${orgValue}`;
+        {% if selected_status %}
+            url_params = `?status={{selected_status}}&org=${orgValue}`;
+        {% endif %}
+        url = `/administration/list-extensions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function clearSelections() {
         var xhr;
         xhr = new XMLHttpRequest();
         xhr.open('GET', '/administration/list-extensions/')
         xhr.send()
         window.location.href = '/administration/list-extensions/';
         window.location.load();
-    };
-
-    $(document).ready(function() {   
-      $('#statusFilter').change(function() {
-        let status = $(this).val();
-        status = status.toLowerCase();
-        let org = $('#organizationFilter').val();
-        org = org.toLowerCase();
-        if (status != 'all' && org == 'all') {
-          status = status.toLowerCase();
-          filterTableByStatus(status);
-        };
-        if (status != 'all' && org != 'all') {
-          filterTableByStatusOrg(status, org);
-        };
-        if ( org == 'all' && status == 'all') {
-          clearSelections();
-        };
-        if ( org != 'all' && status == 'all') {
-          filterTableByOrg(org)
-        };
-        });
-      $('#organizationFilter').change(function() {
-        let org = $(this).val();
-        let status = $('#statusFilter').val();
-        status = status.toLowerCase();
-        org = org.toLowerCase();
-        if (org != 'all' && status == 'all') {
-          filterTableByOrg(org);
-          };
-        if ( org != 'all' && status != 'all') {
-          filterTableByStatusOrg(status, org);
-        };
-        if ( org == 'all' && status == 'all') {
-          clearSelections();
-        };
-        if ( org == 'all' && status != 'all') {
-          filterTableByStatus(status)
-        };
-      });
-    
-    });
+    }
+    function openAction(extension_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${extension_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    console.log(selectedOption)
+    modal_id = `${selectedOption}Modal_${extension_id}`;
+    console.log(modal_id);
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    console.log($(`#${modal_id}`).modal({backdrop: "static"}));
+  
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
+  // $(document).ready(function() {
+  //   $('[id^="actionsDropdown_"]').change(function() {
+  //       let action = $(this).val();
+  //       console.log(action)
+  //       extension_id = $(this).attr('id').slice(-4)
+  //       modal_id = `${action}Modal_${extension_id}`;
+  //       console.log("modal id is " + modal_id);
+  //       $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+  //       console.log($(`#${modal_id}`).modal({backdrop: "static"}));
+  //   });
+  // });
 </script>
 {% endblock %}

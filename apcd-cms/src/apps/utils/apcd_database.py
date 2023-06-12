@@ -1133,6 +1133,49 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+def update_extension(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE extensions
+            SET
+            updated_at= %s,
+            applicable_data_period= %s,
+            status= %s,
+            outcome= %s,
+            approved_expiration_date = %s,
+            notes= %s
+        WHERE extension_id = %s"""
+        values = (
+            datetime.now(),
+            int(form['applicable-data-period'].replace('-', '')) if form['applicable-data-period'] != "" else "",
+            _clean_value(form['status']),
+            _clean_value(form['outcome']),
+            _clean_date(form['approved']),
+            _clean_value(form['notes']),
+            _clean_value(form['extension_id'])
+        )
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_submitter_for_extend_or_except(user):
     cur = None
     conn = None

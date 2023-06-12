@@ -1,0 +1,97 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'admin_extension/css/modal.css' %}">
+
+<div id="editExtensionModal_{{r.extension_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Extension ID: {{r.extension_id}}</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 class="modal-header">Current Extension Information</h4>
+        <div class="o-grid o-grid--col-auto-count">
+              <div>Organization: <p>{{r.org_name}}</p></div>
+              <div>Extension Type: <p>{{r.extension_type}}</p></div>
+              <div>Current Status: <p>{{r.status}}</p></div>
+              <div>Last Updated: <p>{{r.updated_at}}</p></div>
+              <div>Current Expected Date: <p>{{r.current_expected_date}}</p></div>                
+              <div>Requested Target Date: <p>{{r.requested_target_date}}</p></div>
+          </div>
+        <h4 class="modal-header">Edit Selected Extension</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="field-wrapper textinput required disabled">
+              <input type="hidden" name="extension_id" id="extension_id" value="{{r.extension_id}}">
+            </div>
+              <div class="o-grid o-grid--col-auto-count">              
+                <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="applicable-data-period" >Applicable Data Period</label>
+                  </label>
+
+                  <input type="month" name="applicable-data-period" class="data-period" 
+                    inputmode="numeric" id="applicable-data-period" pattern="\d{4}-\d{2}"/>
+                  <div id="help-text-applicable-data-period" class="help-text">
+                    Enter month and year
+                  </div>
+                </div>
+                <div class="field-wrapper numberinput required" >
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="approved" name="date-row">Approved Expiration Date</label>
+
+                  <input type="date" name="approved" class="numeric" id="approved"
+                    inputmode="numeric"/> 
+                </div>
+                <div class="field-wrapper textinput required">
+              <label for="status">
+                Extension Status
+              </label>
+              <select name='status'  class="choicefield" id='status'>
+                {% for option in status_options %}
+                <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field-wrapper textinput required">
+              <label for="status">
+                Extension Outcome
+              </label>
+              <select name='outcome' class="choicefield" id='outcome'>
+                {% for option in outcome_options %}
+                <option class="dropdown-text" {% if option == r.outcome %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            </div>
+            <div class="field-wrapper textarea required">
+            <label for="notes">
+              Extension Notes
+            </label>
+
+              <div class="field-errors" style="display: none"></div>
+                <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
+                  minlength="2" maxlength="2000">{{ r.notes }}</textarea>
+                <div class="help-text">
+                  2000 character limit
+                </div>
+              </div>
+            <div class="button-wrapper submit">
+            <button class="form-button" type="submit" value="Submit">
+              Submit
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

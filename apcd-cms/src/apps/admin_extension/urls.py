@@ -1,11 +1,11 @@
 from django.urls import path
 from apps.admin_extension.views import AdminExtensionsTable
-from . import views
+
 
 app_name = 'admin_extension'
 urlpatterns = [
-    path('list-extensions/', AdminExtensionsTable.as_view(), name="admin_extensions"),
-    path('status/', views.sort_status, name='status'),
-    path('org/', views.sort_org, name='org'),
-    path('status_org/', views.sort_both, name='status_org')
+    path('list-extensions/', AdminExtensionsTable.as_view(), name="list_extensions"),
+    path('list-extensions/<str:status>', AdminExtensionsTable.as_view(), name='status'),
+    path('list-extensions/<str:org>', AdminExtensionsTable.as_view(), name='org'),
+    path('list-extensions/<str:status><str:org>', AdminExtensionsTable.as_view(), name='status_org')
 ]

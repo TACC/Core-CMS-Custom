@@ -2,7 +2,7 @@
     --cell-padding: 5px;
 
     width: 100%;
-    table-layout: fixed; /* allows table to shrink (reason unknown) */
+    table-layout:auto; 
 }
 .extension-table th, td {
     text-align: left;
@@ -37,14 +37,15 @@
 .filter-container {
     margin-bottom: 30px;
     height: 30px;
-    width: auto;
+    width: inherit;
 }
 .filter-content {
     float: right;
+    
 }
 .status-filter {
     color: var(--global-color-link-on-light--normal);
-    width: 150px;
+    width: var(auto) ;
     appearance: none;
     -webkit-appearance: none;
     box-sizing: border-box;
@@ -56,6 +57,10 @@
 }
 .status-filter.org-filter {
     width: max-content;
+}
+.modal-cell {
+    color: var(--global-color-link-on-light--normal);
+
 }
 
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
@@ -130,9 +135,10 @@
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
     .extension-table td:nth-of-type(1):before { content: "Created"; }
     .extension-table td:nth-of-type(2):before { content: "Organization"; }
-    .extension-table td:nth-of-type(3):before { content: "Requester Name"; }
+    .extension-table td:nth-of-type(3):before { content: "Requestor Name"; }
     .extension-table td:nth-of-type(4):before { content: "Extension Type"; }
     .extension-table td:nth-of-type(5):before { content: "Outcome"; }
     .extension-table td:nth-of-type(6):before { content: "Status"; }
-    .extension-table td:nth-of-type(7):before { content: "Actions"; }
+    .extension-table td:nth-of-type(7):before { content: "Approved Expiration"; }
+    .extension-table td:nth-of-type(8):before { content: "Actions"; }
 }
