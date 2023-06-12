@@ -79,11 +79,20 @@ class ExceptionThresholdFormView(TemplateView):
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
             if _err_msg(submitter):
-                errors.append(_err_msg(submitter))       
+                errors.append(_err_msg(submitter))
+
+            max_iterations = 1
             
-            except_response = apcd_database.create_threshold_exception(form, submitter)
-            if _err_msg(except_response):
-                errors.append(_err_msg(except_response))
+            for i in range(2, 6):
+                if form.get('field-threshold-exception_{}'.format(i)):
+                    max_iterations += 1
+                else:
+                    break
+
+            for iteration in range(max_iterations):
+                except_response = apcd_database.create_threshold_exception(form, iteration + 1, submitter)
+                if _err_msg(except_response):
+                    errors.append(_err_msg(except_response))
 
             if len(errors):
                 template = loader.get_template(

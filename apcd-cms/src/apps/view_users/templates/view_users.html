@@ -3,9 +3,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -63,15 +63,6 @@ function filterTableByOrganization() {
   window.location.href = `/administration/view-users/?filter=${filter}`;
   window.location.load();
 }
-
-/* remove duplicates from dropdown */
-
-const options = []
-
-document.querySelectorAll('#organizationFilter > option').forEach((option) => {
-    if (options.includes(option.value)) option.remove()
-    else options.push(option.value)
-})
 </script>
 
 {% endblock %}

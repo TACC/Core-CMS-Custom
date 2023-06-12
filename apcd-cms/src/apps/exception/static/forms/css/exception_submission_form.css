@@ -13,9 +13,13 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
   -moz-appearance:textfield;
 }
 
-/* Field Widths */
-#threshold-requested, #expiration-date {
+/* Field Sizes */
+[id^="threshold-requested"], [id^="expiration-date"] {
   min-width: 15ch;
+}
+/* To make sure sup values are not cut off when set as a label*/
+label[name^="date-row"] {
+  margin-top: 1rem;
 }
 /* Field Layouts */
 

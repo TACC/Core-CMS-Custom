@@ -6,6 +6,7 @@ from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
 import logging
+from dateutil import parser
 
 logger = logging.getLogger(__name__)
 
@@ -215,19 +216,46 @@ class RegistrationsTable(TemplateView):
             }
 
         context['header'] = ['Business Name', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['filter_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['org_options'] = ['All']
+
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
+
+        def getDate(row):
+            date = row[1]
+            return date if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
+
+        registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
+
         registration_table_entries = []
         for registration in registrations_content:
             associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
+            org_name = registration[7]
+            if org_name not in context['org_options']:
+                context['org_options'].append(org_name)
 
-        filter = self.request.GET.get('filter')
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
 
-        context['selected_filter'] = None
-        if filter is not None and filter != 'All':
-            context['selected_filter'] = filter
-            registration_table_entries = table_filter(filter, registration_table_entries, 'reg_status')
+        context['selected_status'] = None
+        if status_filter is not None and status_filter != 'All':
+            context['selected_status'] = status_filter
+            registration_table_entries = table_filter(status_filter, registration_table_entries, 'reg_status')
+
+        context['selected_org'] = None
+        if org_filter is not None and org_filter != 'All':
+            context['selected_org'] = org_filter
+            registration_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), registration_table_entries, 'biz_name')
+
+        queryStr = '?'
+        if len(self.request.META['QUERY_STRING']) > 0:
+            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
+        context['query_str'] = queryStr
         context.update(paginator(self.request, registration_table_entries))
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context

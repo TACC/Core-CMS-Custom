@@ -1,0 +1,30 @@
+/* CORE MODAL STYLES */
+
+@import url('./modal--conflicts-with-core.css');
+
+
+
+/* APCD MODAL STYLES */
+
+/* Table Elements */
+
+.modal-dialog {
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal-body {
+    height: 60vh;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.modal-header {
+    align-items: center; /* overwrite Bootstrap */
+}
+.modal-header .close span {
+    font-size: 1.5em;
+}
