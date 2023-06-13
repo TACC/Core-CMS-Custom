@@ -146,7 +146,7 @@ def create_registration(form):
             None,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -195,7 +195,7 @@ def update_registration(form, reg_id):
         RETURNING registration_id"""
         values = (
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -217,7 +217,6 @@ def update_registration(form, reg_id):
             cur.close()
         if conn is not None:
             conn.close()
-
 
 def get_registration_entities(reg_id=None):
     cur = None
@@ -266,42 +265,24 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
-            values = (
-                reg_id,
-                float(form['total_claims_value_{}'.format(str_end)]),
-                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-                _set_int(form['license_number_{}'.format(str_end)]),
-                _set_int(form['naic_company_code_{}'.format(str_end)]),
-                _set_int(form['total_covered_lives_{}'.format(str_end)]),
-                _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)]),
-                True,
-                True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental_{}'.format(str_end) in form else False
-            )
-        else:            
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
-            values = (
-                reg_id,
-                float(form[f'total_claims_value{str_end}']),
-                _set_int(form[f'claims_encounters_volume{str_end}']),
-                _set_int(form[f'license_number{str_end}']),
-                _set_int(form[f'naic_company_code{str_end}']),
-                _set_int(form[f'total_covered_lives{str_end}']),
-                _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}']),
-                True,
-                True if 'types_of_files_provider{}'.format(str_end) in form else False,
-                True if 'types_of_files_medical{}'.format(str_end) in form else False,
-                True if 'types_of_files_pharmacy{}'.format(str_end) in form else False,
-                True if 'types_of_files_dental{}'.format(str_end) in form else False
-            )
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+            return
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        values = (
+            reg_id,
+            float(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)]),
+            True,
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+        )
 
         operation = """INSERT INTO registration_entities(
             registration_id,
@@ -737,7 +718,7 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, sub_data):
+def create_threshold_exception(form, iteration, sub_data):
     cur = None
     conn = None
     values = ()
@@ -767,17 +748,17 @@ def create_threshold_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["business-name"],
+            _clean_value(form["business-name"]),
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
             "threshold",
-            _clean_date(form['expiration-date']),
+            _clean_date(form['expiration-date_{}'.format(iteration)]),
             _clean_value(form['file_type']),
-            _clean_value(form['field-threshold-exception']),
-            _clean_value(form['threshold-requested']),
+            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+            _clean_value(form['threshold-requested_{}'.format(iteration)]),
             _clean_value(form['justification']),
             "pending"
         )
@@ -1063,12 +1044,9 @@ def create_extension(form, iteration, sub_data):
     try:
         if iteration > 1:
             values = (
-                _clean_value(sub_data[0]),
-                _clean_date(form['current-expected-date_{}'.format(iteration)]),
+                _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
-                None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
-                int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
                 "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
@@ -1079,14 +1057,10 @@ def create_extension(form, iteration, sub_data):
                 )
         else:
             values = (
-            _clean_value(sub_data[0]),
-            _clean_date(form['current-expected-date']),
-            _clean_date(form['requested-target-date']),
-            None,
-            _clean_value(form['extension-type']),
-            int(form['applicable-data-period'].replace('-', '')),
+            _clean_value(form['business-name_{}'.format(iteration)]),
+            _clean_date(form['requested-target-date_{}'.format(iteration)]),
+            _clean_value(form['extension-type_{}'.format(iteration)]),
             "pending",
-
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
@@ -1097,11 +1071,8 @@ def create_extension(form, iteration, sub_data):
 
         operation = """INSERT INTO extensions(
             submitter_id,
-            current_expected_date,
             requested_target_date,
-            approved_expiration_date,
             extension_type,
-            applicable_data_period,
             status,
             submitter_code,
             payor_code,
@@ -1109,7 +1080,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1152,12 +1123,10 @@ def get_submitter_for_extend_or_except(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    apcd_orgs.official_name
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                JOIN apcd_orgs
-                    ON submitters.apcd_id = apcd_orgs.apcd_id
                 ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()
