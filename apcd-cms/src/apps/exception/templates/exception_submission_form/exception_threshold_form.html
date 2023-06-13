@@ -28,49 +28,39 @@
             {% csrf_token %}
             <div class="form-errors" style="display: none"></div>
             <div class="exception-header-1">
-              <hr />
-              <h4>File Type</h4>
-              <p>Select submission file type for your requested threshold reduction.
-
-              </p>
-            </div>
-            <div class="field-wrapper select required">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="file_type">File Type <span class="asterisk">*</span></label>
 
 
-              <select name="file_type" required="required" class="choicefield" id="file_type"
-               value="none">
-                <option value="">-- Choose File Type --</option>
-                <option value="dc">Dental Claims</option>
-
-                <option value="mc">
-                  Medical Claims
-                </option>
-
-                <option value="me">
-                  Member Eligibility
-                </option>
-
-                <option value="pc">
-                  Pharmacy Claims
-                </option>
-
-                <option value="pv">
-                  Provider
-                </option>
-              </select>
-              <div id="help-text-file_type" class="help-text">You can only submit an exception for one file type per
-                form submission.
-              </div>
-            </div>
-            <hr />
-
-
-            
+            <hr/>
               <h4>Requested Threshold Reduction</h4>
               <div id="exception_block_1">
+              <div class="field-wrapper select required">
+                <div class="field-errors" style="display: none"></div>
+  
+                <label for="file_type_1">File Type <span class="asterisk">*</span></label>
+  
+  
+                <select name="file_type_1" required="required" class="choicefield" id="file_type_1"
+                 value="none">
+                  <option value="">-- Choose File Type --</option>
+                  <option value="dc">Dental Claims</option>
+  
+                  <option value="mc">
+                    Medical Claims
+                  </option>
+  
+                  <option value="me">
+                    Member Eligibility
+                  </option>
+  
+                  <option value="pc">
+                    Pharmacy Claims
+                  </option>
+  
+                  <option value="pv">
+                    Provider
+                  </option>
+                </select>
+              </div>
               <div class="field-wrapper select required" >
                 <div class="field-errors" style="display: none"></div>
                 <label for="field-threshold-exception_1">Field Code <span class="asterisk">*</span></label>
@@ -264,6 +254,33 @@
               let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
               document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
               exceptionBlock.innerHTML = `
+              <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
+
+              <label for="file_type_${exceptions}">File Type <span class="asterisk">*</span></label>
+
+              <select name="file_type_${exceptions}" required="required" class="choicefield" id="file_type_${exceptions}"
+              value="none">
+                <option value="">-- Choose File Type --</option>
+                <option value="dc">Dental Claims</option>
+
+                <option value="mc">
+                  Medical Claims
+                </option>
+
+                <option value="me">
+                  Member Eligibility
+                </option>
+
+                <option value="pc">
+                  Pharmacy Claims
+                </option>
+
+                <option value="pv">
+                  Provider
+                </option>
+              </select>
+              </div>
                 <div class="field-wrapper select required" >
                   <div class="field-errors" style="display: none"></div>
                     <label for="field-threshold-exception_${exceptions}">Field Code <span class="asterisk">*</span></label>
@@ -276,13 +293,13 @@
                 <div class="o-grid o-grid--col-auto-count">
                   <div class="field-wrapper numberinput required">
                     <div class="field-errors" style="display: none"></div>
-                    <label for="expiration-date_${exceptions}">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
+                    <label for="expiration-date_${exceptions}" name="date-row">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
                     <input type="date" name="expiration-date_${exceptions}" class="numeric" id="expiration-date_${exceptions}" inputmode="numeric"
                       pattern="\d{4}-\d{2}-\d{2}" required />
                   </div>
                   <div class="field-wrapper numberinput required">
                     <div class="field-errors" style="display: none"></div>
-                    <label for="threshold-requested_${exceptions}">
+                    <label for="threshold-requested_${exceptions}" name="date-row">
                       Requested Threshold Percentage <span class="asterisk">*</span>
                     </label>
                     <div class="s-affixed-input-wrapper">
@@ -293,6 +310,8 @@
                     <!-- Populates in script-->
                     <div id="help-text-threshold-requested_${exceptions}" class="help-text">
                     </div>
+                  </div>
+                  </div>
                   </div>
                   </div>`
               };
