@@ -1,0 +1,23 @@
+/* To not inherit from table nor table cell */
+/* TODO: Integrate this fix into Core */
+:is(td, th) .modal {
+    /* To mimic Core-CMS body */
+    color: var(--global-color-primary--x-dark);
+    font-family: var(--global-font-family--sans--cms);
+    font-size: var(--global-font-size--medium);
+    /* IMPORTANT: Body line-height changes if TACC_CORE_STYLES_VERSION = 2 */
+    line-height: 1.4;
+}
+
+/* IMPORTANT: Not necessary if TACC_CORE_STYLES_VERSION = 2 */
+.modal-content {
+    /* To mimic Bootstrap, overwrite Core-Styles v0.13, mirror Core-CMS v3.9 */
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+}
+
+/* TODO: Determine how to integrate this into Core */
+.modal-title {
+    margin-top: unset; /* overwrite site.css h4 */
+    font-size: var(--global-font-size--large); /* revert to site.css h4 */
+}
