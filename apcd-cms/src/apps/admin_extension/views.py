@@ -51,7 +51,7 @@ class AdminExtensionsTable(TemplateView):
     def get_context_data(self, *args, **kwargs):
 
         context = super(AdminExtensionsTable, self).get_context_data(*args, **kwargs)
-        extension_content = extension_content = get_all_extensions()
+        extension_content  = get_all_extensions()
 
 
         status_filter = self.request.GET.get('status')
