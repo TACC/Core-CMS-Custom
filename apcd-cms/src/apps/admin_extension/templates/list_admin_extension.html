@@ -129,14 +129,5 @@
   
     actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
   }
-  $(document).ready(function() {
-    $('[id^="actionsDropdown_"]').change(function() {
-        let action = $(this).val();
-        extension_id = $(this).attr('id').slice(-4)
-        modal_id = `${action}Modal_${extension_id}`;
-        $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
-
-    });
-  });
 </script>
 {% endblock %}
