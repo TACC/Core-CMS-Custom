@@ -18,7 +18,6 @@
               <div>Organization: <p>{{r.org_name}}</p></div>
               <div>Extension Type: <p>{{r.extension_type}}</p></div>
               <div>Current Status: <p>{{r.status}}</p></div>
-              <div>Last Updated: <p>{{r.updated_at}}</p></div>
               <div>Current Expected Date: <p>{{r.current_expected_date}}</p></div>                
               <div>Requested Target Date: <p>{{r.requested_target_date}}</p></div>
           </div>
@@ -37,17 +36,17 @@
 
                   <input type="month" name="applicable-data-period" class="data-period" 
                     inputmode="numeric" id="applicable-data-period" pattern="\d{4}-\d{2}"/>
-                  <div id="help-text-applicable-data-period" class="help-text">
-                    Enter month and year
-                  </div>
                 </div>
                 <div class="field-wrapper numberinput required" >
                   <div class="field-errors" style="display: none"></div>
 
                   <label for="approved" name="date-row">Approved Expiration Date</label>
 
-                  <input type="date" name="approved" class="numeric" id="approved"
-                    inputmode="numeric"/> 
+                  <input type="date" name="approved" class="numeric" id="approved" 
+                    inputmode="numeric"/>
+                    <div id="help-text-approved" class="help-text">
+                      Current approved expiration: <p>{{r.approved_expiration_date}}</p>
+                    </div>
                 </div>
                 <div class="field-wrapper textinput required">
               <label for="status">

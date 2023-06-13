@@ -69,16 +69,17 @@ class AdminExtensionsTable(TemplateView):
                 'current_expected_date': extension[2],
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
-                'extension_type': title_case(extension[5].replace('_', ' ')) if extension[5] else None,
-                'applicable_data_period': _get_applicable_data_period(extension[6]) if extension[5] else None,
-                'status': title_case(extension[7]) if extension[5] else None,
-                'outcome': title_case(extension[8]) if extension[5] else None,
+                # to separate small carrier into two words
+                'extension_type': title_case(extension[5].replace('_', ' ')) if extension[6] else None,
+                'applicable_data_period': _get_applicable_data_period(extension[6]) if extension[6] else None,
+                'status': title_case(extension[7]) if extension[7] else None,
+                'outcome': title_case(extension[8]) if extension[8] else None,
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
                 'payor_code': extension[12],
                 'user_id': extension[13],
-                'requestor_name': extension[14],
+                'requestor_name': title_case(extension[14]) if extension[14] else None,
                 'requestor_email': extension[15],
                 'explanation_justification': extension[16],
                 'notes': extension[17],
@@ -100,7 +101,10 @@ class AdminExtensionsTable(TemplateView):
         extension_content = sorted(extension_content, key=lambda row:getDate(row), reverse=True)  # sort extensions by newest to oldest
         extension_table_entries = []       
         for extension in extension_content:
+            # to be used by paginator
             extension_table_entries.append(_set_extensions(extension))
+            # to be able to access any extension in a template
+            context['extensions'].append(_set_extensions(extension))
             org_name = title_case(extension[18])
             status = title_case(extension[7])
             outcome = title_case(extension[8])
@@ -115,7 +119,6 @@ class AdminExtensionsTable(TemplateView):
                 context['outcome_options'] = context['outcome_options']
 
         
-
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
@@ -154,98 +157,3 @@ def _get_applicable_data_period(value):
         return datetime.strptime(str(value), '%Y%m').strftime('%b. %Y')
     except:
         return None
-
-def sort_status(request):
-    status_filter = request.GET.get('status')
-    table_contents = get_sorted_status_extensions(status_filter)
-
-    extension_response = []
-    for extension in table_contents:
-        table_dict = {
-            'extension_id': extension[0],
-            'submitter_id': extension[1],
-            'current_expected_date': extension[2],
-            'requested_target_date': extension[3],
-            'approved_expiration_date': extension[4],
-            'extension_type': title_case(extension[5]).replace('_', ' '),
-            'applicable_data_period': _get_applicable_data_period(extension[6]),
-            'status': title_case(extension[7]),
-            'outcome': title_case(extension[8]),
-            'created_at': extension[9],
-            'updated_at': extension[10],
-            'submitter_code': extension[11],
-            'payor_code': extension[12],
-            'user_id': extension[13],
-            'requestor_name': extension[14],
-            'requestor_email': extension[15],
-            'explanation_justification': extension[16],
-            'notes': extension[17],
-            'org_name': extension[18]
-        }
-        extension_response.append(table_dict)
-
-    return JsonResponse(extension_response, safe=False)
-
-def sort_org(request):
-    org_filter = request.GET.get('org')
-    table_contents = get_sorted_org_extensions(org_filter)
-    extension_response = []
-    for extension in table_contents:
-        table_dict = {
-            'extension_id': extension[0],
-            'submitter_id': extension[1],
-            'current_expected_date': extension[2],
-            'requested_target_date': extension[3],
-            'approved_expiration_date': extension[4],
-            'extension_type': title_case(extension[5]).replace('_', ' '),
-            'applicable_data_period': _get_applicable_data_period(extension[6]),
-            'status': title_case(extension[7]),
-            'outcome': title_case(extension[8]),
-            'created_at': extension[9],
-            'updated_at': extension[10],
-            'submitter_code': extension[11],
-            'payor_code': extension[12],
-            'user_id': extension[13],
-            'requestor_name': extension[14],
-            'requestor_email': extension[15],
-            'explanation_justification': extension[16],
-            'notes': extension[17],
-            'org_name': extension[18]
-        }
-        extension_response.append(table_dict)
-    logger.debug(print(extension_response))
-    return JsonResponse(extension_response, safe=False)
-
-def sort_both(request):
-    org_filter = request.GET.get('org')
-    status_filter = request.GET.get('status')
-    table_contents = get_sorted_org_extensions(org_filter)
-
-    extension_response = []
-    for extension in table_contents:
-        if extension[7] == status_filter:
-            table_dict = {
-                'extension_id': extension[0],
-                'submitter_id': extension[1],
-                'current_expected_date': extension[2],
-                'requested_target_date': extension[3],
-                'approved_expiration_date': extension[4],
-                'extension_type': title_case(extension[5]).replace('_', ' '),
-                'applicable_data_period': _get_applicable_data_period(extension[6]),
-                'status': title_case(extension[7]),
-                'outcome': title_case(extension[8]),
-                'created_at': extension[9],
-                'updated_at': extension[10],
-                'submitter_code': extension[11],
-                'payor_code': extension[12],
-                'user_id': extension[13],
-                'requestor_name': extension[14],
-                'requestor_email': extension[15],
-                'explanation_justification': extension[16],
-                'notes': extension[17],
-                'org_name': extension[18]
-            }
-            extension_response.append(table_dict)
-    logger.debug(print(extension_response))
-    return JsonResponse(extension_response, safe=False)
-    return request

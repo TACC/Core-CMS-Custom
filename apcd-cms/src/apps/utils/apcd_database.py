@@ -1148,28 +1148,52 @@ def update_extension(form):
         cur = conn.cursor()
         operation = """UPDATE extensions
             SET
-            updated_at= %s,
-            applicable_data_period= %s,
-            status= %s,
-            outcome= %s,
-            approved_expiration_date = %s,
-            notes= %s
-        WHERE extension_id = %s"""
-        values = (
+            updated_at= %s,"""
+        
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'applicable-data-period': 'applicable_data_period',
+            'status': 'status',
+            'outcome': 'outcome',
+            'approved': 'approved_expiration_date',
+            'notes': 'notes'
+        }
+        # To make sure fields are not blank. 
+        # If they aren't, add column to update operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
+
+        operation += ", ".join(set_values) + " WHERE extension_id = %s"
+        ## add last update to all extension updates
+        values = [
             datetime.now(),
-            int(form['applicable-data-period'].replace('-', '')) if form['applicable-data-period'] != "" else "",
-            _clean_value(form['status']),
-            _clean_value(form['outcome']),
-            _clean_date(form['approved']),
-            _clean_value(form['notes']),
-            _clean_value(form['extension_id'])
-        )
+        ]
+        
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is the right type for insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+        # server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['extension_id']))
+
         cur.execute(operation, values)
+        print("operation =")
+        print(operation)
+        print("values = ")
+        print(values)
+        print("success")
         conn.commit()
     except Exception as error:
         logger.error(error)
         return error
-
     finally:
         if cur is not None:
             cur.close()
