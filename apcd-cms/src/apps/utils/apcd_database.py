@@ -1156,11 +1156,6 @@ def update_extension(form):
         values.append(_clean_value(form['extension_id']))
 
         cur.execute(operation, values)
-        print("operation =")
-        print(operation)
-        print("values = ")
-        print(values)
-        print("success")
         conn.commit()
     except Exception as error:
         logger.error(error)
