@@ -331,44 +331,17 @@
             return exceptions
           };
         // Removes helper text and field select options 
-          function clearDataOnFileChange() {
-            helpText = Array.from($('[id^="help-text-threshold-requested"]'));
-            fieldDropDown = Array.from($('[id^="field-threshold-exception"]'));
+          function clearDataOnFileChange(exceptions) {
+            helpText = $(`#help-text-threshold-requested_${exceptions}`)
+            fieldDropDown = $(`#field-threshold-exception_${exceptions}`);
             for (let i = 0; i < fieldDropDown.length; i++) {
                 fieldDropDown[i].innerHTML = "";
                 helpText[i].innerHTML = "";
             };
           };
-          // Gets cdl data from AJAX
-          function getDynamicCDLData(file_type) {
-            helpText = Array.from($('[id^="help-text-threshold-requested"]'));
-            fieldDropDown = Array.from($('[id^="field-threshold-exception"]'));
-            $.ajax({
-                url: "{% url 'exception:get-cdls' %}",
-                type: 'GET',
-                data: {
-                  'file_type': file_type
-                },
-                success: function(response) {
-                  let cdls = response;
-                  if (file_type != '') {
-                  // Loop over each fieldTypeSelect element and set its innerHTML to the dropDownHTML
-                    for (let i = 0; i < fieldDropDown.length; i++) {
-                      fieldDropDown[i].options.add(new Option('-- Select a Field Type --', ""));
-                      for (let j = 0; j < cdls.length; j++) {
-                      fieldDropDown[i].options.add(new Option(`${cdls[j].field_list_value}: ${cdls[j].field_list_code}`, `${cdls[j].field_list_code}`));
-                    };
-                  };
-                }; 
-              },
-              error: function(xhr, status, error) {
-                console.log(error);
-              }
-          });
-        };
         // To access previously hiddenexception blocks and populate with info from AJAX call.
         // Ppulates based on sliced id name of select element to get exception block number
-          function getDynamicCDLDataforNewBlock(file_type, exceptions) {
+          function getDynamicCDLData(file_type, exceptions) {
             helpText = $(`#help-text-threshold-requested_${exceptions}`)
             fieldDropDown = $(`#field-threshold-exception_${exceptions}`);
             $.ajax({
@@ -428,20 +401,26 @@
             btnStatus(exceptions);
 
             $('#exception-add-btn').click(function() {
-              let file_type = $("#file_type").val();
+
               addException(exceptions);
             // To track how many exception blocks there are for button logic
               exceptions = addException(exceptions);
               btnStatus(exceptions);
-              getDynamicCDLDataforNewBlock(file_type, exceptions);
             // Gets help text for additional added blocks
               $('[id^="field-threshold-exception"]').change(function() {
                 let fieldSelection = $(this).val();
               // Gets exception number by id name
-                let exceptionsNum = $(this).attr('id').slice(-1); 
-                let file_type = $('#file_type').val();
+                let exceptionsNum = $(this).attr('id').slice(-1);
+                let file_type = $(`#file_type_${exceptionsNum}`).val();
                 getHelpText(fieldSelection, file_type, exceptionsNum);
               });
+              $('[id^="file_type"]').change(function() {
+                let exceptionsNum = $(this).attr('id').slice(-1);
+                clearDataOnFileChange(exceptionsNum);
+                let file_type = $(this).val();
+                getDynamicCDLData(file_type, exceptionsNum);
+              });
+
             });
 
             $('#exception-drop-btn').click(function() {
@@ -451,11 +430,19 @@
               btnStatus(exceptions);
             });
                     
-            $('#file_type').change(function() {
-              clearDataOnFileChange()
+            $('[id^="file_type"]').change(function() {
+              let exceptionsNum = $(this).attr('id').slice(-1);
+              clearDataOnFileChange(exceptionsNum);
               let file_type = $(this).val();
-              getDynamicCDLData(file_type);
+              getDynamicCDLData(file_type, exceptionsNum);
+              $('[id^="field-threshold-exception"]').change(function() {
+                let fieldSelection = $(this).val();
+              // Gets exception number by id name
+                let exceptionsNum = $(this).attr('id').slice(-1);
+                let file_type = $(`#file_type_${exceptionsNum}`).val();
+                getHelpText(fieldSelection, file_type, exceptionsNum);
             });
+          });
 
             $('[id^="field-threshold-exception"]').change(function() {
               let fieldSelection = $(this).val();
