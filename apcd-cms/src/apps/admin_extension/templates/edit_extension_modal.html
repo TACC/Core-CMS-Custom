@@ -7,20 +7,13 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Edit Extension ID: {{r.extension_id}}</h4>
+        <h4 class="modal-title">Edit Extension ID: {{r.extension_id}} for {{r.org_name}}</h4>
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&#xe912;</span>
         </button>
       </div>
       <div class="modal-body">
-        <h4 class="modal-header">Current Extension Information</h4>
-        <div class="o-grid o-grid--col-auto-count">
-              <div>Organization: <p>{{r.org_name}}</p></div>
-              <div>Extension Type: <p>{{r.extension_type}}</p></div>
-              <div>Current Status: <p>{{r.status}}</p></div>
-              <div>Current Expected Date: <p>{{r.current_expected_date}}</p></div>                
-              <div>Requested Target Date: <p>{{r.requested_target_date}}</p></div>
-          </div>
+        <div class="modal-section">
         <h4 class="modal-header">Edit Selected Extension</h4>
         <form action="" method="POST">
             {% csrf_token %}
@@ -36,6 +29,9 @@
 
                   <input type="month" name="applicable-data-period" class="data-period" 
                     inputmode="numeric" id="applicable-data-period" pattern="\d{4}-\d{2}"/>
+                    <div id="help-text-applicable-data-period" class="help-text">
+                      Current: {{r.applicable_data_period}}
+                    </div>
                 </div>
                 <div class="field-wrapper numberinput required" >
                   <div class="field-errors" style="display: none"></div>
@@ -45,7 +41,7 @@
                   <input type="date" name="approved" class="numeric" id="approved" 
                     inputmode="numeric"/>
                     <div id="help-text-approved" class="help-text">
-                      Current approved expiration: <p>{{r.approved_expiration_date}}</p>
+                      Current: {{r.approved_expiration_date}}
                     </div>
                 </div>
                 <div class="field-wrapper textinput required">
@@ -54,7 +50,9 @@
               </label>
               <select name='status'  class="choicefield" id='status'>
                 {% for option in status_options %}
+                {% if option != 'All' %}
                 <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
+                {% endif %}
                 {% endfor %}
               </select>
             </div>
@@ -86,7 +84,44 @@
               Submit
             </button>
           </div>
+          <hr>
         </form>
+      </div>
+              <div class="modal-section">
+                <h4 class="modal-header">Current Extension Information</h4>
+                  <dl class="c-data-list--is-vert c-data-list--is-wide">
+                      <dt class="c-data-list__key">Created</dt>
+                      <dd class="c-data-list__value">{{r.created_at}}</dd>
+                      <dt class="c-data-list__key">Organization</dt>
+                      <dd class="c-data-list__value">{{r.org_name}}</dd>
+                      <dt class="c-data-list__key">Requestor</dt>
+                      <dd class="c-data-list__value">{{r.requestor_name}}</dd>
+                      <dt class="c-data-list__key">Requestor Email</dt>
+                      <dd class="c-data-list__value">{{r.requestor_email}}</dd> 
+                      <dt class="c-data-list__key">Extension Type</dt>
+                      <dd class="c-data-list__value">{{r.extension_type}}</dd>
+                      <dt class="c-data-list__key">Status</dt>
+                      <dd class="c-data-list__value">{{r.status}}</dd>
+                      <dt class="c-data-list__key">Outcome</dt>
+                      <dd class="c-data-list__value">{{r.outcome}}</dd> 
+                      <dt class="c-data-list__key">Applicable Data Period</dt>                
+                      <dd class="c-data-list__value">{{r.applicable_data_period}}</dd>
+                      <dt class="c-data-list__key">Current Expected Date</dt>                
+                      <dd class="c-data-list__value">{{r.current_expected_date}}</dd>
+                      <dt class="c-data-list__key">Requested Target Date</dt>                
+                      <dd class="c-data-list__value">{{r.requested_target_date}}</dd>
+                      <dt class="c-data-list__key">Approved Expiration Date</dt>                
+                      <dd class="c-data-list__value">{{r.approved_expiration_date}}</dd>
+                      <dt class="c-data-list__key">Extension Justification</dt>
+                      <dd class="c-data-list__value">{{r.explanation_justification}}</dd>
+                      <dt class="c-data-list__key">Extension Notes</dt>
+                      <dd class="c-data-list__value">{{r.notes}}</dd>
+                      <dt class="c-data-list__key">Last Updated</dt>
+                      <dd class="c-data-list__value">{{r.updated_at}}</dd>  
+                  </dl> 
+                  <hr>
+              </div>
+            </dd>
         </div>
       </div>
     </div>
