@@ -70,7 +70,7 @@ class AdminExtensionsTable(TemplateView):
                 'requested_target_date': extension[3],
                 'approved_expiration_date': extension[4],
                 # to separate small carrier into two words
-                'extension_type': title_case(extension[5].replace('_', ' ')) if extension[6] else None,
+                'extension_type': title_case(extension[5].replace('_', ' ')) if extension[5] else None,
                 'applicable_data_period': _get_applicable_data_period(extension[6]) if extension[6] else None,
                 'status': title_case(extension[7]) if extension[7] else None,
                 'outcome': title_case(extension[8]) if extension[8] else None,

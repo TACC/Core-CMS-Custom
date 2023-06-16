@@ -1445,7 +1445,7 @@ def _clean_email(email):
     return result.string if result else None
 
 def _clean_value(value):
-    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
+    return re.sub('[^a-zA-Z0-9 \.\-\,\_]', '', str(value))
 
 def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
