@@ -1,0 +1,60 @@
+.exception-table {
+    --cell-padding: 5px;
+}
+.exception-table th, td {
+    text-align: left;
+    vertical-align: top;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+    padding: var(--cell-padding);
+    border-collapse: collapse;
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid rgba(0,0,0,1);
+}
+.exception-table tr:nth-child(even) {
+    background-color: rgba(198, 198, 198, 0.1);
+}
+.exception-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    word-wrap: break-word;
+}
+.exception-table tr:nth-child(even) td {
+    border-right: rgba(198, 198, 198, 0.1);
+    border-left: rgba(198, 198, 198, 0.1);
+}
+.exception-table tr:nth-child(even) td:first-child {
+    border-left: 1px solid #fff;
+}
+.exception-table tr:nth-child(even) td:last-child {
+    border-right: 1px solid #fff;
+}
+.filter-container button {
+    margin-top: auto;
+}
+.status-filter {
+    width:fit-content;
+}
+.modal-cell {
+    color: var(--global-color-link-on-light--normal);
+}
+/* SEE: https://css-tricks.com/responsive-data-tables/ */
+@media (max-width: 767px) {
+    /* To make each cell behave like a "row" */
+    .exception-table td {
+        position: relative;
+        padding-left: 50%;
+    }
+
+    /* To label the cells */
+    /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
+    .exception-table td:nth-of-type(1):before { content: "Created"; }
+    .exception-table td:nth-of-type(2):before { content: "Organization"; }
+    .exception-table td:nth-of-type(3):before { content: "Requestor Name"; }
+    .exception-table td:nth-of-type(4):before { content: "Exception Type"; }
+    .exception-table td:nth-of-type(5):before { content: "Outcome"; }
+    .exception-table td:nth-of-type(6):before { content: "Status"; }
+    .exception-table td:nth-of-type(7):before { content: "Actions"; }
+}

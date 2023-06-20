@@ -1127,7 +1127,7 @@ def get_submitter_for_extend_or_except(user):
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                ORDER BY submitters.apcd_id, submitter_users.submitter_id
+                ORDER BY submitters.org_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
@@ -1227,13 +1227,11 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                apcd_orgs.official_name,
+                submitters.org_name,
                 standard_codes.item_value
             FROM exceptions
             JOIN submitters
                 ON exceptions.submitter_id = submitters.submitter_id
-            JOIN apcd_orgs
-                ON submitters.apcd_id = apcd_orgs.apcd_id
             LEFT JOIN standard_codes 
                 ON UPPER(exceptions.data_file) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
             ORDER BY exceptions.created_at DESC
@@ -1242,6 +1240,67 @@ def get_all_exceptions():
         cur.execute(query)
         return cur.fetchall()
 
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def update_exception(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE exceptions
+            SET
+            updated_at= %s,"""
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'approved_threshold': 'approved_threshold',
+            'approved': 'approved_expiration_date',
+            'status': 'status',
+            'outcome': 'outcome',
+            'notes': 'notes'
+        }
+        # To make sure fields are not blank. 
+        # If they aren't, add column to update operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
+
+        operation += ", ".join(set_values) + " WHERE exception_id = %s"
+        ## add last update to all extension updates
+        values = [
+            datetime.now(),
+        ]
+
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is the right type for insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+        # server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['exception_id']))
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
     finally:
         if cur is not None:
             cur.close()
@@ -1287,7 +1346,7 @@ def _clean_email(email):
     return result.string if result else None
 
 def _clean_value(value):
-    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
+    return re.sub('[^a-zA-Z0-9 \.\-\,\_]', '', str(value))
 
 def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
