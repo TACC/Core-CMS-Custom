@@ -756,7 +756,7 @@ def create_threshold_exception(form, iteration, sub_data):
             _clean_email(form['requestor-email']),
             "threshold",
             _clean_date(form['expiration-date_{}'.format(iteration)]),
-            _clean_value(form['file_type']),
+            _clean_value(form['file_type_{}'.format(iteration)]),
             _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
             _clean_value(form['threshold-requested_{}'.format(iteration)]),
             _clean_value(form['justification']),
