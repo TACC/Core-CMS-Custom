@@ -1,5 +1,5 @@
 # TACC/Core-CMS#v3.11.3
-FROM taccwma/demdata-cms:5cc1b06
+FROM taccwma/core-cms:5cc1b06
 
 WORKDIR /code
 
