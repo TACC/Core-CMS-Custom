@@ -91,4 +91,4 @@ FAVICON = {
 ########################
 
 # Only use integer numbers (not "v1", not "0.11.0")
-TACC_CORE_STYLES_VERSION = 0
+TACC_CORE_STYLES_VERSION = 2
