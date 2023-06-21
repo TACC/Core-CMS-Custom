@@ -1,5 +1,5 @@
-# https://github.com/TACC/Core-CMS/pull/606
-FROM taccwma/demdata-cms:3285f4a
+# TACC/Core-CMS#v3.11.3
+FROM taccwma/demdata-cms:5cc1b06
 
 WORKDIR /code
 
