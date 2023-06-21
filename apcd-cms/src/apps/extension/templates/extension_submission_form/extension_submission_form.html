@@ -19,7 +19,7 @@
         This form should be completed and submitted by data submitters to request
         an extension to the deadline for submitting either a regular submission or
         a corrected resubmission. Please review the
-        <a href="https://sph.uth.edu/research/centers/chcd/apcd/techinical/TXAPCD-Data_Submission_Guide.pdf"
+        <a href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/payor-registration-information"
           target="_blank">Data Submission Guide</a> for details about completing and submitting this form, especially
         regarding
         the timeliness of the request.
@@ -31,55 +31,52 @@
           <form action="" method="POST">
             {% csrf_token %}
             <h4>Extension Information</h4>
-            <div class="field-wrapper textinput required">
-              <div class="field-errors" style="display: none"></div>
-              <label for="extension-type">
-                Extension Type<span class="asterisk">*</span>
-              </label>
-              <div class="field-errors" style="display: none"></div>
-              <select name='extension-type' required='required' class="choicefield" id='extension-type'>
-                <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
-                <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
-                <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
-                </option>
-              </select>
-            </div>
-            <div id="extension-block_1">
-              <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper numberinput required" id="date-row">
-                  <div class="field-errors" style="display: none"></div>
+            <div id="extension-block_1" >
+              <div class="field-wrapper textinput required"><p>
+                This extension is on behalf of the following organization:
+              </p>
+                <label for="business-name_1">
+                  Business Name<span class="asterisk">*</span>
+                </label>
+                <div class="field-errors" style="display: none"></div>
+                <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
+                  {% for submitter in submitters %}
+                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                    {{submitter.submitter_id}} Payor Code: {{submitter.payor_code}}</option>
+                  {% endfor %}
+                </select>
+                </div>
 
-                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup
-                      name="date-sup">1</sup></label><label name="extension-date-asterisk"><span
-                      class="asterisk">*</span></label>
+                <div class="field-wrapper textinput required">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="extension-type_1">
+                    Extension Type<span class="asterisk">*</span>
                   </label>
-
-                  <input type="month" name="applicable-data-period" placeholder="YYYY/MM" class="numeric"
-                    inputmode="numeric" style="width:18ch" id="applicable-data-period" pattern="\d{4}-\d{2}" required />
-                  <div id="help-text-applicable-data-period" class="help-text">
-                    Enter month and year
+                  <select name='extension-type_1' required='required' class="choicefield" id='extension-type_1'>
+                    <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
+                    <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
+                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
+                    </option>
+                  </select>
+                </div>
+              
+                <h6>Submission Dates</h6>
+                <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="requested-target-date_1" >Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
+                  <input type="date" name="requested-target-date_1" class="numeric" id="requested-target-date_1"
+                    inputmode="numeric" required />
+                </div>
+                  <div class="field-wrapper">
+                      <label for="current-expected-date_1"> Your current expected due date is: </label>
+                      <div name="current-expected-date_1" type="date" id="current-expected-date_1"> 12/05/2023</div>
                   </div>
-                </div>
-                <div class="field-wrapper numberinput required" id="date-row">
-                  <div class="field-errors" style="display: none"></div>
-
-                  <label for="current-expected-date" name="date-row">Current Expected Date<sup>2</sup>
-                  </label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-
-                  <input type="date" name="current-expected-date" class="numeric" id="current-expected-date"
-                    inputmode="numeric" required />
-                </div>
-                <div class="field-wrapper numberinput required" id="date-row">
-                  <div class="field-errors" style="display: none"></div>
-
-                  <label for="request" name="date-row">Requested Target Date<sup>3</sup></label><label
-                    name="extension-date-asterisk"><span class="asterisk">*</span></label>
-
-                  <input type="date" name="requested-target-date" class="numeric" id="requested-target-date"
-                    inputmode="numeric" required />
-                </div>
+                  <div class="field-wrapper">
+                    <label for="app-data-period_1"> The data period is through the end of: </label>
+                    <div name="app-data-period_1" type="date" id="app-data-period_1">12-05-2023</div>
+                  </div>
               </div>
-            </div>
             <h4 id="extension-header_2" style="display:none">
               <hr />Extension Information 2
             </h4>
@@ -104,7 +101,7 @@
 
             <hr />
 
-            <h4>Justification</h4>
+            <h4>Request Justification</h4>
 
             <div class="field-wrapper textarea required">
               Provide rationale for the exception request, outlining the reasons why the
@@ -144,23 +141,6 @@
                   id="requestor-email" pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$" />
               </div>
             </div>
-            <div class="field-wrapper textinput required"><label>
-                I request an exception on behalf of:
-              </label></div>
-
-            <div class="field-wrapper textinput required">
-              <label for="business-name">
-                Business Name<span class="asterisk">*</span>
-              </label>
-              <div class="field-errors" style="display: none"></div>
-              <select name='business-name' required='required' class="choicefield" id='business-name'>
-                {% for submitter in submitters %}
-                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
-                  {{submitter.submitter_id}}</option>
-                {% endfor %}
-              </select>
-
-            </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -177,10 +157,21 @@
               <button class="form-button" type="submit" value="Submit">
                 Submit
               </button>
+              </div>
+            </form>
+            <div class="o-section o-section--style-light">
+              <hr />
+              <p>
+                <small>¹ Requested target date – requested day/month/year by which the data should be received (the extension
+                  date).<br />
+                </small>
+              </p>
             </div>
-          </form>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
 
 
       <div class="form-success" style="display: none">
@@ -226,57 +217,60 @@
             let extensionBlock = document.getElementById(`extension-block_${extension}`);
             document.getElementById(`extension-header_${extension}`).style.display = 'block';
             extensionBlock.innerHTML = `
-        <div id="extension-block_${extension}">
-          <div class="field-wrapper textinput required">
-            <div class="field-errors" style="display: none"></div>
-                <label for="extension-type">
-                  Extension Type<span class="asterisk">*</span>
+            <div id="extension-block_${extension}" >
+              <div class="field-wrapper textinput required"><p>
+                This extension is on behalf of the following organization:
+              </p>
+                <label for="business-name_${extension}">
+                  Business Name<span class="asterisk">*</span>
                 </label>
                 <div class="field-errors" style="display: none"></div>
+                <select name='business-name_${extension}' required='required' class="choicefield" id='business-name_${extension}'>
+                  {% for submitter in submitters %}
+                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                    {{submitter.submitter_id}} Payor Code: {{submitter.payor_code}}</option>
+                  {% endfor %}
+                </select>
+                </div>
+
+                <div class="field-wrapper textinput required">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="extension-type_${extension}">
+                    Extension Type<span class="asterisk">*</span>
+                  </label>
                   <select name='extension-type_${extension}' required='required' class="choicefield" id='extension-type_${extension}'>
                     <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
                     <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
-                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)</option>
-                </select>
+                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
+                    </option>
+                  </select>
                 </div>
-          <div class="o-grid o-grid--col-auto-count" >
-            <div class="field-wrapper numberinput required" id="date-row">
-              <div class="field-errors" style="display: none"></div>
 
-              <label for="applicable-data-period_${extension}" name="date-row">Applicable Data Period<sup>1</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-              </label>
+                <h6>Submission Dates ${extension}</h6>
+                <div class="o-grid o-grid--col-auto-count">
+                  <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
 
-              <input type="month" name="applicable-data-period_${extension}" placeholder="YYYY/MM" class="numeric" inputmode="numeric" style="width:18ch"
-                id="applicable-data-period_${extension}" pattern="\d{4}-\d{2}" required />
-              <div id="help-text-applicable-data-period_${extension}" class="help-text">
-                Enter month and year
+                  <label for="requested-target-date_${extension}">Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
+
+                  <input type="date" name="requested-target-date_${extension}" class="numeric" id="requested-target-date_${extension}"
+                    inputmode="numeric" required />
+                </div>
+                  <div class="field-wrapper">
+                      <label for="current-expected-date_${extension}"> Your current expected due date is: </label>
+                      <div name="current-expected-date_${extension}" type="date" id="current-expected-date_${extension}"> 12/05/2023</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <label for="app-data-period_${extension}"> The data period is through the end of: </label>
+                    <div name="app-data-period_${extension}" type="date" id="app-data-period_${extension}">12-05-2023</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="field-wrapper numberinput required" id="date-row">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="current-expected-date_${extension}" name="date-row">Current Expected Date<sup>2</sup>
-              </label><label><span class="asterisk">*</span></label>
-
-              <input type="date" name="current-expected-date_${extension}" class="numeric" id="current-expected-date_${extension}"
-                inputmode="textinput" required />
-            </div>
-            <div class="field-wrapper numberinput required" id="date-row_${extension}">
-              <div class="field-errors" style="display: none"></div>
-
-              <label for="requested-target-date_${extension}" name="date-row_${extension}">Requested Target Date<sup>3</sup></label><label name="extension-date-asterisk"><span class="asterisk">*</span></label>
-
-              <input type="date" name="requested-target-date_${extension}" class="numeric" id="requested-target-date_${extension}"
-                inputmode="textinput" required />
-            </div>
-          </div>
-        </div>
         `;
             const inputs = Array.from(
               document.querySelectorAll(`
             input[name=extension-type_${extension}],
-            input[name=applicable-data-period_${extension}],
-            input[name=current-expected-date_${extension}],
+            input[name=business-name_${extension}],
             input[name=requested-target-date_${extension}]
           `)
             );
@@ -298,17 +292,4 @@
         </script>
 
 
-        {# Footnotes #}
-        <div class="o-section o-section--style-light">
-          <hr />
-          <p>
-            <small>¹ Applicable data period – month/year in which claims data was adjudicated.<br />
-              ² Current expected date – day/month/year in which applicable data was expected within the submission
-              window.<br />
-              ³ Requested target date – requested day/month/year by which the data should be received (the extension
-              date).<br />
-            </small>
-          </p>
-          <hr />
-        </div>
         {% endblock %}
