@@ -6,7 +6,9 @@ dt {
 dd {
     flex-basis: 75%;
 }
-
+.modal-content {
+    height: 550px;
+}
 .modal {
     position: fixed;
     top: 0;
@@ -18,12 +20,20 @@ dd {
     overflow: hidden;
     outline: 0;
 }
+.modal-dialog {
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-.modal-title {
-    margin-top: unset;
-    text-overflow: var(--text-overflow, ellipsis);
-    overflow: hidden;
-    white-space: nowrap;
-    color: var(--global-color-primary--xx-dark);
-    font-weight: 400;
+/* Necessary so dl keys display fully */
+.modal-body {
+    height: 60vh;
+    overflow-y: auto !important;
+    padding: 2rem;
+    font-size: var(--global-font-size--small);
+    font-family: var(--global-font-family--sans--portal);
 }
