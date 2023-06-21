@@ -1,0 +1,50 @@
+<style id="css-news">
+/* TODO: Integrate appropriate styles into Core-CMS */
+/* TODO: Consider CMS setting to hide `.blog-visual` */
+
+/* On article page, to undo inline content styles */
+/* FAQ: In case author pasted such markup from another source */
+.blog-content [style]:not(
+    [data-style="admin"], /* HACK: So CMS admin can override this */
+    [id^="flickrembed_"] * /* HACK: So Flickr slideshow works */
+) {
+    all: revert !important; /* force undo all inline styles */
+}
+
+/* To add space beneath image whose <p> trapped inside it the text beneath */
+/* NOTE: W.B. does NOT know how the text gets trapped with image in one <p> */
+.blog-content > p:first-child > img:not(:only-child) {
+    margin-bottom: 2rem; /* mimic core-styles.cms <p> margin-bottom */
+}
+
+/* On article page, to hide automatic main image */
+article.post-detail .blog-visual {
+    display: none;
+}
+/* On article list, to re-align news list article header */
+.blog-list article header {
+    align-content: baseline;
+}
+/* On article list or page, to re-skin all Category links */
+.app-blog article .categories a {
+    display: inline-block;
+    background: var(--global-color-primary--xx-dark);
+    color: var(--global-color-primary--xx-light);
+    padding-top: 0.25em;
+    padding-inline: 0.5em;
+    text-transform: uppercase;
+    font-weight: var(--bold);
+    font-size: var(--global-font-size--x-small);
+}
+/* On article page, to hide "RELATED POSTS:" */
+article.post-detail .post-detail-list {
+    display: none;
+}
+
+/* To tweak metadata spacing */
+/* TODO: Integrate into Core-CMS */
+/* HELP: Original style overwrites .attrs margin≥ should it? */
+.app-blog ul.post-detail {
+  margin-bottom: 0.25em; /* overwrites .app-blog ul.post-detail */
+}
+</style>

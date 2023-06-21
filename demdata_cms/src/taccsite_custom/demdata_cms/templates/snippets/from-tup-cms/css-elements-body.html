@@ -1,0 +1,17 @@
+<style id="css-elements-body">
+/* TODO: Move to Core CMS or core-styles.cms.css */
+/* TODO: In Core, drop `#...:not(...)` */
+html:not(#page-portal, #page-dashboard) body /* trans id */ {
+    font-size: var(--global-font-size--medium);
+    line-height: 1.6;
+    letter-spacing: .025rem;
+}
+
+/* Prevent trackpad scroll to show white background beyond page height */
+/* TODO: Review behaviour change with designers (works but do they want it) */
+/*
+body {
+    overscroll-behavior-y: none;
+}
+*/
+</style>

@@ -1,0 +1,48 @@
+<style id="css-elements-components-figure-blockquote-caption-embed">
+/* CHANGES NOT IN CORE (BUT ARE IN TACC DOCS) */
+
+/* To add space abvoe and below small text beneath these patterns */
+figure,
+blockquote,
+p.caption,
+.embed-responsive {
+    --buffer-top: 10px;
+    --buffer-bottom: 2rem; /* mimic core-styles.cms <p> margin-bottom: 2rem; */
+
+    margin-bottom: var(--buffer-bottom);
+}
+
+/* To hide `.embed-…` margin-bottom */
+.embed-responsive + p.caption {
+    margin-top: calc( var(--buffer-top) - var(--buffer-bottom) );
+}
+/* To remove extra whitespace beneath embeded content */
+.embed-responsive > * {
+    display: block;
+}
+
+/* TODO: In Core, share styles (how?) */
+figcaption,
+p.caption,
+blockquote footer {
+    color: var(--global-color-primary--dark);
+    font-style: italic;
+    line-height: 1.7;
+    font-size: var(--global-font-size--small);
+}
+/* FAQ: Not for blockquote footer, because blockquote line-height is enough */
+figcaption,
+p.caption {
+    margin-top: var(--buffer-top);
+}
+
+/* TODO: Use global variables */
+/* TODO: Incorporate add `o-float-content--right` (requires Core-CMS repo) */
+/* TODO: Hide "TACC Site" Blockquote plugin */
+blockquote {
+    font-size: var(--global-font-size--large); /* HP wanted non-standard 20px */
+    color: var(--global-color-accent--secondary);
+    width: fit-content;
+    line-height: 1.7;
+}
+</style>
