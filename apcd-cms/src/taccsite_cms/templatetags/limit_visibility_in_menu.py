@@ -27,7 +27,8 @@ def limit_visibility_in_menu(context, menu_item):
     """
     request = context['request']
     user = request.user
-    page_id = menu_item.attr['reverse_id']
+    has_page_id = ('reverse_id' in menu_item.attr)
+    page_id = menu_item.attr['reverse_id'] if has_page_id else ''
 
     if (
         user.is_superuser or
