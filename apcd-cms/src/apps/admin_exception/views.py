@@ -142,16 +142,4 @@ class AdminExceptionsTable(TemplateView):
         context.update(paginator(self.request, exception_table_entries))
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
 
-
-        p = Paginator(exception_table_entries, 10)
-
-        try:
-            page = p.page(page_num)
-        except EmptyPage:
-            page = p.page(1)
-
-        context['page'] = page
-        context['page_num'] = int(page_num)
-        context['num_pages'] = range(1, p.num_pages + 1)
-
         return context
