@@ -4,16 +4,13 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
-<!-- Must come before submissions modal stylesheet so key names in modal are not cut off -->
-<link rel="stylesheet" href="{% static 'admin_exception/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'submissions/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'admin_exception/css/modal.css' %}">
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
   <h1>View Exception Requests</h1>
   <hr />
   <p style="margin-bottom: 30px">All submitted exception requests</p>
+  <hr/>
   <div class="filter-container">
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
@@ -22,10 +19,6 @@
           <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
-      </div>
-      </div>
-      <div class="filter-container">
-      <div class="filter-content">
       <span><b>Filter by Organization: </b></span>
       <select id="organizationFilter" class="status-filter org-filter" onchange="sortByOrg()">
         <!-- Value set here so dropdown is not blank but set to All-->
@@ -34,16 +27,11 @@
           <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
-      </div>
-      </div>
       {% if selected_status or selected_org %}
-      <div class="filter-container">
-        <div class="filter-content">
           <button onclick="clearSelections()">Clear Options</button>
-        </div>
-      </div>
       {% endif %}
-  <hr/>
+    </div>
+  </div>
   <table id="exception-table" class="exception-table">
       <thead>
           <tr>

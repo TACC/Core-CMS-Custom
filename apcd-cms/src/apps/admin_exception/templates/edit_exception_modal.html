@@ -1,3 +1,7 @@
+{% load static %}
+<!-- submission style sheet allows row names to not be cut off with an ellipsis -->
+<link rel="stylesheet" href="{% static 'submissions/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_exception/css/modal.css' %}">
 <div id="editExceptionModal_{{r.exception_id}}" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
@@ -25,9 +29,9 @@
                   <div class="field-errors" style="display: none"></div>
                   <label for="approved_threshold" >Approved Threshold </label>
                   </label>
-
+                <!-- Value set so if there isn't an approved threshold from DB, None is not displayed and field is blank-->
                   <input type="numeric" name="approved_threshold" class="approved_threshold" 
-                    inputmode="numeric" id="approved_threshold"/>
+                    inputmode="numeric" id="approved_threshold" value="{{r.approved_threshold|default:''}}"/>
                     <div id="help-text-approved_threshold" class="help-text">
                       Requested: {{r.requested_threshold}}%
                     </div>
@@ -49,6 +53,7 @@
                 Exception Status
               </label>
               <select name='status'  class="choicefield" id='status'>
+                <!-- To make sure hard coded 'All' option doesn't populate in edit modal dropdown-->
                 {% for option in status_options %}
                 {% if option != 'All' %}
                 <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
@@ -71,10 +76,12 @@
             <label for="notes">
               Exception Notes
             </label>
-
-              <div class="field-errors" style="display: none"></div>
-                <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
-                  minlength="2" maxlength="2000">{{ r.notes }}</textarea>
+              <textarea name="notes" cols="40" rows="5" type="text" id="notes"
+                minlength="2" maxlength="2000" >
+                {{r.notes|default:''}}
+              </textarea>
+                <!-- To make sure if there are no notes from DB, None is not displayed 
+                  and inserted, and instead is blank-->
                 <div class="help-text">
                   2000 character limit
                 </div>
