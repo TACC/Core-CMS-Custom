@@ -71,7 +71,7 @@ BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ] # this matches prod 2022
 
 LOGO = [
     "demdata",
-    "demdata_cms/img/org_logos/Demo-Data.svg",
+    "demdata_cms/img/org_logos/demdata.svg",
     "",
     "/",
     "_self",
