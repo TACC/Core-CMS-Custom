@@ -42,26 +42,21 @@ class AdminExtensionsTable(TemplateView):
         
         template = _edit_extension(form)
         return HttpResponse(template.render({}, request))
+    def get(self, request, *args, **kwargs):
+        extension_content = get_all_extensions()
+
+
+        context = self.get_context_data(extension_content, *args,**kwargs)
+        template = loader.get_template(self.template_name)
+        return HttpResponse(template.render(context, request))
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user): 
             return HttpResponseRedirect('/')
         return super(AdminExtensionsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-
+    def get_context_data(self, extension_content, *args, **kwargs):
         context = super(AdminExtensionsTable, self).get_context_data(*args, **kwargs)
-        extension_content  = get_all_extensions()
-
-
-        status_filter = self.request.GET.get('status')
-        org_filter = self.request.GET.get('org')
-
-        try:
-            page_num = int(self.request.GET.get('page'))
-        except:
-            page_num = 1
-
         def _set_extensions(extension):
             return {
                 'extension_id': extension[0],
@@ -85,20 +80,23 @@ class AdminExtensionsTable(TemplateView):
                 'notes': extension[17],
                 'org_name': extension[18]
             }
-
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Approved Expiration', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
         context['outcome_options'] = []
         context['extensions'] = []
 
-
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
 
         def getDate(row):
             date = row[1]
             return date if date is not None else parser.parse('1-1-0001')
 
         extension_content = sorted(extension_content, key=lambda row:getDate(row), reverse=True)  # sort extensions by newest to oldest
+        
         extension_table_entries = []       
         for extension in extension_content:
             # to be used by paginator
@@ -118,7 +116,9 @@ class AdminExtensionsTable(TemplateView):
                 context['outcome_options'].append(outcome)
                 context['outcome_options'] = context['outcome_options']
 
-        
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
+
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
@@ -136,18 +136,6 @@ class AdminExtensionsTable(TemplateView):
         context['query_str'] = queryStr
         context.update(paginator(self.request, extension_table_entries))
         context['pagination_url_namespaces'] = 'admin_extension:list_extensions'
-
-        p = Paginator(extension_table_entries, 10)
-
-        try:
-            page = p.page(page_num)
-        except EmptyPage:
-            page = p.page(1)
-
-        context['page'] = page
-        context['page_num'] = int(page_num)
-        context['num_pages'] = range(1, p.num_pages + 1)
-        context['extensions'].append(extension_table_entries)
 
         return context
 
