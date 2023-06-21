@@ -7,29 +7,6 @@ dd {
     flex-basis: 75%;
 }
 
-.modal-content {
-    height: 550px;
-}
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1050;
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    outline: 0;
-}
-.modal-dialog {
-    height: 100vh;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 /* Necessary so dl keys display fully */
 .modal-body {
     height: 60vh;
