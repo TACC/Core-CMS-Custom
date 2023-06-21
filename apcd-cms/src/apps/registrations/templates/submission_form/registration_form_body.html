@@ -1,4 +1,4 @@
-<form action="" method="POST">
+<form id="registration-form" action="" method="POST">
     {% csrf_token %}
 
     {% if r %}
@@ -299,6 +299,8 @@
                     class="integerfield"
                     id="license_number_{{forloop.counter}}_{{r.reg_id}}"
                     inputmode="numeric"
+                    min="0"
+                    max="2147483648"
                     {% if entity.license %} value="{{ entity.license }}" {% endif %}
                     />
 
@@ -318,6 +320,8 @@
                     class="integerfield"
                     id="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
                     inputmode="numeric"
+                    min="0"
+                    max="2147483648"
                     {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
                     />
 
@@ -460,16 +464,16 @@
             <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="entity_name">
+                <label for="entity_name_1">
                 Name<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="text"
-                name="entity_name"
+                name="entity_name_1"
                 required
                 class="textinput"
-                id="entity_name"
+                id="entity_name_1"
                 />
             </div>
             <div class="field-wrapper required">
@@ -485,14 +489,14 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="fein"> FEIN<sup>5</sup> </label>
+                <label for="fein_1"> FEIN<sup>5</sup> </label>
 
                 <input
                     type="text"
-                    name="fein"
+                    name="fein_1"
                     placeholder="12-3456789"
                     class="textinput"
-                    id="fein"
+                    id="fein_1"
                     inputmode="numeric"
                     minlength="10"
                     maxlength="10"
@@ -507,15 +511,17 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="license_number"> License Number </label>
+                <label for="license_number_1"> License Number </label>
 
                 <input
                     type="number"
-                    name="license_number"
+                    name="license_number_1"
                     placeholder="1234567890"
                     class="integerfield"
-                    id="license_number"
+                    id="license_number_1"
                     inputmode="numeric"
+                    min="0"
+                    max="2147483648"
                     required
                 />
 
@@ -526,15 +532,17 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
+                <label for="naic_company_code_1"> NAIC<sup>6</sup> Company Code </label>
 
                 <input
                     type="number"
-                    name="naic_company_code"
+                    name="naic_company_code_1"
                     placeholder="12345"
                     class="integerfield"
-                    id="naic_company_code"
+                    id="naic_company_code_1"
                     inputmode="numeric"
+                    min="0"
+                    max="2147483648"
                     required
                 />
 
@@ -558,50 +566,50 @@
     
                 <ul id="types_of_files" class="checkboxselectmultiple">
                     <li>
-                        <label for="types_of_files_eligibility_enrollment"
+                        <label for="types_of_files_eligibility_enrollment_1"
                         ><input
                             type="checkbox"
-                            name="types_of_files_eligibility_enrollment"
+                            name="types_of_files_eligibility_enrollment_1"
                             required
-                            id="types_of_files_eligibility_enrollment"
+                            id="types_of_files_eligibility_enrollment_1"
                             checked=""
                             disabled
                         />Eligibility/Enrollment*</label
                         >
                     </li>
                     <li>
-                        <label for="types_of_files_provider"
+                        <label for="types_of_files_provider_1"
                             ><input
                             type="checkbox"
-                            name="types_of_files_provider"
-                            id="types_of_files_provider"
+                            name="types_of_files_provider_1"
+                            id="types_of_files_provider_1"
                             />Provider</label
                         >
                     </li>
                     <li>
-                        <label for="types_of_files_medical"
+                        <label for="types_of_files_medical_1"
                             ><input
                             type="checkbox"
-                            name="types_of_files_medical"
-                            id="types_of_files_medical"
+                            name="types_of_files_medical_1"
+                            id="types_of_files_medical_1"
                             />Medical</label
                         >
                     </li>
                     <li>
-                        <label for="types_of_files_pharmacy"
+                        <label for="types_of_files_pharmacy_1"
                             ><input
                             type="checkbox"
-                            name="types_of_files_pharmacy"
-                            id="types_of_files_pharmacy"
+                            name="types_of_files_pharmacy_1"
+                            id="types_of_files_pharmacy_1"
                             />Pharmacy</label
                         >
                     </li>
                     <li>
-                        <label for="types_of_files_dental"
+                        <label for="types_of_files_dental_1"
                             ><input
                             type="checkbox"
-                            name="types_of_files_dental"
-                            id="types_of_files_dental"
+                            name="types_of_files_dental_1"
+                            id="types_of_files_dental_1"
                             />Dental</label
                         >
                     </li>
@@ -619,16 +627,16 @@
             <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="total_covered_lives">
+                <label for="total_covered_lives_1">
                 Total Covered Lives<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="number"
-                name="total_covered_lives"
+                name="total_covered_lives_1"
                 required
                 class="integerfield"
-                id="total_covered_lives"
+                id="total_covered_lives_1"
                 inputmode="numeric"
                 min="1"
                 step="1"
@@ -638,16 +646,16 @@
             <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="claims_encounters_volume">
+                <label for="claims_encounters_volume_1">
                 Claims and Encounters Volume<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="number"
-                name="claims_encounters_volume"
+                name="claims_encounters_volume_1"
                 required
                 class="integerfield"
-                id="claims_encounters_volume"
+                id="claims_encounters_volume_1"
                 inputmode="numeric"
                 min="1"
                 />
@@ -656,17 +664,17 @@
             <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="total_claims_value">
+                <label for="total_claims_value_1">
                 Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
                 </label>
 
                 <span class="s-affixed-input-wrapper__prefix">$</span>
                 <input
                 type="number"
-                name="total_claims_value"
+                name="total_claims_value_1"
                 required
                 class="integerfield"
-                id="total_claims_value"
+                id="total_claims_value_1"
                 inputmode="numeric"
                 step="0.01"
                 min="0.01"

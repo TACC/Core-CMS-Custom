@@ -1,0 +1,14 @@
+/* To undo select table styles from Core v3.10 */
+
+/* To not use responsive table solution from Core */
+/* TODO: Remove responsive table solution from Core */
+/* https://github.com/TACC/Core-Styles/blob/903eb7b/src/lib/_imports/elements/table--basic.css#L64-L71 */
+:is(th,td):first-child {
+    border-right: unset;
+    left: unset;
+}
+@media (max-width: 767px) {
+    :is(th,td):first-child {
+        position: relative; /* to restore APCD "responsive-data-tables" value */
+    }
+}
