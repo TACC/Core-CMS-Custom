@@ -20,7 +20,7 @@
               <div class="o-grid o-grid--col-auto-count">
                 <!-- To not allow edit of approved_threshold 
                   unless it is a threshold exception request-->
-                {% if r.request_type != 'Threshold' %}             
+                {% if r.request_type == 'Threshold' %}             
                 <div class="field-wrapper numberinput required">
                   <div class="field-errors" style="display: none"></div>
                   <label for="approved_threshold" >Approved Threshold </label>
