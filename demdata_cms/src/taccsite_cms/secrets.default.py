@@ -14,6 +14,6 @@ DATABASES = {
         'NAME': DATABASES['default']['NAME'],
         'USER': DATABASES['default']['USER'],
         'PASSWORD': DATABASES['default']['PASSWORD'],
-        'HOST': 'demdata_cms_postgres'
+        'HOST': DATABASES['default']['HOST'],
     }
 }
