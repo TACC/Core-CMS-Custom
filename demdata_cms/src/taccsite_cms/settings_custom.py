@@ -21,6 +21,8 @@ CMS_TEMPLATES = (
     ('fullwidth.html', 'Full Width'),
     ('demdata_cms/templates/standard.html', 'Standard (with CSS from TUP)'),
     ('demdata_cms/templates/fullwidth.html', 'Full Width (with CSS from TUP)'),
+    ('demdata-cms/templates/standard.html', 'DEPRECATED Standard (with CSS from TUP)'),
+    ('demdata-cms/templates/fullwidth.html', 'DEPRECATED Full Width (with CSS from TUP)'),
 )
 
 ########################
