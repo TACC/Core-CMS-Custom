@@ -44,7 +44,7 @@ services:
       - core_cms_es_data:/usr/share/elasticsearch/data
     container_name: core_cms_elasticsearch
     ports:
-      - 9201:9200
+      - 127.0.0.1:9201:9200
     networks:
       - core_cms_net
 
