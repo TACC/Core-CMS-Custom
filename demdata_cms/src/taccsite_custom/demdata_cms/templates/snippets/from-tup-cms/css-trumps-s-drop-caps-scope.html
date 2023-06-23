@@ -1,0 +1,40 @@
+<style id="css-trumps-s-drop-caps-scope">
+/* IMPORTANT: In TACC/Core-CMS@4008682, but never loaded */
+/*
+Drop-Caps
+
+Create drop-cap from first letter of first paragraph.
+
+Markup:
+<div class="s-drop-caps">
+  <p>Lorem ipsum is best firend.</p>
+</div>
+
+Styleguide Trumps.Scopes.DropCaps
+*/
+
+/* FAQ: This is not a utility class, because it targets child HTML tags */
+
+.s-drop-caps > p:first-of-type::first-letter {
+  /* Drop the letter */
+  float: left;
+  /* Estimate horizontal spacing to match magazine design */
+  /* WARN: Firefox calculates `margin-…` differently here, so use `padding-…` */
+  padding-right: 0.125em; /* approx: `1em` of normal text */
+
+  /* TODO: Add `postcss-css-next` plugin, so that we may:
+           - use font from variables i.e. (a `settings/properties.font.css`) */
+  font-family: kepler-std-condensed-subhead, serif;
+  font-size: 6em; /* approx: 3 lines, of normal text, tall */
+
+  /* (Firefox v73) Nudge letter up until it meets top of normal text */
+  /* CAVEAT: Also has effect in Safari and Chrome/Edge, but not enough */
+  padding-top: 0.0625em;
+  /* (Safari v13, Chrome/Edge v80) Nudge letter up more until it meets top of normal text */
+  /* MAGIC: Firefox does not need this */
+  /* SEE: https://bugzilla.mozilla.org/show_bug.cgi?id=1233271 */
+  /* MAGIC: Has no effect on Firefox */
+  /* SEE: https://bugzilla.mozilla.org/show_bug.cgi?id=290125 */
+  line-height: 0.65;
+}
+</style>
