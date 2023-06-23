@@ -2,33 +2,13 @@
     /* keeps action dropdown cell from bleeding out of table */
     table-layout:auto; 
 }
-.extension-table tr:nth-child(even) td {
-    border-right: rgba(198, 198, 198, 0.1);
-    border-left: rgba(198, 198, 198, 0.1);
-}
-.extension-table tr:nth-child(even) td:first-child {
-    border-left: 1px solid #fff;
-}
-.extension-table tr:nth-child(even) td:last-child {
-    border-right: 1px solid #fff;
-}
-.status-filter.org-filter {
-    width: max-content;
-}
-
 
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
     /* To remove border (that should probably be in Core anyway) */
     .extension-table {
         --row-padding: calc( var(--cell-padding) * 2 );
-
         border: none; /* overwrite Core CMS site.css */
-    }
-    /* To make each cell behave like a "row" */
-    .extension-table td {
-        position: relative;
-        padding-left: 50%;
     }
     /* To label the cells */
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
