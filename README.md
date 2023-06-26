@@ -15,6 +15,7 @@ Extensions of the [Core CMS] project
 ## Related Repositories
 
 - [Camino], a Docker container-based deployment scheme
+- [Core CMS], the base CMS code for TACC WMA CMS Websites
 - [Core Portal], the base Portal code for TACC WMA CMS Websites
 - [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
 - [Core CMS Resources], the original solution for extensions of the [Core CMS] project
@@ -27,8 +28,8 @@ Within a `/custom_project_dir` can be:
 | directory | contents |
 | - | - |
 | `src/apps` | additional Django applications |
-| `src/taccsite_cms` | settings files which specify additional apps, static files and middleware to load on top of Core CMS, along with standard Core CMS settings files |
-| `src/taccsite_custom` | static assets and templates, organized in the way that Django CMS expects them before imported via `python manage.py collectstatic` |
+| `src/taccsite_cms` | settings for [Core CMS], additional apps, static assets, or middleware |
+| `src/taccsite_custom` | templates and static assets, organized as Django CMS expects |
 
 ## Prerequisites
 
@@ -74,7 +75,9 @@ Set up a new local CMS instance.
     # To use default "Username" and skip "Email address", press Enter at both prompts.
     # At "Password" prompts, you may use an insecure easy-to-remember password.
     python manage.py collectstatic --no-input
-    # If the project has no static assets, then expect output of "0 static files […]"
+    # If the project has no static assets,
+    # (and you have not set up other projects)
+    # then expect output of "0 static files […]"
     ```
 
 3. Django CMS:
