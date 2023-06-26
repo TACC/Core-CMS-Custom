@@ -1127,11 +1127,11 @@ def update_extension(form):
             'applicable-data-period': 'applicable_data_period',
             'status': 'status',
             'outcome': 'outcome',
-            'approved': 'approved_expiration_date',
+            'approved-expiration-date': 'approved_expiration_date',
             'notes': 'notes'
         }
         # To make sure fields are not blank. 
-        # If they aren't, add column to update operation
+        # If they aren't, add column to update set operation
         for field, column_name in columns.items():
             value = form.get(field)
             if value not in (None, ""):
@@ -1146,10 +1146,10 @@ def update_extension(form):
         for field, column_name in columns.items():
             value = form.get(field)
             if value not in (None, ""):
-                # to make sure applicable data period field is the right type for insert to DB
+                # to make sure applicable data period field is an int to insert to DB
                 if column_name == 'applicable_data_period':
                     values.append(int(value.replace('-', '')))
-        # server side clean values
+                # else server side clean values
                 else:
                     values.append(_clean_value(value))
         ## to make sure extension id is last in query to match with WHERE statement

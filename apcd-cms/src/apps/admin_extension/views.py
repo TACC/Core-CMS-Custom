@@ -8,7 +8,7 @@ from apps.utils.utils import table_filter
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
 from dateutil import parser
-import datetime
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -66,15 +66,15 @@ class AdminExtensionsTable(TemplateView):
                 'approved_expiration_date': extension[4],
                 # to separate small carrier into two words
                 'extension_type': title_case(extension[5].replace('_', ' ')) if extension[5] else None,
-                'applicable_data_period': _get_applicable_data_period(extension[6]) if extension[6] else None,
-                'status': title_case(extension[7]) if extension[7] else None,
-                'outcome': title_case(extension[8]) if extension[8] else None,
+                'applicable_data_period': _get_applicable_data_period(extension[6]),
+                'status': title_case(extension[7]),
+                'outcome': title_case(extension[8]),
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
                 'payor_code': extension[12],
                 'user_id': extension[13],
-                'requestor_name': title_case(extension[14]) if extension[14] else None,
+                'requestor_name': title_case(extension[14]),
                 'requestor_email': extension[15],
                 'explanation_justification': extension[16],
                 'notes': extension[17],

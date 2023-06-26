@@ -36,9 +36,9 @@
                 <div class="field-wrapper numberinput required" >
                   <div class="field-errors" style="display: none"></div>
 
-                  <label for="approved" name="date-row">Approved Expiration Date</label>
+                  <label for="approved-expiration-date" name="date-row">Approved Expiration Date</label>
 
-                  <input type="date" name="approved" class="numeric" id="approved" 
+                  <input type="date" name="approved-expiration-date" class="numeric" id="approved-expiration-date" 
                     inputmode="numeric"/>
                     <div id="help-text-approved" class="help-text">
                       Current: {{r.approved_expiration_date}}
@@ -74,7 +74,7 @@
 
               <div class="field-errors" style="display: none"></div>
                 <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
-                  minlength="2" maxlength="2000">{{ r.notes }}</textarea>
+                  minlength="2" maxlength="2000" value="{{r.notes|default:''}}"></textarea>
                 <div class="help-text">
                   2000 character limit
                 </div>
