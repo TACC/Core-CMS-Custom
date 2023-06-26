@@ -9,7 +9,7 @@ Extensions of the [Core CMS] project
 - [Start Project](#start-project)
 - [Update Project](#update-project)
 - [Run Project](#run-project)
-- [Develop Project](#develop-project)
+- [Develop Project](./docs/develop-project.md)
 - [Build Project](#build-project)
 - [Deploy Project](https://confluence.tacc.utexas.edu/x/Lo99E) (at "Core-CMS-Custom" section)
 - [Port Project](./docs/port-project.md)
@@ -131,10 +131,10 @@ To run multiple projects, first read [Multiple Projects](./docs/run-project.md#m
 
 ## Develop Project
 
-### Running a Custom App
+To develop a new project, read [Develop Project](./docs/develop-project.md) e.g.
 
-- Update `custom_app_settings.py` with relevant content from [TACC/Core-CMS:`/taccsite_cms/custom_app_settings.example.py`](https://github.com/TACC/Core-CMS/blob/1d88c35/taccsite_cms/custom_app_settings.example.py).
-- Update `urls_custom.py` with relevant content from [TACC/Core-CMS:`/taccsite_cms/urls_custom.example.py`](https://github.com/TACC/Core-CMS/blob/1d88c35/taccsite_cms/urls_custom.example.py).
+- [Customize Project](./docs/develop-project.md#customize-project)
+- [Create a Custom App](./docs/develop-project.md#create-a-custom-app)
 
 ## Build Project
 
