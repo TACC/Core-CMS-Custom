@@ -9,7 +9,7 @@ Extensions of the [Core CMS] project
 - [Start Project](#start-project)
 - [Update Project](#update-project)
 - [Run Project](#run-project)
-- [Develop Project](./docs/develop-project.md)
+- [Develop Project](#develop-project)
 - [Build Project](#build-project)
 - [Deploy Project](https://confluence.tacc.utexas.edu/x/Lo99E) (at "Core-CMS-Custom" section)
 - [Port Project](./docs/port-project.md)
@@ -131,7 +131,9 @@ To run multiple projects, first read [Multiple Projects](./docs/run-project.md#m
 
 ## Develop Project
 
-To develop a new project, read [Develop Project](./docs/develop-project.md) e.g.
+For developer instructions specific to one project, read `custom_project_dir/README.md`.
+
+For developer instructions relevant to any project, read [Develop Project](./docs/develop-project.md) e.g.
 
 - [Customize Project](./docs/develop-project.md#customize-project)
 - [Create a Custom App](./docs/develop-project.md#create-a-custom-app)
