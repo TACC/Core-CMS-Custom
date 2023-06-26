@@ -24,10 +24,6 @@ CMS_TEMPLATES = (
     ('demdata-cms/templates/standard.html', 'DEPRECATED Standard (with CSS from TUP)'),
     ('demdata-cms/templates/fullwidth.html', 'DEPRECATED Full Width (with CSS from TUP)'),
 )
-# CMS_TEMPLATES_DIR: {
-#     1: 'demdata_cms/templates/',
-#     2: 'demdata-cms/templates/',
-# }
 
 ########################
 # TACC: BRANDING
