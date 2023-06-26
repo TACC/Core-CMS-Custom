@@ -1,7 +1,9 @@
-# matcssi_cms
+# MatCSSI
+
+https://matcssi.tacc.utexas.edu/
 
 An extension of the [Core CMS](https://github.com/TACC/Core-CMS) project
 
-## Basic Set Up
+## Basics
 
-See [Core-CMS-Custom](https://github.com/TACC/Core-CMS-Custom).
+See [Core-CMS-Custom](https://github.com/TACC/Core-CMS-Custom#readme).
