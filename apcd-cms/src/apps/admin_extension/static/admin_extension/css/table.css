@@ -1,15 +1,5 @@
-.extension-table {
-    /* keeps action dropdown cell from bleeding out of table */
-    table-layout:auto; 
-}
-
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
-    /* To remove border (that should probably be in Core anyway) */
-    .extension-table {
-        --row-padding: calc( var(--cell-padding) * 2 );
-        border: none; /* overwrite Core CMS site.css */
-    }
     /* To label the cells */
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
     .extension-table td:nth-of-type(1):before { content: "Created"; }
