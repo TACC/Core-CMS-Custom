@@ -8,9 +8,11 @@ Extensions of the [Core CMS] project
 - [Project Architecture](#project-architecture)
 - [Start Project](#start-project)
 - [Update Project](#update-project)
+- [Run Project](#run-project)
 - [Develop Project](#develop-project)
 - [Build Project](#build-project)
-- [Port Project](#port-project)
+- [Deploy Project](https://confluence.tacc.utexas.edu/x/Lo99E) (at "Core-CMS-Custom" section)
+- [Port Project](./docs/port-project.md)
 
 ## Related Repositories
 
@@ -37,12 +39,12 @@ Within a `/custom_project_dir` can be:
 - [Docker Compose] ≥ v1
 - [Python] ≥ v3.8
 
-A CMS project is run using [Docker][1] and [Docker Compose][2]. Both must be pre-installed on the system on which you will run the CMS.
+A CMS project is run using [Docker] and [Docker Compose]. Both must be pre-installed on the system on which you will run the CMS.
 
 [^2]: On a Mac or a Windows machine, we recommended you install
 [Docker Desktop](https://www.docker.com/products/docker-desktop), which will install both Docker and Docker Compose as well as Docker Machine, which is required to run Docker on Mac/Windows hosts.
 
-> **Notes**
+> **Note**
 > See [Core-CMS](https://github.com/TACC/Core-CMS) to verify the latest prerequisites.
 
 ## Start Project
@@ -82,8 +84,9 @@ Set up a new local CMS instance.
 
 3. Django CMS:
     1. Open http://0.0.0.0:8000/.
-    2. Login with the credentials from step 2.
-    3. Create one CMS page. (With "New page" highlighted, click "Next" button.)
+    2. Login with the credentials defined in step 2.
+    3. Create one CMS page.\
+        (With "New page" highlighted, click "Next" button.)
         - This page will automatically be your local homepage.
 
 > **Note**
@@ -124,7 +127,7 @@ Update an existing local CMS instance.
 
 Read the relevant `custom_project_dir/README.md`.
 
-To run multiple projects, first read [Multiple Projects](docs/run-projects.md#multiple-projects).
+To run multiple projects, first read [Multiple Projects](./docs/run-project.md#multiple-projects).
 
 ## Develop Project
 
@@ -146,11 +149,11 @@ Builds result in images that can be deployed. A build alone is not a deploy.
 
 ## Deploy Project
 
-Follow "Core-CMS-Custom" section of [How To Build & Deploy](https://confluence.tacc.utexas.edu/x/Lo99E).
+Follow "Core-CMS-Custom" section of [How To Build & Deploy][Deploy Project].
 
 ## Port Project
 
-To port a project from another repository (e.g. [Core CMS Resources]), read [Port Projects](docs/port-projects.md).
+To port a project from another repository (e.g. [Core CMS Resources]), read [Port Projects].
 
 <!-- Link Aliases -->
 
@@ -164,3 +167,6 @@ To port a project from another repository (e.g. [Core CMS Resources]), read [Por
 [Docker]: https://docs.docker.com/get-docker/
 [Docker Compose]: https://docs.docker.com/compose/install/
 [Python]: https://www.python.org/downloads/
+
+[Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
+[Port Projects]: ./docs/port-projects.md
