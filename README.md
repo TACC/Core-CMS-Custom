@@ -51,7 +51,7 @@ A CMS project is run using [Docker] and [Docker Compose]. Both must be pre-insta
 
 Set up a new local CMS instance.
 
-0. Python Application:
+0. Core CMS:
 
     In the `custom_project_dir/` you will run, create a `settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
