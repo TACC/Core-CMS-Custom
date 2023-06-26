@@ -5,8 +5,8 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     command: ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
-    container_name: matcssi_cms
-    hostname: matcssi_cms
+    container_name: core_cms
+    hostname: core_cms
     volumes:
       - ./src/apps:/code/apps
       - ./src/taccsite_custom:/code/taccsite_custom
@@ -16,7 +16,7 @@ services:
       - ./src/taccsite_cms/settings_local.py:/code/taccsite_cms/settings_local.py
       - ./src/taccsite_cms/secrets.py:/code/taccsite_cms/secrets.py
     networks:
-      - matcssi_cms_net
+      - core_cms_net
 
   postgres:
     image: postgres:11.5
@@ -26,11 +26,11 @@ services:
       - POSTGRES_DB=taccsite
       - PGDATA=/var/lib/postgresql/data/taccsite
     volumes:
-      - matcssi_cms_postgres_data:/var/lib/postgresql/data
-    hostname: matcssi_cms_postgres
-    container_name: matcssi_cms_postgres
+      - core_cms_postgres_data:/var/lib/postgresql/data
+    hostname: core_cms_postgres
+    container_name: core_cms_postgres
     networks:
-      - matcssi_cms_net
+      - core_cms_net
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
@@ -41,16 +41,16 @@ services:
       - discovery.type=single-node
     volumes:
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - matcssi_cms_es_data:/usr/share/elasticsearch/data
-    container_name: matcssi_cms_elasticsearch
+      - core_cms_es_data:/usr/share/elasticsearch/data
+    container_name: core_cms_elasticsearch
     ports:
       - 127.0.0.1:9201:9200
     networks:
-      - matcssi_cms_net
+      - core_cms_net
 
 volumes:
-  matcssi_cms_postgres_data:
-  matcssi_cms_es_data:
+  core_cms_postgres_data:
+  core_cms_es_data:
 
 networks:
-  matcssi_cms_net:
+  core_cms_net:
