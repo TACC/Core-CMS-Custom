@@ -45,7 +45,7 @@ A CMS project is run using [Docker] and [Docker Compose]. Both must be pre-insta
 [Docker Desktop](https://www.docker.com/products/docker-desktop), which will install both Docker and Docker Compose as well as Docker Machine, which is required to run Docker on Mac/Windows hosts.
 
 > **Note**
-> See [Core-CMS](https://github.com/TACC/Core-CMS) to verify the latest prerequisites.
+> See [Core CMS] to verify the latest prerequisites.
 
 ## Start Project
 
