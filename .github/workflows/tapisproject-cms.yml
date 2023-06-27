@@ -1,4 +1,4 @@
-name: Example CMS Builds
+name: TAPIS PROJECT CMS Builds
 on:
   workflow_dispatch:
   push:
