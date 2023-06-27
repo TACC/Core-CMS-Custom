@@ -44,16 +44,25 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 Then:
 
-1. Copy the templates to become placeholders:
+1. Copy the templates to become deprecated templates:
     - from `taccsite_custom/custom_project_dir/templates`
-    - to `taccsite_custom/custom_project_dir/templates`
+    - to `taccsite_custom/custom-project-dir/templates`
 
     > **Warning**
     > The name `custom_project_dir` **must** match the old name as it was, including dashes.
-2. Edit the placeholder templates to extend the new templates e.g.
+2. Edit the deprecated templates to extend the new templates e.g.
 
     ```django
     {% extends "custom_project_dir/templates/standard.html" %}
+    ```
+
+3. Update `settings_custom.py` to support deprecated templates:
+
+    ```diff
+        ('custom_project_dir/templates/standard.html', 'Standard'),
+        ('custom_project_dir/templates/fullwidth.html', 'Full Width'),
+    +   ('custom-project-dir/templates/standard.html', 'DEPRECATED Standard'),
+    +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
     ```
 
 #### Expects CSS Build Step
