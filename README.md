@@ -76,7 +76,7 @@ Set up a new local CMS instance.
     python manage.py migrate
     python manage.py createsuperuser
     # To use default "Username" and skip "Email address", press Enter at both prompts.
-    # At "Password" prompts, you may use an insecure easy-to-remember password.
+    # At "Password" prompts, you may use an easy-to-remember password.
     python manage.py collectstatic --no-input
     # If the project has no static assets,
     # (and you have not set up other projects)
