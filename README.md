@@ -132,10 +132,14 @@ To run multiple projects, first read [Multiple Projects](./docs/run-project.md#m
 
 ## Develop Project
 
+Read [Django CMS User Guide] for CMS user instructions.
+
+Read either of these for developer instructions:
+
 | scope | reference |
 | - | - |
-| specific to one project | `custom_project_dir/README.md` |
 | relevant to any project | [Develop Project](./docs/develop-project.md) |
+| specific to one project | `custom_project_dir/README.md` |
 
 ## Build Project
 
@@ -171,3 +175,4 @@ To port a project from [Core CMS Resources], read [Port Project].
 
 [Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
 [Port Project]: ./docs/port-project.md
+[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw

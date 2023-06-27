@@ -1,5 +1,7 @@
 # Develop Project
 
+Read [Django CMS User Guide] for CMS user instructions.
+
 ## Table of Contents
 
 - [Remove Excess Content](#remove-excess-content)
@@ -59,3 +61,5 @@ If there is a change that should be made in all CMS projects, consider whether i
 [Core Styles]: https://github.com/TACC/Core-Styles
 
 [TACC UI Patterns]: https://tacc.utexas.edu/static/ui/
+
+[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
