@@ -24,7 +24,7 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 | <u>If</u> Project Does Not Need | <u>Then</u> Delete |
 | - | - |
-| additional apps | `apps/` |
+| additional apps | `apps/`<br />`COPY /src/apps /code/apps` (in `Dockerfile`) |
 | URLs for custom apps | `urls_custom.py` |
 | custom code | `custom_app_settings.py` |
 
