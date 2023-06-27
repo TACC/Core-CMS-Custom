@@ -11,8 +11,8 @@ Extensions of the [Core CMS] project
 - [Run Project](#run-project)
 - [Develop Project](#develop-project)
 - [Build Project](#build-project)
-- [Deploy Project](https://confluence.tacc.utexas.edu/x/Lo99E) (at "Core-CMS-Custom" section)
-- [Port Project](./docs/port-project.md)
+- [Deploy Project] (at "Core-CMS-Custom" section)
+- [Port Project]
 
 ## Related Repositories
 
@@ -155,7 +155,7 @@ Follow "Core-CMS-Custom" section of [How To Build & Deploy][Deploy Project].
 
 ## Port Project
 
-To port a project from another repository (e.g. [Core CMS Resources]), read [Port Projects].
+To port a project from [Core CMS Resources], read [Port Project].
 
 <!-- Link Aliases -->
 
@@ -171,4 +171,4 @@ To port a project from another repository (e.g. [Core CMS Resources]), read [Por
 [Python]: https://www.python.org/downloads/
 
 [Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
-[Port Projects]: ./docs/port-projects.md
+[Port Project]: ./docs/port-project.md

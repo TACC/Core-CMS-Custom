@@ -43,11 +43,7 @@ To stop one project, and run another:
 To run multiple projects simultaneously:
 
 1. Stop and take down any started projects. (See [Multiple Projects](#multiple-projects) step 2.)
-1. Create a custom `docker-compose.dev.yml` in your project.
-2. Replace all instances of the text `core_cms` with the name of the `custom_project_dir`.
+2. Create a custom `docker-compose.dev.yml` in your project.
+3. Replace all instances of the text `core_cms` with the name of the `custom_project_dir`.
 
 [^2]: Advanced adaptation of these instructions may support retaining database access, et cetera.
-
-<!-- Link Aliases -->
-
-[copy a database]: https://confluence.tacc.utexas.edu/pages/viewpage.action?pageId=249135195
