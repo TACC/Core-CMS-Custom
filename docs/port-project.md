@@ -104,7 +104,7 @@ Then:
     - to `.../custom_project_dir/static/css/`
 2. Rename `href` paths:
     - from `custom_project_dir/css/build/**/*.css`
-    - to `/static/custom_project_dir/css/*.css`
+    - to `custom_project_dir/css/**/*.css`
 3. Add UI test steps to initial deploy of ported custom project.
 
 <!-- Link Aliases -->
