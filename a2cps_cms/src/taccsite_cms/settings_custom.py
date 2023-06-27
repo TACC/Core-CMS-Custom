@@ -10,6 +10,8 @@
 CMS_TEMPLATES = (
     ('a2cps_cms/templates/standard.html', 'Standard'),
     ('a2cps_cms/templates/fullwidth.html', 'Full Width'),
+    ('a2cps-cms/templates/standard.html', 'DEPRECATED Standard'),
+    ('a2cps-cms/templates/fullwidth.html', 'DEPRECATED Full Width'),
     ('guide.html', 'Guide'),
     ('guides/getting_started.html', 'Guide: Getting Started'),
     ('guides/data_transfer.html', 'Guide: Data Transfer'),
