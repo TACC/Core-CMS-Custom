@@ -1,5 +1,5 @@
 /* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
 
-@import url("/static/site_cms/css/v1_v2.css"); /* Core-CMS:/taccsite_cms/…/ */
+@import url("/static/site_cms/css/build/v1_v2.css"); /* Core-CMS:/taccsite_cms/…/ */
 
-@import url("/static/a2cps_cms/css/a2cps.css");
+@import url("/static/a2cps_cms/css/v1_v2/a2cps.css");
