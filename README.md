@@ -12,8 +12,8 @@ Extensions of the [Core CMS] project
 - [Run Project](#run-project)
 - [Develop Project](#develop-project)
 - [Build Project](#build-project)
-- [Deploy Project] (at "Core-CMS-Custom" section)
-- [Port Project]
+- [Deploy Project](#deploy-project)
+- [Port Project](#port-project)
 
 ## Related Repositories
 
