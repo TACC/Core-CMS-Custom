@@ -6,6 +6,7 @@ Extensions of the [Core CMS] project
 
 - [Related Repositories](#related-repositories)
 - [Project Architecture](#project-architecture)
+- [Prerequisites](#prerequisites)
 - [Start Project](#start-project)
 - [Update Project](#update-project)
 - [Run Project](#run-project)
@@ -84,7 +85,7 @@ Set up a new local CMS instance.
 
 3. Django CMS:
     1. Open http://0.0.0.0:8000/.
-    2. Login with the credentials defined in step 2.
+    2. Login with the credentials you defined in step 2.
     3. Create one CMS page.\
         (With "New page" highlighted, click "Next" button.)
         - This page will automatically be your local homepage.
@@ -131,12 +132,10 @@ To run multiple projects, first read [Multiple Projects](./docs/run-project.md#m
 
 ## Develop Project
 
-For developer instructions specific to one project, read `custom_project_dir/README.md`.
-
-For developer instructions relevant to any project, read [Develop Project](./docs/develop-project.md) e.g.
-
-- [Customize Project](./docs/develop-project.md#customize-project)
-- [Create a Custom App](./docs/develop-project.md#create-a-custom-app)
+| scope | reference |
+| - | - |
+| specific to one project | `custom_project_dir/README.md` |
+| relevant to any project | [Develop Project](./docs/develop-project.md) |
 
 ## Build Project
 
