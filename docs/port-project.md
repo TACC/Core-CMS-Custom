@@ -1,24 +1,41 @@
 # Port Project
 
+## Table of Contents
+
+- [From Core CMS Resources](#from-core-cms-resources)
+    1. [Overview](#overview)
+    2. [Create a New Project](#create-a-new-project)
+    3. [Known Gotchas](#known-gotchas)
+
 ## From [Core CMS Resources]
 
-To porting a downstream CMS project from [Core CMS Resources] to this repository:
+### Overview
 
-1. Copy contents:
-    - from [Core CMS Resources] `/taccsite_custom/custom_project_dir`
-    - to `/custom_project_dir/src/taccsite_custom/custom_project_dir`
+| from | to |
+| - | - |
+| [Core CMS Resources] | [Core CMS Custom] |
+| built into [Core CMS] image | built atop [Core CMS] image |
 
-    > **Warning**
-    > The name **must** use underscores (**not** dashes) to be a valid Python application.
-2. Move custom project settings:
-    - from `/custom_project_dir/src/taccsite_custom/custom_project_dir/settings_custom.py`
-    - to `/custom_project_dir/src/taccsite_cms/settings_custom.py`
-3. If the custom project has any edge cases, review relevant instructions:
-    - [Old Custom Templates Directory](#old-custom-templates-directory)
-    - [Expects CSS Build Step](expects-css-build-step)
-    - [Expects CSS Concatenation](expects-css-concatenation)
+### Create a New Project
 
-### Old Custom Templates Directory
+Follow steps in [Create a New Project](./develop-project.md#create-a-new-project).
+
+<details><summary>Reminders</summary>
+
+1. From [Core CMS Resources] `/taccsite_custom/custom-project-dir`.
+    To `/custom_project_dir/src/taccsite_custom/custom_project_dir`.
+
+2. From `/taccsite_custom/custom_project_dir/settings_custom.py`.
+    To `/custom_project_dir/src/taccsite_cms/settings_custom.py`.
+
+3. The name `custom_project_dir` **must** use underscores (**not** dashes),
+    because a valid Python application uses underscores.
+
+</details>
+
+### Known Gotchas
+
+#### Old Custom Templates Directory
 
 **If** the custom project directory:
 
@@ -39,7 +56,7 @@ Then:
     {% extends "custom_project_dir/templates/standard.html" %}
     ```
 
-### Expects CSS Build Step
+#### Expects CSS Build Step
 
 **If** the custom project directory expects CSS compilation e.g. has
 
@@ -58,7 +75,7 @@ Then:
 >
 > Whether to support those here, and how to port without support for those, has not been decided.
 
-### Expects CSS Concatenation
+#### Expects CSS Concatenation
 
 **If** the custom project directory expects CSS concatenation e.g. has
 
@@ -76,4 +93,6 @@ Then:
 
 <!-- Link Aliases -->
 
+[Core CMS]: https://github.com/TACC/Core-CMS
+[Core CMS Custom]: https://github.com/TACC/Core-CMS-Custom
 [Core CMS Resources]: https://github.com/TACC/Core-CMS-Resources
