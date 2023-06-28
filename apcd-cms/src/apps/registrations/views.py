@@ -67,8 +67,9 @@ class SubmissionFormView(View):
             template = loader.get_template('submission_form/submission_error.html')
             response = HttpResponse(template.render({}, request))
         else:
+            context = {'reg_id': reg_resp}
             template = loader.get_template('submission_form/submission_success.html')
-            response = HttpResponse(template.render({}, request))
+            response = HttpResponse(template.render(context, request))
 
         tracker.create_ticket(
             Queue=RT_QUEUE,
@@ -76,7 +77,7 @@ class SubmissionFormView(View):
             Text=description,
             Requestors=email
         )
-        
+
         return response
 
 

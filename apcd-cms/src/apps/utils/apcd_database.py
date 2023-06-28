@@ -90,13 +90,7 @@ def get_registrations(reg_id=None):
                 registrations.posted_date,
                 registrations.applicable_period_start,
                 registrations.applicable_period_end,
-                registrations.file_me,
-                registrations.file_pv,
-                registrations.file_mc,
-                registrations.file_pc,
-                registrations.file_dc,
                 registrations.submitting_for_self,
-                registrations.submission_method,
                 registrations.registration_status,
                 registrations.org_type,
                 registrations.business_name,
@@ -136,13 +130,7 @@ def create_registration(form):
             posted_date,
             applicable_period_start,
             applicable_period_end,
-            file_me,
-            file_pv,
-            file_mc,
-            file_pc,
-            file_dc,
             submitting_for_self,
-            submission_method,
             registration_status,
             org_type,
             business_name,
@@ -150,21 +138,15 @@ def create_registration(form):
             city,
             state,
             zip
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
             None,
             None,
-            True,
-            True if 'types_of_files_provider' in form else False,
-            True if 'types_of_files_medical' in form else False,
-            True if 'types_of_files_pharmacy' in form else False,
-            True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['submission_method']),
             'Received',
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -201,12 +183,7 @@ def update_registration(form, reg_id):
         cur = conn.cursor()
         operation = """UPDATE registrations
             SET
-            file_pv = %s,
-            file_mc = %s,
-            file_pc = %s,
-            file_dc = %s,
             submitting_for_self = %s,
-            submission_method = %s,
             org_type = %s,
             business_name = %s,
             mail_address = %s,
@@ -217,13 +194,8 @@ def update_registration(form, reg_id):
         WHERE registration_id = %s
         RETURNING registration_id"""
         values = (
-            True if 'types_of_files_provider' in form else False,
-            True if 'types_of_files_medical' in form else False,
-            True if 'types_of_files_pharmacy' in form else False,
-            True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['submission_method']),
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -246,7 +218,6 @@ def update_registration(form, reg_id):
         if conn is not None:
             conn.close()
 
-
 def get_registration_entities(reg_id=None):
     cur = None
     conn = None
@@ -268,7 +239,12 @@ def get_registration_entities(reg_id=None):
                 registration_entities.naic_company_code,
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
-                registration_entities.fein
+                registration_entities.fein,
+                registration_entities.file_me,
+                registration_entities.file_pv,
+                registration_entities.file_mc,
+                registration_entities.file_pc,
+                registration_entities.file_dc
                 FROM registration_entities {f"WHERE registration_id =  {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
@@ -289,32 +265,24 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
-            values = (
-                reg_id,
-                float(form['total_claims_value_{}'.format(str_end)]),
-                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-                _set_int(form['license_number_{}'.format(str_end)]),
-                _set_int(form['naic_company_code_{}'.format(str_end)]),
-                _set_int(form['total_covered_lives_{}'.format(str_end)]),
-                _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)])
-            )
-        else:            
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
-            values = (
-                reg_id,
-                float(form[f'total_claims_value{str_end}']),
-                _set_int(form[f'claims_encounters_volume{str_end}']),
-                _set_int(form[f'license_number{str_end}']),
-                _set_int(form[f'naic_company_code{str_end}']),
-                _set_int(form[f'total_covered_lives{str_end}']),
-                _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}'])
-            )
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+            return
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        values = (
+            reg_id,
+            float(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)]),
+            True,
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+        )
 
         operation = """INSERT INTO registration_entities(
             registration_id,
@@ -324,8 +292,13 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             naic_company_code,
             total_covered_lives,
             entity_name,
-            fein
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+            fein,
+            file_me,
+            file_pv,
+            file_mc,
+            file_pc,
+            file_dc
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -370,6 +343,10 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
+            form['types_of_files_provider_{}'.format(str_end)],
+            form['types_of_files_medical_{}'.format(str_end)],
+            form['types_of_files_pharmacy_{}'.format(str_end)],
+            form['types_of_files_dental_{}'.format(str_end)],
             reg_id,
             form[f'ent_id_{iteration}']
         )
@@ -389,7 +366,11 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             naic_company_code = %s,
             total_covered_lives = %s,
             entity_name = %s,
-            fein = %s
+            fein = %s,
+            file_pv = %s,
+            file_mc = %s,
+            file_pc = %s,
+            file_dc = %s
             WHERE registration_id = %s AND registration_entity_id = %s
         """
         cur = conn.cursor()
@@ -646,14 +627,13 @@ def create_submitter(form, reg_data):
             file_mc,
             file_pc,
             file_dc,
-            submission_method,
             submitting_for_self,
             submitter_code,
             payor_code,
             encryption_key,
             created_at,
             status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING submitter_id"""
         values = (
             reg_data[0],
@@ -663,7 +643,6 @@ def create_submitter(form, reg_data):
             reg_data[4],
             reg_data[7],
             reg_data[8],
-            reg_data[10],
             reg_data[9],
             form['submit_code'],
             _set_int(form['payor_code']),
@@ -739,7 +718,7 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, sub_data):
+def create_threshold_exception(form, iteration, sub_data):
     cur = None
     conn = None
     values = ()
@@ -769,19 +748,19 @@ def create_threshold_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["business-name"],
+            _clean_value(form["business-name"]),
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestor-name']),
             _clean_email(form['requestor-email']),
-            "Threshold",
-            _clean_date(form['expiration-date']),
-            _clean_value(form['file_type']),
-            _clean_value(form['field-threshold-exception']),
-            _clean_value(form['threshold-requested']),
+            "threshold",
+            _clean_date(form['expiration-date_{}'.format(iteration)]),
+            _clean_value(form['file_type_{}'.format(iteration)]),
+            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
+            _clean_value(form['threshold-requested_{}'.format(iteration)]),
             _clean_value(form['justification']),
-            "Pending"
+            "pending"
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -1065,13 +1044,10 @@ def create_extension(form, iteration, sub_data):
     try:
         if iteration > 1:
             values = (
-                _clean_value(sub_data[0]),
-                _clean_date(form['current-expected-date_{}'.format(iteration)]),
+                _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
-                None,
                 _clean_value(form['extension-type_{}'.format(iteration)]),
-                int(form['applicable-data-period_{}'.format(iteration)].replace('-', '')),
-                "Pending",
+                "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
                 _clean_value(sub_data[3]),
@@ -1081,14 +1057,10 @@ def create_extension(form, iteration, sub_data):
                 )
         else:
             values = (
-            _clean_value(sub_data[0]),
-            _clean_date(form['current-expected-date']),
-            _clean_date(form['requested-target-date']),
-            None,
-            _clean_value(form['extension-type']),
-            int(form['applicable-data-period'].replace('-', '')),
-            "Pending",
-
+            _clean_value(form['business-name_{}'.format(iteration)]),
+            _clean_date(form['requested-target-date_{}'.format(iteration)]),
+            _clean_value(form['extension-type_{}'.format(iteration)]),
+            "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
@@ -1099,11 +1071,8 @@ def create_extension(form, iteration, sub_data):
 
         operation = """INSERT INTO extensions(
             submitter_id,
-            current_expected_date,
             requested_target_date,
-            approved_expiration_date,
             extension_type,
-            applicable_data_period,
             status,
             submitter_code,
             payor_code,
@@ -1111,7 +1080,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1154,12 +1123,10 @@ def get_submitter_for_extend_or_except(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    apcd_orgs.official_name
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                JOIN apcd_orgs
-                    ON submitters.apcd_id = apcd_orgs.apcd_id
                 ORDER BY submitters.apcd_id, submitter_users.submitter_id
             """
         cur = conn.cursor()

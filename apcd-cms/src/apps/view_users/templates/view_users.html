@@ -3,9 +3,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -42,7 +42,7 @@
           </tr>
       </thead>
       <tbody id="usersTableBody">
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.user_id}}</td>
                   <td>{{r.user_name}}</td>
@@ -58,7 +58,7 @@
           {% endfor %}
       </tbody>
   </table>
-  <h4 id="emptyMessage" style="display: none;">No records found.</h4>
+  {% include 'paginator.html' %} 
 </div>
 <script>
 /*filters by organization with dropdown*/

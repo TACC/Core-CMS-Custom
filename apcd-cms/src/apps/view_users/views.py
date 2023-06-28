@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_users
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
+from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
@@ -37,12 +38,13 @@ class ViewUsersTable(TemplateView):
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
-        context['rows'] = []
         context['filter_options'] = ['All']
         table_entries = []
         for user in user_content:
             table_entries.append(_set_user(user,))
-            context['filter_options'].append(user[4])
+            org_name = user[4]
+            if org_name not in context['filter_options']:  # prevent duplicates
+                context['filter_options'].append(user[4])
 
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
@@ -59,6 +61,7 @@ class ViewUsersTable(TemplateView):
             context['selected_org'] = org_filter
             table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
-        context['rows'] = table_entries
+        context.update(paginator(self.request, table_entries))
+        context['pagination_url_namespaces'] = 'administration:view_users'
 
         return context

@@ -1,0 +1,106 @@
+<style id="css-components-feed-list">
+/* A list of preview content for articles, documents, or pages. */
+
+
+
+/* Settings */
+
+:root {
+  --global-space--unnamed: 50px;
+}
+
+
+
+/* Block */
+
+.c-feed-list {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 12px;
+}
+
+
+
+/* Elements */
+
+/* Elements: Title */
+
+.c-feed-list > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0;
+  margin-bottom: 10px;
+
+  /* TODO: When migrated to core-styles, use @extend instead */
+  /* @extend .x-truncate--one-line; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Elements: Items */
+
+.c-feed-list > :is(div, article) {
+  flex-grow: 1; /* to shrink feed title */
+
+  display: grid;
+  grid-template-areas:
+    'time link'
+    'name link'
+    'desc link';
+
+  padding-block: 10px;
+  border-top: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+}
+.c-feed-list > :is(div, article):last-of-type {
+  border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--xx-dark);
+}
+.c-feed-list > :is(div, article) > time { grid-area: time; }
+.c-feed-list > :is(div, article) > :is(h1, h2, h3, h4, h5, h6) { grid-area: name; }
+.c-feed-list > :is(div, article) > p:first-of-type { grid-area: desc; }
+.c-feed-list > :is(div, article) > p:not(:first-of-type) { grid-area: link; }
+
+.c-feed-list > :is(div, article) > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c-feed-list > :is(div, article) > p {
+  margin-bottom: unset;
+
+  /* TODO: When migrated to core-styles, use @extend instead */
+  /* @extend .x-truncate--many-lines; */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: var(--lines, 2);
+}
+.c-feed-list > :is(div, article) > p:not(:first-of-type) {
+  padding-inline: var(--global-space--unnamed);
+
+  /* To vertically center content */
+  display: flex;
+  align-items: center;
+}
+
+/* Elements: Link */
+
+.c-feed-list > a:last-child {
+  font-weight: var(--bold);
+}
+.c-feed-list > a:last-child {
+  padding-top: 15px;
+
+  /* TODO: When migrated to core-styles, use @extend instead */
+  /* @extend .x-truncate--one-line; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  /* max-width: 100%; /* SEE: https://stackoverflow.com/a/44521595 */
+}
+.o-section--style-dark .c-feed-list > a:last-child {
+  color: var(--global-color-primary--xx-light);
+}
+.o-section--style-light .c-feed-list > a:last-child {
+  color: var(--global-color-primary--xx-dark);
+}
+</style>
