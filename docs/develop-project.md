@@ -1,5 +1,7 @@
 # Develop Project
 
+Read [Django CMS User Guide] for CMS user instructions.
+
 ## Table of Contents
 
 - [Remove Excess Content](#remove-excess-content)
@@ -22,7 +24,7 @@
 
 | <u>If</u> Project Does Not Need | <u>Then</u> Delete |
 | - | - |
-| additional apps | `apps/` |
+| additional apps | `apps/`<br />`COPY /src/apps /code/apps` (in `Dockerfile`) |
 | URLs for custom apps | `urls_custom.py` |
 | custom code | `custom_app_settings.py` |
 
@@ -59,3 +61,5 @@ If there is a change that should be made in all CMS projects, consider whether i
 [Core Styles]: https://github.com/TACC/Core-Styles
 
 [TACC UI Patterns]: https://tacc.utexas.edu/static/ui/
+
+[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw

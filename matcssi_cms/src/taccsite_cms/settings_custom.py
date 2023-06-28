@@ -7,7 +7,7 @@
 # TACC: LOGOS
 ########################
 
-LOGO = [ 
+LOGO = [
     "matcssi",
     "matcssi_cms/img/org_logos/matcssi.png",
     "",
