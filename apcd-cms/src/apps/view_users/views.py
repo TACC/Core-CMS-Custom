@@ -38,6 +38,7 @@ class ViewUsersTable(TemplateView):
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
+        context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
         try:
             page_num = int(self.request.GET.get('page'))

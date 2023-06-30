@@ -24,12 +24,12 @@
       </select>
     </div>
     <div class="filter-content">
-      <span><b>View Users by Status</b></span>
-    <select id="statusFilter" onchange="filterTableByStatus()">
-    <option value="all">All</option>
-    <option value="Active">Active</option>
-    <option value="Inactive">Inactive</option>
-    </select>
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        {% for option in status_options %}
+          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
    </div>
   {% if selected_status or selected_org %}
         <button onclick="clearSelections()">Clear Options</button>
