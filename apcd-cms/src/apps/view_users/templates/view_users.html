@@ -97,17 +97,7 @@ function filterTableByStatus() {
     window.location.href = url;
     window.location.load();
   }
-          // Check if the URL parameter is '?active=true' or '?active=false'
-        const urlParams = new URLSearchParams(window.location.search);
-        const isActive = urlParams.get('active');
 
-        if (isActive === 'True') {
-            // Set the dropdown value to 'Active'
-            statusFilter.value = 'Active';
-        } else if (isActive === 'False') {
-            // Set the dropdown value to 'Inactive'
-            statusFilter.value = 'Inactive';
-        }
   function clearSelections() {
         var xhr;
         xhr = new XMLHttpRequest();
