@@ -1,6 +1,6 @@
-# MatCSSI
+# Democratizing Data
 
-https://matcssi.tacc.utexas.edu/
+https://democratizingdata.ai/
 
 An extension of the [Core CMS](https://github.com/TACC/Core-CMS) project
 

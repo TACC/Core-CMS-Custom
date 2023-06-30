@@ -1,0 +1,11 @@
+<style id="css-elements-form">
+/* To undo global CMS form field width limit */
+/* TODO: Evaluate whether to let this in Core */
+/* TODO: Evaluate whether to port to APCD */
+/* FAQ: When migrated to repo, remove `:not(#root)` (e.g. "not in portal") */
+input:not(#root *),
+select:not(#root *),
+textarea:not(#root *) {
+    max-width: unset;
+}
+</style>
