@@ -24,11 +24,11 @@
       </select>
     </div>
     <div class="filter-content">
-      <span><b>Filter by Status: </b></span>
+      <span><b>Is Status Active: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
         {% for option in status_options %}
-          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
-        {% endfor %}
+        <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
       </select>
    </div>
   {% if selected_status or selected_org %}
@@ -42,6 +42,7 @@
               {% for k in header %}
               <th>{{k}}</th>
               {% endfor %}
+              <th style="display: none">active</th>
           </tr>
       </thead>
       <tbody id="usersTableBody">
@@ -57,6 +58,7 @@
                     {% include "view_user_modal.html" %}
                     <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
                   </td>
+                  <td style="display: none;">{{r.active}}</td>
               </tr>
           {% endfor %}
       </tbody>
@@ -69,7 +71,7 @@ function filterTableByStatus() {
     var dropdown, statusFilter, xhr, url_params, url;
     dropdown = document.getElementById("statusFilter");
     statusFilter =  dropdown.value;
-    url_params = `?status=${statusFilter}`;
+    url_params = `?active=${statusFilter}`;
     {% if selected_org %}
       url_params += `&org={{selected_org}}`;
     {% endif %}
@@ -95,6 +97,17 @@ function filterTableByStatus() {
     window.location.href = url;
     window.location.load();
   }
+          // Check if the URL parameter is '?active=true' or '?active=false'
+        const urlParams = new URLSearchParams(window.location.search);
+        const isActive = urlParams.get('active');
+
+        if (isActive === 'True') {
+            // Set the dropdown value to 'Active'
+            statusFilter.value = 'Active';
+        } else if (isActive === 'False') {
+            // Set the dropdown value to 'Inactive'
+            statusFilter.value = 'Inactive';
+        }
   function clearSelections() {
         var xhr;
         xhr = new XMLHttpRequest();
