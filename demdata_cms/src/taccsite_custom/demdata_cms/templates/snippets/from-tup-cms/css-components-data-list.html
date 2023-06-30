@@ -1,0 +1,15 @@
+<style id="css-components-data-list">
+table[class*="data-list--"] {
+    /* TODO: Consider this for all tables */
+    margin-bottom: 40px;
+}
+table[class*="data-list--"] :is(th, td) {
+    background: unset;
+}
+table[class*="data-list--"] th {
+    font-weight: var(--black); /* undo core-styles.base table */
+}
+table[class*="data-list--"] td {
+    color: unset; /* undo core-styles.base table */
+}
+</style>

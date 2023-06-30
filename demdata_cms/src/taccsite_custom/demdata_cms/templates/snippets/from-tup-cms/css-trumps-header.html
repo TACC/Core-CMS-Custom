@@ -1,0 +1,57 @@
+<style id="css-trumps-header">
+/* NOTE: Minimal tweaks from Designer (in lieu of TACC/Core-CMS#222) */
+/* WARNING: Might conflict with TACC/Core-CMS#222 */
+.s-header {
+    font-size: var(--global-font-size--medium);
+    font-weight: var(--bold);
+    letter-spacing: 0.025px; /* 14px * 0.025em equals design-requested 0.35px */
+}
+
+/* To enlarge height for all screen widths */
+/* TODO: Change in Core-Styles */
+@media only screen and (min-width: 992px) {
+    .s-header {
+        height: 60px;
+    }
+}
+
+/* To stretch nav items to header height (while retaining vertical centering) */
+/* TODO: Change in Core-Styles */
+.s-header,
+.s-header .navbar-collapse {
+    align-items: stretch;
+}
+@media only screen and (min-width: 992px) {
+  .s-header .nav-item {
+      display: flex;
+  }
+}
+.s-header .nav-link {
+    display: flex;
+    align-items: center;
+}
+@media only screen and (min-width: 992px) {
+    .s-header[class*="navbar-expand-"] .navbar-nav .nav-link {
+        padding-block: 0; /* overwrite core-styles.header.css */
+    }
+}
+/* !!!: Not for Demdata nor Core-Styles (given SVG) */
+/* TODO: Isolate to TUP-CMS */
+/*
+.portal-logo {
+    height: unset; /* undo core-styles.header.css *\/
+}*/
+.s-header .navbar-brand {
+    display: grid;
+    align-content: center;
+}
+
+.s-header .dropdown-item:focus,
+.s-header .dropdown-item:hover {
+    background-color: rgba(var(--global-color-primary--light-rgb), 0.3);
+}
+.s-header .dropdown-item.active,
+.s-header .dropdown-item:active {
+    background-color: var(--global-color-accent--normal);
+}
+</style>
