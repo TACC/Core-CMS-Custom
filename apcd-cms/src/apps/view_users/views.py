@@ -39,6 +39,10 @@ class ViewUsersTable(TemplateView):
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
         context['filter_options'] = ['All']
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1        
         table_entries = []
         for user in user_content:
             table_entries.append(_set_user(user,))
@@ -61,6 +65,10 @@ class ViewUsersTable(TemplateView):
             context['selected_org'] = org_filter
             table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
+        queryStr = '?'
+        if len(self.request.META['QUERY_STRING']) > 0:
+            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
+        context['query_str'] = queryStr
         context.update(paginator(self.request, table_entries))
         context['pagination_url_namespaces'] = 'administration:view_users'
 
