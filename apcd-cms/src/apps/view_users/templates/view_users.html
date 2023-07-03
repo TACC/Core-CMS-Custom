@@ -69,7 +69,7 @@ function filterTableByStatus() {
     var dropdown, statusFilter, xhr, url_params, url;
     dropdown = document.getElementById("statusFilter");
     statusFilter =  dropdown.value;
-    url_params = `?active=${statusFilter}`;
+    url_params = `?status=${statusFilter}`;
     {% if selected_org %}
       url_params += `&org={{selected_org}}`;
     {% endif %}
@@ -104,17 +104,6 @@ function filterTableByStatus() {
         window.location.href = '/administration/view-users/';
         window.location.load();
     }
-
-/* remove duplicates from dropdown */
-
-const options = []
-
-document.querySelectorAll('#organizationFilter > option').forEach((option) => {
-    if (options.includes(option.value)) option.remove()
-    else options.push(option.value)
-})
-
-
 
 /*Check if table Empty*/
 window.addEventListener('DOMContentLoaded', function() {
