@@ -17,7 +17,7 @@
   <div class="filter-container" style="display: flex; gap: 10px;">
     <div class="filter-content">
       <span><b>View Users by Organization: </b></span>
-      <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
+      <select id="organizationFilter" class="status-filter" onchange="filterTableByOrganization()">
         {% for option in filter_options %}
           <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
