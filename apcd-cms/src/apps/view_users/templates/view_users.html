@@ -28,7 +28,6 @@
         <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
       {% endfor %}
       </select>
-   </div>
   {% if selected_status or selected_org %}
         <button onclick="clearSelections()">Clear Options</button>
       {% endif %}
