@@ -22,8 +22,6 @@
           <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
-    </div>
-    <div class="filter-content">
       <span><b>Is Status Active: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
         {% for option in status_options %}
