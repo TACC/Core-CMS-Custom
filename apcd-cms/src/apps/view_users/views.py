@@ -35,11 +35,10 @@ class ViewUsersTable(TemplateView):
                     'user_number': usr[9],
                     'role_name': usr[10],
                     'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
-                    'active': 'Yes' if usr[8] else 'No', # just to tell active from inactive status
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
-        context['status_options'] = ['All', 'Yes', 'No']
+        context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
         try:
             page_num = int(self.request.GET.get('page'))
@@ -52,13 +51,13 @@ class ViewUsersTable(TemplateView):
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
 
-        status_filter = self.request.GET.get('active')
+        status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
         context['selected_status'] = None
         if status_filter is not None and status_filter !='All':
             context['selected_status'] = status_filter
-            table_entries = table_filter(status_filter, table_entries, 'active')
+            table_entries = table_filter(status_filter, table_entries, 'status', False)
 
 
 
