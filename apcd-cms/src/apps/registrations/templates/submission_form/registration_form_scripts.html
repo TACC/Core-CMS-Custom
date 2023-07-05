@@ -60,9 +60,7 @@
         {% endif %};
       let reg_id = 
         {% if r %}
-          Number(`
-            {{r.reg_id}}
-          `)
+          Number(`{{r.reg_id}}`)
         {% else %}
           null
         {% endif %};
