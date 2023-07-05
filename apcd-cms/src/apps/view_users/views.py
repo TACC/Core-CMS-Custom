@@ -20,7 +20,6 @@ class ViewUsersTable(TemplateView):
     def get_context_data(self, user_content=user_content, *args, **kwargs):
         context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
 
-       
         def _set_user(usr):
             return {
                     'role_id': usr[0],
