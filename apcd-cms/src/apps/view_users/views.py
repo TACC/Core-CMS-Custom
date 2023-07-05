@@ -30,15 +30,19 @@ class ViewUsersTable(TemplateView):
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
-                    'active': 'Active' if usr[8] else 'Inactive',
+                    'status': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
                     'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
                 }
 
-
         context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
+        context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1        
         table_entries = []
         for user in user_content:
             table_entries.append(_set_user(user,))
@@ -46,13 +50,25 @@ class ViewUsersTable(TemplateView):
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
 
-        filter = self.request.GET.get('filter')
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
 
-        context['selected_filter'] = None
-        if filter is not None and filter != 'All':
-            context['selected_filter'] = filter
-            table_entries = table_filter(filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+        context['selected_status'] = None
+        if status_filter is not None and status_filter !='All':
+            context['selected_status'] = status_filter
+            table_entries = table_filter(status_filter, table_entries, 'status', False)
 
+
+
+        context['selected_org'] = None
+        if org_filter is not None and org_filter != 'All':
+            context['selected_org'] = org_filter
+            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+
+        queryStr = '?'
+        if len(self.request.META['QUERY_STRING']) > 0:
+            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
+        context['query_str'] = queryStr
         context.update(paginator(self.request, table_entries))
         context['pagination_url_namespaces'] = 'administration:view_users'
 
