@@ -56,7 +56,6 @@
                     {% include "view_user_modal.html" %}
                     <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
                   </td>
-                  <td style="display: none;">{{r.active}}</td>
               </tr>
           {% endfor %}
       </tbody>
@@ -105,21 +104,6 @@ function filterTableByStatus() {
         window.location.load();
     }
 
-/*Check if table Empty*/
-window.addEventListener('DOMContentLoaded', function() {
-  checkTableEmpty();
-});
-
-function checkTableEmpty() {
-  var table = document.getElementById('usersTableBody');
-  var emptyMessage = document.getElementById('emptyMessage');
-
-  if (table.rows.length <= 0) {
-    emptyMessage.style.display = 'block';
-  } else {
-    emptyMessage.style.display = 'none';
-  }
-}
 
 
 </script>
