@@ -237,9 +237,9 @@
             <h4>Entity/Entities Being Registered</h4>
             {% for entity in r.view_modal_content.entities %}
             {% with forloop.counter as ent_no %}
+                <input type="hidden" name="ent_id_{{ent_no}}_{{r.reg_id}}" value="{{entity.ent_id}}">
                 <h5 id="entity_header_{{ent_no}}_{{r.reg_id}}">Entity {{ ent_no }}</h5>
                 <div id="entity_block_{{ent_no}}_{{r.reg_id}}">
-                    <input type="hidden" name="ent_id_{{ent_no}}_{{r.reg_id}}" value="{{entity.ent_id}}">
                     <div class="field-wrapper textinput required">
                     <div class="field-errors" style="display: none"></div>
 
