@@ -75,12 +75,8 @@
             <label for="notes">
               Exception Notes
             </label>
-              <textarea name="notes" cols="40" rows="5" type="text" id="notes"
-                minlength="2" maxlength="2000" >
-                {{r.notes}}
-              </textarea>
-                <!-- To make sure if there are no notes from DB, None is not displayed 
-                  and inserted, and instead is blank-->
+              <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
+                minlength="2" maxlength="2000">{{r.notes|default:''}}</textarea>
                 <div class="help-text">
                   2000 character limit
                 </div>
