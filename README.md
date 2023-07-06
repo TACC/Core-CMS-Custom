@@ -6,13 +6,14 @@ Extensions of the [Core CMS] project
 
 - [Related Repositories](#related-repositories)
 - [Project Architecture](#project-architecture)
+- [Prerequisites](#prerequisites)
 - [Start Project](#start-project)
 - [Update Project](#update-project)
 - [Run Project](#run-project)
 - [Develop Project](#develop-project)
 - [Build Project](#build-project)
-- [Deploy Project](https://confluence.tacc.utexas.edu/x/Lo99E) (at "Core-CMS-Custom" section)
-- [Port Project](./docs/port-project.md)
+- [Deploy Project](#deploy-project)
+- [Port Project](#port-project)
 
 ## Related Repositories
 
@@ -45,13 +46,13 @@ A CMS project is run using [Docker] and [Docker Compose]. Both must be pre-insta
 [Docker Desktop](https://www.docker.com/products/docker-desktop), which will install both Docker and Docker Compose as well as Docker Machine, which is required to run Docker on Mac/Windows hosts.
 
 > **Note**
-> See [Core-CMS](https://github.com/TACC/Core-CMS) to verify the latest prerequisites.
+> See [Core CMS] to verify the latest prerequisites.
 
 ## Start Project
 
 Set up a new local CMS instance.
 
-0. Python Application:
+0. Core CMS:
 
     In the `custom_project_dir/` you will run, create a `settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
@@ -75,7 +76,7 @@ Set up a new local CMS instance.
     python manage.py migrate
     python manage.py createsuperuser
     # To use default "Username" and skip "Email address", press Enter at both prompts.
-    # At "Password" prompts, you may use an insecure easy-to-remember password.
+    # At "Password" prompts, you may use an easy-to-remember password.
     python manage.py collectstatic --no-input
     # If the project has no static assets,
     # (and you have not set up other projects)
@@ -83,8 +84,8 @@ Set up a new local CMS instance.
     ```
 
 3. Django CMS:
-    1. Open http://0.0.0.0:8000/.
-    2. Login with the credentials defined in step 2.
+    1. Open http://localhost:8000/.
+    2. Login with the credentials you defined in step 2.
     3. Create one CMS page.\
         (With "New page" highlighted, click "Next" button.)
         - This page will automatically be your local homepage.
@@ -112,13 +113,9 @@ Update an existing local CMS instance.
 
     ```sh
     docker exec -it core_cms /bin/bash
-    ```
-
-    (Run these commands within the container.)
-
-    ```sh
-    python manage.py migrate
-    python manage.py collectstatic --no-input
+    # That opens a command prompt within the container.
+        python manage.py migrate
+        python manage.py collectstatic --no-input
     ```
 
 [^1]: Pertinent changes are those in the Core CMS or the custom project. Changes to external assets or databases are not pertinent.
@@ -131,12 +128,14 @@ To run multiple projects, first read [Multiple Projects](./docs/run-project.md#m
 
 ## Develop Project
 
-For developer instructions specific to one project, read `custom_project_dir/README.md`.
+Read [Django CMS User Guide] for CMS user instructions.
 
-For developer instructions relevant to any project, read [Develop Project](./docs/develop-project.md) e.g.
+Read either of these for developer instructions:
 
-- [Customize Project](./docs/develop-project.md#customize-project)
-- [Create a Custom App](./docs/develop-project.md#create-a-custom-app)
+| scope | reference |
+| - | - |
+| relevant to any project | [Develop Project](./docs/develop-project.md) |
+| specific to one project | `custom_project_dir/README.md` |
 
 ## Build Project
 
@@ -155,7 +154,7 @@ Follow "Core-CMS-Custom" section of [How To Build & Deploy][Deploy Project].
 
 ## Port Project
 
-To port a project from another repository (e.g. [Core CMS Resources]), read [Port Projects].
+To port a project from [Core CMS Resources], read [Port Project].
 
 <!-- Link Aliases -->
 
@@ -171,4 +170,5 @@ To port a project from another repository (e.g. [Core CMS Resources]), read [Por
 [Python]: https://www.python.org/downloads/
 
 [Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
-[Port Projects]: ./docs/port-projects.md
+[Port Project]: ./docs/port-project.md
+[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw

@@ -1104,6 +1104,68 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+def update_extension(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE extensions
+            SET
+            updated_at= %s,"""
+        
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'applicable-data-period': 'applicable_data_period',
+            'status': 'status',
+            'outcome': 'outcome',
+            'approved-expiration-date': 'approved_expiration_date',
+            'notes': 'notes'
+        }
+        # To make sure fields are not blank. 
+        # If they aren't, add column to update set operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
+
+        operation += ", ".join(set_values) + " WHERE extension_id = %s"
+        ## add last update to all extension updates
+        values = [
+            datetime.now(),
+        ]
+        
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is an int to insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+                # else server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['extension_id']))
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_submitter_for_extend_or_except(user):
     cur = None
     conn = None
@@ -1174,12 +1236,10 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                apcd_orgs.official_name
+                submitters.org_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
-            JOIN apcd_orgs
-                ON submitters.apcd_id = apcd_orgs.apcd_id
             ORDER BY extensions.created_at DESC
         """ 
         cur = conn.cursor()
