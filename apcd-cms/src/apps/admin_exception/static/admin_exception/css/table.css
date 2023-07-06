@@ -1,4 +1,6 @@
-
+.modal-cell {
+    padding-left: 0px;
+}
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
 
