@@ -50,10 +50,10 @@
                 <td class="outcome">{{r.outcome}}</td>
                 <td class="status">{{r.status}}</td>
                 <td class="approved-expiration-date">{{r.approved_expiration_date}}</td>
-                <td>
+                <td class="modal-cell">
                   {% include "view_admin_extension_modal.html" %}
                   {% include "edit_extension_modal.html" %}                   
-                    <select id='actionsDropdown_{{r.extension_id}}' class="modal-cell" onchange="openAction('{{r.extension_id}}')">
+                    <select id='actionsDropdown_{{r.extension_id}}'  onchange="openAction('{{r.extension_id}}')">
                       <div class="filter-container">
                         <div class="filter-content">
                           <option value="">Select Action</option>
