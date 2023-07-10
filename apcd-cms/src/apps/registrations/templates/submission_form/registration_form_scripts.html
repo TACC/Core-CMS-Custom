@@ -11,12 +11,12 @@
     </script>
     {# To require at least one "entity" identifier value #}
     <script id="form-entity_id-required">
-      function entityIdGroupValidation(ent_no) {
+      function entityIdGroupValidation(ent_no, reg_id) {
         const idGroup = Array.from(
           document.querySelectorAll(`
-          input[name=fein_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
-          input[name=license_number_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
-          input[name=naic_company_code_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}]`)
+          input[name=fein_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=license_number_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=naic_company_code_${ent_no}${ reg_id ? `_${reg_id}`: ''}]`)
         );
         idGroup.forEach(i => i.addEventListener('invalid', function (event) {
           if (event.target.validity.valueMissing) {
@@ -58,9 +58,15 @@
         {% else %}
             1
         {% endif %};
+      let reg_id = 
+        {% if r %}
+          Number(`{{r.reg_id}}`)
+        {% else %}
+          null
+        {% endif %};
 
       for (let ent_no = 1; ent_no < entities + 1; ent_no +=1) {
-        entityIdGroupValidation(ent_no); // add validation for entities already on form at page load
+        entityIdGroupValidation(ent_no, reg_id); // add validation for entities already on form at page load
       };
       btnStatus();
 
@@ -151,7 +157,7 @@
         <h6>File Submission</h6>
         <div class="field-wrapper required">
         <label>
-            Types of Files<span class="asterisk">*</span>
+            Types of Files
         </label>
         <div class="help-text">
             Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
@@ -279,7 +285,7 @@
             input[name=naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}]
           `)
         );
-        entityIdGroupValidation(entities); // add entity id validation for new entities on form
+        entityIdGroupValidation(entities, reg_id); // add entity id validation for new entities on form
 
         const addEntityNameInput = document.querySelectorAll(`input[name=entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}]`);
         noEmptyInputs(addEntityNameInput);

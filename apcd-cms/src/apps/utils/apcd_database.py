@@ -328,13 +328,13 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
     conn = None
     values = ()
     try:
+        str_end = f'{iteration}_{reg_id}'
         if not _acceptable_entity(form, iteration, reg_id):
             if iteration <= no_entities: # entity is not in form but was in original entity list -> need to delete
-                return delete_registration_entity(reg_id, form[f'ent_id_{iteration}'])
+                return delete_registration_entity(reg_id, form['ent_id_{}'.format(str_end)])
             return
         if iteration > no_entities: # entity is in form but not in original list -> need to create
             return create_registration_entity(form, reg_id, iteration, True)
-        str_end = f'{iteration}_{reg_id}'
         values = (
             float(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
@@ -343,12 +343,12 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
-            form['types_of_files_provider_{}'.format(str_end)],
-            form['types_of_files_medical_{}'.format(str_end)],
-            form['types_of_files_pharmacy_{}'.format(str_end)],
-            form['types_of_files_dental_{}'.format(str_end)],
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False,
             reg_id,
-            form[f'ent_id_{iteration}']
+            form['ent_id_{}'.format(str_end)]
         )
         conn = psycopg2.connect(
             host=APCD_DB['host'],
