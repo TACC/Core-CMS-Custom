@@ -1,5 +1,5 @@
-# v3.11.0
-FROM taccwma/core-cms:c19e0d7
+# v3.11.3
+FROM taccwma/core-cms:5cc1b06
 
 WORKDIR /code
 
