@@ -1003,7 +1003,7 @@ def get_all_submissions_and_logs():
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'org_name', apcd_orgs.official_name,
+                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -1020,11 +1020,11 @@ def get_all_submissions_and_logs():
                 )
             )
             FROM submissions
-            JOIN apcd_orgs
-                ON submissions.apcd_id = apcd_orgs.apcd_id
+            LEFT JOIN submitters 
+                ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, apcd_orgs.official_name)
+            GROUP BY (submissions.submission_id, submitters.org_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
