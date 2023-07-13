@@ -1,0 +1,120 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
+<div id="editUserModal_{{r.user_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit User ID: {{r.user_id}} for {{r.user_name}}</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+        <h4 class="modal-header">Edit Selected User</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="field-wrapper textinput required disabled">
+              <input type="hidden" name="user_id" id="user_id" value="{{r.user_id}}">
+            </div>
+              <div class="o-grid o-grid--col-auto-count">              
+                <div class="field-wrapper text required">
+                    <label for="name">
+                      Name
+                    </label>
+        
+                      <div class="field-errors" style="display: none"></div>
+                        <textarea name="notes" cols="40" rows="1" class="textinput" type="text" id="name"
+                          minlength="2" maxlength="200">{{r.user_name}}</textarea>
+
+                      </div>
+                      <div class="field-wrapper text required">
+                        <label for="email">
+                          Email
+                        </label>
+            
+                          <div class="field-errors" style="display: none"></div>
+                            <textarea name="notes" cols="40" rows="1" class="textinput" type="text" id="email"
+                              minlength="2" maxlength="200">{{r.user_email}}</textarea>
+
+                          </div>
+                
+                <div class="field-wrapper textinput required">
+              <label for="status">
+                Active Status
+              </label>
+              <select name='status'  class="choicefield" id='status'>
+                {% for option in status_options %}
+                {% if option != 'All' %}
+                <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field-wrapper textinput required">
+              <label for="role">
+                Role
+              </label>
+              <select name='role' class="choicefield" id='role'>
+                {% for option in role_options %}
+                <option class="dropdown-text" {% if option == r.role_name %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            </div>
+            <div class="field-wrapper textarea required">
+            <label for="notes">
+              Notes
+            </label>
+
+              <div class="field-errors" style="display: none"></div>
+                <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
+                  minlength="2" maxlength="2000">{{r.notes}}</textarea>
+                <div class="help-text">
+                  2000 character limit
+                </div>
+              </div>
+            <div class="button-wrapper submit">
+            <button class="form-button" type="submit" value="Submit">
+              Submit
+            </button>
+          </div>
+          <hr>
+        </form>
+      </div>
+      <div class="modal-body">
+        <!-- <p>{{modal_content}}</p> -->
+        <div>
+          <dl class="c-data-list--is-vert c-data-list--is-wide">
+                <dt class="c-data-list__key">User ID</dt>
+                <dd class="c-data-list__value">{{r.user_id}}</dd>
+                <dt class="c-data-list__key">Name</dt>
+                <dd class="c-data-list__value">{{r.user_name}}</dd>
+                <dt class="c-data-list__key">User Number</dt>
+                <dd class="c-data-list__value">{{r.user_number}}</dd>
+                <dt class="c-data-list__key">Email</dt>
+                <dd class="c-data-list__value">{{r.user_email}}</dd>
+                <dt class="c-data-list__key">Organization</dt>
+                <dd class="c-data-list__value">{{r.org_name}}</dd>
+                <dt class="c-data-list__key">Role</dt>
+                <dd class="c-data-list__value">{{r.role_name}}</dd>
+                <dt class="c-data-list__key">Status</dt>
+                <dd class="c-data-list__value">{{r.status}}</dd>
+                <dt class="c-data-list__key">Created</dt>
+                <dd class="c-data-list__value">{{r.created_at}}</dd>
+                <dt class="c-data-list__key">Updated</dt>
+                <dd class="c-data-list__value">{{r.updated_at}}</dd>
+                <dt class="c-data-list__key">Notes</dt>
+                <dd class="c-data-list__value">{{r.notes}}</dd>
+              </dl>
+        </div>
+      </div>
+            </dd>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
