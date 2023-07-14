@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.paginator import Paginator, EmptyPage
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_users
+from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
