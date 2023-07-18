@@ -59,17 +59,19 @@ def update_user(form):
             datetime.now(),
         )
 
-        columns = ['user_name','user_email','role_id','notes']
+        columns = ['user_name','user_email','role_id']
         for column_name in columns:
             value = form.get(column_name)
-            values += (value,)
             if value not in (None, ""):
+                values += (value,)
                 operation += f"{column_name} = %s,"
 
-        # doing status separately because its the only one that doesn't match the db columns
+        # doing status separately because it doesn't match up to the db column, as well as notes because
+        # it needs to be able to be blank
         status = form.get('status')
-        operation += "active = %s"
-        values += (status,)
+        notes = form.get('notes')
+        operation += "active = %s, notes = %s"
+        values += (status, notes,)
 
         # removing the last comma before we put the WHERE clause
         operation += " WHERE user_id = %s"
