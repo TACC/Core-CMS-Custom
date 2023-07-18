@@ -84,7 +84,7 @@ Set up a new local CMS instance.
     ```
 
 3. Django CMS:
-    1. Open http://0.0.0.0:8000/.
+    1. Open http://localhost:8000/.
     2. Login with the credentials you defined in step 2.
     3. Create one CMS page.\
         (With "New page" highlighted, click "Next" button.)
