@@ -73,7 +73,7 @@ class SubmissionsTable(TemplateView):
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, submission_content, 1))
+        context.update(paginator(self.request, submission_content, limit))
         context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context
