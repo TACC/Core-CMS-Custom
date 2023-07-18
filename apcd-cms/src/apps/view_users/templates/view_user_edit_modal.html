@@ -48,10 +48,9 @@
               </label>
               <select name='status'  class="choicefield" id='status'>
                
-                
-                <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
-                <option class="dropdown-text" value="true">Active</option>
-                <option class="dropdown-text" value="false">Inactive</option>
+                <option class="dropdown-text" value="{{ r.active }}">{{ r.status }}</option>
+                <option class="dropdown-text" value="True">Active</option>
+                <option class="dropdown-text" value="False">Inactive</option>
                
               </select>
             </div>
@@ -61,10 +60,10 @@
               </label>
               <select name='role' class="choicefield" id='role'>
                 
-                <option class="dropdown-text" {% if option == r.role_name %}selected{% endif %}>{{ option }}</option>
-                <option class="dropdown-text" value="1">SUBMITTER_USER</option>
+                <option class="dropdown-text" value="{{ r.role_id }}">{{ r.role_name }}</option>
+                <option class="dropdown-text" value="3">SUBMITTER_USER</option>
                 <option class="dropdown-text" value="2">SUBMITTER_ADMIN</option>
-                <option class="dropdown-text" value="3">APCD_ADMIN</option>
+                <option class="dropdown-text" value="1">APCD_ADMIN</option>
               </select>
             </div>
             </div>

@@ -38,8 +38,67 @@ def get_users():
         if conn is not None:
             conn.close()
             
+def update_user(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE user
+            SET
+            updated_at= %s,"""
+        
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'user_name': 'user_name',
+            'user_email': 'user_email',
+            'role_id': 'role_id',
+            'status': 'status',
+            'notes': 'notes'
+        }
+            # To make sure fields are not blank. 
+        # If they aren't, add column to update set operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
 
-            
+        operation += ", ".join(set_values) + " WHERE user_id = %s"
+        ## add last update to all extension updates
+        values = [
+            datetime.now(),
+        ]
+        
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is an int to insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+                # else server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['extension_id']))
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()          
 
 def get_user_role(user):
     cur = None
