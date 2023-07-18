@@ -50,12 +50,14 @@ class ViewUsersTable(TemplateView):
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
 
+        queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
         context['selected_status'] = None
         if status_filter is not None and status_filter !='All':
             context['selected_status'] = status_filter
+            queryStr += f'&status={status_filter}'
             table_entries = table_filter(status_filter, table_entries, 'status', False)
 
 
@@ -63,13 +65,11 @@ class ViewUsersTable(TemplateView):
         context['selected_org'] = None
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
+            queryStr += f'&org={org_filter}'
             table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
-        queryStr = '?'
-        if len(self.request.META['QUERY_STRING']) > 0:
-            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
-        context.update(paginator(self.request, table_entries))
+        context.update(paginator(self.request, table_entries, 2))
         context['pagination_url_namespaces'] = 'administration:view_users'
 
         return context
