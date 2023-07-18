@@ -27,7 +27,7 @@
                     </label>
         
                       <div class="field-errors" style="display: none"></div>
-                        <textarea name="notes" cols="40" rows="1" class="textinput" type="text" id="name"
+                        <textarea name="user_name" cols="40" rows="1" class="textinput" type="text" id="name"
                           minlength="2" maxlength="200">{{r.user_name}}</textarea>
 
                       </div>
@@ -37,7 +37,7 @@
                         </label>
             
                           <div class="field-errors" style="display: none"></div>
-                            <textarea name="notes" cols="40" rows="1" class="textinput" type="text" id="email"
+                            <textarea name="user_email" cols="40" rows="1" class="textinput" type="text" id="email"
                               minlength="2" maxlength="200">{{r.user_email}}</textarea>
 
                           </div>
@@ -58,7 +58,7 @@
               <label for="role">
                 Role
               </label>
-              <select name='role' class="choicefield" id='role'>
+              <select name='role_id' class="choicefield" id='role'>
                 
                 <option class="dropdown-text" value="{{ r.role_id }}">{{ r.role_name }}</option>
                 <option class="dropdown-text" value="3">SUBMITTER_USER</option>

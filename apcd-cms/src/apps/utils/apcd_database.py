@@ -79,15 +79,15 @@ def update_user(form):
         
         for field, column_name in columns.items():
             value = form.get(field)
-            if value not in (None, ""):
+            #if value not in (None, ""):
                 # to make sure applicable data period field is an int to insert to DB
-                if column_name == 'applicable_data_period':
-                    values.append(int(value.replace('-', '')))
+                #if column_name == 'applicable_data_period':
+                    #values.append(int(value.replace('-', '')))
                 # else server side clean values
-                else:
-                    values.append(_clean_value(value))
+                #else:
+                    #values.append(_clean_value(value))
         ## to make sure extension id is last in query to match with WHERE statement
-        values.append(_clean_value(form['extension_id']))
+        values.append(_clean_value(form['user_id']))
 
         cur.execute(operation, values)
         conn.commit()
