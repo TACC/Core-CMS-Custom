@@ -4,6 +4,7 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 ## Table of Contents
 
+- [Create a New Project](#create-a-new-project)
 - [Create a New Build Action](#create-a-new-build-action)
 - [Remove Excess Content](#remove-excess-content)
 - [Customize Project](#customize-project)
