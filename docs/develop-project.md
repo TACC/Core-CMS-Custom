@@ -4,6 +4,7 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 ## Table of Contents
 
+- [Create a New Build Action](#create-a-new-build-action)
 - [Remove Excess Content](#remove-excess-content)
 - [Customize Project](#customize-project)
 - [Create a Custom App](#create-a-custom-app)
@@ -15,7 +16,16 @@ Read [Django CMS User Guide] for CMS user instructions.
 2. Name the directory as WMA Infrastructure team defines e.g. `demdata_cms`.
 3. [Remove Excess Content](#remove-excess-content)
 4. [Customize Project](#customize-project)
-5. Perform instructions in other pertinent sections.
+5. [Create a New Build Action](#create-a-new-build-action)
+6. Perform instructions in other pertinent sections.
+
+## Create a New Build Action
+
+1. Clone [`.github/workflows/example-cms.yml`](../.github/workflows/example-cms.yml).
+2. Rename the file: replace `example` with the code name of the CMS to build.
+3. Edit the content: replace `example` with the code name of the CMS to build.
+4. Edit the content: replace `Example` with the human name of the CMS to build.
+5. Save this to the `main` branch. (You may be required to create a PR to do so.)
 
 ## Remove Excess Content
 
