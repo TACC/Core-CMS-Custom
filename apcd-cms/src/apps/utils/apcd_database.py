@@ -70,6 +70,11 @@ def update_user(form):
         # it needs to be able to be blank
         status = form.get('status')
         notes = form.get('notes')
+
+        if (status == "Active"):
+            status = True
+        else:
+            status = False
         operation += "active = %s, notes = %s"
         values += (status, notes,)
 

@@ -47,11 +47,9 @@
                 Active Status
               </label>
               <select name='status'  class="choicefield" id='status'>
-               
-                <option class="dropdown-text" value="{{ r.active }}">{{ r.status }}</option>
-                <option class="dropdown-text" value="True">Active</option>
-                <option class="dropdown-text" value="False">Inactive</option>
-               
+               {% for s in status %}
+                <option class="dropdown-text" value="{{ s }}" {% if s == r.status %}selected{% endif %}>{{ s }}</option>
+               {% endfor %}
               </select>
             </div>
             <div class="field-wrapper textinput required">
@@ -59,11 +57,9 @@
                 Role
               </label>
               <select name='role_id' class="choicefield" id='role'>
-                
-                <option class="dropdown-text" value="{{ r.role_id }}">{{ r.role_name }}</option>
-                <option class="dropdown-text" value="3">SUBMITTER_USER</option>
-                <option class="dropdown-text" value="2">SUBMITTER_ADMIN</option>
-                <option class="dropdown-text" value="1">APCD_ADMIN</option>
+                {% for role in roles %}
+                <option class="dropdown-text" value="{{ role.role_id }}" {% if role.role_id == r.role_id %}selected{% endif %}>{{ role.role_name }}</option>
+                  {% endfor %}
               </select>
             </div>
             </div>
