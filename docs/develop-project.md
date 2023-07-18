@@ -30,7 +30,9 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 ## Customize Project
 
-Edit `settings_custom.py`. To know what settings are available, see [Core-CMS `settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
+Edit `./src/taccsite_cms/settings_custom.py`.
+
+To know what settings are available, see [Core-CMS `settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
 
 The settings usually edited are `LOGO` and `..._BRANDING`.
 
