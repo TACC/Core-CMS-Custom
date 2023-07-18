@@ -51,43 +51,31 @@ def update_user(form):
             sslmode='require'
         )
         cur = conn.cursor()
-        operation = """UPDATE user
+        operation = """UPDATE users
             SET
             updated_at= %s,"""
-        
-        set_values = []
-        # to set column names for query to the correct DB name
-        columns = {
-            'user_name': 'user_name',
-            'user_email': 'user_email',
-            'role_id': 'role_id',
-            'status': 'status',
-            'notes': 'notes'
-        }
-            # To make sure fields are not blank. 
-        # If they aren't, add column to update set operation
-        for field, column_name in columns.items():
-            value = form.get(field)
-            if value not in (None, ""):
-                set_values.append(f"{column_name} = %s")
 
-        operation += ", ".join(set_values) + " WHERE user_id = %s"
-        ## add last update to all extension updates
-        values = [
+        values = (
             datetime.now(),
-        ]
-        
-        for field, column_name in columns.items():
-            value = form.get(field)
-            #if value not in (None, ""):
-                # to make sure applicable data period field is an int to insert to DB
-                #if column_name == 'applicable_data_period':
-                    #values.append(int(value.replace('-', '')))
-                # else server side clean values
-                #else:
-                    #values.append(_clean_value(value))
-        ## to make sure extension id is last in query to match with WHERE statement
-        values.append(_clean_value(form['user_id']))
+        )
+
+        columns = ['user_name','user_email','role_id','notes']
+        for column_name in columns:
+            value = form.get(column_name)
+            values += (value,)
+            if value not in (None, ""):
+                operation += f"{column_name} = %s,"
+
+        # doing status separately because its the only one that doesn't match the db columns
+        status = form.get('status')
+        operation += "active = %s"
+        values += (status,)
+
+        # removing the last comma before we put the WHERE clause
+        operation += " WHERE user_id = %s"
+
+        ## add last update to all extension updates
+        values += (_clean_value(form['user_id']),)
 
         cur.execute(operation, values)
         conn.commit()
