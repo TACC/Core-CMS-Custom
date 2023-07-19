@@ -69,7 +69,7 @@ class ViewUsersTable(TemplateView):
             table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, table_entries, 2))
+        context.update(paginator(self.request, table_entries))
         context['pagination_url_namespaces'] = 'administration:view_users'
 
         return context
