@@ -108,10 +108,10 @@ class AdminExtensionsTable(TemplateView):
             outcome = title_case(extension[8])
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
-                context['org_options'] = sorted(context['org_options'])
+                context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
             if status not in context['status_options']:
                 context['status_options'].append(status)
-                context['status_options'] = sorted(context['status_options'])
+                context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
                 context['outcome_options'] = context['outcome_options']
