@@ -38,8 +38,62 @@ def get_users():
         if conn is not None:
             conn.close()
             
+def update_user(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE users
+            SET
+            updated_at= %s,"""
 
-            
+        values = (
+            datetime.now(),
+        )
+
+        columns = ['user_name','user_email','role_id']
+        for column_name in columns:
+            value = form.get(column_name)
+            if value not in (None, ""):
+                values += (value,)
+                operation += f"{column_name} = %s,"
+
+        # doing status separately because it doesn't match up to the db column, as well as notes because
+        # it needs to be able to be blank
+        status = form.get('status')
+        notes = form.get('notes')
+
+        if (status == "Active"):
+            status = True
+        else:
+            status = False
+        operation += "active = %s, notes = %s"
+        values += (status, notes,)
+
+        # removing the last comma before we put the WHERE clause
+        operation += " WHERE user_id = %s"
+
+        ## add last update to all extension updates
+        values += (_clean_value(form['user_id']),)
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()          
 
 def get_user_role(user):
     cur = None

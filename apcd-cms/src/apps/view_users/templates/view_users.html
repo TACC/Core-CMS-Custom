@@ -53,9 +53,18 @@
                   <td>{{r.role_name}}</td>
                   <td>{{r.status}}</td>
                   <td>{{r.user_number}}</td>
-                  <td>
+                  <td class="modal-cell">
                     {% include "view_user_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewUserModal_{{r.user_number}}" data-backdrop="static">View Info</a>
+                    {% include "view_user_edit_modal.html" %}                   
+                      <select id='actionsDropdown_{{r.user_id}}'  onchange="openAction('{{r.user_id}}')">
+                        <div class="filter-container">
+                          <div class="filter-content">
+                            <option value="">Select Action</option>
+                            <option value="viewUser">View Record</option>
+                            <option value="editUser">Edit Record</option>
+                          </div>
+                        </div>
+                      </select>
                   </td>
               </tr>
           {% endfor %}
@@ -105,7 +114,18 @@ function filterTableByStatus() {
         window.location.load();
     }
 
-
+    function openAction(user_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${user_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${user_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+  
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
 
 </script>
 
