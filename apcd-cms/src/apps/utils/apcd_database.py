@@ -1384,7 +1384,6 @@ def update_exception(form):
             'approved': 'approved_expiration_date',
             'status': 'status',
             'outcome': 'outcome',
-            'notes': 'notes'
         }
         # To make sure fields are not blank. 
         # If they aren't, add column to update operation
@@ -1392,9 +1391,9 @@ def update_exception(form):
             value = form.get(field)
             if value not in (None, ""):
                 set_values.append(f"{column_name} = %s")
-
-        operation += ", ".join(set_values) + " WHERE exception_id = %s"
-        ## add last update to all extension updates
+# to allow notes to be cleared, need to move notes out of the loop that ignores none
+        operation += ", ".join(set_values) + ", notes = %s WHERE exception_id = %s"
+        ## add last update time to all exceptions updates
         values = [
             datetime.now(),
         ]
@@ -1405,9 +1404,12 @@ def update_exception(form):
                 # to make sure applicable data period field is the right type for insert to DB
                 if column_name == 'applicable_data_period':
                     values.append(int(value.replace('-', '')))
-        # server side clean values
+                # server side clean values
                 else:
                     values.append(_clean_value(value))
+
+        # to allow notes to be cleared, need to move notes out of the loop that ignores none
+        values.append(_clean_value(form['notes']))
         ## to make sure extension id is last in query to match with WHERE statement
         values.append(_clean_value(form['exception_id']))
 

@@ -31,7 +31,7 @@
                 <!-- Value set so if there isn't an approved threshold from DB, None is not displayed and field is blank-->
                   <input type="numeric" name="approved_threshold" class="approved_threshold" 
                     inputmode="numeric" id="approved_threshold" value="{{r.approved_threshold|default:''}}"/>
-                    <div id="help-text-approved_threshold" class="help-text">
+                    <div id="help_text_approved_threshold" class="help-text">
                       Requested: {{r.requested_threshold}}%
                     </div>
                 </div>
@@ -39,11 +39,11 @@
                 <div class="field-wrapper numberinput required" >
                   <div class="field-errors" style="display: none"></div>
 
-                  <label for="approved" name="date-row">Approved Expiration Date</label>
+                  <label for="approved_expiration_date" name="date-row">Approved Expiration Date</label>
 
-                  <input type="date" name="approved" class="numeric" id="approved" 
+                  <input type="date" name="approved_expiration_date" class="numeric" id="approved_expiration_date" 
                     inputmode="numeric"/>
-                    <div id="help-text-approved" class="help-text">
+                    <div id="help_text_approved_expiration_date" class="help-text">
                       Current: {{r.approved_expiration_date}}
                     </div>
                 </div>
