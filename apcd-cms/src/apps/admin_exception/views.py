@@ -97,7 +97,7 @@ class AdminExceptionsTable(TemplateView):
         context['exceptions'] = []
 
         def getDate(row):
-            date = row[1]
+            date = row[6]
             return date if date is not None else parser.parse('1-1-0001')
 
         # sort exceptions by newest to oldest
