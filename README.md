@@ -54,7 +54,7 @@ Set up a new local CMS instance.
 
 0. Core CMS:
 
-    In the `custom_project_dir/` you will run, create a `settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
+    In the `/custom_project_dir/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
 1. Docker Containers:
 
@@ -78,9 +78,6 @@ Set up a new local CMS instance.
     # To use default "Username" and skip "Email address", press Enter at both prompts.
     # At "Password" prompts, you may use an easy-to-remember password.
     python manage.py collectstatic --no-input
-    # If the project has no static assets,
-    # (and you have not set up other projects)
-    # then expect output of "0 static files […]"
     ```
 
 3. Django CMS:
@@ -116,6 +113,8 @@ Update an existing local CMS instance.
     # That opens a command prompt within the container.
         python manage.py migrate
         python manage.py collectstatic --no-input
+        # If the project has no new/changed assets,
+        # then expect output of "0 static files […]"
     ```
 
 [^1]: Pertinent changes are those in the Core CMS or the custom project. Changes to external assets or databases are not pertinent.
