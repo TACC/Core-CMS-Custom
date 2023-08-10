@@ -22,7 +22,7 @@
       <span><b>Filter by Status: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
         {% for option in filter_options %}
-          <option class="dropdown-text" {% if option == selected_filter %}selected{% endif %}>{{ option }}</option>
+          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
       <span><b>Sort by: </b></span>
@@ -32,7 +32,7 @@
           <option class="dropdown-text" value={{option}} {% if option == selected_sort %}selected{% endif %}>{{ display_text }}</option>
         {% endfor %}
       </select>
-      {% if selected_filter or selected_sort %}
+      {% if selected_status or selected_sort %}
         <button onclick="clearSelections()">Clear Options</button>
       {% endif %}
     </div>
@@ -71,9 +71,9 @@
       var filterDropdown, filterValue, url_params, url, xhr;
       filterDropdown = document.getElementById("statusFilter");
       filterValue =  filterDropdown.value;
-      url_params = `?filter=${filterValue}`;
+      url_params = `?status=${filterValue}`;
       {% if selected_sort %}
-          url_params = `?filter=${filterValue}&sort={{selected_sort}}`;
+          url_params = `?sort={{selected_sort}}&status=${filterValue}`;
       {% endif %}
       url = `/administration/list-submissions/${url_params}`;
       xhr = new XMLHttpRequest();
@@ -87,8 +87,8 @@
       sortDropdown = document.getElementById('dateSort');
       sortValue =  sortDropdown.value;
       url_params = `?sort=${sortValue}`;
-      {% if selected_filter %}
-          url_params = `?filter={{selected_filter}}&sort=${sortValue}`;
+      {% if selected_status %}
+          url_params = `?sort=${sortValue}&status={{selected_status}}`;
       {% endif %}
       url = `/administration/list-submissions/${url_params}`;
       xhr = new XMLHttpRequest();

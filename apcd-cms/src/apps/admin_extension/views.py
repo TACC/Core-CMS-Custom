@@ -19,14 +19,14 @@ class AdminExtensionsTable(TemplateView):
     def post(self, request):
 
         form = request.POST.copy()
-        
+
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-        
+
         def _edit_extension(form):
             errors = []
             extension_response = update_extension(form)
@@ -39,7 +39,7 @@ class AdminExtensionsTable(TemplateView):
                 logger.debug(print("success"))
                 template = loader.get_template('edit_extension_success.html')
             return template
-        
+
         template = _edit_extension(form)
         return HttpResponse(template.render({}, request))
     def get(self, request, *args, **kwargs):
@@ -96,7 +96,7 @@ class AdminExtensionsTable(TemplateView):
             return date if date is not None else parser.parse('1-1-0001')
 
         extension_content = sorted(extension_content, key=lambda row:getDate(row), reverse=True)  # sort extensions by newest to oldest
-        
+
         extension_table_entries = []       
         for extension in extension_content:
             # to be used by paginator
@@ -108,31 +108,30 @@ class AdminExtensionsTable(TemplateView):
             outcome = title_case(extension[8])
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
-                context['org_options'] = sorted(context['org_options'])
+                context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
             if status not in context['status_options']:
                 context['status_options'].append(status)
-                context['status_options'] = sorted(context['status_options'])
+                context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
                 context['outcome_options'] = context['outcome_options']
 
+        queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
+            queryStr += f'&status={status_filter}'
             extension_table_entries = table_filter(status_filter, extension_table_entries, 'status')
 
         context['selected_org'] = None
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
+            queryStr += f'&org={org_filter}'
             extension_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extension_table_entries, 'org_name')
 
-
-        queryStr = '?'
-        if len(self.request.META['QUERY_STRING']) > 0:
-            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
         context.update(paginator(self.request, extension_table_entries))
         context['pagination_url_namespaces'] = 'admin_extension:list_extensions'
@@ -141,7 +140,7 @@ class AdminExtensionsTable(TemplateView):
 
 # function converts int value in the format YYYYMM to a string with abbreviated month and year
 def _get_applicable_data_period(value):
-    try: 
+    try:
         return datetime.strptime(str(value), '%Y%m').strftime('%b. %Y')
     except:
         return None

@@ -22,7 +22,6 @@
       <span><b>Filter by Organization: </b></span>
       <select id="organizationFilter" class="status-filter org-filter" onchange="sortByOrg()">
         <!-- Value set here so dropdown is not blank but set to All-->
-        <option class="dropdown-text" value={{selected_org.all}} {% if not selected_org %}selected{% else %} hidden {% endif %} disabled></option>
         {% for option in org_options %}
           <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
