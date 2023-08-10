@@ -8,6 +8,14 @@
 
 /* BOOTSTRAP */
 
+/* To override TACC :root color with Bootstrap color only where necessary */
+a {
+  --global-color-link-on-light--normal: #007bff;
+}
+a:hover {
+  --global-color-link-on-light--normal: #0056b3;
+}
+
 /* To restore font size of buttons (whose text appeared smaller than before) */
 /* https://tapis-project.org/documentation/ */
 .btn {
