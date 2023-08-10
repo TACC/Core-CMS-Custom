@@ -4,7 +4,7 @@
     So just fix major discrepencies found in:
     https://confluence.tacc.utexas.edu/x/_YqkEQ */
 
-/* To restore font size of buttons (whose text appears ot small on TAPIS) */
+/* To restore font size of buttons (whose text appeared smaller than before) */
 /* https://tapis-project.org/documentation/ */
 .btn {
   /* FAQ: Bootstrap 1rem = browser default html 16px, but TACC sets html 10px */
