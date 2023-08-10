@@ -7,7 +7,7 @@
         class="c-button c-button--as-link c-page-end"
         type="button"
         {% if page.has_previous %}
-            onclick="window.location.href='{% url pagination_url_namespaces %}{% if query_str %}{{ query_str }}{% elif selected_filter %}?filter={{selected_filter}}&{% else %}?{% endif %}page={{page.previous_page_number}}';"
+            onclick="window.location.href='{% url pagination_url_namespaces %}?page={{page.previous_page_number}}{{ query_str }}';"
         {% else %}
             disabled
         {% endif %}
@@ -20,7 +20,7 @@
                 <button 
                 class="c-button c-button--secondary {% if page.number == i %}c-button--is-active{% endif %} c-button--size-small c-page-item c-page-link c-page-link--always-click"
                 type="button"
-                onclick="window.location.href='{% url pagination_url_namespaces %}{% if query_str %}{{ query_str }}{% elif selected_filter %}?filter={{selected_filter}}&{% else %}?{% endif %}page={{i}}';"
+                onclick="window.location.href='{% url pagination_url_namespaces %}?page={{i}}{{ query_str }}';"
                 >
                     {{i}}
                 </button>
@@ -33,7 +33,7 @@
         class="c-button c-button--as-link c-page-end"
         type="button"
         {% if page.has_next %}
-            onclick="window.location.href='{% url pagination_url_namespaces %}{% if query_str %}{{ query_str }}{% elif selected_filter %}?filter={{selected_filter}}&{% else %}?{% endif %}page={{page.next_page_number}}';"
+            onclick="window.location.href='{% url pagination_url_namespaces %}?page={{page.next_page_number}}{{ query_str }}';"
         {% else %}
             disabled
         {% endif %}

@@ -24,8 +24,9 @@ class AdminSubmissionsTable(TemplateView):
 
         submission_content = get_all_submissions_and_logs()
 
-        filter = self.request.GET.get('filter')
+        queryStr = ''
         dateSort = self.request.GET.get('sort')
+        status_filter = self.request.GET.get('status')
 
         def getDate(row):
             date = row['received_timestamp']
@@ -33,6 +34,7 @@ class AdminSubmissionsTable(TemplateView):
 
         if dateSort is not None:
             context['selected_sort'] = dateSort
+            queryStr += f'&sort={dateSort}'
             submission_content = sorted(submission_content, key=lambda row:getDate(row), reverse=(dateSort == 'newDate'))
 
         try:
@@ -40,10 +42,11 @@ class AdminSubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        context['selected_filter'] = None
-        if filter is not None and filter != 'All':
-            context['selected_filter'] = filter
-            submission_content = table_filter(filter, submission_content, 'status')
+        context['selected_status'] = None
+        if status_filter is not None and status_filter != 'All':
+            context['selected_status'] = status_filter
+            queryStr += f'&status={status_filter}'
+            submission_content = table_filter(status_filter, submission_content, 'status')
 
         limit = 50
         offset = limit * (page_num - 1)
@@ -64,9 +67,6 @@ class AdminSubmissionsTable(TemplateView):
         context['filter_options'] = ['All', 'In Process', 'Complete']
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
-        queryStr = '?'
-        if len(self.request.META['QUERY_STRING']) > 0:
-            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
         context.update(paginator(self.request, submission_content, limit))
         context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'

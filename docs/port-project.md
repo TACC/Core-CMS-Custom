@@ -22,7 +22,7 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 <details><summary>Reminders</summary>
 
-1. From [Core CMS Resources] `/taccsite_custom/custom-project-dir`.
+1. From [Core CMS Resources] `/taccsite_custom/custom_project_dir`.
     To `/custom_project_dir/src/taccsite_custom/custom_project_dir`.
 
 2. From `/taccsite_custom/custom_project_dir/settings_custom.py`.
@@ -44,21 +44,30 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 Then:
 
-1. Copy the templates to become placeholders:
+1. Copy the templates to become deprecated templates:
     - from `taccsite_custom/custom_project_dir/templates`
     - to `taccsite_custom/custom-project-dir/templates`
 
     > **Warning**
-    > The name `custom-project-dir` **must** match the old name as it was, including dashes.
-2. Edit the placeholder templates to extend the new templates e.g.
+    > The name `custom_project_dir` **must** match the old name as it was, including dashes.
+2. Edit the deprecated templates to extend the new templates e.g.
 
     ```django
     {% extends "custom_project_dir/templates/standard.html" %}
     ```
 
+3. Update `settings_custom.py` to support deprecated templates:
+
+    ```diff
+        ('custom_project_dir/templates/standard.html', 'Standard'),
+        ('custom_project_dir/templates/fullwidth.html', 'Full Width'),
+    +   ('custom-project-dir/templates/standard.html', 'DEPRECATED Standard'),
+    +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
+    ```
+
 #### Expects CSS Build Step
 
-**If** the custom project directory expects CSS compilation e.g. has
+**If** the custom project directory expects CSS build step e.g. has
 
 - `css/src/*.css` with `@import` of a `@tacc/core-styles/` path
 
@@ -88,7 +97,23 @@ Then:
     - to `/static/site_cms/css/build/*.css`
 2. Rename relative import paths (e.g. `./**/*.css`):
     - from `**/*.css`
-    - to `/static/custom_project_dir/css/build/*.css`
+    - to `/static/custom_project_dir/css/**/*.css`
+3. Add UI test steps to initial deploy of ported custom project.
+
+#### Expects CSS
+
+**If** the custom project directory expects any CSS at all i.e. has
+
+- a template with `<link rel="stylesheet" href="{% static`
+
+Then:
+
+1. Move CSS tree:
+    - from `.../custom_project_dir/static/css/src/`
+    - to `.../custom_project_dir/static/css/`
+2. Rename `href` paths:
+    - from `custom_project_dir/css/build/**/*.css`
+    - to `custom_project_dir/css/**/*.css`
 3. Add UI test steps to initial deploy of ported custom project.
 
 <!-- Link Aliases -->

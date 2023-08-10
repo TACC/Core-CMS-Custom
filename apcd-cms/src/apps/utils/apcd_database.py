@@ -38,8 +38,62 @@ def get_users():
         if conn is not None:
             conn.close()
             
+def update_user(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE users
+            SET
+            updated_at= %s,"""
 
-            
+        values = (
+            datetime.now(),
+        )
+
+        columns = ['user_name','user_email','role_id']
+        for column_name in columns:
+            value = form.get(column_name)
+            if value not in (None, ""):
+                values += (value,)
+                operation += f"{column_name} = %s,"
+
+        # doing status separately because it doesn't match up to the db column, as well as notes because
+        # it needs to be able to be blank
+        status = form.get('status')
+        notes = form.get('notes')
+
+        if (status == "Active"):
+            status = True
+        else:
+            status = False
+        operation += "active = %s, notes = %s"
+        values += (status, notes,)
+
+        # removing the last comma before we put the WHERE clause
+        operation += " WHERE user_id = %s"
+
+        ## add last update to all extension updates
+        values += (_clean_value(form['user_id']),)
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()          
 
 def get_user_role(user):
     cur = None
@@ -328,13 +382,13 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
     conn = None
     values = ()
     try:
+        str_end = f'{iteration}_{reg_id}'
         if not _acceptable_entity(form, iteration, reg_id):
             if iteration <= no_entities: # entity is not in form but was in original entity list -> need to delete
-                return delete_registration_entity(reg_id, form[f'ent_id_{iteration}'])
+                return delete_registration_entity(reg_id, form['ent_id_{}'.format(str_end)])
             return
         if iteration > no_entities: # entity is in form but not in original list -> need to create
             return create_registration_entity(form, reg_id, iteration, True)
-        str_end = f'{iteration}_{reg_id}'
         values = (
             float(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
@@ -343,12 +397,12 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
-            form['types_of_files_provider_{}'.format(str_end)],
-            form['types_of_files_medical_{}'.format(str_end)],
-            form['types_of_files_pharmacy_{}'.format(str_end)],
-            form['types_of_files_dental_{}'.format(str_end)],
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False,
             reg_id,
-            form[f'ent_id_{iteration}']
+            form['ent_id_{}'.format(str_end)]
         )
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1003,7 +1057,7 @@ def get_all_submissions_and_logs():
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'org_name', apcd_orgs.official_name,
+                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -1020,11 +1074,11 @@ def get_all_submissions_and_logs():
                 )
             )
             FROM submissions
-            JOIN apcd_orgs
-                ON submissions.apcd_id = apcd_orgs.apcd_id
+            LEFT JOIN submitters 
+                ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, apcd_orgs.official_name)
+            GROUP BY (submissions.submission_id, submitters.org_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1104,6 +1158,68 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+def update_extension(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE extensions
+            SET
+            updated_at= %s,"""
+        
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'applicable-data-period': 'applicable_data_period',
+            'status': 'status',
+            'outcome': 'outcome',
+            'approved-expiration-date': 'approved_expiration_date',
+            'notes': 'notes'
+        }
+        # To make sure fields are not blank. 
+        # If they aren't, add column to update set operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
+
+        operation += ", ".join(set_values) + " WHERE extension_id = %s"
+        ## add last update to all extension updates
+        values = [
+            datetime.now(),
+        ]
+        
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is an int to insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+                # else server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['extension_id']))
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_submitter_for_extend_or_except(user):
     cur = None
     conn = None
@@ -1127,7 +1243,7 @@ def get_submitter_for_extend_or_except(user):
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                ORDER BY submitters.apcd_id, submitter_users.submitter_id
+                ORDER BY submitters.org_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
@@ -1174,12 +1290,10 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                apcd_orgs.official_name
+                submitters.org_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
-            JOIN apcd_orgs
-                ON submitters.apcd_id = apcd_orgs.apcd_id
             ORDER BY extensions.created_at DESC
         """ 
         cur = conn.cursor()
@@ -1227,13 +1341,11 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                apcd_orgs.official_name,
+                submitters.org_name,
                 standard_codes.item_value
             FROM exceptions
             JOIN submitters
                 ON exceptions.submitter_id = submitters.submitter_id
-            JOIN apcd_orgs
-                ON submitters.apcd_id = apcd_orgs.apcd_id
             LEFT JOIN standard_codes 
                 ON UPPER(exceptions.data_file) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
             ORDER BY exceptions.created_at DESC
@@ -1242,6 +1354,67 @@ def get_all_exceptions():
         cur.execute(query)
         return cur.fetchall()
 
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def update_exception(form):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        cur = conn.cursor()
+        operation = """UPDATE exceptions
+            SET
+            updated_at= %s,"""
+        set_values = []
+        # to set column names for query to the correct DB name
+        columns = {
+            'approved_threshold': 'approved_threshold',
+            'approved': 'approved_expiration_date',
+            'status': 'status',
+            'outcome': 'outcome',
+            'notes': 'notes'
+        }
+        # To make sure fields are not blank. 
+        # If they aren't, add column to update operation
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                set_values.append(f"{column_name} = %s")
+
+        operation += ", ".join(set_values) + " WHERE exception_id = %s"
+        ## add last update to all extension updates
+        values = [
+            datetime.now(),
+        ]
+
+        for field, column_name in columns.items():
+            value = form.get(field)
+            if value not in (None, ""):
+                # to make sure applicable data period field is the right type for insert to DB
+                if column_name == 'applicable_data_period':
+                    values.append(int(value.replace('-', '')))
+        # server side clean values
+                else:
+                    values.append(_clean_value(value))
+        ## to make sure extension id is last in query to match with WHERE statement
+        values.append(_clean_value(form['exception_id']))
+
+        cur.execute(operation, values)
+        conn.commit()
+    except Exception as error:
+        logger.error(error)
+        return error
     finally:
         if cur is not None:
             cur.close()
@@ -1287,7 +1460,7 @@ def _clean_email(email):
     return result.string if result else None
 
 def _clean_value(value):
-    return re.sub('[^a-zA-Z0-9 \.\-\,]', '', str(value))
+    return re.sub('[^a-zA-Z0-9 \.\-\,\_]', '', str(value))
 
 def _clean_date(date_string):
     date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
