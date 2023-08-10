@@ -18,14 +18,14 @@ class AdminExceptionsTable(TemplateView):
     def post(self, request):
 
         form = request.POST.copy()
-        
+
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-        
+
         def _edit_exception(form):
             errors = []
             exception_response = update_exception(form)
@@ -38,7 +38,7 @@ class AdminExceptionsTable(TemplateView):
                 logger.debug(print("success"))
                 template = loader.get_template('edit_exception_success.html')
             return template
-        
+
         template = _edit_exception(form)
         return HttpResponse(template.render({}, request))
 
@@ -53,6 +53,7 @@ class AdminExceptionsTable(TemplateView):
 
         exception_content = get_all_exceptions()
         # To get filters from params
+        queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
@@ -124,20 +125,19 @@ class AdminExceptionsTable(TemplateView):
                 if outcome != None:
                     context['outcome_options'].append(outcome)
                     context['outcome_options'] = sorted(context['outcome_options'])
- 
+
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
+            queryStr += f'&status={status_filter}'
             exception_table_entries = table_filter(status_filter, exception_table_entries, 'status')
 
         context['selected_org'] = None
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
+            queryStr += f'&org={org_filter}'
             exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'org_name')
 
-        queryStr = '?'
-        if len(self.request.META['QUERY_STRING']) > 0:
-            queryStr = queryStr + self.request.META['QUERY_STRING'].replace(f'page={page_num}', '') + ('&' if self.request.GET.get('page') is None else '')
         context['query_str'] = queryStr
         context.update(paginator(self.request, exception_table_entries))
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'

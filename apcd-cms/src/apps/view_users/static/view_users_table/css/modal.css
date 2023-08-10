@@ -1,0 +1,30 @@
+.title {
+    margin-top: 0;
+}
+
+.modal-section {
+    width: 100%;
+}
+
+dl {
+    display: flex;
+    flex-flow: row wrap;
+    padding-left: 0;
+  }
+
+dt {
+    flex-basis: 25%;
+    padding: 0;
+}
+
+dd {
+    flex-basis: 75%;
+    margin: 0;
+    padding: 0;
+}
+/* Necessary so dl keys display fully */
+.modal-body {
+    padding: 2rem;
+    font-size: var(--global-font-size--small);
+    font-family: var(--global-font-family--sans--portal);
+}
