@@ -92,7 +92,7 @@ class AdminExtensionsTable(TemplateView):
             page_num = 1
 
         def getDate(row):
-            date = row[1]
+            date = row[9]
             return date if date is not None else parser.parse('1-1-0001')
 
         extension_content = sorted(extension_content, key=lambda row:getDate(row), reverse=True)  # sort extensions by newest to oldest
