@@ -3,9 +3,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'view_users_table/css/core-styles.c-form.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -16,70 +16,116 @@
   <hr />
   <div class="filter-container">
     <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        {% for option in status_options %}
+        <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+      </select>
       <span><b>Filter by Organization: </b></span>
-      <select id="organizationFilter" class="organization-filter" onchange="filterTableByOrganization()">
-        <option class="dropdown-text" value="">All</option>
-        {% for r in rows %}
-        <option class="dropdown-text">{{r.org_name}}</option>
+      <select id="organizationFilter" class="status-filter" onchange="filterTableByOrganization()">
+        {% for option in filter_options %}
+          <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
-    </div>
+
+  {% if selected_status or selected_org %}
+        <button onclick="clearSelections()">Clear Options</button>
+      {% endif %}
+     </div>
   </div>
+ 
   <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
       <thead>
           <tr>
               {% for k in header %}
               <th>{{k}}</th>
               {% endfor %}
+              <th style="display: none">active</th>
           </tr>
       </thead>
       <tbody id="usersTableBody">
-          {% for r in rows %}
+          {% for r in page %}
               <tr>
                   <td>{{r.user_id}}</td>
-                  <td>{{r.user_email}}</td>
                   <td>{{r.user_name}}</td>
                   <td>{{r.org_name}}</td>
                   <td>{{r.role_name}}</td>
-                  <td>{{r.active}}</td>
-                  <td>{{r.created_at}}</td>
-                  <td>{{r.updated_at}}</td>
-                  <td>{{r.notes}}</td>
+                  <td>{{r.status}}</td>
+                  <td>{{r.user_number}}</td>
+                  <td class="modal-cell">
+                    {% include "view_user_modal.html" %}
+                    {% include "view_user_edit_modal.html" %}                   
+                      <select id='actionsDropdown_{{r.user_id}}'  onchange="openAction('{{r.user_id}}')">
+                        <div class="filter-container">
+                          <div class="filter-content">
+                            <option value="">Select Action</option>
+                            <option value="viewUser">View Record</option>
+                            <option value="editUser">Edit Record</option>
+                          </div>
+                        </div>
+                      </select>
+                  </td>
               </tr>
           {% endfor %}
       </tbody>
   </table>
+  {% include 'paginator.html' %} 
 </div>
 <script>
 /*filters by organization with dropdown*/
-function filterTableByOrganization() {
-  var dropdown, filter, newinput, bestinput, table, tr, td, i;
-  input = document.getElementById("organizationFilter");
-  newinput = input.value.replace("&","");
-  bestinput = newinput.replace(",","");
-  filter = bestinput.toUpperCase();
-  table = document.getElementById("usersTableBody");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
-    if (td) {
-      if (td.innerHTML.toUpperCase().replace("&","").replace(",","").search(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";  
-      }
-    }  
+function filterTableByStatus() {
+    var dropdown, statusFilter, xhr, url_params, url;
+    dropdown = document.getElementById("statusFilter");
+    statusFilter =  dropdown.value;
+    url_params = `?status=${statusFilter}`;
+    {% if selected_org %}
+      url_params += `&org={{selected_org}}`;
+    {% endif %}
+    url = `/administration/view-users/${url_params}`;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    window.location.href = url;
+    window.location.load();
   }
-}
+  function filterTableByOrganization() {
+    var input, orgFilter, xhr, url_params, url;
+    input = document.getElementById("organizationFilter");
+    orgFilter = input.value.replace("&", encodeURIComponent('&'));
+    url_params = `?org=${orgFilter}`;
+    {% if selected_status %}
+      url_params = `?status={{selected_status}}&org=${orgFilter}`;
+    {% endif %}
+    url = `/administration/view-users/${url_params}`;
+    xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.send();
+    window.location.href = url;
+    window.location.load();
+  }
 
-/* remove duplicates from dropdown */
+  function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/administration/view-users/')
+        xhr.send()
+        window.location.href = '/administration/view-users/';
+        window.location.load();
+    }
 
-const options = []
-
-document.querySelectorAll('#organizationFilter > option').forEach((option) => {
-    if (options.includes(option.value)) option.remove()
-    else options.push(option.value)
-})
+    function openAction(user_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${user_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${user_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+  
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
 
 </script>
 

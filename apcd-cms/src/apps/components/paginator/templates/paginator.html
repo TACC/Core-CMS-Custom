@@ -1,0 +1,44 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'paginator/css/paginator.css' %}">
+
+<nav>    
+    <div class="c-page-list">
+        <button 
+        class="c-button c-button--as-link c-page-end"
+        type="button"
+        {% if page.has_previous %}
+            onclick="window.location.href='{% url pagination_url_namespaces %}?page={{page.previous_page_number}}{{ query_str }}';"
+        {% else %}
+            disabled
+        {% endif %}
+        >
+            &lt; Previous
+        </button>
+        
+        {% for i in elided_pages %}
+            {% if i != '...' %}
+                <button 
+                class="c-button c-button--secondary {% if page.number == i %}c-button--is-active{% endif %} c-button--size-small c-page-item c-page-link c-page-link--always-click"
+                type="button"
+                onclick="window.location.href='{% url pagination_url_namespaces %}?page={{i}}{{ query_str }}';"
+                >
+                    {{i}}
+                </button>
+            {% else %}
+                <span class="c-page-item--etcetera">...</span>         
+            {% endif %}
+        {% endfor %}
+
+        <button 
+        class="c-button c-button--as-link c-page-end"
+        type="button"
+        {% if page.has_next %}
+            onclick="window.location.href='{% url pagination_url_namespaces %}?page={{page.next_page_number}}{{ query_str }}';"
+        {% else %}
+            disabled
+        {% endif %}
+        >
+            Next &gt;
+        </button>
+    </div>
+</nav>

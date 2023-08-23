@@ -1,0 +1,47 @@
+<!-- Footer -->
+<style id="css-footer">
+/* To restore padding removed in Core Styles */
+/* TODO: Add to Core Styles */
+.c-footer {
+    padding-bottom: 20px;
+}
+
+/* To add a full-width border above CMS footer */
+:root {
+    /* TACC/Core-Styles#4d7cece (just before daada8b) */
+    --global-color-secondary--light: #d5b57c; /* from designer *//* from header */
+}
+html:not(#page-portal) .c-footer::before /* trans id */ {
+    position: absolute;
+    top: 0;
+
+    width: 100%;
+    /* NOTE: Was needed on TUP CMS with older Core-Styles */
+    /* NOTE: Not needed on DemData with newer Core-Styles */
+    /* margin-left: -36px; */
+    content: '';
+
+    border-top: 2px solid var(--global-color-secondary--light);
+}
+.c-footer {
+  /* To make full-width border not be offset by 50% */
+  /* HELP: A display grid or flex fixes this, but why does it happen at all? */
+  display: grid;
+}
+
+/* To hide/show CMS/Portal footer */
+/* IMPORTANT: Requires TACC/tup-ui#135 */
+html#page-portal #cms-footer, /* new id */
+html:not(#page-portal) #portal-footer /* trans id */ {
+    display: none;
+}
+
+/* To reduce size of Portal footer */
+/* TODO: Move to tup-ui CSS */
+html#page-portal .c-footer {
+    padding: 0 15px;
+}
+html#page-portal .c-footer p {
+    margin-bottom: revert; /* undo Bootstrap */
+}
+</style>

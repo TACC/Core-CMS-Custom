@@ -1,0 +1,6 @@
+@import url("https://unpkg.com/@tacc/core-styles@0.13.0/dist/components/c-page.css");
+
+.c-page-list {
+    justify-content: center;
+    padding-top: 20px;
+}

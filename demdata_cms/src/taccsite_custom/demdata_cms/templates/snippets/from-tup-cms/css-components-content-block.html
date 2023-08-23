@@ -1,0 +1,38 @@
+<style id="css-components-content-block--new">
+:is(.c-content-block, .content-block) {
+    margin-bottom: var(--global-space--bootstrap-gap);
+    padding: var(--global-space--pattern-pad);
+}
+
+/* To remove some space between content blocks */
+/* FAQ: Short-term solution to excess space */
+/* FAQ: Long-term solution is redo spacing for Rows, Cols, Content-Blocks, and Cards */
+:is(.c-content-block, .content-block) + :is(.c-content-block, .content-block) {
+    margin-top: calc( -1 * var(--global-space--bootstrap-gap) ); /* usurp `:is(.c-content-block, .content-block)` */
+}
+
+:is(.c-content-block, .content-block) :is(h1, h2, h3, h4, h5, h6) {
+    border-left: var(--global-border-width--xx-thick) solid var(--global-color-accent--tertiary);
+    padding-left: 10px;
+}
+</style>
+<!-- 2023-10-20 by Wes: --><!--
+<style id="css-components-content-block--original">
+:is(.c-content-block, .content-block) {
+    margin-bottom: var(--global-space--bootstrap-gap);
+    padding: var(--global-space--pattern-pad);
+}
+
+/* To remove some space between content blocks */
+/* FAQ: Short-term solution to excess space */
+/* FAQ: Long-term solution is redo spacing for Rows, Cols, Content-Blocks, and Cards */
+:is(.c-content-block, .content-block) + :is(.c-content-block, .content-block) {
+    margin-top: calc( -1 * var(--global-space--bootstrap-gap) ); /* usurp `:is(.c-content-block, .content-block)` */
+}
+
+:is(.c-content-block, .content-block) :is(h1, h2, h3, h4, h5, h6) {
+    border-left: var(--global-border-width--xx-thick) solid var(--global-color-accent--tertiary);
+    padding-left: 10px;
+}
+</style>
+-->

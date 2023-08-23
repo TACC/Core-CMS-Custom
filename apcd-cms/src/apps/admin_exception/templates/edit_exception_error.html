@@ -1,0 +1,16 @@
+{% extends "standard.html" %}
+{% block content %}
+
+{% include 'snippets/tup-175-css-alerts-messages-ui-pattern.html' %}
+
+<div class="container">
+    {% include "nav_cms_breadcrumbs.html" %}
+
+    <h1>Edit Exception</h1>
+    <hr />
+    <p class="c-message c-message--error">
+        An error occurred while updating this Exception. For help, <a href="/workbench/dashboard">submit a ticket</a>.
+    </p>
+    <a class="c-button c-button--primary" href="/administration/list-exceptions/">Back to List Exceptions</a>
+</div>
+{% endblock %}

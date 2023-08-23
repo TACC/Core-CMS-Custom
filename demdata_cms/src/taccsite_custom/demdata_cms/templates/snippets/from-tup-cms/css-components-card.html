@@ -1,0 +1,140 @@
+<!-- To fix base CSS -->
+<style id="css-components-card--fixes">
+@layer base {
+
+/* TODO: In Core, add this pattern modification */
+/* !!!: In Core, remove `:not(#root *)` (e.g. "not in portal") */
+:is(.card, .c-card, [class*="card--"]) p:last-child:not(#root *) {
+    margin-bottom: 2rem; /* restore <p> `margin-bottom `*/
+}
+
+/* To more specifically control c-card link font weight */
+/* TODO: In Core, add this pattern modification */
+/* !!!: In Core, remove `:not(#root *)` (e.g. "not in portal") */
+:is(.card, .c-card, [class*="card--"]) a.c-button:not(#root *) {
+    font-weight: var(--bold);
+}
+
+:is(.card, .c-card, [class*="card--"]) h4 {
+    margin-bottom: 1em;
+}
+
+}
+</style>
+
+<!-- To add `card--image` to base CSS -->
+<style id="css-components-card--image">
+@layer base {
+
+/* TODO: In Core, AFTER THESE ARE APPROVED, add this pattern modification */
+/* Image */
+
+[class*="card--image-"] {
+    display: grid;
+}
+
+.card--image-top {
+    padding-top: 0;
+}
+.card--image-left {
+    padding-left: 0;
+    padding-bottom: var(--global-space--pattern-pad);
+}
+.card--image-right {
+    padding-right: 0;
+    padding-bottom: var(--global-space--pattern-pad);
+}
+.card--image-bottom {
+    padding-bottom: 0;
+}
+
+
+
+/* Image: Left & Right */
+
+.card--image-left,
+.card--image-right {
+    --image-width: 50%;
+
+    grid-column-gap: var(--global-space--pattern-pad);
+
+    /* Repeat many times, because element count is unknown */
+    grid-template-rows: repeat(10, min-content);
+}
+.card--image-left > img,
+.card--image-right > img {
+    grid-row-start: 1;
+    grid-row-end: -1;
+
+    /* To remove card padding */
+    margin-block: calc( -1 * var(--global-space--pattern-pad) );
+}
+
+.card--image-left {
+    grid-template-columns: var(--image-width) 1fr; /* to overwrite `.c-card` */
+}
+.card--image-left > img {
+    grid-column-start: 1;
+    grid-column-end: span 1;
+}
+
+.card--image-right {
+    grid-template-columns: 1fr var(--image-width); /* to overwrite `.c-card` */
+}
+.card--image-right > img {
+    grid-column-start: 2;
+    grid-column-end: span 1;
+}
+
+
+
+/* Image: Top & Bottom */
+
+.card--image-top,
+.card--image-bottom {
+    --image-height: auto;
+    --global-space--pattern-pad: 15px;
+
+    /* Use extra columns to add horizontal padding */
+    grid-template-columns: var(--global-space--pattern-pad) 1fr var(--global-space--pattern-pad);
+    padding-inline: unset;
+}
+.card--image-top > :not(img),
+.card--image-bottom > :not(img) {
+    /* Span only columns for content */
+    grid-column-start: 2;
+    grid-column-end: -2;
+}
+.card--image-top > img,
+.card--image-bottom > img {
+    /* Span all columns, padding and content */
+    grid-column-start: 1;
+    grid-column-end: -1;
+}
+
+.card--image-top {
+    /* Repeat many times, because element count is unknown */
+    grid-template-rows: repeat(10, min-content) var(--image-height);
+}
+.card--image-top > img {
+    grid-row-start: 1;
+    margin-bottom: var(--global-space--pattern-pad);
+}
+.card--image-bottom > :is(h1, h2, h3, h4, h5):first-of-type {
+    margin-top: unset; /* to avoid combining margin with image */
+}
+
+.card--image-bottom {
+    /* Repeat many times, because element count is unknown */
+    grid-template-rows: var(--image-height) repeat(10, min-content);
+}
+.card--image-bottom > img {
+    grid-row-end: -1;
+    margin-top: var(--global-space--pattern-pad);
+}
+.card--image-bottom > p:last-of-type {
+    margin-bottom: unset; /* to avoid combining margin with image */
+}
+
+}
+</style>

@@ -3,7 +3,10 @@ from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.utils.utils import table_filter
+from apps.components.paginator.paginator import paginator
 import logging
+from dateutil import parser
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +19,7 @@ class RegistrationsTable(TemplateView):
         form = request.POST.copy()
         reg_id = int(form['reg_id'])
 
-        reg_content = get_registrations(reg_id)
+        reg_data = get_registrations(reg_id)[0]
         reg_entities = get_registration_entities(reg_id)
         reg_contacts = get_registration_contacts(reg_id)
         
@@ -27,7 +30,7 @@ class RegistrationsTable(TemplateView):
                 return str(resp)
             return None
         
-        def _new_submitter(form, reg_data=reg_content):
+        def _new_submitter(form, reg_data=reg_data):
             errors = []
             
             sub_resp = create_submitter(form, reg_data)
@@ -81,25 +84,22 @@ class RegistrationsTable(TemplateView):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
 
         def _set_registration(reg, reg_ents, reg_conts):
+            org_types = {
+                    'carrier': 'Insurance Carrier',
+                    'tpa_aso': 'Plan Administrator¹ (TPA/ASO)',
+                    'pbm': 'Pharmacy Benefit Manager (PBM)'
+            }
             return {
-                    'biz_name': reg[13],
-                    'type': reg[12].title() if reg[12] else None,
+                    'biz_name': reg[7],
+                    'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
                     'location': '{city}, {state}'.format
                         (
-                            city=reg[15],
-                            state=reg[16]
+                            city=reg[9],
+                            state=reg[10]
                         ),
-                    'files_type': [
-                        "Medical" if reg[6] else None,
-                        "Provider" if reg[5] else None,
-                        "Eligibility/Enrollment" if reg[4] else None,
-                        "Pharmacy" if reg[7] else None,
-                        "Dental" if reg[8] else None
-                    ],
-                    'sub_method': reg[10],
-                    'reg_status': reg[11].title(),
+                    'reg_status': reg[5].title(),
                     'reg_id': reg[0],
-                    'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts)
+                    'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
                 }
         def _set_entities(reg_ent):
             return {
@@ -110,7 +110,14 @@ class RegistrationsTable(TemplateView):
                 'naic': reg_ent[5] if reg_ent[5] else None,
                 'no_covered': reg_ent[6],
                 'ent_name': reg_ent[7],
-                'fein': reg_ent[8] if reg_ent[8] else None
+                'fein': reg_ent[8] if reg_ent[8] else None,
+                'files_type': {
+                    "Eligibility/Enrollment": reg_ent[9],
+                    "Provider": reg_ent[10],
+                    "Medical": reg_ent[11],
+                    "Pharmacy": reg_ent[12],
+                    "Dental": reg_ent[13]
+                }
             }
         def _set_contacts(reg_cont):
 
@@ -135,32 +142,20 @@ class RegistrationsTable(TemplateView):
                 'role': reg_cont[3],
                 'name': reg_cont[4],
                 'phone': format_phone_number(reg_cont[5]),
-                'email': reg_cont[6]
+                'email': reg_cont[6],
             }
-        def _set_modal_content(reg, reg_ent, reg_cont):
+        def _set_modal_content(reg, reg_ent, reg_cont, org_types):
             return {
-                'biz_name': reg[13],
-                'type': reg[12].title() if reg[12] else None,
-                'city': reg[15],
-                'state': reg[16],
-                'address': reg[14],
-                'zip': reg[17],
-                'files_type': {
-                        "Eligibility/Enrollment": reg[4],
-                        "Provider": reg[5],
-                        "Medical": reg[6],
-                        "Pharmacy": reg[7],
-                        "Dental": reg[8]
-                },
-                'for_self': reg[9],
-                'sub_method': reg[10],
+                'biz_name': reg[7],
+                'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
+                'city': reg[9],
+                'state': reg[10],
+                'address': reg[8],
+                'zip': reg[11],
+                'for_self': reg[4],
                 'entities': [_set_entities(ent) for ent in reg_ent],
                 'contacts': [_set_contacts(cont) for cont in reg_cont],
-                'org_types': {
-                    'Insurance Carrier': 'Insurance Carrier', 
-                    'Plan Administrator': 'Plan Administrator¹ (TPA/ASO)',
-                    'Pbm': 'Pharmacy Benefit Manager (PBM)'
-                },
+                'org_types': org_types,
                 'us_state_list': [
                     'AL - Alabama',
                     'AK - Alaska',
@@ -218,18 +213,49 @@ class RegistrationsTable(TemplateView):
                     'WI - Wisconsin',
                     'WY - Wyoming'
                 ],
-                'sub_methods': {
-                    'sftp': 'SFTP',
-                    'https': 'HTTPS',
-                    'usb': 'Encrypted USB Drive'
-                }
             }
 
-        context['header'] = ['Business Name', 'Type', 'Location', 'Submission Method', 'Registration Status', 'Files to Submit', 'Actions']
-        context['rows'] = []
+        context['header'] = ['Business Name', 'Type', 'Location', 'Registration Status', 'Actions']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['org_options'] = ['All']
+
+        try:
+            page_num = int(self.request.GET.get('page'))
+        except:
+            page_num = 1
+
+        def getDate(row):
+            date = row[1]
+            return date if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
+
+        registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
+
+        registration_table_entries = []
         for registration in registrations_content:
             associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
-            context['rows'].append(_set_registration(registration, associated_entities, associated_contacts))
+            registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
+            org_name = registration[7]
+            if org_name not in context['org_options']:
+                context['org_options'].append(org_name)
 
+        queryStr = ''
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
+
+        context['selected_status'] = None
+        if status_filter is not None and status_filter != 'All':
+            context['selected_status'] = status_filter
+            queryStr += f'&status={status_filter}'
+            registration_table_entries = table_filter(status_filter, registration_table_entries, 'reg_status')
+
+        context['selected_org'] = None
+        if org_filter is not None and org_filter != 'All':
+            context['selected_org'] = org_filter
+            queryStr += f'&org={org_filter}'
+            registration_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), registration_table_entries, 'biz_name')
+
+        context['query_str'] = queryStr
+        context.update(paginator(self.request, registration_table_entries))
+        context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context

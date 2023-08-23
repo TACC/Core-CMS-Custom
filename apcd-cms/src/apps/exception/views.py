@@ -1,11 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.views.generic import TemplateView
-from requests.auth import HTTPBasicAuth
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -16,11 +16,16 @@ class ExceptionFormView(TemplateView):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionFormView, self).dispatch(request, *args, **kwargs)
-
 class ExceptionThresholdFormView(TemplateView):
-    template_name = "exception_submission_form/exception_threshold_form.html"
+    def get_template_names(self):
+        submitters = self.request.session.get("submitters")
+        ## If no submitter_id for user, should not show form but show error page
+        if all(submitter[0] is None for submitter in submitters):
+            return ["exception_submission_form/exception_err_no_sub_id.html"]
+        else:
+            return ["exception_submission_form/exception_threshold_form.html"]
 
-    def dipatch(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionThresholdFormView, self).dispatch(request, *args, **kwargs)
@@ -32,7 +37,14 @@ class ExceptionThresholdFormView(TemplateView):
 
         submitters = apcd_database.get_submitter_for_extend_or_except(user)
 
+        file_type = self.request.GET.get('file_type')
+
+        context['file_type'] = file_type
+
+
         self.request.session['submitters'] = submitters
+        
+        self.request.session['file_type'] = file_type
 
         def _set_submitter(sub):
             return {
@@ -43,10 +55,18 @@ class ExceptionThresholdFormView(TemplateView):
                 "org_name": title_case(sub[4])
             }
 
+        def _set_cdl(file_type):
+            return {
+                "field_list_code": file_type[0],
+                "field_list_value": file_type[1],
+                "threshold_value": file_type[2]
+            }
+
         context["submitters"] = []
 
         for submitter in submitters:
             context["submitters"].append(_set_submitter(submitter))
+
 
         return context
 
@@ -59,11 +79,20 @@ class ExceptionThresholdFormView(TemplateView):
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
             if _err_msg(submitter):
-                errors.append(_err_msg(submitter))       
+                errors.append(_err_msg(submitter))
+
+            max_iterations = 1
             
-            except_response = apcd_database.create_threshold_exception(form, submitter)
-            if _err_msg(except_response):
-                errors.append(_err_msg(except_response))
+            for i in range(2, 6):
+                if form.get('field-threshold-exception_{}'.format(i)):
+                    max_iterations += 1
+                else:
+                    break
+
+            for iteration in range(max_iterations):
+                except_response = apcd_database.create_threshold_exception(form, iteration + 1, submitter)
+                if _err_msg(except_response):
+                    errors.append(_err_msg(except_response))
 
             if len(errors):
                 template = loader.get_template(
@@ -76,15 +105,19 @@ class ExceptionThresholdFormView(TemplateView):
                 )
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
 class ExceptionOtherFormView(TemplateView):
-    template_name = "exception_submission_form/exception_other_form.html"
+    def get_template_names(self):
+        submitters = self.request.session.get("submitters")
+        ## If no submitter_id for user should not show form but show error page
+        if all(submitter[0] is None for submitter in submitters):
+            return ["exception_submission_form/exception_err_no_sub_id.html"]
+        else:
+            return ["exception_submission_form/exception_other_form.html"]
 
-    def dipatch(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(ExceptionOtherFormView, self).dispatch(request, *args, **kwargs)
@@ -95,6 +128,7 @@ class ExceptionOtherFormView(TemplateView):
         user = self.request.user.username
 
         submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        
         self.request.session['submitters'] = submitters
 
         def _set_submitter(sub):
@@ -121,6 +155,7 @@ class ExceptionOtherFormView(TemplateView):
             submitters = request.session.get('submitters')
 
             submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
+            
             if _err_msg(submitter):
                 errors.append(_err_msg(submitter))
 
@@ -139,11 +174,28 @@ class ExceptionOtherFormView(TemplateView):
                 )
                 response = HttpResponse(template.render({}, request))
 
-            del request.session['submitters']
             return response
         else:
-            del request.session['submitters']
             return HttpResponseRedirect('/')
+
+def get_cdls(request):
+    file_type = request.GET.get('file_type')
+
+    cdls = apcd_database.get_cdl_exceptions(file_type)
+    
+    cdlsResponse = []
+
+    ## To make cdlsResponse into a list to pass to the script
+    for cdl in cdls:
+        cdls_dict = {
+        "field_list_code": cdl[0],
+        "field_list_value": cdl[1],
+        "threshold_value": cdl[2]
+    }
+        cdlsResponse.append(cdls_dict)
+
+    return JsonResponse((cdlsResponse), safe=False)
+
 
 def _err_msg(resp):
     if hasattr(resp, "pgerror"):
