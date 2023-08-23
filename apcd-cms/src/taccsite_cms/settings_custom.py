@@ -2,6 +2,14 @@
 # TACC WMA CMS SITE:
 # *.APCD.TACC.UTEXAS.EDU
 
+########################
+# CORE CMS SETTINGS
+# FAQ: These are in future versions of Core-CMS
+########################
+
+# NOTE: Already in Core-CMS v3.12.0-beta.2, v3.11.6, and (untested) v3.9.5
+# whether the session cookie should be secure (https:// only)
+SESSION_COOKIE_SECURE = True
 
 ########################
 # DJANGO CMS SETTINGS
