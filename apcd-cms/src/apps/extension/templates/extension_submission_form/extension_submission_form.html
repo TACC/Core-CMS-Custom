@@ -193,6 +193,13 @@
   {# Scripts #}
   {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
   <aside>
+     <!-- To check for blank space only or invalid characters in text inputs-->
+     <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+     <!--Adds blank space listener to all text input fields on page load #-->
+     <script>
+       const formTextInputs = document.querySelectorAll('input');
+       noEmptyInputs(formTextInputs);
+     </script> 
     <!-- To let user add and remove entities -->
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
