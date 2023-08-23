@@ -1,6 +1,6 @@
 function noEmptyInputs(inputArr) {
   inputArr.forEach(i => i.addEventListener('change', () => {
-    const cleanedValue = i.value.replace(/[^a-zA-Z0-9\s-@!?,%$#&*().]|<script>|<\/script>|'|"|}|{|javascript|JavaScript|\.exe/gi, '') // Allow specified characters
+    const cleanedValue = i.value.replace(/[^a-zA-Z0-9\s-@!?,%$#&*().]|<script>|<\/script>|'|"|}|{|javascript|JavaScript|\.exe|\.sh/gi, '') // Allow specified characters
 
     if (cleanedValue.replace(/ /g, '') === '') { 
       i.value = ''; // if input is all spaces, clear it out to leverage <input>'s required prop
