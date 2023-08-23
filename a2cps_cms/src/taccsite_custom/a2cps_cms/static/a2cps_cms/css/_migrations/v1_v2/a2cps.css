@@ -1,0 +1,103 @@
+/*
+A2CPS Migration Styles
+HOW: Manually find discrepencies in UI that seem specific to A2CPS
+*/
+
+/*!
+ * A2CPS Migration Styles
+ */
+
+
+
+
+
+/* ELEMENTS */
+
+/* Table Content */
+
+table,
+td,
+th {
+  /* To mimic 2020 site by restoring browser default */
+  border-color: inherit; /* override `site.css` */
+}
+
+/* To mimic unscoped styles from Angular component that v1 CMS assumes exist */
+/* SEE: https://bitbucket.org/taccaci/frontera/src/8167403/client/src/angular/data_depot/projects/components/project-meta/project-meta.css?#project-meta.css-34 */
+td {
+  padding-right: 2.25em;
+  padding-bottom: 0.5em;
+}
+
+
+
+
+
+/* COMPONENTS */
+
+
+
+/* COMPONENTS: Bootstrap */
+
+/* Cards */
+
+/* To mimic 2020 site faux cards via Bootstrap cards */
+/* SEE: https://a2cps.org/patients/.../ */
+/* SEE: https://a2cps.org/researchers/ */
+/* FAQ: A faux cards was a <div> (card) with two <p>'s (header, body) */
+.card {
+  /* To clear `.card` styles */
+  border-radius: 0;
+
+  /* To mimic header <p> (from inline styles) */
+  margin-top: 20px;
+
+  /* To mimic body <img> (from inline styles) */
+  margin-bottom: 20px;
+}
+
+.card-header {
+  /* To mimic header <p> (from inline styles) */
+  padding: 15px;
+
+  /* To mimic header <p>'s typography (from inline styles) */
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+.card-header:first-child {
+  /* To clear `.card` styles */
+  border-radius: 0;
+}
+
+.card-body {
+  /* SEE: https://a2cps.org/connect/ */
+  padding: 15px;
+}
+
+/* To mimic faux card inline styles */
+.card.bg-light .card-header,
+.card.bg-transparent .card-header {
+  background-color: #DFDFDF;
+  border-bottom-color: #DFDFDF;
+}
+.card.bg-light .card-body,
+.card.bg-transparent .card-body {
+  /* SEE: https://a2cps.org/connect/ */
+  border-color: #DFDFDF;
+}
+
+/* Cards: "For ..." Pages */
+.s-page-cards .card,
+.s-page-cards .card-header {
+  /* To clear `.card` styles */
+  border: none;
+}
+.s-page-cards .card-header p {
+  /* To prevent <p> (forced by Text plugin WYSIWIG) from breaking layout */
+  margin: 0;
+}
+.s-page-cards .card-body {
+  /* To clear `.card` styles */
+  padding: 0;
+}
