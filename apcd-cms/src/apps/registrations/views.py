@@ -10,10 +10,10 @@ import rt
 
 logger = logging.getLogger(__name__)
 
-# RT_HOST = getattr(settings, 'RT_HOST', '')
-# RT_UN = getattr(settings, 'RT_UN', '')
-# RT_PW = getattr(settings, 'RT_PW', '')
-# RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
+RT_HOST = getattr(settings, 'RT_HOST', '')
+RT_UN = getattr(settings, 'RT_UN', '')
+RT_PW = getattr(settings, 'RT_PW', '')
+RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
 class SubmissionFormView(View):
@@ -49,8 +49,8 @@ class SubmissionFormView(View):
             errors.append(_err_msg(reg_resp))
 
         # ===> Create Ticket
-        # tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
-        # tracker.login()
+        tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
+        tracker.login()
 
         subject = "New TX-APCD Portal Registration"
         description = "APCD Registration Details\n"
@@ -71,12 +71,12 @@ class SubmissionFormView(View):
             template = loader.get_template('submission_form/submission_success.html')
             response = HttpResponse(template.render(context, request))
 
-        # tracker.create_ticket(
-        #     Queue=RT_QUEUE,
-        #     Subject=subject,
-        #     Text=description,
-        #     Requestors=email
-        # )
+        tracker.create_ticket(
+            Queue=RT_QUEUE,
+            Subject=subject,
+            Text=description,
+            Requestors=email
+        )
 
         return response
 
