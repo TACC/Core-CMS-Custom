@@ -1,4 +1,4 @@
-<form action="" method="POST">
+<form id="registration-form" action="" method="POST">
     {% csrf_token %}
 
     {% if r %}
@@ -69,18 +69,16 @@
         >
             {% if r.view_modal_content %}
                 {% for type, display_text in r.view_modal_content.org_types.items %}
-                <option value="{{ type|lower }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
+                <option value="{{ type }}" {% if type == r.view_modal_content.type %}selected{% endif %}>
                     {{display_text}}
                 </option>
                 {% endfor %}
             {% else %}
-            <option value="Insurance Carrier">Insurance Carrier</option>
-
-                <option value="Plan Administrator">
+                <option value="carrier">Insurance Carrier</option>
+                <option value="tpa_aso">
                     Plan Administrator¹ (TPA/ASO)
                 </option>
-
-                <option value="PBM">
+                <option value="pbm">
                     Pharmacy Benefit Manager (PBM)
                 </option>
             {% endif %}
@@ -235,328 +233,216 @@
             />
         </div>
         <hr />
-        <h4>File Submission</h4>
-        <div class="field-wrapper required">
-        <label>
-            Types of Files<span class="asterisk">*</span>
-        </label>
-        <div class="help-text">
-            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
-        </div>
-        </div>
-
-        <div class="field-wrapper checkboxselectmultiple required">
-            <div class="field-errors" style="display: none"></div>
-
-            <ul id="types_of_files" class="checkboxselectmultiple">
-            <li>
-                <label for="types_of_files_eligibility_enrollment"
-                ><input
-                    type="checkbox"
-                    name="types_of_files_eligibility_enrollment"
-                    required
-                    id="types_of_files_eligibility_enrollment"
-                    checked=""
-                    disabled
-                />Eligibility/Enrollment*</label
-                >
-            </li>
-            {% if r.view_modal_content %}
-                {% for file_type, file_type_selected in r.view_modal_content.files_type.items %}
-                {% if not forloop.first %}
-                    <li>
-                    <label for="types_of_files_{{ file_type|lower }}"
-                        ><input
-                        type="checkbox"
-                        name="types_of_files_{{ file_type|lower }}"
-                        id="types_of_files_{{ file_type|lower }}"
-                        {% if file_type_selected %}checked{% endif %}
-                        />{{ file_type }}</label
-                    >
-                    </li>
-                {% endif %}
-                {% endfor %}
-            {% else %}
-                <li>
-                <label for="types_of_files_provider"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_provider"
-                    id="types_of_files_provider"
-                    />Provider</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_medical"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_medical"
-                    id="types_of_files_medical"
-                    />Medical</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_pharmacy"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_pharmacy"
-                    id="types_of_files_pharmacy"
-                    />Pharmacy</label
-                >
-                </li>
-                <li>
-                <label for="types_of_files_dental"
-                    ><input
-                    type="checkbox"
-                    name="types_of_files_dental"
-                    id="types_of_files_dental"
-                    />Dental</label
-                >
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-        <div class="field-wrapper required">
-        <label
-            >Submission Method<span class="asterisk"
-            >*</span
-            >
-        </label>
-        <div class="help-text">
-            At least one of the following must be selected.
-        </div>
-        </div>
-
-
-        <div class="field-wrapper checkboxselectmultiple required">
-            <div class="field-errors" style="display: none"></div>
-
-            <ul id="submission_method" class="checkboxselectmultiple">
-            {% if r.view_modal_content %}
-                {% for sub, display_value in r.view_modal_content.sub_methods.items %}
-                <li>
-                    <label for="submission_method_{{ sub }}"
-                    ><input
-                        type="radio"
-                        name="submission_method"
-                        value="{{ display_value }}"
-                        class="radioselect"
-                        required
-                        id="submission_method_{{ sub }}"
-                        {{ r.view_modal_content.sub_method }}
-                        {% if sub|upper == r.view_modal_content.sub_method %}checked{% endif %}
-                    />{{ display_value }}</label
-                    >
-                </li>
-                {% endfor %}
-            {% else %}
-                <li>
-                <label for="submission_method_sftp"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="SFTP"
-                    class="radioselect"
-                    required
-                    id="submission_method_sftp"
-                    checked=""
-                    /><span>SFTP<sup>2</sup></span></label
-                >
-                </li>
-                <li>
-                <label for="submission_method_https"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="HTTPS"
-                    class="radioselect"
-                    required
-                    id="submission_method_https"
-                    /><span>HTTPS<sup>3</sup>**</span></label
-                >
-                </li>
-                <li>
-                <label for="submission_method_usb"
-                    ><input
-                    type="radio"
-                    name="submission_method"
-                    value="Encrypted USB Drive"
-                    class="radioselect"
-                    required
-                    id="submission_method_usb"
-                    /><span>Encrypted USB<sup>4</sup> drive***</span></label
-                >
-                </li>
-            {% endif %}
-            </ul>
-        </div>
-        <hr />
         {% if r.view_modal_content %}
             <h4>Entity/Entities Being Registered</h4>
             {% for entity in r.view_modal_content.entities %}
-                <h5 id="entity_header_{{ forloop.counter }}_{{r.reg_id}}">Entity {{ forloop.counter }}</h5>
-                <input type="hidden" name="ent_id_{{forloop.counter}}" value="{{entity.ent_id}}">
-                <div class="field-wrapper textinput required">
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="entity_name_{{forloop.counter}}_{{r.reg_id}}">
-                    Name<span class="asterisk">*</span>
-                </label>
-
-                <input
-                    type="text"
-                    name="entity_name_{{forloop.counter}}_{{r.reg_id}}"
-                    required
-                    class="textinput"
-                    id="entity_name_{{forloop.counter}}_{{r.reg_id}}"
-                    value="{{ entity.ent_name }}"
-                />
-                </div>
-                <div class="field-wrapper required">
-                <label
-                    >Number/Code<span class="asterisk">*</span>
-                </label>
-                <div class="help-text">
-                    Provide all available identifiers. At least one of the following
-                    is required.
-                </div>
-                </div>
-
-                <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper textinput">
+            {% with forloop.counter as ent_no %}
+                <input type="hidden" name="ent_id_{{ent_no}}_{{r.reg_id}}" value="{{entity.ent_id}}">
+                <h5 id="entity_header_{{ent_no}}_{{r.reg_id}}">Entity {{ ent_no }}</h5>
+                <div id="entity_block_{{ent_no}}_{{r.reg_id}}">
+                    <div class="field-wrapper textinput required">
                     <div class="field-errors" style="display: none"></div>
 
-                    <label for="fein_{{forloop.counter}}_{{r.reg_id}}"> FEIN<sup>5</sup> </label>
+                    <label for="entity_name_{{ent_no}}_{{r.reg_id}}">
+                        Name<span class="asterisk">*</span>
+                    </label>
 
                     <input
-                    type="text"
-                    name="fein_{{forloop.counter}}_{{r.reg_id}}"
-                    placeholder="12-3456789"
-                    class="textinput"
-                    id="fein_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    minlength="10"
-                    maxlength="10"
-                    pattern="\d{2}-\d{7}"
-                    {% if entity.fein %} value="{{ entity.fein }}" {% endif %}
+                        type="text"
+                        name="entity_name_{{ent_no}}_{{r.reg_id}}"
+                        required
+                        class="textinput"
+                        id="entity_name_{{ent_no}}_{{r.reg_id}}"
+                        value="{{ entity.ent_name }}"
                     />
-
-                    <div id="help-text-fein" class="help-text">
-                    Enter in format <samp>12-3456789</samp>.
                     </div>
-                </div>
-                <div class="field-wrapper textinput">
+                    <div class="field-wrapper required">
+                    <label
+                        >Number/Code<span class="asterisk">*</span>
+                    </label>
+                    <div class="help-text">
+                        Provide all available identifiers. At least one of the following
+                        is required.
+                    </div>
+                    </div>
+
+                    <div class="o-grid o-grid--col-auto-count">
+                    <div class="field-wrapper textinput">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="fein_{{ent_no}}_{{r.reg_id}}"> FEIN<sup>5</sup> </label>
+
+                        <input
+                        type="text"
+                        name="fein_{{ent_no}}_{{r.reg_id}}"
+                        placeholder="12-3456789"
+                        class="textinput"
+                        id="fein_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        minlength="10"
+                        maxlength="10"
+                        pattern="\d{2}-\d{7}"
+                        {% if entity.fein %} value="{{ entity.fein }}" {% endif %}
+                        />
+
+                        <div id="help-text-fein" class="help-text">
+                        Enter in format <samp>12-3456789</samp>.
+                        </div>
+                    </div>
+                    <div class="field-wrapper textinput">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="license_number_{{ent_no}}_{{r.reg_id}}"> License Number </label>
+
+                        <input
+                        type="number"
+                        name="license_number_{{ent_no}}_{{r.reg_id}}"
+                        placeholder="1234567890"
+                        class="integerfield"
+                        id="license_number_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        min="0"
+                        max="2147483648"
+                        {% if entity.license %} value="{{ entity.license }}" {% endif %}
+                        />
+
+                        <div id="help-text-license_number" class="help-text">
+                        Enter digits only.
+                        </div>
+                    </div>
+                    <div class="field-wrapper textinput">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <label for="naic_company_code_{{ent_no}}_{{r.reg_id}}"> NAIC<sup>6</sup> Company Code </label>
+
+                        <input
+                        type="number"
+                        name="naic_company_code_{{ent_no}}_{{r.reg_id}}"
+                        placeholder="12345"
+                        class="integerfield"
+                        id="naic_company_code_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        min="0"
+                        max="2147483648"
+                        {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
+                        />
+
+                        <div id="help-text-naic_company_code" class="help-text">
+                        Enter digits only.
+                        </div>
+                    </div>
+                    </div>
+                    <h6>File Submission</h6>
+                    <div class="field-wrapper required">
+                    <label>
+                        Types of Files
+                    </label>
+                    <div class="help-text">
+                        Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                    </div>
+                    </div>
+
+                    <div class="field-wrapper checkboxselectmultiple required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <ul id="types_of_files" class="checkboxselectmultiple">
+                            <li>
+                                <label for="types_of_files_eligibility_enrollment_{{ent_no}}_{{r.reg_id}}"
+                                ><input
+                                    type="checkbox"
+                                    name="types_of_files_eligibility_enrollment_{{ent_no}}_{{r.reg_id}}"
+                                    required
+                                    id="types_of_files_eligibility_enrollment_{{ent_no}}_{{r.reg_id}}"
+                                    checked=""
+                                    disabled
+                                />Eligibility/Enrollment*</label
+                                >
+                            </li>
+                            {% for file_type, file_type_selected in entity.files_type.items %}
+                            {% if not forloop.first %}
+                            <li>
+                                <label for="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    ><input
+                                    type="checkbox"
+                                    name="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    id="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    {% if file_type_selected %}checked{% endif %}
+                                    />{{ file_type }}</label
+                                >
+                                </li>
+                            {% endif %}
+                        {% endfor %}                
+                        </ul>
+                    </div>
+
+                    <h6>
+                    Coverage Estimates
+                    <small
+                        >(Inclusive of all claims as of December 31 of previous
+                        year.)</small>
+                    </h6>
+
+                    <div class="field-wrapper numberinput required">
                     <div class="field-errors" style="display: none"></div>
 
-                    <label for="license_number_{{forloop.counter}}_{{r.reg_id}}"> License Number </label>
+                    <label for="total_covered_lives_{{ent_no}}_{{r.reg_id}}">
+                        Total Covered Lives<span class="asterisk">*</span>
+                    </label>
 
                     <input
-                    type="text"
-                    name="license_number_{{forloop.counter}}_{{r.reg_id}}"
-                    placeholder="1234567890"
-                    class="textinput"
-                    id="license_number_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    minlength="5"
-                    maxlength="10"
-                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
-                    {% if entity.license %} value="{{ entity.license }}" {% endif %}
+                        type="number"
+                        name="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
+                        required
+                        class="integerfield"
+                        id="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        min="1"
+                        step="1"
+                        value="{{ entity.no_covered }}"
                     />
-
-                    <div id="help-text-license_number" class="help-text">
-                    Enter a 5 or 10 digit number.
                     </div>
-                </div>
-                <div class="field-wrapper textinput">
+
+                    <div class="field-wrapper numberinput required">
                     <div class="field-errors" style="display: none"></div>
 
-                    <label for="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"> NAIC<sup>6</sup> Company Code </label>
+                    <label for="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}">
+                        Claims and Encounters Volume<span class="asterisk">*</span>
+                    </label>
 
                     <input
-                    type="text"
-                    name="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
-                    placeholder="12345"
-                    class="textinput"
-                    id="naic_company_code_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    minlength="5"
-                    maxlength="5"
-                    pattern="^[1-9]\d{4}"
-                    {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
+                        type="number"
+                        name="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
+                        required
+                        class="integerfield"
+                        id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        min="1"
+                        value="{{ entity.claim_and_enc_vol }}"
                     />
+                    </div>
 
-                    <div id="help-text-naic_company_code" class="help-text">
-                    Enter a 5 digit number.
+                    <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
+                    <div class="field-errors" style="display: none"></div>
+
+                    <label for="total_claims_value_{{ent_no}}_{{r.reg_id}}">
+                        Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+                    </label>
+
+                    <span class="s-affixed-input-wrapper__prefix">$</span>
+                    <input
+                        type="number"
+                        name="total_claims_value_{{ent_no}}_{{r.reg_id}}"
+                        required
+                        class="integerfield"
+                        id="total_claims_value_{{ent_no}}_{{r.reg_id}}"
+                        inputmode="numeric"
+                        step="0.01"
+                        min="0.01"
+                        value="{{ entity.claim_val }}"
+                    />
                     </div>
                 </div>
-                </div>
-                <h6>
-                Coverage Estimates
-                <small
-                    >(Inclusive of all claims as of December 31 of previous
-                    year.)</small
-                >
-                </h6>
-
-                <div class="field-wrapper numberinput required">
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}">
-                    Total Covered Lives<span class="asterisk">*</span>
-                </label>
-
-                <input
-                    type="number"
-                    name="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}"
-                    required
-                    class="integerfield"
-                    id="total_covered_lives_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    min="1"
-                    step="1"
-                    value="{{ entity.no_covered }}"
-                />
-                </div>
-
-                <div class="field-wrapper numberinput required">
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}">
-                    Claims and Encounters Volume<span class="asterisk">*</span>
-                </label>
-
-                <input
-                    type="number"
-                    name="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}"
-                    required
-                    class="integerfield"
-                    id="claims_encounters_volume_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    min="1"
-                    value="{{ entity.claim_and_enc_vol }}"
-                />
-                </div>
-
-                <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
-                <div class="field-errors" style="display: none"></div>
-
-                <label for="total_claims_value_{{forloop.counter}}_{{r.reg_id}}">
-                    Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
-                </label>
-
-                <span class="s-affixed-input-wrapper__prefix">$</span>
-                <input
-                    type="number"
-                    name="total_claims_value_{{forloop.counter}}_{{r.reg_id}}"
-                    required
-                    class="integerfield"
-                    id="total_claims_value_{{forloop.counter}}_{{r.reg_id}}"
-                    inputmode="numeric"
-                    step="0.01"
-                    min="0.01"
-                    value="{{ entity.claim_val }}"
-                />
-                </div>
+            {% endwith %}
             {% endfor %}
             {# Additional entities rendered here... #}
             {% with r.view_modal_content.entities|length as no_entities %}
@@ -581,16 +467,16 @@
             <div class="field-wrapper textinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="entity_name">
+                <label for="entity_name_1">
                 Name<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="text"
-                name="entity_name"
+                name="entity_name_1"
                 required
                 class="textinput"
-                id="entity_name"
+                id="entity_name_1"
                 />
             </div>
             <div class="field-wrapper required">
@@ -602,19 +488,18 @@
                 is required.
                 </div>
             </div>
-
             <div class="o-grid o-grid--col-auto-count">
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="fein"> FEIN<sup>5</sup> </label>
+                <label for="fein_1"> FEIN<sup>5</sup> </label>
 
                 <input
                     type="text"
-                    name="fein"
+                    name="fein_1"
                     placeholder="12-3456789"
                     class="textinput"
-                    id="fein"
+                    id="fein_1"
                     inputmode="numeric"
                     minlength="10"
                     maxlength="10"
@@ -629,48 +514,111 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="license_number"> License Number </label>
+                <label for="license_number_1"> License Number </label>
 
                 <input
-                    type="text"
-                    name="license_number"
+                    type="number"
+                    name="license_number_1"
                     placeholder="1234567890"
-                    class="textinput"
-                    id="license_number"
+                    class="integerfield"
+                    id="license_number_1"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="10"
-                    pattern="^[1-9]\d{4}|^[1-9]\d{9}"
+                    min="0"
+                    max="2147483648"
                     required
                 />
 
                 <div id="help-text-license_number" class="help-text">
-                    Enter a 5 or 10 digit number.
+                    Enter digits only.
                 </div>
                 </div>
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="naic_company_code"> NAIC<sup>6</sup> Company Code </label>
+                <label for="naic_company_code_1"> NAIC<sup>6</sup> Company Code </label>
 
                 <input
-                    type="text"
-                    name="naic_company_code"
+                    type="number"
+                    name="naic_company_code_1"
                     placeholder="12345"
-                    class="textinput"
-                    id="naic_company_code"
+                    class="integerfield"
+                    id="naic_company_code_1"
                     inputmode="numeric"
-                    minlength="5"
-                    maxlength="5"
-                    pattern="^[1-9]\d{4}"
+                    min="0"
+                    max="2147483648"
                     required
                 />
 
                 <div id="help-text-naic_company_code" class="help-text">
-                    Enter a 5 digit number.
+                    Enter digits only.
                 </div>
                 </div>
             </div>
+            <h6>File Submission</h6>
+            <div class="field-wrapper required">
+            <label>
+                Types of Files<span class="asterisk">*</span>
+            </label>
+            <div class="help-text">
+                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+            </div>
+            </div>
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+    
+                <ul id="types_of_files" class="checkboxselectmultiple">
+                    <li>
+                        <label for="types_of_files_eligibility_enrollment_1"
+                        ><input
+                            type="checkbox"
+                            name="types_of_files_eligibility_enrollment_1"
+                            required
+                            id="types_of_files_eligibility_enrollment_1"
+                            checked=""
+                            disabled
+                        />Eligibility/Enrollment*</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_provider_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_provider_1"
+                            id="types_of_files_provider_1"
+                            />Provider</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_medical_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_medical_1"
+                            id="types_of_files_medical_1"
+                            />Medical</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_pharmacy_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_pharmacy_1"
+                            id="types_of_files_pharmacy_1"
+                            />Pharmacy</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_files_dental_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_files_dental_1"
+                            id="types_of_files_dental_1"
+                            />Dental</label
+                        >
+                    </li>
+                </ul>
+            </div>
+
             <h6>
                 Coverage Estimates
                 <small
@@ -682,16 +630,16 @@
             <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="total_covered_lives">
+                <label for="total_covered_lives_1">
                 Total Covered Lives<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="number"
-                name="total_covered_lives"
+                name="total_covered_lives_1"
                 required
                 class="integerfield"
-                id="total_covered_lives"
+                id="total_covered_lives_1"
                 inputmode="numeric"
                 min="1"
                 step="1"
@@ -701,16 +649,16 @@
             <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="claims_encounters_volume">
+                <label for="claims_encounters_volume_1">
                 Claims and Encounters Volume<span class="asterisk">*</span>
                 </label>
 
                 <input
                 type="number"
-                name="claims_encounters_volume"
+                name="claims_encounters_volume_1"
                 required
                 class="integerfield"
-                id="claims_encounters_volume"
+                id="claims_encounters_volume_1"
                 inputmode="numeric"
                 min="1"
                 />
@@ -719,17 +667,17 @@
             <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="total_claims_value">
+                <label for="total_claims_value_1">
                 Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
                 </label>
 
                 <span class="s-affixed-input-wrapper__prefix">$</span>
                 <input
                 type="number"
-                name="total_claims_value"
+                name="total_claims_value_1"
                 required
                 class="integerfield"
-                id="total_claims_value"
+                id="total_claims_value_1"
                 inputmode="numeric"
                 step="0.01"
                 min="0.01"
