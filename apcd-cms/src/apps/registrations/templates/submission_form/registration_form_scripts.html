@@ -277,6 +277,12 @@
           <div id="help-text-total_claims_value_${entities}" class="help-text">
           </div>
         </div>
+        ${ entities === 5 ?
+            {% if not r %}
+             '<h6>If you need to associate more than 5 entities with your registration, please <a href="/workbench/dashboard" target="_blank">submit a ticket</a> with your additional entries and your registration ID (displayed after submitting this form).</h6>'
+            {% endif %}
+          : ''
+        }
         `;
         const inputs = Array.from(
           document.querySelectorAll(`
