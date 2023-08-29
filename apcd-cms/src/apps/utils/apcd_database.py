@@ -136,13 +136,7 @@ def create_registration(form):
             posted_date,
             applicable_period_start,
             applicable_period_end,
-            file_me,
-            file_pv,
-            file_mc,
-            file_pc,
-            file_dc,
             submitting_for_self,
-            submission_method,
             registration_status,
             org_type,
             business_name,
@@ -150,21 +144,15 @@ def create_registration(form):
             city,
             state,
             zip
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
             None,
             None,
-            True,
-            True if 'types_of_files_provider' in form else False,
-            True if 'types_of_files_medical' in form else False,
-            True if 'types_of_files_pharmacy' in form else False,
-            True if 'types_of_files_dental' in form else False,
             True if form['on-behalf-of'] == 'true' else False,
-            _clean_value(form['submission_method']),
             'Received',
-            _clean_value(form['type']),
+            form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
@@ -289,32 +277,24 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
-            values = (
-                reg_id,
-                _set_int(form['total_claims_value_{}'.format(str_end)]),
-                _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-                _set_int(form['license_number_{}'.format(str_end)]),
-                _set_int(form['naic_company_code_{}'.format(str_end)]),
-                _set_int(form['total_covered_lives_{}'.format(str_end)]),
-                _clean_value(form['entity_name_{}'.format(str_end)]),
-                _clean_value(form['fein_{}'.format(str_end)])
-            )
-        else:            
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
-            values = (
-                reg_id,
-                _set_int(form[f'total_claims_value{str_end}']),
-                _set_int(form[f'claims_encounters_volume{str_end}']),
-                _set_int(form[f'license_number{str_end}']),
-                _set_int(form[f'naic_company_code{str_end}']),
-                _set_int(form[f'total_covered_lives{str_end}']),
-                _clean_value(form[f'entity_name{str_end}']),
-                _clean_value(form[f'fein{str_end}'])
-            )
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+            return
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        values = (
+            reg_id,
+            float(form['total_claims_value_{}'.format(str_end)]),
+            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
+            _set_int(form['license_number_{}'.format(str_end)]),
+            _set_int(form['naic_company_code_{}'.format(str_end)]),
+            _set_int(form['total_covered_lives_{}'.format(str_end)]),
+            _clean_value(form['entity_name_{}'.format(str_end)]),
+            _clean_value(form['fein_{}'.format(str_end)]),
+            True,
+            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
+            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
+            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
+            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+        )
 
         operation = """INSERT INTO registration_entities(
             registration_id,
@@ -324,8 +304,13 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             naic_company_code,
             total_covered_lives,
             entity_name,
-            fein
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+            fein,
+            file_me,
+            file_pv,
+            file_mc,
+            file_pc,
+            file_dc
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
             host=APCD_DB['host'],

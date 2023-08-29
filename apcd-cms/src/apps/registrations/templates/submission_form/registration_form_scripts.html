@@ -1,13 +1,39 @@
 {% load static %}
 
-<aside>    
-  {# To check for blank space only in text inputs and invalid characters #}
-  <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
-  {# Adds blank space listener to all text input fields on page load #}
-  <script>
-    const formTextInputs = document.querySelectorAll('input, textarea');
-    noEmptyInputs(formTextInputs);
-  </script>
+<aside>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {# To check for blank space only in text inputs #}
+    <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+    {# Adds blank space listener to all text input fields on page load #}
+    <script>
+      const formTextInputs = document.querySelectorAll('input');
+      noEmptyInputs(formTextInputs);
+    </script>
+    {# To require at least one "entity" identifier value #}
+    <script id="form-entity_id-required">
+      function entityIdGroupValidation(ent_no, reg_id) {
+        const idGroup = Array.from(
+          document.querySelectorAll(`
+          input[name=fein_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=license_number_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=naic_company_code_${ent_no}${ reg_id ? `_${reg_id}`: ''}]`)
+        );
+        idGroup.forEach(i => i.addEventListener('invalid', function (event) {
+          if (event.target.validity.valueMissing) {
+            event.target.setCustomValidity('Please fill in at least one Number/Code.');
+          }
+        }));
+        idGroup.forEach(i => i.addEventListener('change', function (event) {
+          idGroup.forEach(j => {
+            j.required = true;
+            if (!event.target.validity.valueMissing || idGroup.some(input => input.value.length > 0)) { // if value exists, no other inputs in this group are required
+              j.setCustomValidity('');
+              j.required = false;
+            }
+          });
+        }));
+      }
+    </script>  
     {# To let user add and remove entities #}
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
@@ -32,7 +58,16 @@
         {% else %}
             1
         {% endif %};
-                    
+      let reg_id = 
+        {% if r %}
+          Number(`{{r.reg_id}}`)
+        {% else %}
+          null
+        {% endif %};
+
+      for (let ent_no = 1; ent_no < entities + 1; ent_no +=1) {
+        entityIdGroupValidation(ent_no, reg_id); // add validation for entities already on form at page load
+      };
       btnStatus();
 
       addEntityBtn.addEventListener("click", () => {
@@ -86,41 +121,104 @@
             <div class="field-errors" style="display: none"></div>
             <label for="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> License Number </label>
             <input
-              type="text"
+              type="number"
               name="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               placeholder="1234567890"
-              class="textinput"
+              class="integerfield"
               id="license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               inputmode="numeric"
-              minlength="5"
-              maxlength="10"
-              pattern="^[1-9]\\d{4}|^[1-9]\\d{9}"
+              min="0"
+              max="2147483648"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
-              Enter a 5 or 10 digit number.
+              Enter digits only.
             </div>
           </div>
           <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
             <label for="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> NAIC<sup>6</sup> Company Code </label>
             <input
-              type="text"
+              type="number"
               name="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               placeholder="12345"
-              class="textinput"
+              class="integerfield"
               id="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
               inputmode="numeric"
-              minlength="5"
-              maxlength="5"
-              pattern="^[1-9]\\d{4}"
+              min="0"
+              max="2147483648"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
-              Enter a 5 digit number.
+              Enter digits only.
             </div>
           </div>
         </div>
+        <h6>File Submission</h6>
+        <div class="field-wrapper required">
+        <label>
+            Types of Files
+        </label>
+        <div class="help-text">
+            Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+        </div>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_files" class="checkboxselectmultiple">
+                <li>
+                    <label for="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                    ><input
+                        type="checkbox"
+                        name="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        required
+                        id="types_of_files_eligibility_enrollment_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        checked=""
+                        disabled
+                    />Eligibility/Enrollment*</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_provider_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Provider</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_medical_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Medical</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_pharmacy_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Pharmacy</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_files_dental_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        />Dental</label
+                    >
+                </li>
+            </ul>
+        </div>
+
         <h6>
           Coverage Estimates
           <small>(Inclusive of all claims as of December 31 of previous year.)</small>
@@ -187,11 +285,11 @@
             input[name=naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}]
           `)
         );
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.value.length));
-        };
-        inputs.forEach(i => i.addEventListener('input', inputListener));
+        entityIdGroupValidation(entities, reg_id); // add entity id validation for new entities on form
+
+        const addEntityNameInput = document.querySelectorAll(`input[name=entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}]`);
+        noEmptyInputs(addEntityNameInput);
+
         btnStatus();
       });
 
@@ -267,7 +365,7 @@
                 class="telephoneinput"
                 id="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
                 inputmode="tel"
-                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+                pattern="^(\\+0?1\\s)?\\(?(?![{}'"<>\\/])\\d{3}\\)?(?![{}'"<>\\/])[\\s.-](?![{}'"<>\\/])\\d{3}(?![{}'"<>\\/])[\\s.-](?![{}'"<>\\/])\\d{4}$"
               />
               <div id="help-text-contact_phone_${contacts}" class="help-text">
                 <details>
@@ -317,6 +415,13 @@
               </div>
             </div>
         `;
+
+        const addContactTextInputs = document.querySelectorAll(`
+          input[name=contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}],
+          input[name=contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}]
+        `);
+        noEmptyInputs(addContactTextInputs);
+
         btnStatus();
       });
 
@@ -327,23 +432,5 @@
         if (contacts > 1) contacts -= 1;
         btnStatus();
       });
-    </script>
-    {# To require at least one "entity" identifier value #}
-    <script id="form-entity_id-required" type="module">
-      for (let ent_no = 1; ent_no < 6; ent_no++) {
-        const inputs = Array.from(
-          document.querySelectorAll(`
-          input[name=fein_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
-          input[name=license_number_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}],
-          input[name=naic_company_code_${ent_no}{% if r %}_{{r.reg_id}}{% endif %}]`)
-        );
-        
-        const inputListener = e => {
-          inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.value.length));
-        };
-
-        inputs.forEach(i => i.addEventListener('input', inputListener));
-      }
     </script>
 </aside>
