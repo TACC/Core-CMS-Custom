@@ -419,7 +419,8 @@
         const addContactTextInputs = document.querySelectorAll(`
           input[name=contact_type_${contacts}{% if r %}_{{r.reg_id}}{% endif %}],
           input[name=contact_name_${contacts}{% if r %}_{{r.reg_id}}{% endif %}],
-          input[name=contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}]
+          input[name=contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}],
+          input[name=contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}]
         `);
         noEmptyInputs(addContactTextInputs);
 
