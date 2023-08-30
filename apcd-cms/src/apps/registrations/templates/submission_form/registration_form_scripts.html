@@ -345,6 +345,12 @@
           <div id="help-text-total_claims_value_${entities}" class="help-text">
           </div>
         </div>
+        ${ entities === 5 ?
+            {% if not r %}
+             `<p class="c-message c-message--type-info c-message--scope-inline">If you need to associate more than 5 entities with your registration, <a href="/workbench/dashboard" target="_blank">submit a ticket</a> with your additional entries and your registration ID (displayed after submitting this form).</p>`
+            {% endif %}
+          : ''
+        }
         `;
         entityIdGroupValidation(entities, reg_id); // add entity input validation for new entities on form
         entityPlanTypeValidation(entities, reg_id);
