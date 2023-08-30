@@ -332,6 +332,31 @@
                         </div>
                     </div>
                     </div>
+                    <h6>Type of Plan</h6>
+                    <div class="field-wrapper required">
+                    <label>
+                        Plan Types
+                    </label>
+                    </div>
+
+                    <div class="field-wrapper checkboxselectmultiple required">
+                        <div class="field-errors" style="display: none"></div>
+
+                        <ul id="types_of_plans" class="checkboxselectmultiple">
+                        {% for plan_type, plan_type_selected in entity.plans_type.items %}
+                            <li>
+                                <label for="types_of_plans_{{ plan_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    ><input
+                                    type="checkbox"
+                                    name="types_of_plans_{{ plan_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    id="types_of_plans_{{ plan_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    {% if plan_type_selected %}checked{% endif %}
+                                    />{{ plan_type }}</label
+                                >
+                            </li>
+                        {% endfor %}                
+                        </ul>
+                    </div>
                     <h6>File Submission</h6>
                     <div class="field-wrapper required">
                     <label>
@@ -554,6 +579,50 @@
                 </div>
                 </div>
             </div>
+            <h6>Type of Plan</h6>
+            <div class="field-wrapper required">
+                <label>
+                    Plan Types<span class="asterisk">*</span>
+                </label>
+            </div>
+
+            <div class="field-wrapper checkboxselectmultiple required">
+                <div class="field-errors" style="display: none"></div>
+    
+                <ul id="types_of_plans" class="checkboxselectmultiple">
+                    <li>
+                        <label for="types_of_plans_commercial_1"
+                        ><input
+                            type="checkbox"
+                            name="types_of_plans_commercial_1"
+                            id="types_of_plans_commercial_1"
+                            required
+                        />Commercial</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_plans_medicare_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_plans_medicare_1"
+                            id="types_of_plans_medicare_1"
+                            required
+                            />Medicare</label
+                        >
+                    </li>
+                    <li>
+                        <label for="types_of_plans_medicaid_1"
+                            ><input
+                            type="checkbox"
+                            name="types_of_plans_medicaid_1"
+                            id="types_of_plans_medicaid_1"
+                            required
+                            />Medicaid</label
+                        >
+                    </li>
+                </ul>
+            </div>
+
             <h6>File Submission</h6>
             <div class="field-wrapper required">
             <label>
