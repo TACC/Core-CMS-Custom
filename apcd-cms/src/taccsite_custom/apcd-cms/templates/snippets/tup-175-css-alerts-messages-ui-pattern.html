@@ -1,20 +1,12 @@
 {# Load message styles from Core-Styles at the same version Core-CMS has #}
-{# FAQ: APCD-CMS uses default TACC_CORE_STYLES_VERSION = 0, thus v0.13.0 #}
+{# FAQ: APCD-CMS uses default TACC_CORE_STYLES_VERSION = 0, so v0.13.0 #}
 <link href="https://unpkg.com/@tacc/core-styles@0.13.0/dist/components/c-message.css" rel="stylesheet">
 
 {% comment %}
-To get newer c-message styles --
-
-* `c-message--type-…` (e.g. `c-message--type-info`)
-* `c-message--scope-…` (e.g. `c-message--scope-inline`)
-
--- you have two options:
-
-A. add CMS setting `TACC_CORE_STYLES_VERSION = 2`
-B. load
-  * …/@tacc/core-styles@2.N.N/dist/components/c-message.css
-  * …/@tacc/core-styles@2.N.N/dist/components/c-message--expanded.css
-  * …/@tacc/core-styles@2.N.N/dist/settings/color.css
+To get newer c-message styles (e.g. `c-message--type-…`, `c-message--type-info`)
+EITHER load CMS setting `TACC_CORE_STYLES_VERSION = 2` OR load relevant styles
+from @tacc/core-styles@2.N.N: components/c-message.css,
+components/c-message--expanded.css, settings/color.css
 {% endcomment %}
 
 {# The {{ html }} allows DjangoCMS Snippet to pass in more markup #}
