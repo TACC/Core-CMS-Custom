@@ -48,6 +48,17 @@
                   <dd class="c-data-list__value">{{entity.license}}</dd>
                   <dt class="c-data-list__key">NAIC Company Code</dt>
                   <dd class="c-data-list__value">{{entity.naic}}</dd>
+                  <h6>Type of Plan</h6>
+                  <dd>
+                    <dl class="c-data-list--is-vert c-data-list--is-wide">
+                      <dt class="c-data-list__key">Types of Plans</dt>
+                      {% for plan_type, plan_type_selected in entity.plans_type.items %}
+                        {% if plan_type_selected %}
+                          <dd class="c-data-list__value">{{plan_type}}</dd>
+                        {% endif %}
+                      {% endfor %}
+                    </dl>
+                  </dd>
                   <h6>File Submission</h6>
                   <dd>
                     <dl class="c-data-list--is-vert c-data-list--is-wide">
