@@ -1,6 +1,12 @@
 {# Load message styles from Core-Styles at the same version Core-CMS has #}
 {# FAQ: APCD-CMS uses default TACC_CORE_STYLES_VERSION = 0, so v0.13.0 #}
 <link href="https://unpkg.com/@tacc/core-styles@0.13.0/dist/components/c-message.css" rel="stylesheet">
+<style>
+.c-message a {
+  /* Fix Core-Styles v0 bug */
+  color: var(--global-color-accent--normal); /* overwite c-message.css */
+}
+</style>
 
 {% comment %}
 To get newer c-message styles (e.g. `c-message--type-…`, `c-message--type-info`)
