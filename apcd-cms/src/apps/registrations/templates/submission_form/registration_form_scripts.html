@@ -34,6 +34,30 @@
         }));
       }
     </script>  
+    <script id="form-entity_plan_type-required">
+      function entityPlanTypeValidation(ent_no, reg_id) {
+        const planGroup = Array.from(
+          document.querySelectorAll(`
+          input[name=types_of_plans_commercial_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=types_of_plans_medicare_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=types_of_plans_medicaid_${ent_no}${ reg_id ? `_${reg_id}`: ''}]`)
+        );
+        planGroup.forEach(i => i.addEventListener('invalid', function (event) {
+          if (!event.target.checked) {
+            event.target.setCustomValidity('Please select at least one plan type.');
+          }
+        }));
+        planGroup.forEach(i => i.addEventListener('click', function (event) {
+          planGroup.forEach(j => {
+            j.required = true;
+            if (planGroup.some(input => input.checked)) { // if box checked, no other inputs in this group are required
+              j.setCustomValidity('');
+              j.required = false;
+            }
+          });
+        }));
+      }
+    </script>  
     {# To let user add and remove entities #}
     {# RFE: Do not duplicate entity markup #}
     {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
@@ -67,6 +91,7 @@
 
       for (let ent_no = 1; ent_no < entities + 1; ent_no +=1) {
         entityIdGroupValidation(ent_no, reg_id); // add validation for entities already on form at page load
+        entityPlanTypeValidation(ent_no, reg_id);
       };
       btnStatus();
 
@@ -153,6 +178,49 @@
               Enter digits only.
             </div>
           </div>
+        </div>
+        <h6>Type of Plan</h6>
+        <div class="field-wrapper required">
+            <label>
+                Plan Types<span class="asterisk">*</span>
+            </label>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_plans" class="checkboxselectmultiple">
+                <li>
+                    <label for="types_of_plans_commercial_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                    ><input
+                        type="checkbox"
+                        name="types_of_plans_commercial_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_plans_commercial_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        required
+                    />Commercial</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_plans_medicare_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_plans_medicare_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_plans_medicare_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        required
+                        />Medicare</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_plans_medicaid_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_plans_medicaid_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        id="types_of_plans_medicaid_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
+                        required
+                        />Medicaid</label
+                    >
+                </li>
+            </ul>
         </div>
         <h6>File Submission</h6>
         <div class="field-wrapper required">
@@ -277,15 +345,15 @@
           <div id="help-text-total_claims_value_${entities}" class="help-text">
           </div>
         </div>
+        ${ entities === 5 ?
+            {% if not r %}
+             `<p class="c-message c-message--type-info c-message--scope-inline">If you need to associate more than 5 entities with your registration, <a href="/workbench/dashboard" target="_blank">submit a ticket</a> with your additional entries and your registration ID (displayed after submitting this form).</p>`
+            {% endif %}
+          : ''
+        }
         `;
-        const inputs = Array.from(
-          document.querySelectorAll(`
-            input[name=fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}],
-            input[name=license_number_${entities}{% if r %}_{{r.reg_id}}{% endif %}],
-            input[name=naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}]
-          `)
-        );
-        entityIdGroupValidation(entities, reg_id); // add entity id validation for new entities on form
+        entityIdGroupValidation(entities, reg_id); // add entity input validation for new entities on form
+        entityPlanTypeValidation(entities, reg_id);
 
         const addEntityNameInput = document.querySelectorAll(`input[name=entity_name_${entities}{% if r %}_{{r.reg_id}}{% endif %}]`);
         noEmptyInputs(addEntityNameInput);
