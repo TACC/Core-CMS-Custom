@@ -1,13 +1,37 @@
-<!-- CAVEAT: If heading level changes then update each heading selector here -->
-<style id="page-css-members">
-/* Scroll to <HR> Above Heading */
-
+<style id="page-css-members--grid-min-width">
 /* To control grid item minimum width */
 .o-grid {
     --width: 450px;
     grid-auto-rows: unset; /* overwrite site.css .o-grid */
 }
 </style>
+
+
+<style id="page-css-members--grid-cell-overflow-better-fix">
+/* To remove solution (to problem this page doesn't have) and its side effect */
+/* TODO: Remove this after deploy of TACC/Core-Styles#bd1b007 */
+.o-grid > * {
+    overflow: unset;
+}
+</style>
+
+
+<!-- ECEP-216: Members page redesign removes this feature - 2022-08-10 --><!--
+<style id="page-css-members--show-all-link">
+/* Show All Link (from JavaScript) */
+.c-nav + a.show-all {
+  display: inline-block;
+
+  margin-top: 1em;
+  padding-inline: 0.5em; /* mimic `.c-nav a` *\/
+}
+.c-nav--boxed + a.show-all {
+  margin-left: calc(
+    var(--global-space--list-indent) / 2
+  ); /* from `c-nav.css` *\/
+}
+</style>
+-->
 
 
 
