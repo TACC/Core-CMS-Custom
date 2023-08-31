@@ -8,7 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-'''
+
 class SubmissionsTable(TemplateView):
 
     template_name = 'list_submissions.html'
@@ -62,7 +62,7 @@ class SubmissionsTable(TemplateView):
 
         return context
 
-'''
+
 @login_required
 def check_submitter_role(request):
     logger.info("Checking submitter access for user: %s", request.user.username)
