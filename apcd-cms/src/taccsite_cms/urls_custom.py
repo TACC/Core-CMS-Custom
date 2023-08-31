@@ -10,5 +10,5 @@ custom_urls = [
     path('register/', include('apps.registrations.urls', namespace='register')),
     # path('submissions/', include('apps.extension.urls', namespace='extension')),
     # path('submissions/', include('apps.exception.urls', namespace='exception')),
-    # path('submissions/', include('apps.submissions.urls', namespace='submissions'))
+    path('submissions/', include('apps.submissions.urls', namespace='submissions'))
 ]
