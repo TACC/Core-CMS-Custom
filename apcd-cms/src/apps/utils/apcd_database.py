@@ -294,6 +294,9 @@ def get_registration_entities(reg_id=None):
                 registration_entities.total_covered_lives,
                 registration_entities.entity_name,
                 registration_entities.fein,
+                registration_entities.plan_coml,
+                registration_entities.plan_mdcr,
+                registration_entities.plan_mdcd,
                 registration_entities.file_me,
                 registration_entities.file_pv,
                 registration_entities.file_mc,
@@ -331,6 +334,9 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
+            True if 'types_of_plans_commercial_{}'.format(str_end) in form else False,
+            True if 'types_of_plans_medicare_{}'.format(str_end) in form else False,
+            True if 'types_of_plans_medicaid_{}'.format(str_end) in form else False,
             True,
             True if 'types_of_files_provider_{}'.format(str_end) in form else False,
             True if 'types_of_files_medical_{}'.format(str_end) in form else False,
@@ -347,12 +353,15 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
             total_covered_lives,
             entity_name,
             fein,
+            plan_coml,
+            plan_mdcr,
+            plan_mdcd,
             file_me,
             file_pv,
             file_mc,
             file_pc,
             file_dc
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -397,6 +406,9 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             _set_int(form['total_covered_lives_{}'.format(str_end)]),
             _clean_value(form['entity_name_{}'.format(str_end)]),
             _clean_value(form['fein_{}'.format(str_end)]),
+            True if 'types_of_plans_commercial_{}'.format(str_end) in form else False,
+            True if 'types_of_plans_medicare_{}'.format(str_end) in form else False,
+            True if 'types_of_plans_medicaid_{}'.format(str_end) in form else False,
             True if 'types_of_files_provider_{}'.format(str_end) in form else False,
             True if 'types_of_files_medical_{}'.format(str_end) in form else False,
             True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
@@ -421,6 +433,9 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             total_covered_lives = %s,
             entity_name = %s,
             fein = %s,
+            plan_coml = %s,
+            plan_mdcr = %s,
+            plan_mdcd = %s,
             file_pv = %s,
             file_mc = %s,
             file_pc = %s,
@@ -1181,8 +1196,7 @@ def update_extension(form):
             'applicable-data-period': 'applicable_data_period',
             'status': 'status',
             'outcome': 'outcome',
-            'approved-expiration-date': 'approved_expiration_date',
-            'notes': 'notes'
+            'approved-expiration-date': 'approved_expiration_date'
         }
         # To make sure fields are not blank. 
         # If they aren't, add column to update set operation
@@ -1191,8 +1205,9 @@ def update_extension(form):
             if value not in (None, ""):
                 set_values.append(f"{column_name} = %s")
 
-        operation += ", ".join(set_values) + " WHERE extension_id = %s"
-        ## add last update to all extension updates
+        # to allow notes to be cleared, need to move notes out of the loop that ignores none
+        operation += ", ".join(set_values) + ", notes = %s WHERE extension_id = %s"
+        ## add last update time to all extension updates
         values = [
             datetime.now(),
         ]
@@ -1206,6 +1221,9 @@ def update_extension(form):
                 # else server side clean values
                 else:
                     values.append(_clean_value(value))
+
+        # to allow notes to be cleared, need to move notes out of the loop that ignores none
+        values.append(_clean_value(form['notes']))
         ## to make sure extension id is last in query to match with WHERE statement
         values.append(_clean_value(form['extension_id']))
 
@@ -1217,8 +1235,6 @@ def update_extension(form):
     finally:
         if cur is not None:
             cur.close()
-        if conn is not None:
-            conn.close()
 
 def get_submitter_for_extend_or_except(user):
     cur = None
@@ -1383,7 +1399,6 @@ def update_exception(form):
             'approved': 'approved_expiration_date',
             'status': 'status',
             'outcome': 'outcome',
-            'notes': 'notes'
         }
         # To make sure fields are not blank. 
         # If they aren't, add column to update operation
@@ -1391,9 +1406,9 @@ def update_exception(form):
             value = form.get(field)
             if value not in (None, ""):
                 set_values.append(f"{column_name} = %s")
-
-        operation += ", ".join(set_values) + " WHERE exception_id = %s"
-        ## add last update to all extension updates
+# to allow notes to be cleared, need to move notes out of the loop that ignores none
+        operation += ", ".join(set_values) + ", notes = %s WHERE exception_id = %s"
+        ## add last update time to all exceptions updates
         values = [
             datetime.now(),
         ]
@@ -1404,9 +1419,12 @@ def update_exception(form):
                 # to make sure applicable data period field is the right type for insert to DB
                 if column_name == 'applicable_data_period':
                     values.append(int(value.replace('-', '')))
-        # server side clean values
+                # server side clean values
                 else:
                     values.append(_clean_value(value))
+
+        # to allow notes to be cleared, need to move notes out of the loop that ignores none
+        values.append(_clean_value(form['notes']))
         ## to make sure extension id is last in query to match with WHERE statement
         values.append(_clean_value(form['exception_id']))
 
