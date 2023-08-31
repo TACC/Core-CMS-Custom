@@ -1,9 +1,9 @@
 from django.http import HttpResponseRedirect, JsonResponse
-#from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
-#from apps.utils.apcd_database import get_submissions, get_submission_logs
+from apps.utils.apcd_database import get_submissions, get_submission_logs
 from apps.utils.apcd_groups import has_apcd_group
-#from apps.utils.utils import title_case
+from apps.utils.utils import title_case
 import logging
 
 logger = logging.getLogger(__name__)
