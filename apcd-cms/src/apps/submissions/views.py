@@ -1,14 +1,14 @@
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic.base import TemplateView
+#from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
-from apps.utils.apcd_database import get_submissions, get_submission_logs
+#from apps.utils.apcd_database import get_submissions, get_submission_logs
 from apps.utils.apcd_groups import has_apcd_group
-from apps.utils.utils import title_case
+#from apps.utils.utils import title_case
 import logging
 
 logger = logging.getLogger(__name__)
 
-
+'''
 class SubmissionsTable(TemplateView):
 
     template_name = 'list_submissions.html'
@@ -62,7 +62,7 @@ class SubmissionsTable(TemplateView):
 
         return context
 
-
+'''
 @login_required
 def check_submitter_role(request):
     logger.info("Checking submitter access for user: %s", request.user.username)
