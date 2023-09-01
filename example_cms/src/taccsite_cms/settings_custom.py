@@ -40,7 +40,7 @@
 #
 # _CUSTOM_BRANDING = [
 #     "example",
-#     "example_cms/img/org_logos/example-logo.png",
+#     "example_cms/img/some-logo.png",
 #     "",
 #     "https://example.com",
 #     "_blank",
@@ -57,7 +57,7 @@
 
 LOGO =  [
     "example",
-    "example_cms/img/org_logos/portal.png",
+    "example_cms/img/portal.png",
     "",
     "/",
     "_self",
@@ -65,6 +65,10 @@ LOGO =  [
     "anonymous",
     "True"
 ]
+
+FAVICON = {
+    "img_file_src": "example_cms/img/favicon.ico"
+}
 
 ########################
 # TACC: PORTAL
