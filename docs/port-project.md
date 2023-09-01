@@ -22,14 +22,16 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 <details><summary>Reminders</summary>
 
-1. From [Core CMS Resources] `/taccsite_custom/custom_project_dir`.
+1. From [Core CMS Resources] `/taccsite_custom/custom_project_dir`.\
     To `/custom_project_dir/src/taccsite_custom/custom_project_dir`.
 
-2. From `/taccsite_custom/custom_project_dir/settings_custom.py`.
+2. From `/taccsite_custom/custom_project_dir/settings_custom.py`.\
     To `/custom_project_dir/src/taccsite_cms/settings_custom.py`.
 
-3. The name `custom_project_dir` **must** use underscores (**not** dashes),
-    because a valid Python application uses underscores.
+3. The name `custom_project_dir` **must** use underscores, **not** dashes.
+
+    > **Note**
+    > A valid Python application uses underscores.
 
 </details>
 
@@ -75,14 +77,14 @@ Then:
 
 1. Contact https://github.com/wesleyboar.
 
-> **Note**
-> Those imports assume:
->
-> - Node
-> - NPM package `@tacc/core-styles`
-> - a CSS build script
->
-> Whether to support those here, and how to port without support for those, has not been decided.
+    > **Note**
+    > Those `@import`s assume:
+    >
+    > - Node
+    > - NPM package `@tacc/core-styles`
+    > - a CSS build script
+    >
+    > Whether to support those here, and how to port without support for those, has not been decided.
 
 #### Expects CSS Concatenation
 

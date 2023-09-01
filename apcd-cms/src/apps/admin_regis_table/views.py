@@ -111,12 +111,17 @@ class RegistrationsTable(TemplateView):
                 'no_covered': reg_ent[6],
                 'ent_name': reg_ent[7],
                 'fein': reg_ent[8] if reg_ent[8] else None,
+                'plans_type': {
+                    "Commercial": reg_ent[9],
+                    "Medicare": reg_ent[10],
+                    "Medicaid": reg_ent[11],
+                },
                 'files_type': {
-                    "Eligibility/Enrollment": reg_ent[9],
-                    "Provider": reg_ent[10],
-                    "Medical": reg_ent[11],
-                    "Pharmacy": reg_ent[12],
-                    "Dental": reg_ent[13]
+                    "Eligibility/Enrollment": reg_ent[12],
+                    "Provider": reg_ent[13],
+                    "Medical": reg_ent[14],
+                    "Pharmacy": reg_ent[15],
+                    "Dental": reg_ent[16]
                 }
             }
         def _set_contacts(reg_cont):
