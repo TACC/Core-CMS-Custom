@@ -78,3 +78,9 @@ FAVICON = {
 # INCLUDES_CORE_PORTAL = False
 # INCLUDES_PORTAL_NAV = False
 # INCLUDES_SEARCH_BAR = False
+
+########################
+# TACC: CORE STYLES
+########################
+
+TACC_CORE_STYLES_VERSION = 2
