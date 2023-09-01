@@ -26,7 +26,7 @@ CMS_TEMPLATES = (
 
 _NSF_BRANDING = [
     "nsf",
-    "site_cms/img/org_logos/nsf-white.png",
+    "site_cms/img/nsf-white.png",
     "branding-nsf",
     "https://www.nsf.gov/",
     "_blank",
@@ -37,7 +37,7 @@ _NSF_BRANDING = [
 
 _TACC_BRANDING = [
     "tacc",
-    "site_cms/img/org_logos/tacc-white.png",
+    "site_cms/img/tacc-white.png",
     "branding-tacc",
     "https://www.tacc.utexas.edu/",
     "_blank",
@@ -48,7 +48,7 @@ _TACC_BRANDING = [
 
 _UTEXAS_BRANDING = [
     "utexas",
-    "site_cms/img/org_logos/utaustin-white.png",
+    "site_cms/img/utaustin-white.png",
     "branding-utaustin",
     "https://www.utexas.edu/",
     "_blank",
@@ -65,7 +65,7 @@ BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
 
 LOGO = [
     "ecep",
-    "ecep_cms/img/org_logos/ecep-white-no_words.svg",
+    "ecep_cms/img/ecep-white-no_words.svg",
     "",
     "/",
     "_self",
@@ -75,7 +75,7 @@ LOGO = [
 ]
 
 FAVICON = {
-    "img_file_src": "ecep_cms/img/org_logos/favicon.ico"
+    "img_file_src": "ecep_cms/img/favicon.ico"
 }
 
 ########################
