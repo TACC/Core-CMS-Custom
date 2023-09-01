@@ -40,7 +40,6 @@ services:
       - ES_HEAP_SIZE:1g
       - discovery.type=single-node
     volumes:
-      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - core_cms_es_data:/usr/share/elasticsearch/data
     container_name: core_cms_elasticsearch
     ports:
