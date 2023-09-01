@@ -119,3 +119,9 @@ BLOG_AUTO_NAMESPACE = 'News'
 
 # Miscellaneous settings
 BLOG_ENABLE_COMMENTS = False
+
+########################
+# TACC: CORE STYLES
+########################
+
+TACC_CORE_STYLES_VERSION = 0
