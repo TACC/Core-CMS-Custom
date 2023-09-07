@@ -47,7 +47,7 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 Then:
 
 1. You must edit [Core Portal Deployments].
-2. Edit `custom_project_dir/camino/___.settings_custom.py` (not `___.cms`).
+2. Edit `custom_project_dir/camino/___.settings_custom.py` (not `___.cms.…`).
 3. Change `_PORTAL_ICON_FILENAME` to:\
     `/static/` + ( the `img_file_src` of `FAVICON` )
 
