@@ -56,7 +56,9 @@ Then:
 **If** the custom project directory:
 
 - **both** had a name with dashes in [Core CMS Resources]
-- **and** has `templates/standard.html` or `templates/fullwidth.html`
+- **and** has any `templates/*.html` e.g.:
+    - `templates/standard.html`
+    - `templates/fullwidth.html`
 
 Then:
 
