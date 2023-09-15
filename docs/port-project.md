@@ -83,6 +83,10 @@ Then:
     +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
     ```
 
+4. Finally, **only after deploy**:
+    1. Change template of every page on project to **not** use deprecated template.
+    2. Remove its deprecated templates from repository.
+
 #### Expects CSS Build Step
 
 **If** the custom project directory expects CSS build step e.g. has
