@@ -37,12 +37,28 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 ### Known Gotchas
 
+#### Has a [Core Portal]
+
+**If** the custom project has a [Core Portal] i.e. settings has `FAVICON` and:
+
+- **either** settings has `INCLUDES_CORE_PORTAL = True`
+- **or** settings does **not** have `INCLUDES_CORE_PORTAL`
+
+Then:
+
+1. You must edit [Core Portal Deployments].
+2. Edit `custom_project_dir/camino/___.settings_custom.py` (not `___.cms.…`).
+3. Change `_PORTAL_ICON_FILENAME` to:\
+    `/static/` + ( the `img_file_src` of `FAVICON` )
+
 #### Old Custom Templates Directory
 
 **If** the custom project directory:
 
 - **both** had a name with dashes in [Core CMS Resources]
-- **and** has `templates/standard.html` or `templates/fullwidth.html`
+- **and** has any `templates/*.html` e.g.:
+    - `templates/standard.html`
+    - `templates/fullwidth.html`
 
 Then:
 
@@ -66,6 +82,10 @@ Then:
     +   ('custom-project-dir/templates/standard.html', 'DEPRECATED Standard'),
     +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
     ```
+
+4. Finally, **only after deploy**:
+    1. Change template of every page on project to **not** use deprecated template.
+    2. Remove its deprecated templates from repository.
 
 #### Expects CSS Build Step
 
@@ -121,5 +141,7 @@ Then:
 <!-- Link Aliases -->
 
 [Core CMS]: https://github.com/TACC/Core-CMS
+[Core Portal]: https://github.com/TACC/Core-Portal
 [Core CMS Custom]: https://github.com/TACC/Core-CMS-Custom
 [Core CMS Resources]: https://github.com/TACC/Core-CMS-Resources
+[Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
