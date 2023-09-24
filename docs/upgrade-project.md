@@ -41,25 +41,32 @@ Verify project name is compatible with Django 3.2.
     > **Important**
     > Failure to do this can crash an entire page.
 
+4. In `taccsite_cms/custom_app_settings.py`, remove project from `STATICFILES_DIRS`, i.e.
+
+    | | change |
+    | - | - |
+    | from | `STATICFILES_DIRS = ('taccsite_custom/custom_project_dir', ...)` |
+    | to | `STATICFILES_DIRS = (...)` |
+
 ### Update Custom Apps
 
 Update project apps to be meet Django expectations.
 
-1. In `/custom_project_dir/Dockerfile`, move apps to `taccsite_cms`, i.e.
+1. In `Dockerfile`, move apps to `taccsite_cms`, i.e.
 
     | | change |
     | - | - |
     | from | `COPY /src/apps /code/apps` |
     | to | `COPY /src/apps /code/taccsite_cms/apps` |
 
-2. In `/custom_project_dir/docker-compose.dev.yml`, sync apps in `taccsite_cms`, i.e.
+2. In `docker-compose.dev.yml`, sync apps in `taccsite_cms`, i.e.
 
     | | change |
     | - | - |
     | from | `- ./src/apps:/code/apps` |
     | to | `- ./src/apps:/code/taccsite_cms/apps` |
 
-3. In `/custom_project_dir/taccsite_cms/custom_app_settings.py`, remove apps from `STATICFILES_DIRS`, i.e.
+3. In `taccsite_cms/custom_app_settings.py`, remove apps from `STATICFILES_DIRS`, i.e.
 
     | | change |
     | - | - |
