@@ -14,19 +14,32 @@ Verify project name is compatible with Django 3.2.
 
 1. If you project directory name has dashes, rename it to use underscores, i.e.
 
-    | | root | `taccsite_custom` |
-    | - | - | - |
-    | from | `custom-project-dir` | `taccsite_custom/custom-project-dir` |
-    | to | `custom_project_dir` | `taccsite_custom/custom_project_dir` |
+    | | root |
+    | - | - |
+    | from | `custom-project-dir` |
+    | to | `custom_project_dir` |
+
+    | | `taccsite_custom` |
+    | - | - |
+    | from | `taccsite_custom/custom-project-dir` |
+    | to | `taccsite_custom/custom_project_dir` |
+
+    | |`taccsite_cms/static` |
+    | - | - |
+    | from | `taccsite_cms/static/custom-project-dir` |
+    | to | `taccsite_cms/static/custom_project_dir` |
 
     > **Important**
     > A valid Python application uses underscores.
 
-2. Rename **all** references to the previous directory name.
+2. Rename **all** references to the previous directory names.
 
-#### Old CMS Template Paths
+3. Identify, support and deprecate old CMS template paths.
 
-To identify and support and deprecate such template paths, read [Port Project: Old CMS Template paths](./port-project.md#old-cms-template-paths).
+    Follow [Port Project: Old CMS Template paths](./port-project.md#old-cms-template-paths).
+
+    > **Important**
+    > Failure to do this can crash an entire page.
 
 ### Update Custom Apps
 
