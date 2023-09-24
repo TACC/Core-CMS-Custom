@@ -4,7 +4,8 @@
 
 - [Core-CMS v3.11 to v3.12](#core-cms-v311-to-v312)
     1. [Rename Project](#rename-project)
-    2. [Update Custom Apps](#update-custom-apps)
+    2. [Update Settings](#update-settings)
+    3. [Move Images](#move-images)
 
 ## [Core CMS] v3.11 to v3.12
 
@@ -12,7 +13,7 @@
 
 Verify project name is compatible with Django 3.2.
 
-1. If you project directory name has dashes, rename it to use underscores, i.e.
+1. If your project directory name has dashes, rename it to use underscores, i.e.
 
     | | root |
     | - | - |
@@ -68,3 +69,17 @@ Remove unnecessary settings.
 <!-- Link Aliases -->
 
 [Core CMS]: https://github.com/TACC/Core-CMS
+
+### Move Images
+
+Verify project name is compatible with Django 3.2.
+
+1. Remove any subdirectories of your project's static `img` directory, i.e.
+
+    | | root |
+    | - | - |
+    | from | `taccsite_custom/static/custom_project_dir/img/*/...` |
+    | to | `taccsite_custom/static/custom_project_dir/img/...` |
+
+2. Rename **all** references to the previous image paths e.g.
+    - in `settings_custom.py`
