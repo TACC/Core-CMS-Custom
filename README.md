@@ -14,6 +14,7 @@ Extensions of the [Core CMS] project
 - [Build Project](#build-project)
 - [Deploy Project](#deploy-project)
 - [Port Project](#port-project)
+- [Upgrade Project](#upgrade-project)
 
 ## Related Repositories
 
@@ -155,6 +156,10 @@ Follow "Core-CMS-Custom" section of [How To Build & Deploy][Deploy Project].
 
 To port a project from [Core CMS Resources], read [Port Project].
 
+## Upgrade Project
+
+To upgrade components of an existing project (e.g. [Core CMS]), read [Upgrade Project].
+
 <!-- Link Aliases -->
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
@@ -170,4 +175,5 @@ To port a project from [Core CMS Resources], read [Port Project].
 
 [Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
 [Port Project]: ./docs/port-project.md
+[Upgrade Project]: ./docs/upgrade-project.md
 [Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
