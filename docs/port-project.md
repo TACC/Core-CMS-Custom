@@ -56,7 +56,9 @@ Then:
 **If** the custom project directory:
 
 - **both** had a name with dashes in [Core CMS Resources]
-- **and** has `templates/standard.html` or `templates/fullwidth.html`
+- **and** has any `templates/*.html` e.g.:
+    - `templates/standard.html`
+    - `templates/fullwidth.html`
 
 Then:
 
@@ -80,6 +82,10 @@ Then:
     +   ('custom-project-dir/templates/standard.html', 'DEPRECATED Standard'),
     +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
     ```
+
+4. Finally, **only after deploy**:
+    1. Change template of every page on project to **not** use deprecated template.
+    2. Remove its deprecated templates from repository.
 
 #### Expects CSS Build Step
 
