@@ -48,30 +48,22 @@ Verify project name is compatible with Django 3.2.
     | from | `STATICFILES_DIRS = ('taccsite_custom/custom_project_dir', ...)` |
     | to | `STATICFILES_DIRS = (...)` |
 
-### Update Custom Apps
+    > **Note**
+    > [Core CMS] already defines the `static` directory for each project.
 
-Update project apps to be meet Django expectations.
+### Update Settings
 
-1. In `Dockerfile`, move apps to `taccsite_cms`, i.e.
+Remove unnecessary settings.
 
-    | | change |
-    | - | - |
-    | from | `COPY /src/apps /code/apps` |
-    | to | `COPY /src/apps /code/taccsite_cms/apps` |
-
-2. In `docker-compose.dev.yml`, sync apps in `taccsite_cms`, i.e.
-
-    | | change |
-    | - | - |
-    | from | `- ./src/apps:/code/apps` |
-    | to | `- ./src/apps:/code/taccsite_cms/apps` |
-
-3. In `taccsite_cms/custom_app_settings.py`, remove apps from `STATICFILES_DIRS`, i.e.
+1. In `taccsite_cms/custom_app_settings.py`, remove apps from `STATICFILES_DIRS`, i.e.
 
     | | change |
     | - | - |
     | from | `STATICFILES_DIRS = ('apps/custom_example', ...)` |
     | to | `STATICFILES_DIRS = (...)` |
+
+    > **Note**
+    > Django automatically identifies the `static` directory for each app.
 
 <!-- Link Aliases -->
 
