@@ -66,10 +66,6 @@ Remove unnecessary settings.
     > **Note**
     > Django automatically identifies the `static` directory for each app.
 
-<!-- Link Aliases -->
-
-[Core CMS]: https://github.com/TACC/Core-CMS
-
 ### Move Images
 
 Verify project name is compatible with Django 3.2.
@@ -83,3 +79,7 @@ Verify project name is compatible with Django 3.2.
 
 2. Rename **all** references to the previous image paths e.g.
     - in `settings_custom.py`
+
+<!-- Link Aliases -->
+
+[Core CMS]: https://github.com/TACC/Core-CMS
