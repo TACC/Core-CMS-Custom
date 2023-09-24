@@ -35,7 +35,7 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 | <u>If</u> Project Does Not Need | <u>Then</u> Delete |
 | - | - |
-| additional apps | `apps/`<br />`COPY /src/apps /code/apps` (in `Dockerfile`) |
+| additional apps | the directory `apps/`<br />the `COPY /src/apps /code/taccsite_cms/apps` in `Dockerfile` |
 | URLs for custom apps | `urls_custom.py` |
 | custom code | `custom_app_settings.py` |
 
