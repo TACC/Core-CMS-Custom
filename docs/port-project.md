@@ -30,7 +30,7 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 3. The name `custom_project_dir` **must** use underscores, **not** dashes.
 
-    > **Note**
+    > **Important**
     > A valid Python application uses underscores.
 
 </details>
@@ -51,12 +51,13 @@ Then:
 3. Change `_PORTAL_ICON_FILENAME` to:\
     `/static/` + ( the `img_file_src` of `FAVICON` )
 
-#### Old Custom Templates Directory
+#### Old CMS Template Paths
 
 **If** the custom project directory:
 
 - **both** had a name with dashes in [Core CMS Resources]
-- **and** has any `templates/*.html` e.g.:
+- **and** has any of **these** templates:
+    - `templates/home.html`
     - `templates/standard.html`
     - `templates/fullwidth.html`
 
