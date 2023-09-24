@@ -3,6 +3,16 @@
 # *.PROJECT_DOMAIN.TACC.UTEXAS.EDU
 
 ########################
+# DJANGO (EMAIL)
+########################
+
+# Set on server, NOT here
+# https://confluence.tacc.utexas.edu/x/coR9E
+# EMAIL_BACKEND = "..."
+# EMAIL_HOST = "..."
+# DEFAULT_FROM_EMAIL = "..."
+
+########################
 # DJANGO CMS SETTINGS
 ########################
 
@@ -21,16 +31,6 @@
 #     ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
 #     ('guides/portal_technology.html', 'Guide: Portal Technology Stack'),
 # )
-
-########################
-# DJANGO (EMAIL)
-########################
-
-# Set on server, NOT here
-# https://confluence.tacc.utexas.edu/x/coR9E
-# EMAIL_BACKEND = "..."
-# EMAIL_HOST = "..."
-# DEFAULT_FROM_EMAIL = "..."
 
 ########################
 # TACC: BRANDING

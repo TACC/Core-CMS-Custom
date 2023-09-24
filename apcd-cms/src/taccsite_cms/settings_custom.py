@@ -2,6 +2,15 @@
 # TACC WMA CMS SITE:
 # *.APCD.TACC.UTEXAS.EDU
 
+########################
+# DJANGO (EMAIL)
+########################
+
+# Set on server, NOT here
+# https://confluence.tacc.utexas.edu/x/coR9E
+# EMAIL_BACKEND = "..."
+# EMAIL_HOST = "..."
+# DEFAULT_FROM_EMAIL = "..."
 
 ########################
 # DJANGO CMS SETTINGS
@@ -35,13 +44,3 @@ LOGO = [
 FAVICON = {
     "img_file_src": "apcd-cms/img/favicons/favicon.ico"
 }
-
-########################
-# DJANGO (EMAIL)
-########################
-
-# Set on server, NOT here
-# https://confluence.tacc.utexas.edu/x/coR9E
-# EMAIL_BACKEND = "..."
-# EMAIL_HOST = "..."
-# DEFAULT_FROM_EMAIL = "..."
