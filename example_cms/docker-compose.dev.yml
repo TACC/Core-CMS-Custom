@@ -8,7 +8,7 @@ services:
     container_name: core_cms
     hostname: core_cms
     volumes:
-      - ./src/apps:/code/apps
+      - ./src/apps:/code/taccsite_cms/apps
       - ./src/taccsite_custom:/code/taccsite_custom
       - ./src/taccsite_cms/custom_app_settings.py:/code/taccsite_cms/custom_app_settings.py
       - ./src/taccsite_cms/urls_custom.py:/code/taccsite_cms/urls_custom.py

@@ -11,10 +11,26 @@
 
 Update apps to be compatible with Django 3.2 (in [Core CMS] v3.12).
 
-1. Edit all apps (e.g. `/custom_project_dir/apps/custom_example`).
-    1. In each `apps.py` change
-        - from `name = 'custom_example'`
-        - to `name = 'apps.custom_example'`.
+1. In `/custom_project_dir/Dockerfile`, move apps to `taccsite_cms`, i.e.
+
+    | | change |
+    | - | - |
+    | from | `COPY /src/apps /code/apps` |
+    | to | `COPY /src/apps /code/taccsite_cms/apps` |
+
+1. In `/custom_project_dir/docker-compose.dev.yml`, sync apps in `taccsite_cms`, i.e.
+
+    | | change |
+    | - | - |
+    | from | `- ./src/apps:/code/apps` |
+    | to | `- ./src/apps:/code/taccsite_cms/apps` |
+
+2. In `/custom_project_dir/taccsite_cms/custom_app_settings.py`, remove apps from `STATICFILES_DIRS`, i.e.
+
+    | | change |
+    | - | - |
+    | from | `STATICFILES_DIRS = ('apps/custom_example', ...)` |
+    | to | `STATICFILES_DIRS = (...)` |
 
 <!-- Link Aliases -->
 
