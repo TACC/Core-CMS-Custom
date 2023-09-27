@@ -3,11 +3,24 @@ import psycopg2
 from datetime import datetime
 import re
 import logging
+import requests
 
 logger = logging.getLogger(__name__)
 
 APCD_DB = settings.APCD_DATABASE
+API_URL = settings.APCD_API_URL
 
+
+def get_api_submissions(page: int = 1, per_page: int = 50):
+    apcd_api_req = requests.get(f'http://{API_URL}/submissions/paged_submissions?page={page}&per_page={per_page}')
+
+    if apcd_api_req.status_code != 200:
+        response = apcd_api_req.text
+        logger.error(f"API issue: {response}")
+        raise ValueError(response)
+
+    results = apcd_api_req.json()
+    return results
 
 def get_users():
     cur = None
