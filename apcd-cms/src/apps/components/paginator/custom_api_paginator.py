@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage
-from apps.components.paginator.api_paginaton import APIPagination
+from apps.components.paginator.api_pagination import APIPagination
 import logging
 
 logger = logging.getLogger(__name__)
