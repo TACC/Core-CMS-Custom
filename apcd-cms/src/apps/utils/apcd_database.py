@@ -4,6 +4,7 @@ from datetime import datetime
 import re
 import logging
 import requests
+from urllib import parse
 
 logger = logging.getLogger(__name__)
 
@@ -11,9 +12,27 @@ APCD_DB = settings.APCD_DATABASE
 API_URL = settings.APCD_API_URL
 
 
-def get_api_submissions(page: int = 1, per_page: int = 50):
-    apcd_api_req = requests.get(f'http://{API_URL}/submissions/paged_submissions?page={page}&per_page={per_page}')
+def get_api_submissions(page: int = 1, per_page: int = 50, status=None, order=None):
+    status = None if status is None or status == "All" else status.lower()
 
+    payload = {
+        'page': page,
+        'per_page': per_page,
+        'status': status,
+        'order': order
+    }
+
+    new_payload = {k:v for (k, v) in payload.items() if v is not None}
+    encoded_params = (parse.urlencode(new_payload, quote_via=parse.quote))
+
+    # for (k, v) in payload.items():
+    #     if v is not None:
+    #         newpayload[k] = quote(str(v))
+    # encoded_params = {quote(k): quote(str(v)) for (k, v) in payload.items()}
+
+    # print(f"API URL = {API_URL}, params: {encoded_params}")
+    apcd_api_req = requests.get(f'{API_URL}/submissions/paged_submissions?{encoded_params}')
+    print(f"API Request: {apcd_api_req.url}")
     if apcd_api_req.status_code != 200:
         response = apcd_api_req.text
         logger.error(f"API issue: {response}")
