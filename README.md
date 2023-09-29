@@ -103,7 +103,7 @@ Read [Upgrade Project] for developer instructions.
 
 ### New Branch (or Minor or Patch [Core CMS] Version)
 
-1. If CMS Docker image changed, rebuild Docker Containers:
+1. If CMS Docker files changed, rebuild Docker Containers:
 
     ```sh
     cd custom_project_dir
