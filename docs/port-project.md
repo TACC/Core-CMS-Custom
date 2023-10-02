@@ -5,7 +5,11 @@
 - [From Core CMS Resources](#from-core-cms-resources)
     1. [Overview](#overview)
     2. [Create a New Project](#create-a-new-project)
-    3. [Known Gotchas](#known-gotchas)
+    3. [Migrate Project to Core CMS v3.12](#migrate-project-to-core-cms-v312)
+    4. [Known Gotchas](#known-gotchas)
+        - [Has a Core Portal](#has-a-core-portal)
+        - [Expects CSS Build Step](#expects-css-build-step)
+        - [Uses Custom CSS](#uses-custom-css)
 
 ## From [Core CMS Resources]
 
@@ -35,6 +39,10 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 </details>
 
+### Migrate Project to [Core CMS] v3.12
+
+Follow [Core CMS: Upgrade Project: from v3.N to v3.12](https://github.com/TACC/Core-CMS/blob/main/docs/upgrade-project.md#from-v3n-to-v312).
+
 ### Known Gotchas
 
 #### Has a [Core Portal]
@@ -51,44 +59,9 @@ Then:
 3. Change `_PORTAL_ICON_FILENAME` to:\
     `/static/` + ( the `img_file_src` of `FAVICON` )
 
-#### Old CMS Template Paths
-
-**If** the custom project directory:
-
-- **both** had a name with dashes in [Core CMS Resources]
-- **and** has any of **these** templates:
-    - `templates/home.html`
-    - `templates/standard.html`
-    - `templates/fullwidth.html`
-
-Then:
-
-1. Copy the templates to become deprecated templates:
-    - from `taccsite_custom/custom_project_dir/templates`
-    - to `taccsite_custom/custom-project-dir/templates`
-
-    > **Warning**
-    > The name `custom_project_dir` **must** match the old name as it was, including dashes.
-2. Edit the deprecated templates to extend the new templates e.g.
-
-    ```django
-    {% extends "custom_project_dir/templates/standard.html" %}
-    ```
-
-3. Update `settings_custom.py` to support deprecated templates:
-
-    ```diff
-        ('custom_project_dir/templates/standard.html', 'Standard'),
-        ('custom_project_dir/templates/fullwidth.html', 'Full Width'),
-    +   ('custom-project-dir/templates/standard.html', 'DEPRECATED Standard'),
-    +   ('custom-project-dir/templates/fullwidth.html', 'DEPRECATED Full Width'),
-    ```
-
-4. Finally, **only after deploy**:
-    1. Change template of every page on project to **not** use deprecated template.
-    2. Remove its deprecated templates from repository.
-
 #### Expects CSS Build Step
+
+##### to Import [Core Styles] CSS
 
 **If** the custom project directory expects CSS build step e.g. has
 
@@ -98,16 +71,16 @@ Then:
 
 1. Contact https://github.com/wesleyboar.
 
-    > **Note**
-    > Those `@import`s assume:
-    >
-    > - Node
-    > - NPM package `@tacc/core-styles`
-    > - a CSS build script
-    >
-    > Whether to support those here, and how to port without support for those, has not been decided.
+> **Note**
+> Those `@import`s assume:
+>
+> - Node
+> - NPM package `@tacc/core-styles`
+> - a CSS build script
+>
+> Whether to support those here, and how to port without support for those, has not been decided.
 
-#### Expects CSS Concatenation
+##### to Import Internal Stylesheets
 
 **If** the custom project directory expects CSS concatenation e.g. has
 
@@ -123,7 +96,7 @@ Then:
     - to `/static/custom_project_dir/css/**/*.css`
 3. Add UI test steps to initial deploy of ported custom project.
 
-#### Expects CSS
+#### Uses Custom CSS
 
 **If** the custom project directory expects any CSS at all i.e. has
 
@@ -142,6 +115,7 @@ Then:
 <!-- Link Aliases -->
 
 [Core CMS]: https://github.com/TACC/Core-CMS
+[Core Styles]: https://github.com/TACC/Core-Styles
 [Core Portal]: https://github.com/TACC/Core-Portal
 [Core CMS Custom]: https://github.com/TACC/Core-CMS-Custom
 [Core CMS Resources]: https://github.com/TACC/Core-CMS-Resources
