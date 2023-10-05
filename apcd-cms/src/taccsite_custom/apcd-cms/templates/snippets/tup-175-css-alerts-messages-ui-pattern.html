@@ -1,56 +1,19 @@
-<style id="tup-175-css-alerts-messages-ui-pattern">
-    /*
-    Message
-    Inform user about a temporary status.
-    - .c-message--info - neither positive nor negative
-    - .c-message--success - a positive status
-    - .c-message--warning - a minor negative status
-    - .c-message--danger - a major negative status
-    Reference:
-    - https://getbootstrap.com/docs/4.0/components/alerts/
-    Styleguide Components.Message
-    */
-    /* @import url('../settings/color.css'); *//* ineffectual as live code, also settings are already available */
-    
-    /* Base */
-    
-    .c-message {
-      padding: 15px 20px;
-      border: var(--global-border--thick);
-      font-size: var(--global-font-size--small);
-    }
-    
-    /* Elements */
-    
-    .c-message a {
-      /* FAQ: Wes not sure why he set inherit; link becomes undistinguishable */
-      /* WARNING: Commenting out this deviates from Core-Styles */
-      /* color: inherit; */
-    }
-    
-    /* Modifiers */
-    
-    .c-message--info {
-      color: var(--global-color-info--dark);
-      background-color: var(--global-color-info--light);
-      border-color: var(--global-color-info--normal);
-    }
-    .c-message--success {
-      color: var(--global-color-success--dark);
-      background-color: var(--global-color-success--weak);
-      border-color: var(--global-color-success--normal);
-    }
-    .c-message--warning {
-      color: var(--global-color-warning--dark);
-      background-color: var(--global-color-warning--weak);
-      border-color: var(--global-color-warning--normal);
-    }
-    .c-message--error {
-      color: var(--global-color-danger--dark);
-      background-color: var(--global-color-danger--weak);
-      border-color: var(--global-color-danger--normal);
-    }
+{# Load message styles from Core-Styles at the same version Core-CMS has #}
+{# FAQ: APCD-CMS uses default TACC_CORE_STYLES_VERSION = 0, so v0.13.0 #}
+<link href="https://unpkg.com/@tacc/core-styles@0.13.0/dist/components/c-message.css" rel="stylesheet">
+<style>
+.c-message a {
+  /* Fix Core-Styles v0 bug */
+  color: var(--global-color-accent--normal); /* overwite c-message.css */
+}
 </style>
+
+{% comment %}
+To get newer c-message styles (e.g. `c-message--type-…`, `c-message--type-info`)
+EITHER load CMS setting `TACC_CORE_STYLES_VERSION = 2` OR load relevant styles
+from @tacc/core-styles@2.N.N: components/c-message.css,
+components/c-message--expanded.css, settings/color.css
+{% endcomment %}
 
 {# The {{ html }} allows DjangoCMS Snippet to pass in more markup #}
 {{ html }}
