@@ -3,10 +3,61 @@ import psycopg2
 from datetime import datetime
 import re
 import logging
+import requests
+import json
 
 logger = logging.getLogger(__name__)
 
 APCD_DB = settings.APCD_DATABASE
+API_URL = settings.APCD_API_URL
+
+
+def get_api_users(page: int = 1, per_page: int = 50, status: str = None, org: str = None):
+    org = None if org is None or status == "All" else org
+
+    payload = {
+        'page': page,
+        'per_page': per_page,
+        'status': status,
+        'org': org,
+    }
+
+    apcd_api_res = requests.get(f'{API_URL}/users/paged_users', params=payload)
+    print(f"API Request: {apcd_api_res.url}")
+    if apcd_api_res.status_code != 200:
+        response = apcd_api_res.text
+        logger.error(f"API issue: {response}")
+        return {'pgerror': apcd_api_res.text}
+
+    results = apcd_api_res.json()
+    return results
+
+
+def update_api_users(user_id: int, payload: dict):
+
+    headers = {'content-type': 'application/json'}
+    apcd_api_res = requests.put(url=f'{API_URL}/users/{user_id}', headers=headers, data=json.dumps(payload))
+    print(f"API Request: {apcd_api_res.url}")
+    if apcd_api_res.status_code != 200:
+        response = apcd_api_res.text
+        logger.error(f"API issue: {response}")
+        return {'pgerror': apcd_api_res.text}
+
+    results = apcd_api_res.json()
+    return results
+
+
+def get_api_users_org_list():
+
+    apcd_api_res = requests.get(url=f'{API_URL}/users/orgs')
+    print(f"API Request: {apcd_api_res.url}")
+    if apcd_api_res.status_code != 200:
+        response = apcd_api_res.text
+        logger.error(f"API issue: {response}")
+        return {'pgerror': apcd_api_res.text}
+
+    results = apcd_api_res.json()
+    return results
 
 
 def get_users():
