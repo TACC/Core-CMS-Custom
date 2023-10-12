@@ -1,10 +1,8 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_users, update_user, get_api_users, update_api_users, get_api_users_org_list
+from apps.utils.apcd_database import  get_api_users, update_api_users, get_api_users_org_list
 from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.utils import table_filter
 from apps.components.paginator.custom_api_paginator import paginator
 import logging
 
@@ -52,17 +50,6 @@ class ViewUsersTable(TemplateView):
         template = _edit_user(form)
         return HttpResponse(template.render({}, request))
 
-    # def get(self, request, *args, **kwargs):
-    #     user_content = get_users()
-    #     # print(f"Get API users: {get_api_users()}")
-    #
-    #     context = self.get_context_data(user_content, *args, **kwargs)
-    #     template = loader.get_template(self.template_name)
-    #     return HttpResponse(template.render(context, request))
-    #     ##END FORM FUNCTION
-    #
-    # user_content = get_users()
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
@@ -98,11 +85,9 @@ class ViewUsersTable(TemplateView):
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
-            # table_entries = table_filter(status_filter, table_entries, 'status', False)
 
         if role_filter is not None and role_filter != 'All':
             context['selected_role'] = role_filter
-            # table_entries = table_filter(role_filter, table_entries, 'role_name', False)
 
         context['selected_org'] = None
         if org_filter is not None and org_filter != 'All':
