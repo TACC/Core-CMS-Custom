@@ -1236,7 +1236,7 @@ def update_extension(form):
         if cur is not None:
             cur.close()
 
-def get_submitter_for_extend_or_except(user):
+def get_submitter_info(user):
     cur = None
     conn = None
     try:

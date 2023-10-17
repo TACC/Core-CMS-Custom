@@ -1,0 +1,14 @@
+{% extends "standard.html" %}
+{% block content %}
+<div class="container">
+    {% include "nav_cms_breadcrumbs.html" %}
+
+    <h1>View Registations</h1>
+    <hr />
+    <p class="c-message c-message--error">
+        An error occurred loading your registrations. For help, <a href="/workbench/dashboard">submit a ticket</a>.
+    </p>
+    <a class="c-button c-button--primary" href="/">Back to Home</a>
+</div>
+
+{% endblock %}
