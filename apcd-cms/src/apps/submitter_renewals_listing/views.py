@@ -15,49 +15,30 @@ logger = logging.getLogger(__name__)
 class SubmittersTable(TemplateView):
     template_name = 'list_submitter_registrations.html'
 
-    def post(self, request):
-
-        form = request.POST.copy()
-        reg_id = int(form['reg_id'])
-
-        reg_data = get_registrations(reg_id)[0]
-        reg_entities = get_registration_entities(reg_id)
-        reg_contacts = get_registration_contacts(reg_id)
-        
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-
     def get(self, request, *args, **kwargs):
-        if is_submitter_admin(request.user):
-            try:
-                response = get_submitter_code(request.user)
-                submitter_code = response.content
-                data = json.loads(submitter_code)
-                submitter_code = data['submitter_code'] 
-                registrations_content = get_registrations(submitter_code=submitter_code)
-                registrations_entities = get_registration_entities(submitter_code=submitter_code)
-                registrations_contacts = get_registration_contacts(submitter_code=submitter_code)                
-                context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
-                template = loader.get_template(self.template_name)
-                return HttpResponse(template.render(context, request))
-            except:
-                context = super(SubmittersTable, self).get_context_data(*args,**kwargs)
-                template = loader.get_template('submitter_listing_error.html')
-                return HttpResponse(template.render(context, request))
-        return HttpResponseRedirect('/')
+        try:
+            response = get_submitter_code(request.user)
+            submitter_code = response.content
+            data = json.loads(submitter_code)
+            submitter_code = data['submitter_code']
+            registrations_content = get_registrations(submitter_code=submitter_code)
+            registrations_entities = get_registration_entities(submitter_code=submitter_code)
+            registrations_contacts = get_registration_contacts(submitter_code=submitter_code)            
+            context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, submitter_code, *args,**kwargs)
+            template = loader.get_template(self.template_name)
+            return HttpResponse(template.render(context, request))
+        except:
+            context = super(SubmittersTable, self).get_context_data(*args, **kwargs)
+            template = loader.get_template('submitter_listing_error.html')
+            return HttpResponse(template.render(context, request))
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+        if not request.user.is_authenticated or not is_submitter_admin(request.user):
             return HttpResponseRedirect('/')
         return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
+    def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, submitter_code, *args, **kwargs):
         context = super(SubmittersTable, self).get_context_data(*args, **kwargs)
-        context["submitter_code"] = get_submitter_code(self.request.user)
 
         def _set_registration(reg, reg_ents, reg_conts):
             org_types = {
@@ -238,7 +219,7 @@ class SubmittersTable(TemplateView):
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, registration_table_entries))
-        context['pagination_url_namespaces'] = 'register:submitter_renewals_listing'
+        context['pagination_url_namespaces'] = 'register:submitter_regis_table'
         return context
     
 def get_submitter_code(request):

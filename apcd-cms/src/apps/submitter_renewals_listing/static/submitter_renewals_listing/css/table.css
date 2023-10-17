@@ -6,9 +6,9 @@
 @media (max-width: 767px) {
     /* To label the cells */
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
-    .registration-table td:nth-of-type(1):before { content: "Business Name"; }
-    .registration-table td:nth-of-type(2):before { content: "Type"; }
-    .registration-table td:nth-of-type(3):before { content: "Location"; }
-    .registration-table td:nth-of-type(4):before { content: "Registration Status"; }
-    .registration-table td:nth-of-type(5):before { content: "Actions"; }
+    .submitters-table td:nth-of-type(1):before { content: "Business Name"; }
+    .submitters-table td:nth-of-type(2):before { content: "Type"; }
+    .submitters-table td:nth-of-type(3):before { content: "Location"; }
+    .submitters-table td:nth-of-type(4):before { content: "Registration Status"; }
+    .submitters-table td:nth-of-type(5):before { content: "Actions"; }
 }
