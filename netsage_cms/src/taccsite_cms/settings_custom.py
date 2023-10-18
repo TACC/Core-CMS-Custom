@@ -33,7 +33,7 @@ CMS_TEMPLATES = (
 
 _NSF_BRANDING = [
     "nsf",
-    "site_cms/img/nsf-white.png",
+    "site_cms/img/org_logos/nsf-white.png",
     "branding-nsf",
     "https://www.nsf.gov/",
     "_blank",
@@ -44,7 +44,7 @@ _NSF_BRANDING = [
 
 _TACC_BRANDING = [
     "tacc",
-    "site_cms/img/tacc-white.png",
+    "site_cms/img/org_logos/tacc-white.png",
     "branding-tacc",
     "https://www.tacc.utexas.edu/",
     "_blank",
@@ -55,7 +55,7 @@ _TACC_BRANDING = [
 
 _UTEXAS_BRANDING = [
     "utexas",
-    "site_cms/img/utaustin-white.png",
+    "site_cms/img/org_logos/utaustin-white.png",
     "branding-utaustin",
     "https://www.utexas.edu/",
     "_blank",
@@ -72,7 +72,7 @@ BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
 
 LOGO =  [
     "netsage",
-    "netsage_cms/img/org_logos/netsage_cyber_logo_color.png",
+    "netsage_cms/img/org_logos/netsage_logo_color.png",
     "",
     "/",
     "_self",
@@ -82,9 +82,8 @@ LOGO =  [
 ]
 
 FAVICON = {
-    "img_file_src": "netsage_cms/img/favicons/netsage_cyber_icon.ico"
+    "img_file_src": "netsage_cms/img/favicons/netsage_icon.ico"
 }
-
 
 ########################
 # TACC: PORTAL
