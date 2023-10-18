@@ -209,8 +209,31 @@
             addExtensionBtn.disabled = (extension == 5 ? true : false);
             dropExtensionBtn.disabled = (extension == 1 ? true : false);
           });
+          const setRequestedDate = (() => {
+          const expirationDates = Array.from(
+            document.querySelectorAll(`input[id^=requested-target-date]`)
+            );
+            var dtToday = new Date();
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+              month = '0' + month.toString();
+            if (day < 10)
+              day = '0' + day.toString();
+            year = year + 1;
+            var maxDate = year + '-' + month + '-' + day;
+
+            const expirationListener = e => {
+              expirationDates.filter(i => i == e.target)
+              .forEach(i => i.setAttribute('max', maxDate));
+            };
+            expirationDates.forEach(i => i.addEventListener('click', expirationListener));
+
+          });
           let extension = 1;
           btnStatus();
+          setRequestedDate();
 
           addExtensionBtn.addEventListener("click", () => {
             if (extension < 5) extension += 1;
@@ -279,7 +302,8 @@
                 .forEach(i => (i.required = !e.target.value.length));
             };
             inputs.forEach(i => i.addEventListener('input', inputListener));
-            btnStatus();
+            btnStatus();          
+            setRequestedDate();
           });
 
           dropExtensionBtn.addEventListener("click", () => {
