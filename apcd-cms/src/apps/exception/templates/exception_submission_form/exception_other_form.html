@@ -149,24 +149,22 @@
           noEmptyInputs(formTextInputs);          
         </script> 
         <!-- To require exception is not longer than a year -->
-        <script id="form-exception_length_less_than_year" type="module">
-          $(function(){
-              var dtToday = new Date();
-              
-              var month = dtToday.getMonth() + 1;
-              var day = dtToday.getDate();
-              var year = dtToday.getFullYear();
-              if(month < 10)
-                  month = '0' + month.toString();
-              if(day < 10)
-                  day = '0' + day.toString();
-              
-              var minDate = dtToday.toISOString().substr(0, 10);
-              $('#expiration-date').attr('min', minDate);
-              year = year + 1;
-              var maxDate = year + '-' + month + '-' + day;    
-              $('#expiration-date').attr('max', maxDate);
-          });
+        <script>
+            const expirationField = document.getElementById('expiration-date');
+            const dtToday = new Date();
+  
+            const month = dtToday.getMonth() + 1;
+            const day = dtToday.getDate();
+            const year = dtToday.getFullYear();
+            if (month < 10)
+              month = '0' + month.toString();
+            if (day < 10)
+              day = '0' + day.toString();
+  
+            year = year + 1;
+            const maxDate = year + '-' + month + '-' + day;
+            expirationField.setAttribute('max', maxDate);
+          
         </script>
       </aside>
 

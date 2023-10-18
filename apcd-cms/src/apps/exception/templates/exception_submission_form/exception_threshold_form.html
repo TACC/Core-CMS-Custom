@@ -218,24 +218,22 @@
           noEmptyInputs(formTextInputs);          
         </script> 
         <!-- To require exception is not longer than a year -->
-        <script id="form-exception_length_less_than_year" type="module">
-          $(function () {
-            var dtToday = new Date();
+        <script>
+        function restrictExpirationDate(field, exceptions) {
+          var dtToday = new Date();
 
-            var month = dtToday.getMonth() + 1;
-            var day = dtToday.getDate();
-            var year = dtToday.getFullYear();
-            if (month < 10)
-              month = '0' + month.toString();
-            if (day < 10)
-              day = '0' + day.toString();
+          var month = dtToday.getMonth() + 1;
+          var day = dtToday.getDate();
+          var year = dtToday.getFullYear();
+          if (month < 10)
+            month = '0' + month.toString();
+          if (day < 10)
+            day = '0' + day.toString();
 
-            var minDate = dtToday.toISOString().substr(0, 10);
-            $('#expiration-date').attr('min', minDate);
-            year = year + 1;
-            var maxDate = year + '-' + month + '-' + day;
-            $('#expiration-date').attr('max', maxDate);
-          });
+          year = year + 1;
+          var maxDate = year + '-' + month + '-' + day;
+          $(`#expiration-date_${exceptions}`).attr('max', maxDate);
+        };
         </script>
         <!-- Broke out functions necessary for dynamic drop down and help text related to CDLs-->
         <script>
@@ -426,6 +424,10 @@
             // To track how many exception blocks there are for button logic
               exceptions = removeException(exceptions);
               btnStatus(exceptions);
+            });
+            $('[id^="expiration-date"]').click(function() {
+              let field = $(this).attr('id');
+              restrictExpirationDate(field, exceptions);
             });
                     
             $('[id^="file_type"]').change(function() {
