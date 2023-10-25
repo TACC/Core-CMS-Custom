@@ -1,5 +1,6 @@
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
+from apps.utils.registrations_data_formatting import _set_registration
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -18,14 +19,26 @@ RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 class SubmissionFormView(View):
     def get(self, request):
+        formatted_reg_data = []
+        renew = False
+        if 'reg_id' in request.GET:
+            reg_id = request.GET.get('reg_id')
+            renew = True
+            registration_content = apcd_database.get_registrations(reg_id)[0]
+            registration_entities = apcd_database.get_registration_entities(reg_id)
+            registration_contacts = apcd_database.get_registration_contacts(reg_id)
+            formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             template = loader.get_template('submission_form/submission_form.html')
-            return HttpResponse(template.render({}, request))
+            return HttpResponse(template.render({'r': formatted_reg_data, 'renew': renew}, request))
         return HttpResponseRedirect('/')
 
 
     def post(self, request):
         form = request.POST.copy()
+        old_reg_id = None
+        if 'reg_id' in form:
+            old_reg_id = form['reg_id']
         errors = []
 
         if (request.user.is_authenticated):
@@ -39,8 +52,8 @@ class SubmissionFormView(View):
         reg_resp = apcd_database.create_registration(form)
         if not _err_msg(reg_resp) and type(reg_resp) == int:
             for iteration in range(1,6):
-                contact_resp = apcd_database.create_registration_contact(form, reg_resp, iteration)
-                entity_resp = apcd_database.create_registration_entity(form, reg_resp, iteration)
+                contact_resp = apcd_database.create_registration_contact(form, reg_resp, iteration, old_reg_id=old_reg_id)
+                entity_resp = apcd_database.create_registration_entity(form, reg_resp, iteration, old_reg_id=old_reg_id)
                 if _err_msg(contact_resp):
                     errors.append(_err_msg(contact_resp))
                 if _err_msg(entity_resp):
