@@ -433,7 +433,7 @@
                 class="telephoneinput"
                 id="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
                 inputmode="tel"
-                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.\\-]\\d{3}[\\s.\\-]\\d{4}$"
               />
               <div id="help-text-contact_phone_${contacts}" class="help-text">
                 <details>
@@ -464,7 +464,7 @@
                 autocomplete="email"
                 required
                 class="emailinput"
-                pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$"
+                pattern="^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\.[a-z]{2,4}$"
                 id="contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
               />
             </div>
