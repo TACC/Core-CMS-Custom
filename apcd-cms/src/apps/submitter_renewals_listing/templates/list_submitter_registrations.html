@@ -115,9 +115,9 @@
       if (selectedOption == "renewRegistration") {
         var xhr;
         xhr = new XMLHttpRequest();
-        xhr.open('GET', `/register/request-to-submit/${reg_id}`)
+        xhr.open('GET', `/register/request-to-submit/?reg_id=${reg_id}`)
         xhr.send()
-        window.location.href = `/register/request-to-submit/${reg_id}`;
+        window.location.href = `/register/request-to-submit/?reg_id=${reg_id}`;
         window.location.load();
       }
     }
