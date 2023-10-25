@@ -10,9 +10,9 @@
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
-  <h1>View Registrations</h1>
+  <h1>Registration Information</h1>
   <hr />
-  <p style="margin-bottom: 30px">All completed registration requests for your submitter code. Use the action dropdown to renew an application.</p>
+  <p style="margin-bottom: 30px">Current registration information on file for your organization is listed below. On the right of the screen, select the dropdown menu under “Actions” to view or renew your organization’s registration information.</p>
   <hr />
   <div class="filter-container">
     <div class="filter-content">
@@ -51,7 +51,7 @@
                   <td>
                     {% include "view_registration_modal.html" %}
                     <select id='actionsSubmitterDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
-                      <option value="">Select Action</option>
+                      <option value="">Actions</option>
                       <option value="viewRegistration">View Record</option>
                       <option value="renewRegistration">Renew Registration (coming soon)</option>
                     </select>
