@@ -49,11 +49,11 @@
                   <td>{{r.location}}</td>
                   <td>{{r.reg_status}}</td>
                   <td>
-                    {% include "view_submitter_registration_modal.html" %}
+                    {% include "view_registration_modal.html" %}
                     <select id='actionsSubmitterDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
                       <option value="">Select Action</option>
                       <option value="viewRegistration">View Record</option>
-                      <option value="renewRegistration" disabled>Renew Registration (coming soon)</option>
+                      <option value="renewRegistration">Renew Registration (coming soon)</option>
                     </select>
                   </td>
               </tr>
@@ -103,16 +103,24 @@
     }
 
     function openAction(reg_id) {
-    var actionsDropdown, selectedOption, modal_id;
-    actionsDropdown = document.getElementById(`actionsSubmitterDropdown_${reg_id}`);
-    /* grabs dropdown option number selected by user via selectedIndex, 
-      then grabs actual value associated with that option via 
-      options[index].value */
-    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
-    modal_id = `${selectedOption}Modal_${reg_id}`;
-    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
-    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
-  }
+      var actionsDropdown, selectedOption, modal_id;
+      actionsDropdown = document.getElementById(`actionsSubmitterDropdown_${reg_id}`);
+      /* grabs dropdown option number selected by user via selectedIndex, 
+        then grabs actual value associated with that option via 
+        options[index].value */
+      selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+      modal_id = `${selectedOption}Modal_${reg_id}`;
+      $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+      actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+      if (selectedOption == "renewRegistration") {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', `/register/list-registration-requests/${reg_id}`)
+        xhr.send()
+        window.location.href = `/register/list-registration-requests/${reg_id}`;
+        window.location.load();
+      }
+    }
 </script>
 
 {% endblock %}

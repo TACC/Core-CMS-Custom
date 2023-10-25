@@ -26,7 +26,7 @@ class SubmittersTable(RegistrationsTable):
             template = loader.get_template(self.template_name)
             return HttpResponse(template.render(context, request))
         except:
-            context = super(SubmittersTable, self).get_context_data(*args, **kwargs)
+            context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
             template = loader.get_template('submitter_listing_error.html')
             return HttpResponse(template.render(context, request))
 
@@ -36,7 +36,7 @@ class SubmittersTable(RegistrationsTable):
         return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
-        context = super(SubmittersTable, self).get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+        context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
         context['pagination_url_namespaces'] = 'register:submitter_regis_table'
         return context
     
