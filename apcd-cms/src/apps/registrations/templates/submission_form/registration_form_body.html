@@ -423,7 +423,7 @@
                         inputmode="numeric"
                         min="1"
                         step="1"
-                        value="{{ entity.no_covered }}"
+                        value="{% if not renew %}{{ entity.no_covered }}{% endif %}"
                     />
                     </div>
 
@@ -442,7 +442,7 @@
                         id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
                         min="1"
-                        value="{{ entity.claim_and_enc_vol }}"
+                        value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
                     </div>
 
@@ -463,7 +463,7 @@
                         inputmode="numeric"
                         step="0.01"
                         min="0.01"
-                        value="{{ entity.claim_val }}"
+                        value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
                 </div>
