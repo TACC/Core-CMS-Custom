@@ -270,7 +270,7 @@
                     <div class="field-wrapper textinput">
                         <div class="field-errors" style="display: none"></div>
 
-                        <label for="fein_{{ent_no}}_{{r.reg_id}}"> FEIN<sup>5</sup> </label>
+                        <label for="fein_{{ent_no}}_{{r.reg_id}}"> FEIN<sup>2</sup> </label>
 
                         <input
                         type="text"
@@ -313,7 +313,7 @@
                     <div class="field-wrapper textinput">
                         <div class="field-errors" style="display: none"></div>
 
-                        <label for="naic_company_code_{{ent_no}}_{{r.reg_id}}"> NAIC<sup>6</sup> Company Code </label>
+                        <label for="naic_company_code_{{ent_no}}_{{r.reg_id}}"> NAIC<sup>3</sup> Company Code </label>
 
                         <input
                         type="number"
@@ -423,7 +423,7 @@
                         inputmode="numeric"
                         min="1"
                         step="1"
-                        value="{{ entity.no_covered }}"
+                        value="{% if not renew %}{{ entity.no_covered }}{% endif %}"
                     />
                     </div>
 
@@ -442,7 +442,7 @@
                         id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
                         min="1"
-                        value="{{ entity.claim_and_enc_vol }}"
+                        value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
                     </div>
 
@@ -450,7 +450,7 @@
                     <div class="field-errors" style="display: none"></div>
 
                     <label for="total_claims_value_{{ent_no}}_{{r.reg_id}}">
-                        Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+                        Total Claims Value (USD<sup>4</sup>)<span class="asterisk">*</span>
                     </label>
 
                     <span class="s-affixed-input-wrapper__prefix">$</span>
@@ -463,7 +463,7 @@
                         inputmode="numeric"
                         step="0.01"
                         min="0.01"
-                        value="{{ entity.claim_val }}"
+                        value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
                 </div>
@@ -517,7 +517,7 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="fein_1"> FEIN<sup>5</sup> </label>
+                <label for="fein_1"> FEIN<sup>2</sup> </label>
 
                 <input
                     type="text"
@@ -560,7 +560,7 @@
                 <div class="field-wrapper textinput">
                 <div class="field-errors" style="display: none"></div>
 
-                <label for="naic_company_code_1"> NAIC<sup>6</sup> Company Code </label>
+                <label for="naic_company_code_1"> NAIC<sup>3</sup> Company Code </label>
 
                 <input
                     type="number"
@@ -737,7 +737,7 @@
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="total_claims_value_1">
-                Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+                Total Claims Value (USD<sup>4</sup>)<span class="asterisk">*</span>
                 </label>
 
                 <span class="s-affixed-input-wrapper__prefix">$</span>
@@ -815,7 +815,7 @@
                         class="telephoneinput"
                         id="contact_phone_{{forloop.counter}}_{{r.reg_id}}"
                         inputmode="tel"
-                        pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                        pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}$"
                         value="{{ contact.phone }}"
                         />
 
@@ -853,7 +853,7 @@
                         required
                         class="emailinput"
                         id="contact_email_{{forloop.counter}}_{{r.reg_id}}"
-                        pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$"
+                        pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$"
                         value="{{ contact.email }}"
                         />
                     </div>
@@ -932,7 +932,7 @@
                     class="telephoneinput"
                     id="contact_phone"
                     inputmode="tel"
-                    pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                    pattern="^(\+0?1\s)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}$"
                 />
 
                 <div id="help-text-contact_phone" class="help-text">
@@ -969,7 +969,7 @@
                     required
                     class="emailinput"
                     id="contact_email"
-                    pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$"
+                    pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$"
                 />
                 </div>
                 <div class="field-wrapper checkboxinput">
