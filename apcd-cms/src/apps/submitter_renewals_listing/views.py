@@ -37,6 +37,7 @@ class SubmittersTable(RegistrationsTable):
 
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+        context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
         context['pagination_url_namespaces'] = 'register:submitter_regis_table'
         return context
     

@@ -151,7 +151,8 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.mail_address,
                 registrations.city,
                 registrations.state,
-                registrations.zip
+                registrations.zip,
+                registrations.registration_year
                 FROM registrations 
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
                 {f"LEFT JOIN submitters on registrations.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""

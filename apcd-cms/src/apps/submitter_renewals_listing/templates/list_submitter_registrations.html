@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'submitter_renewals_listing/css/table.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -45,6 +45,7 @@
           {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
+                  <td>{{r.registration_year}}</td>
                   <td>{{r.type}}</td>
                   <td>{{r.location}}</td>
                   <td>{{r.reg_status}}</td>
