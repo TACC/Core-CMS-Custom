@@ -1274,6 +1274,32 @@ def get_submitter_for_extend_or_except(user):
         if conn is not None:
             conn.close()
 
+def get_applicable_data_periods(submitter_id):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
+        )
+        cur = conn.cursor()
+        query = """ SELECT data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        cur.execute(query, (submitter_id,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
 def get_all_extensions():
     cur = None
     conn = None

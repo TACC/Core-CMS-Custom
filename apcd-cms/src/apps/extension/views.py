@@ -34,9 +34,15 @@ class ExtensionFormView(TemplateView):
                 "org_name": title_case(sub[4])
             }
         context["submitters"] = []
+        context["applicable_data_periods"] = []
 
         for submitter in submitters: 
             context['submitters'].append(_set_submitter(submitter))
+            applicable_data_periods = apcd_database.get_applicable_data_periods(submitter[0])
+            for data_period_tuple in applicable_data_periods:
+                for data_period in data_period_tuple:
+                    context['applicable_data_periods'].append(data_period)
+
         return context
 
     def get_template_names(self):
