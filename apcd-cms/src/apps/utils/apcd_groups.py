@@ -6,3 +6,6 @@ def has_apcd_group(user):
 
 def is_apcd_admin(user):
     return user.groups.filter(name='APCD_ADMIN').exists()
+
+def is_submitter_admin(user):
+    return user.groups.filter(name='SUBMITTER_ADMIN').exists()

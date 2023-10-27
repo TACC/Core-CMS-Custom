@@ -14,6 +14,7 @@ def _set_registration(reg, reg_ents, reg_conts):
                 ),
             'reg_status': reg[5].title(),
             'reg_id': reg[0],
+            'year': reg[12],
             'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
         }
 def _set_entities(reg_ent):
