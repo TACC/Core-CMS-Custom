@@ -21,7 +21,7 @@ class ExtensionFormView(TemplateView):
         
         user = self.request.user.username
         
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = apcd_database.get_submitter_info(user)
 
         self.request.session['submitters'] = submitters
 
