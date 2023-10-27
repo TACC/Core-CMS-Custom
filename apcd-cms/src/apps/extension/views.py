@@ -106,8 +106,8 @@ def _err_msg(resp):
     return None
 
 def get_expected_date(request):
-    applicable_date_period = request.GET.get('applicable_data_period')
+    applicable_data_period = request.GET.get('applicable_data_period')
+    submitter_id = request.GET.get('submitter_id')
+    expected_date = apcd_database.get_current_exp_date(submitter_id=submitter_id, applicable_data_period=applicable_data_period)
 
-    expected_date = apcd_database.get_current_exp_date(applicable_date_period=applicable_date_period)
-
-    return JsonResponse((expected_date), safe=False)
+    return JsonResponse(expected_date, safe=False)
