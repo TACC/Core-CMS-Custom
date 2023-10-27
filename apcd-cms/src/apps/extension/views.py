@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.views.generic.base import TemplateView
 from apps.utils import apcd_database
@@ -104,3 +104,10 @@ def _err_msg(resp):
     if isinstance(resp, Exception):
         return str(resp)
     return None
+
+def get_expected_date(request):
+    applicable_date_period = request.GET.get('applicable_data_period')
+
+    expected_date = apcd_database.get_current_exp_date(applicable_date_period=applicable_date_period)
+
+    return JsonResponse((expected_date), safe=False)

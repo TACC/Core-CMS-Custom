@@ -67,6 +67,7 @@
                     <label for="applicable-data-period" name="date-row">Applicable Data Period<sup>1</sup><label
                       name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
                       <select name='applicable-data-period_1' required='required' id='applicable-data-period_1'>
+                        <option class="dropdown-text" value=''>-- Select period --</option>
                         {% for data_period in applicable_data_periods %}
                         <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
                         {% endfor %}
@@ -296,6 +297,7 @@
                     <label for="request" name="date-row">Applicable Data Period<sup>1</sup><label
                       name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
                       <select name='applicable-data-period_${extension}' required='required' id='applicable-data-period_${extension}'>
+                        <option class="dropdown-text" value=''>-- Select period --</option>
                         {% for data_period in applicable_data_periods %}
                         <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
                         {% endfor %}
