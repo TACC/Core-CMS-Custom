@@ -84,7 +84,7 @@
                       name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
 
                   <input type="date" name="requested-target-date_1" class="numeric" id="requested-target-date_1"
-                    inputmode="numeric" required />
+                    inputmode="date" required />
                 </div>
                 <div class="field-wrapper numberinput required" id="date-row">
                   <div class="field-errors" style="display: none"></div>
@@ -309,7 +309,7 @@
                   name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
 
                 <input type="date" name="requested-target-date_${extensions}" class="numeric" id="requested-target-date_${extensions}"
-                  inputmode="numeric" required />
+                  inputmode="date" required />
               </div>
               <div class="field-wrapper numberinput required" id="date-row">
                 <div class="field-errors" style="display: none"></div>
@@ -374,6 +374,10 @@
     $(document).ready(function() {
       let extensions = 1;
       btnStatus(extensions);
+      $('[id^="requested-target-date"]').click(function() {
+        let field = $(this).attr('id');
+        restrictExpirationDate(field, extensions);
+      });
 
       $('[id^="applicable-data-period"]').change(function() {
           let appDataValue = $(this).val();
@@ -400,6 +404,10 @@
           let expectedDate = $(`current-expected-date_${extensions}`).val();
           setExpectedDate(appDataValue, extensionsNum);
         });
+        $('[id^="requested-target-date"]').click(function() {
+            let field = $(this).attr('id');
+            restrictExpirationDate(field, extensions);
+          });
       });
 
       $('#extension-drop-btn').click(function() {
@@ -407,10 +415,6 @@
       // To track how many extension blocks there are for button logic
         extensions = removeExtension(extensions);
         btnStatus(extensions);
-      });
-      $('[id^="requested-target-date"]').click(function() {
-        let field = $(this).attr('id');
-        restrictExpirationDate(field, extensions);
       });
     });
   </script>
