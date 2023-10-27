@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateView
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -41,8 +42,11 @@ class ExtensionFormView(TemplateView):
             applicable_data_periods = apcd_database.get_applicable_data_periods(submitter[0])
             for data_period_tuple in applicable_data_periods:
                 for data_period in data_period_tuple:
+                    data_period = _get_applicable_data_period(data_period)
+                    logger.debug(print(data_period))
                     context['applicable_data_periods'].append(data_period)
 
+        context['applicable_data_periods'] = sorted(context['applicable_data_periods'], reverse=True)
         return context
 
     def get_template_names(self):
@@ -88,6 +92,11 @@ class ExtensionFormView(TemplateView):
         else:
             return HttpResponseRedirect('/')
 
+def _get_applicable_data_period(value):
+    try:
+        return datetime.strptime(str(value), '%Y%m').strftime('%Y-%m')
+    except:
+        return None
 
 def _err_msg(resp):
     if hasattr(resp, 'pgerror'):
