@@ -1124,6 +1124,8 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
                 _clean_value(form['extension-type_{}'.format(iteration)]),
+                int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+                _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
                 "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
@@ -1137,6 +1139,8 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['business-name_{}'.format(iteration)]),
             _clean_date(form['requested-target-date_{}'.format(iteration)]),
             _clean_value(form['extension-type_{}'.format(iteration)]),
+            int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+            _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
             "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
@@ -1144,12 +1148,14 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form["requestor-name"]),
             _clean_email(form["requestor-email"]),
             _clean_value(form["justification"])
-            )   
+            )
 
         operation = """INSERT INTO extensions(
             submitter_id,
             requested_target_date,
             extension_type,
+            applicable_data_period,
+            current_expected_date,
             status,
             submitter_code,
             payor_code,
@@ -1157,7 +1163,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1541,7 +1547,7 @@ def _clean_value(value):
     return re.sub('[^a-zA-Z0-9 \.\-\,\_]', '', str(value))
 
 def _clean_date(date_string):
-    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+    date_pattern = re.compile(r'^\d{4}-\d{2}(-\d{2})?$')
 
     if re.match(date_pattern, date_string):
         return date_string

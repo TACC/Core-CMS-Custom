@@ -43,7 +43,6 @@ class ExtensionFormView(TemplateView):
             for data_period_tuple in applicable_data_periods:
                 for data_period in data_period_tuple:
                     data_period = _get_applicable_data_period(data_period)
-                    logger.debug(print(data_period))
                     context['applicable_data_periods'].append(data_period)
 
         context['applicable_data_periods'] = sorted(context['applicable_data_periods'], reverse=True)
@@ -69,7 +68,7 @@ class ExtensionFormView(TemplateView):
             max_iterations = 1
             
             for i in range(2, 6):
-                ## Pick a id from the form to count iterations
+                ## Pick a element from the form to count iterations
                 if form.get('requested-target-date_{}'.format(i)):
                     max_iterations += 1
                 else:
