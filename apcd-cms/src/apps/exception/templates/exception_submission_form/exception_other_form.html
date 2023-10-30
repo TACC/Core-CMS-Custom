@@ -160,7 +160,7 @@
                   month = '0' + month.toString();
               if(day < 10)
                   day = '0' + day.toString();
-
+              
               var minDate = dtToday.toISOString().substr(0, 10);
               $('#expiration-date').attr('min', minDate);
               year = year + 1;
