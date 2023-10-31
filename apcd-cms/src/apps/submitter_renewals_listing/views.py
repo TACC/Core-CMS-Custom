@@ -1,5 +1,4 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_submitter_info, get_registration_entities
 from apps.utils.apcd_groups import is_submitter_admin
@@ -40,9 +39,10 @@ class SubmittersTable(RegistrationsTable):
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
         context['pagination_url_namespaces'] = 'register:submitter_regis_table'
         return context
-    
+
+
 def get_submitter_code(request):
     submitter = get_submitter_info(str(request))
     for i in submitter:
-        submitter_code =  i[1]
-    return JsonResponse(({'submitter_code' : submitter_code } if submitter_code else ""), safe=False)
+        submitter_code = i[1]
+    return JsonResponse(({'submitter_code' : submitter_code} if submitter_code else ""), safe=False)
