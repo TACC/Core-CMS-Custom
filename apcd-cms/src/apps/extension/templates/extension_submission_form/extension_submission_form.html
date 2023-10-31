@@ -42,8 +42,8 @@
                 <div class="field-errors" style="display: none"></div>
                 <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
                   {% for submitter in submitters %}
-                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} -
-                    {{submitter.payor_code}}</option>
+                  <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
+                    {{submitter.submitter_id}}</option>
                   {% endfor %}
                 </select>
               </div>
