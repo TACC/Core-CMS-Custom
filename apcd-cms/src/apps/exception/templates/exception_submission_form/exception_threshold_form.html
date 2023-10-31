@@ -396,12 +396,21 @@
             let exceptions = 1;
             btnStatus(exceptions);
 
+            $('[id^="expiration-date"]').click(function() {
+              let field = $(this).attr('id');
+              restrictExpirationDate(field, exceptions);
+            });
+
             $('#exception-add-btn').click(function() {
 
               addException(exceptions);
             // To track how many exception blocks there are for button logic
               exceptions = addException(exceptions);
               btnStatus(exceptions);
+              $('[id^="expiration-date"]').click(function() {
+              let field = $(this).attr('id');
+              restrictExpirationDate(field, exceptions);
+            });
             // Gets help text for additional added blocks
               $('[id^="field-threshold-exception"]').change(function() {
                 let fieldSelection = $(this).val();
@@ -424,10 +433,6 @@
             // To track how many exception blocks there are for button logic
               exceptions = removeException(exceptions);
               btnStatus(exceptions);
-            });
-            $('[id^="expiration-date"]').click(function() {
-              let field = $(this).attr('id');
-              restrictExpirationDate(field, exceptions);
             });
                     
             $('[id^="file_type"]').change(function() {
