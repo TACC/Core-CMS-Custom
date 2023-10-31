@@ -1,6 +1,7 @@
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.registrations_data_formatting import _set_registration
+from apps.submitter_renewals_listing.views import get_submitter_code
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -8,6 +9,7 @@ from django.views.generic import View
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +23,21 @@ class SubmissionFormView(View):
     def get(self, request):
         formatted_reg_data = []
         renew = False
-        if 'reg_id' in request.GET:
-            reg_id = request.GET.get('reg_id')
-            renew = True
-            registration_content = apcd_database.get_registrations(reg_id)[0]
-            registration_entities = apcd_database.get_registration_entities(reg_id)
-            registration_contacts = apcd_database.get_registration_contacts(reg_id)
-            formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
+        reg_id = request.GET.get('reg_id', None)
+        if reg_id and (apcd_database.get_user_role(request.user.username) in ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
+            try:
+                response = get_submitter_code(request.user)
+                submitter_code = json.loads(response.content)['submitter_code']
+                logger.error(submitter_code)
+                submitter_registrations = apcd_database.get_registrations(submitter_code=submitter_code)
+                logger.error(submitter_registrations)
+                registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
+                registration_entities = apcd_database.get_registration_entities(reg_id=reg_id)
+                registration_contacts = apcd_database.get_registration_contacts(reg_id=reg_id)
+                renew = True
+                formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
+            except Exception as exception:
+                logger.error(exception)
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             template = loader.get_template('submission_form/submission_form.html')
             return HttpResponse(template.render({'r': formatted_reg_data, 'renew': renew}, request))
