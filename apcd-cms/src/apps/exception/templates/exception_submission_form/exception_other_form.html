@@ -97,8 +97,8 @@
         <div class="field-errors" style="display: none"></div>
           <select name='business-name' required='required' class="choicefield" id='business-name'>
           {% for submitter in submitters %}
-          <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.entity_name}} - Payor Code:
-            {{submitter.payor_code}}</option>
+          <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.entity_name}}
+             - Payor Code: {{submitter.payor_code}}</option>
           {% endfor %} 
         </select>
 
