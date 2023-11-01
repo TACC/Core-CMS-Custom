@@ -33,6 +33,19 @@
             <hr/>
               <h4>Requested Threshold Reduction</h4>
               <div id="exception_block_1">
+                <div class="field-wrapper textinput required">
+                  <label for="business-name_1">
+                    Business Name<span class="asterisk">*</span>
+                  </label>
+                  <div class="field-errors" style="display: none"></div>
+                  <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
+                    {% for submitter in submitters %}
+                    <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.entity_name}} - Payor Code:
+                      {{submitter.payor_code}}</option>
+                    {% endfor %}
+                  </select>
+    
+                </div>
               <div class="field-wrapper select required">
                 <div class="field-errors" style="display: none"></div>
   
@@ -155,19 +168,6 @@
                 I request an exception on behalf of:
               </label></div>
 
-            <div class="field-wrapper textinput required">
-              <label for="business-name">
-                Business Name<span class="asterisk">*</span>
-              </label>
-              <div class="field-errors" style="display: none"></div>
-              <select name='business-name' required='required' class="choicefield" id='business-name'>
-                {% for submitter in submitters %}
-                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
-                  {{submitter.submitter_id}}</option>
-                {% endfor %}
-              </select>
-
-            </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -254,6 +254,18 @@
               let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
               document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
               exceptionBlock.innerHTML = `
+              <div class="field-wrapper textinput required">
+              <label for="business-name_${exceptions}">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+              <select name='business-name_${exceptions}' required='required' class="choicefield" id='business-name_${exceptions}'>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.entity_name}} - Payor Code:
+                  {{submitter.payor_code}}</option>
+                {% endfor %}
+              </select>
+            </div>
               <div class="field-wrapper select required">
               <div class="field-errors" style="display: none"></div>
 
