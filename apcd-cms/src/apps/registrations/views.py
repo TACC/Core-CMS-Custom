@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.generic import View
+from django.shortcuts import redirect
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
@@ -28,9 +29,7 @@ class SubmissionFormView(View):
             try:
                 response = get_submitter_code(request.user)
                 submitter_code = json.loads(response.content)['submitter_code']
-                logger.error(submitter_code)
                 submitter_registrations = apcd_database.get_registrations(submitter_code=submitter_code)
-                logger.error(submitter_registrations)
                 registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
                 registration_entities = apcd_database.get_registration_entities(reg_id=reg_id)
                 registration_contacts = apcd_database.get_registration_contacts(reg_id=reg_id)
@@ -38,6 +37,7 @@ class SubmissionFormView(View):
                 formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
             except Exception as exception:
                 logger.error(exception)
+                return redirect('/register/request-to-submit/')
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             template = loader.get_template('submission_form/submission_form.html')
             return HttpResponse(template.render({'r': formatted_reg_data, 'renew': renew}, request))
