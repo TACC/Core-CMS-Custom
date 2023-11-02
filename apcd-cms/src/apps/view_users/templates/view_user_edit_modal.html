@@ -19,6 +19,7 @@
             {% csrf_token %}
             <div class="field-wrapper textinput required disabled">
               <input type="hidden" name="user_id" id="user_id" value="{{r.user_id}}">
+              <input type="hidden" name="user_number" id="user_number" value="{{r.user_number}}">
             </div>
               <div class="o-grid o-grid--col-auto-count">              
                 <div class="field-wrapper text required">
@@ -48,7 +49,7 @@
               </label>
               <select name='status'  class="choicefield" id='status'>
                {% for s in status %}
-                <option class="dropdown-text" value="{{ s }}" {% if s == r.status %}selected{% endif %}>{{ s }}</option>
+                <option class="dropdown-text" value="{{ s }}" {% if s == r.active %}selected{% endif %}>{{ s }}</option>
                {% endfor %}
               </select>
             </div>
@@ -99,8 +100,8 @@
                 <dd class="c-data-list__value">{{r.org_name}}</dd>
                 <dt class="c-data-list__key">Role</dt>
                 <dd class="c-data-list__value">{{r.role_name}}</dd>
-                <dt class="c-data-list__key">Status</dt>
-                <dd class="c-data-list__value">{{r.status}}</dd>
+                <dt class="c-data-list__key">Active</dt>
+                <dd class="c-data-list__value">{{r.active}}</dd>
                 <dt class="c-data-list__key">Created</dt>
                 <dd class="c-data-list__value">{{r.created_at}}</dd>
                 <dt class="c-data-list__key">Updated</dt>
