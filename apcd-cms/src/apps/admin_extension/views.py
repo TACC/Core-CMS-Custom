@@ -80,7 +80,7 @@ class AdminExtensionsTable(TemplateView):
                 'notes': extension[17],
                 'entity_name': extension[18]
             }
-        context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Approved Expiration', 'Actions']
+        context['header'] = ['Created', 'Entity', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Approved Expiration', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
         context['outcome_options'] = []
@@ -103,11 +103,11 @@ class AdminExtensionsTable(TemplateView):
             extension_table_entries.append(_set_extensions(extension))
             # to be able to access any extension in a template
             context['extensions'].append(_set_extensions(extension))
-            org_name = title_case(extension[18])
+            entity_name = title_case(extension[18])
             status = title_case(extension[7])
             outcome = title_case(extension[8])
-            if org_name not in context['org_options']:
-                context['org_options'].append(org_name)
+            if entity_name not in context['org_options']:
+                context['org_options'].append(entity_name)
                 context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
             if status not in context['status_options']:
                 context['status_options'].append(status)
@@ -130,7 +130,7 @@ class AdminExtensionsTable(TemplateView):
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
-            extension_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extension_table_entries, 'org_name')
+            extension_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extension_table_entries, 'entity_name')
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, extension_table_entries))
