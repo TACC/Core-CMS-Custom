@@ -89,7 +89,7 @@ class AdminExceptionsTable(TemplateView):
                 'data_file_name': exception[22]
             }
 
-        context['header'] = ['Created', 'Entity', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
         context['outcome_options'] = []

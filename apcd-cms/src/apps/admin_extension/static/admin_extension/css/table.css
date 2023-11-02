@@ -1,12 +1,9 @@
-.modal-cell {
-    padding-left: 0px;
-}
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
     /* To label the cells */
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
     .extension-table td:nth-of-type(1):before { content: "Created"; }
-    .extension-table td:nth-of-type(2):before { content: "Entity"; }
+    .extension-table td:nth-of-type(2):before { content: "Entity Organization"; }
     .extension-table td:nth-of-type(3):before { content: "Requestor Name"; }
     .extension-table td:nth-of-type(4):before { content: "Extension Type"; }
     .extension-table td:nth-of-type(5):before { content: "Outcome"; }
