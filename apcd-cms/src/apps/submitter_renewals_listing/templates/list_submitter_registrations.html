@@ -114,11 +114,12 @@
       $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
       actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
       if (selectedOption == "renewRegistration") {
-        var xhr;
+        var xhr, url;
+        url = `/register/request-to-submit/?reg_id=${reg_id}`
         xhr = new XMLHttpRequest();
-        xhr.open('GET', `/register/request-to-submit/?reg_id=${reg_id}`)
+        xhr.open('GET', url)
         xhr.send()
-        window.location.href = `/register/request-to-submit/?reg_id=${reg_id}`;
+        window.location.href = url;
         window.location.load();
       }
     }

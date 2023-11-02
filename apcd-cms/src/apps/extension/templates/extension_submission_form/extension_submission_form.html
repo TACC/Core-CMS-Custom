@@ -25,16 +25,17 @@
         the timeliness of the request.
       </p>
 
-        <div class="forms">
+      <div class="forms">
 
         <div class="form-wrapper">
           <form action="" method="POST">
             {% csrf_token %}
             <h4>Extension Information</h4>
-            <div id="extension-block_1" >
-              <div class="field-wrapper textinput required"><p>
-                This extension is on behalf of the following organization:
-              </p>
+            <div id="extension-block_1">
+              <div class="field-wrapper textinput required">
+                <p>
+                  This extension is on behalf of the following organization:
+                </p>
                 <label for="business-name_1">
                   Business Name<span class="asterisk">*</span>
                 </label>
@@ -45,38 +46,58 @@
                     {{submitter.payor_code}}</option>
                   {% endfor %}
                 </select>
-                </div>
-
-                <div class="field-wrapper textinput required">
-                  <div class="field-errors" style="display: none"></div>
-                  <label for="extension-type_1">
-                    Extension Type<span class="asterisk">*</span>
-                  </label>
-                  <select name='extension-type_1' required='required' class="choicefield" id='extension-type_1'>
-                    <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
-                    <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
-                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
-                    </option>
-                  </select>
-                </div>
-              
-                <h6>Submission Dates</h6>
-                <div class="o-grid o-grid--col-auto-count">
-                <div class="field-wrapper numberinput required">
-                  <div class="field-errors" style="display: none"></div>
-                  <label for="requested-target-date_1" >Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
-                  <input type="date" name="requested-target-date_1" class="numeric" id="requested-target-date_1"
-                    inputmode="numeric" required />
-                </div>
-                  <div class="field-wrapper">
-                      <label for="current-expected-date_1"> Your current expected due date is: </label>
-                      <div name="current-expected-date_1" type="date" id="current-expected-date_1"> 12/31/2023</div>
-                  </div>
-                  <div class="field-wrapper">
-                    <label for="app-data-period_1"> The data period is through the end of: </label>
-                    <div name="app-data-period_1" type="date" id="app-data-period_1">12/31/2023</div>
-                  </div>
               </div>
+
+              <div class="field-wrapper textinput required">
+                <div class="field-errors" style="display: none"></div>
+                <label for="extension-type_1">
+                  Extension Type<span class="asterisk">*</span>
+                </label>
+                <select name='extension-type_1' required='required' class="choicefield" id='extension-type_1'>
+                  <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
+                  <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
+                  <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
+                  </option>
+                </select>
+              </div>
+
+              <h6>Submission Dates</h6>
+              <div class="o-grid o-grid--col-auto-count">
+                <div class="field-wrapper textinput required" id="date-row">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="applicable-data-period" name="date-row">Applicable Data Period<sup>1</sup><label
+                      name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+                  <select name='applicable-data-period_1' required='required' id='applicable-data-period_1'>
+                    <option class="dropdown-text" value=''>-- Select period --</option>
+                    {% for data_period in applicable_data_periods %}
+                    <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
+                    {% endfor %}
+                  </select>
+                  <div id="help-text-applicable-data-period" class="help-text">
+                    Enter month and year
+                  </div>
+                </div>
+                <div class="field-wrapper numberinput required" id="date-row">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="request" name="date-row">Requested Target Date<sup>2</sup><label
+                      name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+
+                  <input type="date" name="requested-target-date_1" class="numeric" id="requested-target-date_1"
+                    inputmode="date" required />
+                </div>
+                <div class="field-wrapper numberinput required" id="date-row">
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="current-expected-date" name="date-row">Current Expected Date<sup>3</sup>
+                    <label name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+
+                  <input type="date" name="current-expected-date_1" class="numeric" id="current-expected-date_1"
+                    inputmode="numeric" disabled />
+                  <input type="hidden" name="hidden-current-expected-date_1" inputmode="numeric" id="hidden-current-expected-date_1" />
+                </div>
+              </div>
+            </div>
             <h4 id="extension-header_2" style="display:none">
               <hr />Extension Information 2
             </h4>
@@ -104,9 +125,9 @@
             <h4>Request and Justification</h4>
 
             <div class="field-wrapper textarea required">
-              Provide rationale for the exception request, outlining the reasons why the
+              Provide rationale for the extension request, outlining the reasons why the
               organization is unable to comply with the relevant requirements. Provide as
-              much detail as possible regarding the exception request, indicating the
+              much detail as possible regarding the extension request, indicating the
               specific submission requirements for which relief is being sought. If applicable,
               indicate how the organization plans to become compliant.<label for="justification"><span class="asterisk"
                   id="justification-asterisk">*</span></label>
@@ -157,140 +178,242 @@
               <button class="form-button" type="submit" value="Submit">
                 Submit
               </button>
-              </div>
-            </form>
-            <div class="o-section o-section--style-light">
-              <hr />
-              <p>
-                <small>¹ Requested target date – requested day/month/year by which the data should be received (the extension
-                  date).<br />
-                </small>
-              </p>
             </div>
+          </form>
+          <div class="o-section o-section--style-light">
+            <hr />
+            <p>
+              <small>¹ Applicable data period – month/year in which claims data was adjudicated.<br />
+                ² Requested target date – requested day/month/year by which the data should be received (the extension
+                date).<br />
+                ³ Current expected date – day/month/year in which applicable data was expected within the submission
+                window.
+              </small>
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 
-      <div class="form-success" style="display: none">
-        <p>Thank you for your request.</p>
-      </div>
+<div class="form-success" style="display: none">
+  <p>Thank you for your request.</p>
+</div>
 
-      <aside class="row" hidden>
-        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
+<aside class="row" hidden>
+  <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+    <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
 
-          <p><a href="/forms/exception">Exception Request</a></p>
+    <p><a href="/forms/exception">Exception Request</a></p>
 
-          <p><a href="/forms/extension">Extension Request</a></p>
+    <p><a href="/forms/extension">Extension Request</a></p>
 
-          <p><a href="/workbench/dashboard">Dashboard</a></p>
-        </div>
-      </aside>
+    <p><a href="/workbench/dashboard">Dashboard</a></p>
+  </div>
+</aside>
 
-      {# Scripts #}
-      <aside>
-        <!-- To check for blank space only in text inputs-->
-        <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
-        <!--Adds blank space listener to all text input fields on page load #-->
-        <script>
-          const formTextInputs = document.querySelectorAll('input, textarea');
-          noEmptyInputs(formTextInputs);
-        </script> 
-        <!-- To let user add and remove entities -->
-        {# RFE: Do not duplicate entity markup #}
-        {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
-        <script id="form-add-remove-extension" type="module">
-          const addExtensionBtn = document.getElementById("extension-add-btn");
-          const dropExtensionBtn = document.getElementById("extension-drop-btn");
-          const btnStatus = (() => {
-            addExtensionBtn.disabled = (extension == 5 ? true : false);
-            dropExtensionBtn.disabled = (extension == 1 ? true : false);
-          });
-          let extension = 1;
-          btnStatus();
+{# Scripts #}
+<aside>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- To check for blank space only in text inputs-->
+  <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+  {# Adds blank space listener to all text input fields on page load #}
+  <script>
+    const formTextInputs = document.querySelectorAll('input, textarea');
+    noEmptyInputs(formTextInputs);          
+  </script> 
+  <!-- To require extension is not longer than a year -->
+  <script>
+  function restrictExpirationDate(field, extensions) {
+    var dtToday = new Date();
 
-          addExtensionBtn.addEventListener("click", () => {
-            if (extension < 5) extension += 1;
-            let extensionBlock = document.getElementById(`extension-block_${extension}`);
-            document.getElementById(`extension-header_${extension}`).style.display = 'block';
-            extensionBlock.innerHTML = `
-            <div id="extension-block_${extension}" >
-              <div class="field-wrapper textinput required"><p>
-                This extension is on behalf of the following organization:
-              </p>
-                <label for="business-name_${extension}">
-                  Business Name<span class="asterisk">*</span>
-                </label>
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if (month < 10)
+      month = '0' + month.toString();
+    if (day < 10)
+      day = '0' + day.toString();
+
+    year = year + 1;
+    var maxDate = year + '-' + month + '-' + day;
+    $(`#requested-target-date_${extensions}`).attr('max', maxDate);
+  };
+  </script>
+  <!-- Broke out functions necessary for dynamic applicable data periods -->
+  <script>
+
+//Disables and enables buttons based on number of extension blocks
+    function btnStatus(extensions) {            
+      let addExtensionBtn = document.getElementById("extension-add-btn");
+      let dropExtensionBtn = document.getElementById("extension-drop-btn");
+      addExtensionBtn.disabled = (extensions == 5 ? true : false);
+      dropExtensionBtn.disabled = (extensions == 1 ? true : false);
+    };
+  // Adds inner HTML to previously hidden extension blocks 
+    function addExtension(extensions) {
+      if (extensions < 5) {
+        extensions += 1;
+        let extensionBlock = document.getElementById(`extension-block_${extensions}`);
+        document.getElementById(`extension-header_${extensions}`).style.display = 'block';
+        extensionBlock.innerHTML = `
+        <div id="extension-block_${extensions}" >
+          <div class="field-wrapper textinput required"><p>
+            This extension is on behalf of the following organization:
+          </p>
+            <label for="business-name_${extensions}">
+              Business Name<span class="asterisk">*</span>
+            </label>
+            <div class="field-errors" style="display: none"></div>
+            <select name='business-name_${extensions}' required='required' class="choicefield" id='business-name_${extensions}'>
+              {% for submitter in submitters %}
+              <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - 
+                {{submitter.payor_code}}</option>
+              {% endfor %}
+            </select>
+            </div>
+
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="extension-type_${extensions}">
+                Extension Type<span class="asterisk">*</span>
+              </label>
+              <select name='extension-type_${extensions}' required='required' class="choicefield" id='extension-type_${extensions}'>
+                <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
+                <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
+                <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
+                </option>
+              </select>
+            </div>
+            <h6>Submission Dates</h6>
+            <div class="o-grid o-grid--col-auto-count">
+              <div class="field-wrapper textinput required" id="date-row">
                 <div class="field-errors" style="display: none"></div>
-                <select name='business-name_${extension}' required='required' class="choicefield" id='business-name_${extension}'>
-                  {% for submitter in submitters %}
-                  <option class="dropdown-text" value={{submitter.submitter_id}}>
-                    {{submitter.entity_name}} - Payor Code: {{submitter.payor_code}}
-                    </option>
-                  {% endfor %}
-                </select>
-                </div>
-
-                <div class="field-wrapper textinput required">
-                  <div class="field-errors" style="display: none"></div>
-                  <label for="extension-type_${extension}">
-                    Extension Type<span class="asterisk">*</span>
-                  </label>
-                  <select name='extension-type_${extension}' required='required' class="choicefield" id='extension-type_${extension}'>
-                    <option class="dropdown-text" value="regular">Regularly Scheduled Submission</option>
-                    <option class="dropdown-text" value="resubmission">Corrected Resubmission</option>
-                    <option class="dropdown-text" value="small_carrier">Small Carrier (Fewer Than 10,000 Lives Covered)
-                    </option>
+                <label for="request" name="date-row">Applicable Data Period<sup>1</sup><label
+                  name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+                  <select name='applicable-data-period_${extensions}' required='required' id='applicable-data-period_${extensions}'>
+                    <option class="dropdown-text" value=''>-- Select period --</option>
+                    {% for data_period in applicable_data_periods %}
+                    <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
+                    {% endfor %}
                   </select>
-                </div>
-
-                <h6>Submission Dates ${extension}</h6>
-                <div class="o-grid o-grid--col-auto-count">
-                  <div class="field-wrapper numberinput required">
-                  <div class="field-errors" style="display: none"></div>
-
-                  <label for="requested-target-date_${extension}">Requested Target Date<sup>1</sup><span class="asterisk">*</span></label>
-
-                  <input type="date" name="requested-target-date_${extension}" class="numeric" id="requested-target-date_${extension}"
-                    inputmode="numeric" required />
-                </div>
-                  <div class="field-wrapper">
-                      <label for="current-expected-date_${extension}"> Your current expected due date is: </label>
-                      <div name="current-expected-date_${extension}" type="date" id="current-expected-date_${extension}">12/31/2023</div>
-                  </div>
-                  <div class="field-wrapper">
-                    <label for="app-data-period_${extension}"> The data period is through the end of: </label>
-                    <div name="app-data-period_${extension}" type="date" id="app-data-period_${extension}">12/31/2023</div>
-                  </div>
+                <div id="help-text-applicable-data-period_${extensions}" class="help-text">
+                  Enter month and year
                 </div>
               </div>
-        `;
-            const inputs = Array.from(
-              document.querySelectorAll(`
-            input[name=extension-type_${extension}],
-            input[name=business-name_${extension}],
-            input[name=requested-target-date_${extension}]
-          `)
-            );
-            const inputListener = e => {
-              inputs.filter(i => i !== e.target)
-                .forEach(i => (i.required = !e.target.value.length));
-            };
-            inputs.forEach(i => i.addEventListener('input', inputListener));
-            btnStatus();
+              <div class="field-wrapper numberinput required" id="date-row">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="request" name="date-row">Requested Target Date<sup>2</sup><label
+                  name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+
+                <input type="date" name="requested-target-date_${extensions}" class="numeric" id="requested-target-date_${extensions}"
+                  inputmode="date" required />
+              </div>
+              <div class="field-wrapper numberinput required" id="date-row">
+                <div class="field-errors" style="display: none"></div>
+
+                <label for="current-expected-date_${extensions}" name="date-row">Current Expected Date<sup>3</sup>
+                <label name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
+
+                <input type="date" name="current-expected-date_${extensions}" class="numeric" id="current-expected-date_${extensions}"
+                  inputmode="numeric" disabled />
+                  <input type="hidden" name="hidden-current-expected-date_${extensions}" id="hidden-current-expected-date_${extensions}" inputmode="numeric" />
+              </div>
+            </div>`;
+        };
+        return extensions
+      };
+  // Formats date for get request
+  function formatAppPeriod(value) {
+    const formattedValue = value.replace('-', '');
+    const intValue = parseInt(formattedValue, 10);
+    return intValue;
+  }
+  // Removes inner HTML to added extension blocks and sets display to hidden 
+    function removeExtension(extensions) {
+      if (extensions > 1) {
+        let extensionBlock = document.getElementById(`extension-block_${extensions}`);
+        let extensionHeader = document.getElementById(`extension-header_${extensions}`);
+        extensionBlock.innerHTML = "";
+      // Required or it will show the header for that block when remove button clicked
+        extensionHeader.style.display = "none";
+        extensions = extensions - 1;
+      };
+      return extensions
+    };
+    // To access previously hidden extension blocks and populate with info from AJAX call.
+    function setExpectedDate(applicable_data_period, extensions) {
+      let expectedDate = $(`#current-expected-date_${extensions}`);
+      let hiddenDate = $(`#hidden-current-expected-date_${extensions}`);
+      // Gets submitter id from view context to pass to db call
+      const submitter_id = "{{ submitters.0.submitter_id}}"
+      $.ajax({
+        url: "{% url 'extension:get-expected-date' %}",
+        type: 'GET',
+        data: {
+          'submitter_id': submitter_id,
+          'applicable_data_period': applicable_data_period
+        },
+        success: function (response) {
+          let expected_date = response[0];
+          expectedDate.val(expected_date);
+          hiddenDate.val(expected_date);
+        },
+        error: function (xhr, status, error) {
+          console.log(error);
+        }
+      });
+    };
+
+    $(document).ready(function() {
+      let extensions = 1;
+      btnStatus(extensions);
+      $('[id^="requested-target-date"]').click(function() {
+        let field = $(this).attr('id');
+        restrictExpirationDate(field, extensions);
+      });
+
+      $('[id^="applicable-data-period"]').change(function() {
+          let appDataValue = $(this).val();
+          appDataValue = formatAppPeriod(appDataValue)
+          console.log(appDataValue)
+        // Gets applicable data period                
+          let extensionsNum = $(this).attr('id').slice(-1);
+          let expectedDate = $(`current-expected-date_${extensions}`).val();
+          setExpectedDate(appDataValue, extensionsNum);
+        });
+
+      $('#extension-add-btn').click(function() {
+        addExtension(extensions);
+      // To track how many extension blocks there are for button logic
+        extensions = addExtension(extensions);
+        btnStatus(extensions);
+      // Gets applicable data period for additional added blocks
+        $('[id^="applicable-data-period"]').change(function() {
+          let appDataValue = $(this).val();
+          appDataValue = formatAppPeriod(appDataValue)            
+          let extensionsNum = $(this).attr('id').slice(-1);
+          let expectedDate = $(`current-expected-date_${extensions}`).val();
+          setExpectedDate(appDataValue, extensionsNum);
+        });
+        $('[id^="requested-target-date"]').click(function() {
+            let field = $(this).attr('id');
+            restrictExpirationDate(field, extensions);
           });
+      });
 
-          dropExtensionBtn.addEventListener("click", () => {
-            document.getElementById(`extension-header_${extension}`).style.display = 'none';
-            let extensionBlock = document.getElementById(`extension-block_${extension}`);
-            extensionBlock.innerHTML = '';
-            if (extension > 1) extension -= 1;
-            btnStatus();
-          });
-        </script>
+      $('#extension-drop-btn').click(function() {
+        removeExtension(extensions);
+      // To track how many extension blocks there are for button logic
+        extensions = removeExtension(extensions);
+        btnStatus(extensions);
+      });
+    });
+  </script>
+</aside>
 
 
-        {% endblock %}
+  {% endblock %}

@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.views.generic.base import TemplateView
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -34,9 +35,17 @@ class ExtensionFormView(TemplateView):
                 "entity_name": title_case(sub[4])
             }
         context["submitters"] = []
+        context["applicable_data_periods"] = []
 
         for submitter in submitters: 
             context['submitters'].append(_set_submitter(submitter))
+            applicable_data_periods = apcd_database.get_applicable_data_periods(submitter[0])
+            for data_period_tuple in applicable_data_periods:
+                for data_period in data_period_tuple:
+                    data_period = _get_applicable_data_period(data_period)
+                    context['applicable_data_periods'].append(data_period)
+
+        context['applicable_data_periods'] = sorted(context['applicable_data_periods'], reverse=True)
         return context
 
     def get_template_names(self):
@@ -59,7 +68,7 @@ class ExtensionFormView(TemplateView):
             max_iterations = 1
             
             for i in range(2, 6):
-                ## Pick a id from the form to count iterations
+                ## Pick a element from the form to count iterations
                 if form.get('requested-target-date_{}'.format(i)):
                     max_iterations += 1
                 else:
@@ -82,6 +91,11 @@ class ExtensionFormView(TemplateView):
         else:
             return HttpResponseRedirect('/')
 
+def _get_applicable_data_period(value):
+    try:
+        return datetime.strptime(str(value), '%Y%m').strftime('%Y-%m')
+    except:
+        return None
 
 def _err_msg(resp):
     if hasattr(resp, 'pgerror'):
@@ -89,3 +103,10 @@ def _err_msg(resp):
     if isinstance(resp, Exception):
         return str(resp)
     return None
+
+def get_expected_date(request):
+    applicable_data_period = request.GET.get('applicable_data_period')
+    submitter_id = request.GET.get('submitter_id')
+    expected_date = apcd_database.get_current_exp_date(submitter_id=submitter_id, applicable_data_period=applicable_data_period)
+
+    return JsonResponse(expected_date, safe=False)
