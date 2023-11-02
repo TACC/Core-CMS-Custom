@@ -1124,6 +1124,8 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
                 _clean_value(form['extension-type_{}'.format(iteration)]),
+                int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+                _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
                 "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
@@ -1137,6 +1139,8 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['business-name_{}'.format(iteration)]),
             _clean_date(form['requested-target-date_{}'.format(iteration)]),
             _clean_value(form['extension-type_{}'.format(iteration)]),
+            int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+            _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
             "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
@@ -1144,12 +1148,14 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form["requestor-name"]),
             _clean_email(form["requestor-email"]),
             _clean_value(form["justification"])
-            )   
+            )
 
         operation = """INSERT INTO extensions(
             submitter_id,
             requested_target_date,
             extension_type,
+            applicable_data_period,
+            current_expected_date,
             status,
             submitter_code,
             payor_code,
@@ -1157,7 +1163,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1271,6 +1277,58 @@ def get_submitter_info(user):
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_applicable_data_periods(submitter_id):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
+        )
+        cur = conn.cursor()
+        query = """ SELECT data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        cur.execute(query, (submitter_id,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_current_exp_date(submitter_id, applicable_data_period):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
+        )
+        cur = conn.cursor()
+        query = """ SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        cur.execute(query, (submitter_id, applicable_data_period,))
         return cur.fetchall()
 
     except Exception as error:
