@@ -363,7 +363,7 @@
                         Types of Files
                     </label>
                     <div class="help-text">
-                        Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                        Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
                     </div>
                     </div>
 
@@ -391,6 +391,7 @@
                                     type="checkbox"
                                     name="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
                                     id="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
+                                    {% if file_type is not 'Provider' %}required{% endif %}
                                     {% if file_type_selected %}checked{% endif %}
                                     />{{ file_type }}</label
                                 >
@@ -629,7 +630,7 @@
                 Types of Files<span class="asterisk">*</span>
             </label>
             <div class="help-text">
-                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
             </div>
             </div>
 
@@ -664,6 +665,7 @@
                             type="checkbox"
                             name="types_of_files_medical_1"
                             id="types_of_files_medical_1"
+                            required
                             />Medical</label
                         >
                     </li>
@@ -673,6 +675,7 @@
                             type="checkbox"
                             name="types_of_files_pharmacy_1"
                             id="types_of_files_pharmacy_1"
+                            required
                             />Pharmacy</label
                         >
                     </li>
@@ -682,6 +685,7 @@
                             type="checkbox"
                             name="types_of_files_dental_1"
                             id="types_of_files_dental_1"
+                            required
                             />Dental</label
                         >
                     </li>
