@@ -78,7 +78,7 @@ class AdminExtensionsTable(TemplateView):
                 'requestor_email': extension[15],
                 'explanation_justification': extension[16],
                 'notes': extension[17],
-                'org_name': extension[18]
+                'entity_name': extension[18]
             }
         context['header'] = ['Created', 'Organization', 'Requestor Name', 'Extension Type', 'Outcome', 'Status', 'Approved Expiration', 'Actions']
         context['status_options'] = ['All']
