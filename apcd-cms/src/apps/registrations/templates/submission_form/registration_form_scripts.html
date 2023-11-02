@@ -308,14 +308,13 @@
             Total Covered Lives<span class="asterisk">*</span>
           </label>
           <input
-            type="number"
+            type="text"
             name="total_covered_lives_${entities}${reg_id_substr}"
             required
             class="integerfield"
             id="total_covered_lives_${entities}${reg_id_substr}"
             inputmode="numeric"
-            min="1"
-            step="1"
+            pattern="^[1-9]+[0-9]*$"
           />
           <div id="help-text-total_covered_lives_${entities}" class="help-text">
           </div>
@@ -326,13 +325,13 @@
             Claims and Encounters Volume<span class="asterisk">*</span>
           </label>
           <input
-            type="number"
+            type="text"
             name="claims_encounters_volume_${entities}${reg_id_substr}"
             required
             class="integerfield"
             id="claims_encounters_volume_${entities}${reg_id_substr}"
             inputmode="numeric"
-            min="1"
+            pattern="^[1-9]+[0-9]*$"
           />
           <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
           </div>
@@ -344,14 +343,13 @@
           </label>
           <span class="s-affixed-input-wrapper__prefix">$</span>
           <input
-            type="number"
+            type="text"
             name="total_claims_value_${entities}${reg_id_substr}"
             required
             class="integerfield"
             id="total_claims_value_${entities}${reg_id_substr}"
             inputmode="numeric"
-            step="0.01"
-            min="0.01"
+            pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
           />
           <div id="help-text-total_claims_value_${entities}" class="help-text">
           </div>

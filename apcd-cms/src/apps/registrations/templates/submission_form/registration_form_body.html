@@ -416,14 +416,13 @@
                     </label>
 
                     <input
-                        type="number"
+                        type="text"
                         name="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        min="1"
-                        step="1"
+                        pattern="^[1-9]+[0-9]*$"
                         value="{% if not renew %}{{ entity.no_covered }}{% endif %}"
                     />
                     </div>
@@ -436,13 +435,13 @@
                     </label>
 
                     <input
-                        type="number"
+                        type="text"
                         name="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        min="1"
+                        pattern="^[1-9]+[0-9]*$"
                         value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
                     </div>
@@ -456,14 +455,13 @@
 
                     <span class="s-affixed-input-wrapper__prefix">$</span>
                     <input
-                        type="number"
+                        type="text"
                         name="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        step="0.01"
-                        min="0.01"
+                        pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
                         value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
@@ -708,14 +706,13 @@
                 </label>
 
                 <input
-                type="number"
+                type="text"
                 name="total_covered_lives_1"
                 required
                 class="integerfield"
                 id="total_covered_lives_1"
                 inputmode="numeric"
-                min="1"
-                step="1"
+                pattern="^[1-9]+[0-9]*$"
                 />
             </div>
 
@@ -727,13 +724,13 @@
                 </label>
 
                 <input
-                type="number"
+                type="text"
                 name="claims_encounters_volume_1"
                 required
                 class="integerfield"
                 id="claims_encounters_volume_1"
                 inputmode="numeric"
-                min="1"
+                pattern="^[1-9]+[0-9]*$"
                 />
             </div>
 
@@ -746,14 +743,13 @@
 
                 <span class="s-affixed-input-wrapper__prefix">$</span>
                 <input
-                type="number"
+                type="text"
                 name="total_claims_value_1"
                 required
                 class="integerfield"
                 id="total_claims_value_1"
                 inputmode="numeric"
-                step="0.01"
-                min="0.01"
+                pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
                 />
             </div>
             {# Additional entities rendered here... #}
