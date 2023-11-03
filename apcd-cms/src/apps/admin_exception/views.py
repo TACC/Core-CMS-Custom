@@ -122,9 +122,8 @@ class AdminExceptionsTable(TemplateView):
                     # to make sure All is first in the dropdown filter options after sorting alphabetically
                     context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
             if outcome not in context['outcome_options']:
-                if outcome != None:
-                    context['outcome_options'].append(outcome)
-                    context['outcome_options'] = sorted(context['outcome_options'])
+                context['outcome_options'].append(outcome)
+                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x is not None, x))
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':

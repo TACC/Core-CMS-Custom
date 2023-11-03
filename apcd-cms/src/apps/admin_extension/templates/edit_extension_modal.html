@@ -62,7 +62,9 @@
               </label>
               <select name='outcome' class="choicefield" id='outcome'>
                 {% for option in outcome_options %}
+                {% if option != 'None'%}
                 <option class="dropdown-text" {% if option == r.outcome %}selected{% endif %}>{{ option }}</option>
+                {% endif %}
                 {% endfor %}
               </select>
             </div>

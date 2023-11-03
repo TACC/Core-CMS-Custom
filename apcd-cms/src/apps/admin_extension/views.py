@@ -114,7 +114,7 @@ class AdminExtensionsTable(TemplateView):
                 context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
-                context['outcome_options'] = context['outcome_options']
+                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x is not None, x))
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
