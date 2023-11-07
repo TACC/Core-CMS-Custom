@@ -51,8 +51,8 @@ class ViewUsersTable(TemplateView):
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           return HttpResponseRedirect('/')
+        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
+           #return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
@@ -73,9 +73,10 @@ class ViewUsersTable(TemplateView):
                     'role_name': usr[10],
                     'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
                     'active': usr[8],
+                    'entity': usr[40],
                 }
 
-        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
+        context['header'] = ['User ID', 'Name', 'Organization', 'Entity', 'Role', 'Status', 'User Number', 'See More']
         context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
         context['role_options'] = ['SUBMITTER_USER', 'SUBMITTER_ADMIN','APCD_ADMIN']
