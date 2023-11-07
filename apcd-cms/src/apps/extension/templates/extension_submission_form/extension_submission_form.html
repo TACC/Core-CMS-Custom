@@ -379,7 +379,6 @@
       $('[id^="applicable-data-period"]').change(function() {
           let appDataValue = $(this).val();
           appDataValue = formatAppPeriod(appDataValue)
-          console.log(appDataValue)
         // Gets applicable data period                
           let extensionsNum = $(this).attr('id').slice(-1);
           let expectedDate = $(`current-expected-date_${extensions}`).val();
