@@ -82,7 +82,9 @@ FAVICON = {
 # TACC: SEARCH
 ########################
 
-SEARCH_QUERY_PARAM_NAME = 'q'
+# Support Google search instead of Portal's Elasticsearch
+SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
+SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
 
 ########################
 # TACC: PORTAL
