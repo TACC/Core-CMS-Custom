@@ -75,7 +75,7 @@ class ViewUsersTable(TemplateView):
                     'active': usr[8],
                 }
 
-        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
+        context['header'] = ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More']
         context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
         context['role_options'] = ['SUBMITTER_USER', 'SUBMITTER_ADMIN','APCD_ADMIN']
