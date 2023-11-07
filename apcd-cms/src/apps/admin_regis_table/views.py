@@ -84,7 +84,7 @@ class RegistrationsTable(TemplateView):
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
 
-        context['header'] = ['Business Name', 'Type', 'Location', 'Registration Status', 'Actions']
+        context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
         context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
         context['org_options'] = ['All']
 
