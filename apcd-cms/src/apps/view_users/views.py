@@ -64,16 +64,15 @@ class ViewUsersTable(TemplateView):
                     'user_id': usr[1],
                     'user_email': usr[2],
                     'user_name': usr[3],
-                    'org_name': usr[4],
-                    'created_at': usr[5],
-                    'updated_at': usr[6],
-                    'notes': usr[7],
-                    'status': 'Active' if usr[8] else 'Inactive',
-                    'user_number': usr[9],
-                    'role_name': usr[10],
-                    'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
-                    'active': usr[8],
-                    'entity': usr[11],
+                    'entity_name': usr[4] if usr[4] else usr[5],
+                    'created_at': usr[6],
+                    'updated_at': usr[7],
+                    'notes': usr[8],
+                    'status': 'Active' if usr[9] else 'Inactive',
+                    'user_number': usr[10],
+                    'role_name': usr[11],
+                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else usr[5].replace("(", "").replace(")", ""),  # just for filtering purposes
+                    'active': usr[9],
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Entity', 'Role', 'Status', 'User Number', 'See More']
@@ -120,7 +119,7 @@ class ViewUsersTable(TemplateView):
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
-            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'entity_name_no_parens')
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, table_entries))
