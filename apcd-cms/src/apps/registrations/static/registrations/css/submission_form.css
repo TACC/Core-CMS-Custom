@@ -10,7 +10,7 @@ input[name^="zip_code"] {
     box-sizing: content-box;
 }
 select[name^="state"] {
-    --length: 2ch;
+    --length: 2.5ch;
     --ui-buffer: 2.5ch; /* to make room for dropdown arrows */
 
     width: calc( var(--length) + var(--ui-buffer) );
