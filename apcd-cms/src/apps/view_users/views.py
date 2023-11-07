@@ -73,7 +73,7 @@ class ViewUsersTable(TemplateView):
                     'role_name': usr[10],
                     'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
                     'active': usr[8],
-                    'entity': usr[40],
+                    'entity': usr[11],
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Entity', 'Role', 'Status', 'User Number', 'See More']
