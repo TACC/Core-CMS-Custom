@@ -51,8 +51,8 @@ class ViewUsersTable(TemplateView):
     user_content = get_users()
 
     def dispatch(self, request, *args, **kwargs):
-        #if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           #return HttpResponseRedirect('/')
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+           return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, user_content=user_content, *args, **kwargs):
