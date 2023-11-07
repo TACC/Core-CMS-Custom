@@ -27,7 +27,6 @@ def get_users():
         users.user_email,
         users.user_name,
         submitters.entity_name,
-        users.org_name,
         users.created_at,
         users.updated_at,
         users.notes,

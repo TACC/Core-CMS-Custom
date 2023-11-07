@@ -64,15 +64,15 @@ class ViewUsersTable(TemplateView):
                     'user_id': usr[1],
                     'user_email': usr[2],
                     'user_name': usr[3],
-                    'entity_name': usr[4] if usr[4] else usr[5],
-                    'created_at': usr[6],
-                    'updated_at': usr[7],
-                    'notes': usr[8],
-                    'status': 'Active' if usr[9] else 'Inactive',
-                    'user_number': usr[10],
-                    'role_name': usr[11],
-                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else usr[5].replace("(", "").replace(")", ""),  # just for filtering purposes
-                    'active': usr[9],
+                    'entity_name': usr[4] if usr[4] else "Not Applicable",
+                    'created_at': usr[5],
+                    'updated_at': usr[6],
+                    'notes': usr[7],
+                    'status': 'Active' if usr[8] else 'Inactive',
+                    'user_number': usr[9],
+                    'role_name': usr[10],
+                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "Not Applicable",  # just for filtering purposes
+                    'active': usr[8],
                 }
 
         context['header'] = ['User ID', 'Name', 'Organization', 'Entity', 'Role', 'Status', 'User Number', 'See More']
@@ -99,6 +99,8 @@ class ViewUsersTable(TemplateView):
             org_name = user[4]
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
+            if org_name is None and 'Not Applicable' not in context['filter_options']:
+                context['filter_options'].append('Not Applicable')
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
