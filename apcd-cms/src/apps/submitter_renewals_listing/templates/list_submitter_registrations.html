@@ -5,14 +5,14 @@
 
 <link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
-<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'submitter_renewals_listing/css/table.css' %}">
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
-  <h1>List Registrations</h1>
+  <h1>Registration Information</h1>
   <hr />
-  <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
+  <p style="margin-bottom: 30px">Current registration information on file for your organization is listed below. On the right of the screen, select the dropdown menu under “Actions” to view or renew your organization’s registration information.</p>
   <hr />
   <div class="filter-container">
     <div class="filter-content">
@@ -33,7 +33,7 @@
       {% endif %}
     </div>
   </div>
-  <table id="registrationTable" class="registration-table">
+  <table id="submittersTable" class="submitters-table">
       <thead>
           <tr>
               {% for k in header %}
@@ -45,16 +45,16 @@
           {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
+                  <td>{{r.year}}</td>
                   <td>{{r.type}}</td>
                   <td>{{r.location}}</td>
                   <td>{{r.reg_status}}</td>
                   <td>
                     {% include "view_registration_modal.html" %}
-                    {% include "edit_registration_modal.html" %}
-                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
-                      <option value="">Select Action</option>
+                    <select id='actionsSubmitterDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
+                      <option value="">Actions</option>
                       <option value="viewRegistration">View Record</option>
-                      <option value="editRegistration">Edit Record</option>
+                      <option value="renewRegistration">Renew Registration</option>
                     </select>
                   </td>
               </tr>
@@ -72,7 +72,7 @@
     {% if selected_org %}
       url_params += `&org={{selected_org}}`;
     {% endif %}
-    url = `/administration/list-registration-requests/${url_params}`;
+    url = `/register/list-registration-requests/${url_params}`;
     xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.send();
@@ -87,7 +87,7 @@
     {% if selected_status %}
       url_params = `?status={{selected_status}}&org=${orgFilter}`;
     {% endif %}
-    url = `/administration/list-registration-requests/${url_params}`;
+    url = `/register/list-registration-requests/${url_params}`;
     xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.send();
@@ -97,23 +97,32 @@
   function clearSelections() {
         var xhr;
         xhr = new XMLHttpRequest();
-        xhr.open('GET', '/administration/list-registration-requests/')
+        xhr.open('GET', '/register/list-registration-requests/')
         xhr.send()
-        window.location.href = '/administration/list-registration-requests/';
+        window.location.href = '/register/list-registration-requests/';
         window.location.load();
     }
 
-  function openAction(reg_id) {
-    var actionsDropdown, selectedOption, modal_id;
-    actionsDropdown = document.getElementById(`actionsDropdown_${reg_id}`);
-    /* grabs dropdown option number selected by user via selectedIndex, 
-      then grabs actual value associated with that option via 
-      options[index].value */
-    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
-    modal_id = `${selectedOption}Modal_${reg_id}`;
-    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
-    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
-  }
+    function openAction(reg_id) {
+      var actionsDropdown, selectedOption, modal_id;
+      actionsDropdown = document.getElementById(`actionsSubmitterDropdown_${reg_id}`);
+      /* grabs dropdown option number selected by user via selectedIndex, 
+        then grabs actual value associated with that option via 
+        options[index].value */
+      selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+      modal_id = `${selectedOption}Modal_${reg_id}`;
+      $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+      actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+      if (selectedOption == "renewRegistration") {
+        var xhr, url;
+        url = `/register/request-to-submit/?reg_id=${reg_id}`
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url)
+        xhr.send()
+        window.location.href = url;
+        window.location.load();
+      }
+    }
 </script>
 
 {% endblock %}

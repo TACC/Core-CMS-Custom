@@ -33,6 +33,20 @@
             <hr/>
               <h4>Requested Threshold Reduction</h4>
               <div id="exception_block_1">
+                <div class="field-wrapper textinput required">
+                  <label for="business-name_1">
+                    Business Name<span class="asterisk">*</span>
+                  </label>
+                  <div class="field-errors" style="display: none"></div>
+                  <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
+                    {% for submitter in submitters %}
+                    <option class="dropdown-text" value={{submitter.submitter_id}}>
+                      {{submitter.entity_name}} - Payor Code: {{submitter.payor_code}}
+                      </option>
+                    {% endfor %}
+                  </select>
+    
+                </div>
               <div class="field-wrapper select required">
                 <div class="field-errors" style="display: none"></div>
   
@@ -75,7 +89,7 @@
               <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
 
-                <label name="date-row" for="expiration-date_1">Expiriation Date<sup>*</sup><span class="asterisk">*</span> </label>
+                <label name="date-row" for="expiration-date_1">Expiration Date<sup>*</sup><span class="asterisk">*</span> </label>
 
                 <input type="date" name="expiration-date_1" class="numeric" id="expiration-date_1" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
@@ -155,19 +169,6 @@
                 I request an exception on behalf of:
               </label></div>
 
-            <div class="field-wrapper textinput required">
-              <label for="business-name">
-                Business Name<span class="asterisk">*</span>
-              </label>
-              <div class="field-errors" style="display: none"></div>
-              <select name='business-name' required='required' class="choicefield" id='business-name'>
-                {% for submitter in submitters %}
-                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID:
-                  {{submitter.submitter_id}}</option>
-                {% endfor %}
-              </select>
-
-            </div>
 
             <div class="field-wrapper checkbox required">
               <div class="field-errors" style="display: none"></div>
@@ -218,24 +219,22 @@
           noEmptyInputs(formTextInputs);          
         </script> 
         <!-- To require exception is not longer than a year -->
-        <script id="form-exception_length_less_than_year" type="module">
-          $(function () {
-            var dtToday = new Date();
+        <script>
+        function restrictExpirationDate(field, exceptions) {
+          var dtToday = new Date();
 
-            var month = dtToday.getMonth() + 1;
-            var day = dtToday.getDate();
-            var year = dtToday.getFullYear();
-            if (month < 10)
-              month = '0' + month.toString();
-            if (day < 10)
-              day = '0' + day.toString();
+          var month = dtToday.getMonth() + 1;
+          var day = dtToday.getDate();
+          var year = dtToday.getFullYear();
+          if (month < 10)
+            month = '0' + month.toString();
+          if (day < 10)
+            day = '0' + day.toString();
 
-            var minDate = dtToday.toISOString().substr(0, 10);
-            $('#expiration-date').attr('min', minDate);
-            year = year + 1;
-            var maxDate = year + '-' + month + '-' + day;
-            $('#expiration-date').attr('max', maxDate);
-          });
+          year = year + 1;
+          var maxDate = year + '-' + month + '-' + day;
+          $(`#expiration-date_${exceptions}`).attr('max', maxDate);
+        };
         </script>
         <!-- Broke out functions necessary for dynamic drop down and help text related to CDLs-->
         <script>
@@ -254,6 +253,18 @@
               let exceptionBlock = document.getElementById(`exception_block_${exceptions}`);
               document.getElementById(`exception_header_${exceptions}`).style.display = 'block';
               exceptionBlock.innerHTML = `
+              <div class="field-wrapper textinput required">
+              <label for="business-name_${exceptions}">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+              <select name='business-name_${exceptions}' required='required' class="choicefield" id='business-name_${exceptions}'>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.entity_name}} - Payor Code:
+                  {{submitter.payor_code}}</option>
+                {% endfor %}
+              </select>
+            </div>
               <div class="field-wrapper select required">
               <div class="field-errors" style="display: none"></div>
 
@@ -398,12 +409,21 @@
             let exceptions = 1;
             btnStatus(exceptions);
 
+            $('[id^="expiration-date"]').click(function() {
+              let field = $(this).attr('id');
+              restrictExpirationDate(field, exceptions);
+            });
+
             $('#exception-add-btn').click(function() {
 
               addException(exceptions);
             // To track how many exception blocks there are for button logic
               exceptions = addException(exceptions);
               btnStatus(exceptions);
+              $('[id^="expiration-date"]').click(function() {
+              let field = $(this).attr('id');
+              restrictExpirationDate(field, exceptions);
+            });
             // Gets help text for additional added blocks
               $('[id^="field-threshold-exception"]').change(function() {
                 let fieldSelection = $(this).val();

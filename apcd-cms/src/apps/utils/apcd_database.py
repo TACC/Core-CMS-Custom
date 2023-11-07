@@ -127,7 +127,7 @@ def get_user_role(user):
             conn.close()
 
 
-def get_registrations(reg_id=None):
+def get_registrations(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
@@ -139,7 +139,7 @@ def get_registrations(reg_id=None):
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = f"""SELECT
+        query = f"""SELECT DISTINCT
                 registrations.registration_id,
                 registrations.posted_date,
                 registrations.applicable_period_start,
@@ -151,8 +151,11 @@ def get_registrations(reg_id=None):
                 registrations.mail_address,
                 registrations.city,
                 registrations.state,
-                registrations.zip
-                FROM registrations {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
+                registrations.zip,
+                registrations.registration_year
+                FROM registrations 
+                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
+                {f"LEFT JOIN submitters on registrations.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -272,7 +275,7 @@ def update_registration(form, reg_id):
         if conn is not None:
             conn.close()
 
-def get_registration_entities(reg_id=None):
+def get_registration_entities(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
@@ -302,7 +305,10 @@ def get_registration_entities(reg_id=None):
                 registration_entities.file_mc,
                 registration_entities.file_pc,
                 registration_entities.file_dc
-                FROM registration_entities {f"WHERE registration_id =  {str(reg_id)}" if reg_id is not None else ''}"""
+                FROM registration_entities 
+                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
+                {f"LEFT JOIN submitters on registration_entities.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}'" if submitter_code is not None else ''}"""
+
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -317,14 +323,14 @@ def get_registration_entities(reg_id=None):
             conn.close()
 
 
-def create_registration_entity(form, reg_id, iteration, from_update_reg=None):
+def create_registration_entity(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
     cur = None
     conn = None
     values = ()
     try:
-        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else None):
+        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
             return
-        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
         values = (
             reg_id,
             float(form['total_claims_value_{}'.format(str_end)]),
@@ -397,7 +403,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
                 return delete_registration_entity(reg_id, form['ent_id_{}'.format(str_end)])
             return
         if iteration > no_entities: # entity is in form but not in original list -> need to create
-            return create_registration_entity(form, reg_id, iteration, True)
+            return create_registration_entity(form, reg_id, iteration, from_update_reg=True)
         values = (
             float(form['total_claims_value_{}'.format(str_end)]),
             _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
@@ -492,7 +498,7 @@ def delete_registration_entity(reg_id, ent_id):
             conn.close()
 
 
-def get_registration_contacts(reg_id=None):
+def get_registration_contacts(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
@@ -512,7 +518,9 @@ def get_registration_contacts(reg_id=None):
                 registration_contacts.contact_name,
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
-                FROM registration_contacts {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
+                FROM registration_contacts 
+                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
+                {f"LEFT JOIN submitters on registration_contacts.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}'" if submitter_code is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -527,15 +535,15 @@ def get_registration_contacts(reg_id=None):
             conn.close()
 
 
-def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
+def create_registration_contact(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
     cur = None
     conn = None
     values = ()
     try:
         if iteration > 1:
-            if not _acceptable_contact(form, iteration, reg_id if from_update_reg else None):
+            if not _acceptable_contact(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
                 return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else "" }'
+            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
             values = (
                 reg_id,
                 True if 'contact_notifications_{}'.format(str_end) in form else False,
@@ -545,7 +553,7 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None):
                 _clean_email(form['contact_email_{}'.format(str_end)])
             )
         else:
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else ''
+            str_end = f'_{iteration}_{reg_id}' if from_update_reg else (f"_{iteration}_{old_reg_id}" if old_reg_id else "")
             values = (
                 reg_id,
                 True if f'contact_notifications{str_end}' in form else False,
@@ -597,7 +605,7 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
                 return delete_registration_contact(reg_id, form[f'cont_id_{iteration}'])
             return
         if iteration > no_contacts: # contact is in form but not in original list -> need to create
-            return create_registration_contact(form, reg_id, iteration, True)
+            return create_registration_contact(form, reg_id, iteration, from_update_reg=True)
         str_end = f'{iteration}_{reg_id}'
         values = (
             True if 'contact_notifications_{}'.format(str_end) in form else False,
@@ -817,7 +825,7 @@ def create_threshold_exception(form, iteration, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            _clean_value(form["business-name"]),
+            _clean_value(form['business-name_{}'.format(iteration)]),
             sub_data[1],
             sub_data[2],
             sub_data[3],
@@ -1116,6 +1124,8 @@ def create_extension(form, iteration, sub_data):
                 _clean_value(form['business-name_{}'.format(iteration)]),
                 _clean_date(form['requested-target-date_{}'.format(iteration)]),
                 _clean_value(form['extension-type_{}'.format(iteration)]),
+                int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+                _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
                 "pending",
                 _clean_value(sub_data[1]),
                 _clean_value(sub_data[2]),
@@ -1129,6 +1139,8 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form['business-name_{}'.format(iteration)]),
             _clean_date(form['requested-target-date_{}'.format(iteration)]),
             _clean_value(form['extension-type_{}'.format(iteration)]),
+            int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
+            _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
             "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
@@ -1136,12 +1148,14 @@ def create_extension(form, iteration, sub_data):
             _clean_value(form["requestor-name"]),
             _clean_email(form["requestor-email"]),
             _clean_value(form["justification"])
-            )   
+            )
 
         operation = """INSERT INTO extensions(
             submitter_id,
             requested_target_date,
             extension_type,
+            applicable_data_period,
+            current_expected_date,
             status,
             submitter_code,
             payor_code,
@@ -1149,7 +1163,7 @@ def create_extension(form, iteration, sub_data):
             requestor_name,
             requestor_email,
             explanation_justification
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         conn = psycopg2.connect(
             host=APCD_DB['host'],
@@ -1236,7 +1250,7 @@ def update_extension(form):
         if cur is not None:
             cur.close()
 
-def get_submitter_for_extend_or_except(user):
+def get_submitter_info(user):
     cur = None
     conn = None
     try:
@@ -1255,14 +1269,66 @@ def get_submitter_for_extend_or_except(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    submitters.org_name
+                    submitters.entity_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                ORDER BY submitters.org_name, submitter_users.submitter_id
+                ORDER BY submitters.entity_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_applicable_data_periods(submitter_id):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
+        )
+        cur = conn.cursor()
+        query = """ SELECT data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        cur.execute(query, (submitter_id,))
+        return cur.fetchall()
+
+    except Exception as error:
+        logger.error(error)
+
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+def get_current_exp_date(submitter_id, applicable_data_period):
+    cur = None
+    conn = None
+    try:
+        conn = psycopg2.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require',
+        )
+        cur = conn.cursor()
+        query = """ SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        cur.execute(query, (submitter_id, applicable_data_period,))
         return cur.fetchall()
 
     except Exception as error:

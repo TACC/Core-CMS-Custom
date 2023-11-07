@@ -97,7 +97,9 @@
         <div class="field-errors" style="display: none"></div>
           <select name='business-name' required='required' class="choicefield" id='business-name'>
           {% for submitter in submitters %}
-            <option class="dropdown-text" value={{submitter.submitter_id}}>{{submitter.org_name}} - ID: {{submitter.submitter_id}}</option>
+          <option class="dropdown-text" value={{submitter.submitter_id}}>
+            {{submitter.entity_name}} - Payor Code: {{submitter.payor_code}}
+            </option>
           {% endfor %} 
         </select>
 
@@ -160,9 +162,6 @@
                   month = '0' + month.toString();
               if(day < 10)
                   day = '0' + day.toString();
-              
-              var minDate = dtToday.toISOString().substr(0, 10);
-              $('#expiration-date').attr('min', minDate);
               year = year + 1;
               var maxDate = year + '-' + month + '-' + day;    
               $('#expiration-date').attr('max', maxDate);

@@ -125,7 +125,7 @@
         <div class="o-grid o-grid--col-auto-count">
           <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
-            <label for="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> FEIN<sup>5</sup> </label>
+            <label for="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> FEIN<sup>2</sup> </label>
             <input
               type="text"
               name="fein_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
@@ -162,7 +162,7 @@
           </div>
           <div class="field-wrapper textinput">
             <div class="field-errors" style="display: none"></div>
-            <label for="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> NAIC<sup>6</sup> Company Code </label>
+            <label for="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"> NAIC<sup>3</sup> Company Code </label>
             <input
               type="number"
               name="naic_company_code_${entities}{% if r %}_{{r.reg_id}}{% endif %}"
@@ -329,7 +329,7 @@
         <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
           <div class="field-errors" style="display: none"></div>
           <label for="total_claims_value_${entities}{% if r %}_{{r.reg_id}}{% endif %}">
-            Total Claims Value (USD<sup>7</sup>)<span class="asterisk">*</span>
+            Total Claims Value (USD<sup>4</sup>)<span class="asterisk">*</span>
           </label>
           <span class="s-affixed-input-wrapper__prefix">$</span>
           <input
@@ -345,12 +345,12 @@
           <div id="help-text-total_claims_value_${entities}" class="help-text">
           </div>
         </div>
-        ${ entities === 5 ?
-            {% if not r %}
+        {% if not r %}
+        ${( entities === 5 ?
              `<p class="c-message c-message--type-info c-message--scope-inline">If you need to associate more than 5 entities with your registration, <a href="/workbench/dashboard" target="_blank">submit a ticket</a> with your additional entries and your registration ID (displayed after submitting this form).</p>`
-            {% endif %}
           : ''
-        }
+        )}
+        {% endif %}
         `;
         entityIdGroupValidation(entities, reg_id); // add entity input validation for new entities on form
         entityPlanTypeValidation(entities, reg_id);
@@ -433,7 +433,7 @@
                 class="telephoneinput"
                 id="contact_phone_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
                 inputmode="tel"
-                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.\\-]\\d{3}[\\s.\\-]\\d{4}$"
               />
               <div id="help-text-contact_phone_${contacts}" class="help-text">
                 <details>
@@ -464,7 +464,7 @@
                 autocomplete="email"
                 required
                 class="emailinput"
-                pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$"
+                pattern="^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\.[a-z]{2,4}$"
                 id="contact_email_${contacts}{% if r %}_{{r.reg_id}}{% endif %}"
               />
             </div>
