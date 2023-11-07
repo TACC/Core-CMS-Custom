@@ -25,7 +25,7 @@
                 class="radioselect"
                 required
                 id="on-behalf-of_0"                      
-                {% if r.view_modal_content.for_self %}
+                {% if r.view_modal_content.for_self or r is None or r|length == 0 %}
                     checked
                 {% endif %}
                 />
@@ -41,7 +41,7 @@
                 class="radioselect"
                 required
                 id="on-behalf-of_1"
-                {% if not r.view_modal_content.for_self and r is not None %}
+                {% if not r.view_modal_content.for_self and r is not None and r|length != 0 %}
                     checked
                 {% endif %}
                 />
@@ -145,14 +145,14 @@
             class="choicefield"
             id="state{% if r %}_{{r.reg_id}}{% endif%}"
         >
-            <option hidden value=" " selected> </option>
             {% if r.view_modal_content %}
                 {% for state in r.view_modal_content.us_state_list %}
                 <option data-display-value='{{ state|slice:":2"}}' value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
-                    {{ state }}
+                    {% if r.view_modal_content.state == state|slice:":2" %}{{ state|slice:":2" }}{% else %}{{ state }}{% endif %}
                 </option>
                 {% endfor %}
             {% else %}
+            <option hidden value=" " selected> </option>
             <option data-display-value="AL" value="AL - Alabama">AL - Alabama</option>
             <option data-display-value="AK" value="AK - Alaska">AK - Alaska</option>
             <option data-display-value="AS" value="AS - American Samoa">AS - American Samoa</option>
@@ -392,7 +392,6 @@
                                     type="checkbox"
                                     name="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
                                     id="types_of_files_{{ file_type|lower }}_{{ent_no}}_{{r.reg_id}}"
-                                    {% if file_type is not 'Provider' %}required{% endif %}
                                     {% if file_type_selected %}checked{% endif %}
                                     />{{ file_type }}</label
                                 >

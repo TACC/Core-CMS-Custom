@@ -94,9 +94,9 @@
         );
         let claimFileTypeBoxes = Array.from(
           document.querySelectorAll(`
-          input[name=types_of_files_medical_${entities}${reg_id_substr}],
-          input[name=types_of_files_pharmacy_${entities}${reg_id_substr}],
-          input[name=types_of_files_dental_${entities}${reg_id_substr}]`)
+          input[name=types_of_files_medical_${ent_no}${reg_id_substr}],
+          input[name=types_of_files_pharmacy_${ent_no}${reg_id_substr}],
+          input[name=types_of_files_dental_${ent_no}${reg_id_substr}]`)
         );
         checkboxGroupValidation(planTypeBoxes, 'Please select at least one plan type.');
         checkboxGroupValidation(claimFileTypeBoxes, 'Please select at least one claims file type (see above).');
