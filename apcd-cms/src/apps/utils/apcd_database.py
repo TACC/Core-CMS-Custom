@@ -1,6 +1,6 @@
 from django.conf import settings
 import psycopg2
-from datetime import datetime
+from datetime import datetime, date
 import re
 import logging
 
@@ -153,7 +153,7 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.state,
                 registrations.zip,
                 registrations.registration_year
-                FROM registrations 
+                FROM registrations
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
                 {f"LEFT JOIN submitters on registrations.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
@@ -170,7 +170,7 @@ def get_registrations(reg_id=None, submitter_code=None):
             conn.close()
 
 
-def create_registration(form):
+def create_registration(form, renewal=False):
     cur = None
     conn = None
     try:
@@ -194,8 +194,9 @@ def create_registration(form):
             mail_address,
             city,
             state,
-            zip
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            zip,
+            registration_year
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
@@ -208,7 +209,8 @@ def create_registration(form):
             _clean_value(form['mailing-address']),
             _clean_value(form['city']),
             form['state'][:2],
-            form['zip_code']
+            form['zip_code'],
+            "{}".format(datetime.now().year + (1 if renewal else 0))
         )
         cur.execute(operation, values)
         conn.commit()
