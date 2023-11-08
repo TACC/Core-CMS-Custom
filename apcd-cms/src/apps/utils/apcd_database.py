@@ -840,7 +840,7 @@ def create_threshold_exception(form, iteration, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            _clean_value(form["business-name"]),
+            _clean_value(form['business-name_{}'.format(iteration)]),
             sub_data[1],
             sub_data[2],
             sub_data[3],
@@ -1284,11 +1284,11 @@ def get_submitter_info(user):
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    submitters.org_name
+                    submitters.entity_name
                 FROM submitter_users
                 JOIN submitters
                     ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
-                ORDER BY submitters.org_name, submitter_users.submitter_id
+                ORDER BY submitters.entity_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
         cur.execute(query, (user,))

@@ -32,7 +32,7 @@ class ExtensionFormView(TemplateView):
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "org_name": title_case(sub[4])
+                "entity_name": title_case(sub[4])
             }
         context["submitters"] = []
         context["applicable_data_periods"] = []
