@@ -541,14 +541,13 @@
                 <label for="license_number_1"> License Number </label>
 
                 <input
-                    type="number"
+                    type="text"
                     name="license_number_1"
                     placeholder="1234567890"
                     class="integerfield"
                     id="license_number_1"
                     inputmode="numeric"
-                    min="0"
-                    max="2147483648"
+                    pattern="^[1-9]+[0-9]*$"
                     required
                 />
 
@@ -562,14 +561,13 @@
                 <label for="naic_company_code_1"> NAIC<sup>3</sup> Company Code </label>
 
                 <input
-                    type="number"
+                    type="text"
                     name="naic_company_code_1"
                     placeholder="12345"
                     class="integerfield"
                     id="naic_company_code_1"
                     inputmode="numeric"
-                    min="0"
-                    max="2147483648"
+                    pattern="^[1-9]+[0-9]*$"
                     required
                 />
 

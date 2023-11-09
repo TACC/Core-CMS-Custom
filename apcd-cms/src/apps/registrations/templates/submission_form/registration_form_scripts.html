@@ -154,14 +154,13 @@
             <div class="field-errors" style="display: none"></div>
             <label for="license_number_${entities}${reg_id_substr}"> License Number </label>
             <input
-              type="number"
+              type="text"
               name="license_number_${entities}${reg_id_substr}"
               placeholder="1234567890"
               class="integerfield"
               id="license_number_${entities}${reg_id_substr}"
               inputmode="numeric"
-              min="0"
-              max="2147483648"
+              pattern="^[1-9]+[0-9]*$"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
@@ -172,14 +171,13 @@
             <div class="field-errors" style="display: none"></div>
             <label for="naic_company_code_${entities}${reg_id_substr}"> NAIC<sup>3</sup> Company Code </label>
             <input
-              type="number"
+              type="text"
               name="naic_company_code_${entities}${reg_id_substr}"
               placeholder="12345"
               class="integerfield"
               id="naic_company_code_${entities}${reg_id_substr}"
               inputmode="numeric"
-              min="0"
-              max="2147483648"
+              pattern="^[1-9]+[0-9]*$"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
