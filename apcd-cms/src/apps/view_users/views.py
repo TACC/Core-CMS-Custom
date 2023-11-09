@@ -64,18 +64,18 @@ class ViewUsersTable(TemplateView):
                     'user_id': usr[1],
                     'user_email': usr[2],
                     'user_name': usr[3],
-                    'org_name': usr[4],
+                    'entity_name': usr[4] if usr[4] else "Not Applicable",
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
                     'status': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
-                    'org_name_no_parens': usr[4].replace("(", "").replace(")", ""),  # just for filtering purposes
+                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "Not Applicable",  # just for filtering purposes
                     'active': usr[8],
                 }
 
-        context['header'] = ['User ID', 'Name', 'Organization', 'Role', 'Status', 'User Number', 'See More']
+        context['header'] = ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More']
         context['status_options'] = ['All', 'Active', 'Inactive']
         context['filter_options'] = ['All']
         context['role_options'] = ['SUBMITTER_USER', 'SUBMITTER_ADMIN','APCD_ADMIN']
@@ -99,6 +99,8 @@ class ViewUsersTable(TemplateView):
             org_name = user[4]
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
+            if org_name is None and 'Not Applicable' not in context['filter_options']:
+                context['filter_options'].append('Not Applicable')
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
@@ -119,7 +121,7 @@ class ViewUsersTable(TemplateView):
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
-            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'org_name_no_parens')
+            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'entity_name_no_parens')
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, table_entries))
