@@ -25,7 +25,7 @@
                 class="radioselect"
                 required
                 id="on-behalf-of_0"                      
-                {% if r.view_modal_content.for_self %}
+                {% if r.view_modal_content.for_self or r is None or r|length == 0 %}
                     checked
                 {% endif %}
                 />
@@ -41,7 +41,7 @@
                 class="radioselect"
                 required
                 id="on-behalf-of_1"
-                {% if not r.view_modal_content.for_self and r is not None %}
+                {% if not r.view_modal_content.for_self and r is not None and r|length != 0 %}
                     checked
                 {% endif %}
                 />
@@ -143,71 +143,72 @@
             name="state"
             required="required"
             class="choicefield"
-            id="state"
+            id="state{% if r %}_{{r.reg_id}}{% endif%}"
         >
             {% if r.view_modal_content %}
                 {% for state in r.view_modal_content.us_state_list %}
-                <option value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
-                    {{ state }}
+                <option data-display-value='{{ state|slice:":2"}}' value="{{ state }}" {% if r.view_modal_content.state == state|slice:":2" %}selected{% endif %}>
+                    {% if r.view_modal_content.state == state|slice:":2" %}{{ state|slice:":2" }}{% else %}{{ state }}{% endif %}
                 </option>
                 {% endfor %}
             {% else %}
-            <option value="AL - Alabama">AL - Alabama</option>
-            <option value="AK - Alaska">AK - Alaska</option>
-            <option value="AS - American Samoa">AS - American Samoa</option>
-            <option value="AZ - Arizona">AZ - Arizona</option>
-            <option value="AR - Arkansas">AR - Arkansas</option>
-            <option value="CA - California">CA - California</option>
-            <option value="CO - Colorado">CO - Colorado</option>
-            <option value="CT - Connecticut">CT - Connecticut</option>
-            <option value="DE - Delaware">DE - Delaware</option>
-            <option value="DC - District of Columbia">DC - District of Columbia</option>
-            <option value="FL - Florida">FL - Florida</option>
-            <option value="GA - Georgia">GA - Georgia</option>
-            <option value="GU - Guam">GU - Guam</option>
-            <option value="HI - Hawaii">HI - Hawaii</option>
-            <option value="ID - Idaho">ID - Idaho</option>
-            <option value="IL - Illinois">IL - Illinois</option>
-            <option value="IN - Indiana">IN - Indiana</option>
-            <option value="IA - Iowa">IA - Iowa</option>
-            <option value="KS - Kansas">KS - Kansas</option>
-            <option value="KY - Kentucky">KY - Kentucky</option>
-            <option value="LA - Louisiana">LA - Louisiana</option>
-            <option value="ME - Maine">ME - Maine</option>
-            <option value="MD - Maryland">MD - Maryland</option>
-            <option value="MA - Massachusetts">MA - Massachusetts</option>
-            <option value="MI - Michigan">MI - Michigan</option>
-            <option value="MN - Minnesota">MN - Minnesota</option>
-            <option value="MS - Mississippi">MS - Mississippi</option>
-            <option value="MO - Missouri">MO - Missouri</option>
-            <option value="MT - Montana">MT - Montana</option>
-            <option value="NE - Nebraska">NE - Nebraska</option>
-            <option value="NV - Nevada">NV - Nevada</option>
-            <option value="NH - New hampshire">NH - New hampshire</option>
-            <option value="NJ - New jersey">NJ - New jersey</option>
-            <option value="NM - New mexico">NM - New mexico</option>
-            <option value="NY - New york">NY - New york</option>
-            <option value="NC - North carolina">NC - North carolina</option>
-            <option value="ND - North dakota">ND - North dakota</option>
-            <option value="MP - Northern Mariana Islands">MP - Northern Mariana Islands</option>
-            <option value="OH - Ohio">OH - Ohio</option>
-            <option value="OK - Oklahoma">OK - Oklahoma</option>
-            <option value="OR - Oregon">OR - Oregon</option>
-            <option value="PA - Pennsylvania">PA - Pennsylvania</option>
-            <option value="PR - Puerto rico">PR - Puerto rico</option>
-            <option value="RI - Rhode island">RI - Rhode island</option>
-            <option value="SC - South Carolina">SC - South Carolina</option>
-            <option value="SD - South Dakota">SD - South Dakota</option>
-            <option value="TN - Tennessee">TN - Tennessee</option>
-            <option value="TX - Texas">TX - Texas</option>
-            <option value="UT - Utah">UT - Utah</option>
-            <option value="VT - Vermont">VT - Vermont</option>
-            <option value="VA - Virginia">VA - Virginia</option>
-            <option value="VI - Virgin Islands">VI - Virgin Islands</option>
-            <option value="WA - Washington">WA - Washington</option>
-            <option value="WV - West Virginia">WV - West Virginia</option>
-            <option value="WI - Wisconsin">WI - Wisconsin</option>
-            <option value="WY - Wyoming">WY - Wyoming</option>
+            <option hidden selected> </option>
+            <option data-display-value="AL" value="AL - Alabama">AL - Alabama</option>
+            <option data-display-value="AK" value="AK - Alaska">AK - Alaska</option>
+            <option data-display-value="AS" value="AS - American Samoa">AS - American Samoa</option>
+            <option data-display-value="AZ" value="AZ - Arizona">AZ - Arizona</option>
+            <option data-display-value="AR" value="AR - Arkansas">AR - Arkansas</option>
+            <option data-display-value="CA" value="CA - California">CA - California</option>
+            <option data-display-value="CO" value="CO - Colorado">CO - Colorado</option>
+            <option data-display-value="CT" value="CT - Connecticut">CT - Connecticut</option>
+            <option data-display-value="DE" value="DE - Delaware">DE - Delaware</option>
+            <option data-display-value="DC" value="DC - District of Columbia">DC - District of Columbia</option>
+            <option data-display-value="FL" value="FL - Florida">FL - Florida</option>
+            <option data-display-value="GA" value="GA - Georgia">GA - Georgia</option>
+            <option data-display-value="GU" value="GU - Guam">GU - Guam</option>
+            <option data-display-value="HI" value="HI - Hawaii">HI - Hawaii</option>
+            <option data-display-value="ID" value="ID - Idaho">ID - Idaho</option>
+            <option data-display-value="IL" value="IL - Illinois">IL - Illinois</option>
+            <option data-display-value="IN" value="IN - Indiana">IN - Indiana</option>
+            <option data-display-value="IA" value="IA - Iowa">IA - Iowa</option>
+            <option data-display-value="KS" value="KS - Kansas">KS - Kansas</option>
+            <option data-display-value="KY" value="KY - Kentucky">KY - Kentucky</option>
+            <option data-display-value="LA" value="LA - Louisiana">LA - Louisiana</option>
+            <option data-display-value="ME" value="ME - Maine">ME - Maine</option>
+            <option data-display-value="MD" value="MD - Maryland">MD - Maryland</option>
+            <option data-display-value="MA" value="MA - Massachusetts">MA - Massachusetts</option>
+            <option data-display-value="MI" value="MI - Michigan">MI - Michigan</option>
+            <option data-display-value="MN" value="MN - Minnesota">MN - Minnesota</option>
+            <option data-display-value="MS" value="MS - Mississippi">MS - Mississippi</option>
+            <option data-display-value="MO" value="MO - Missouri">MO - Missouri</option>
+            <option data-display-value="MT" value="MT - Montana">MT - Montana</option>
+            <option data-display-value="NE" value="NE - Nebraska">NE - Nebraska</option>
+            <option data-display-value="NV" value="NV - Nevada">NV - Nevada</option>
+            <option data-display-value="NH" value="NH - New hampshire">NH - New hampshire</option>
+            <option data-display-value="NJ" value="NJ - New Jersey">NJ - New Jersey</option>
+            <option data-display-value="NM" value="NM - New Mexico">NM - New Mexico</option>
+            <option data-display-value="NY" value="NY - New York">NY - New York</option>
+            <option data-display-value="NC" value="NC - North Carolina">NC - North Carolina</option>
+            <option data-display-value="ND" value="ND - North Dakota">ND - North Dakota</option>
+            <option data-display-value="MP" value="MP - Northern Mariana Islands">MP - Northern Mariana Islands</option>
+            <option data-display-value="OH" value="OH - Ohio">OH - Ohio</option>
+            <option data-display-value="OK" value="OK - Oklahoma">OK - Oklahoma</option>
+            <option data-display-value="OR" value="OR - Oregon">OR - Oregon</option>
+            <option data-display-value="PA" value="PA - Pennsylvania">PA - Pennsylvania</option>
+            <option data-display-value="PR" value="PR - Puerto Rico">PR - Puerto Rico</option>
+            <option data-display-value="RI" value="RI - Rhode Island">RI - Rhode Island</option>
+            <option data-display-value="SC" value="SC - South Carolina">SC - South Carolina</option>
+            <option data-display-value="SD" value="SD - South Dakota">SD - South Dakota</option>
+            <option data-display-value="TN" value="TN - Tennessee">TN - Tennessee</option>
+            <option data-display-value="TX" value="TX - Texas">TX - Texas</option>
+            <option data-display-value="UT" value="UT - Utah">UT - Utah</option>
+            <option data-display-value="VT" value="VT - Vermont">VT - Vermont</option>
+            <option data-display-value="VA" value="VA - Virginia">VA - Virginia</option>
+            <option data-display-value="VI" value="VI - Virgin Islands">VI - Virgin Islands</option>
+            <option data-display-value="WA" value="WA - Washington">WA - Washington</option>
+            <option data-display-value="WV" value="WV - West Virginia">WV - West Virginia</option>
+            <option data-display-value="WI" value="WI - Wisconsin">WI - Wisconsin</option>
+            <option data-display-value="WY" value="WY - Wyoming">WY - Wyoming</option>
             {% endif %}
         </select>
         </div>
@@ -363,7 +364,7 @@
                         Types of Files
                     </label>
                     <div class="help-text">
-                        Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                        Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
                     </div>
                     </div>
 
@@ -415,14 +416,13 @@
                     </label>
 
                     <input
-                        type="number"
+                        type="text"
                         name="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        min="1"
-                        step="1"
+                        pattern="^[1-9]+[0-9]*$"
                         value="{% if not renew %}{{ entity.no_covered }}{% endif %}"
                     />
                     </div>
@@ -435,13 +435,13 @@
                     </label>
 
                     <input
-                        type="number"
+                        type="text"
                         name="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        min="1"
+                        pattern="^[1-9]+[0-9]*$"
                         value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
                     </div>
@@ -455,14 +455,13 @@
 
                     <span class="s-affixed-input-wrapper__prefix">$</span>
                     <input
-                        type="number"
+                        type="text"
                         name="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         required
                         class="integerfield"
                         id="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        step="0.01"
-                        min="0.01"
+                        pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
                         value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
@@ -629,7 +628,7 @@
                 Types of Files<span class="asterisk">*</span>
             </label>
             <div class="help-text">
-                Eligibility/Enrollment files are mandatory. Select additional file types to be submitted.
+                Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
             </div>
             </div>
 
@@ -664,6 +663,7 @@
                             type="checkbox"
                             name="types_of_files_medical_1"
                             id="types_of_files_medical_1"
+                            required
                             />Medical</label
                         >
                     </li>
@@ -673,6 +673,7 @@
                             type="checkbox"
                             name="types_of_files_pharmacy_1"
                             id="types_of_files_pharmacy_1"
+                            required
                             />Pharmacy</label
                         >
                     </li>
@@ -682,6 +683,7 @@
                             type="checkbox"
                             name="types_of_files_dental_1"
                             id="types_of_files_dental_1"
+                            required
                             />Dental</label
                         >
                     </li>
@@ -704,14 +706,13 @@
                 </label>
 
                 <input
-                type="number"
+                type="text"
                 name="total_covered_lives_1"
                 required
                 class="integerfield"
                 id="total_covered_lives_1"
                 inputmode="numeric"
-                min="1"
-                step="1"
+                pattern="^[1-9]+[0-9]*$"
                 />
             </div>
 
@@ -723,13 +724,13 @@
                 </label>
 
                 <input
-                type="number"
+                type="text"
                 name="claims_encounters_volume_1"
                 required
                 class="integerfield"
                 id="claims_encounters_volume_1"
                 inputmode="numeric"
-                min="1"
+                pattern="^[1-9]+[0-9]*$"
                 />
             </div>
 
@@ -742,14 +743,13 @@
 
                 <span class="s-affixed-input-wrapper__prefix">$</span>
                 <input
-                type="number"
+                type="text"
                 name="total_claims_value_1"
                 required
                 class="integerfield"
                 id="total_claims_value_1"
                 inputmode="numeric"
-                step="0.01"
-                min="0.01"
+                pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
                 />
             </div>
             {# Additional entities rendered here... #}

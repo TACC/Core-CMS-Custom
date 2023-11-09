@@ -47,8 +47,10 @@ class SubmissionFormView(View):
     def post(self, request):
         form = request.POST.copy()
         old_reg_id = None
+        renewal = False
         if 'reg_id' in form:
             old_reg_id = form['reg_id']
+            renewal = True
         errors = []
 
         if (request.user.is_authenticated):
@@ -59,7 +61,7 @@ class SubmissionFormView(View):
         else:
             return HttpResponseRedirect('/')
 
-        reg_resp = apcd_database.create_registration(form)
+        reg_resp = apcd_database.create_registration(form, renewal=renewal)
         if not _err_msg(reg_resp) and type(reg_resp) == int:
             for iteration in range(1,6):
                 contact_resp = apcd_database.create_registration_contact(form, reg_resp, iteration, old_reg_id=old_reg_id)
