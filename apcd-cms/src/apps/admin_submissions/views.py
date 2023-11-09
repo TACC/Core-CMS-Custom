@@ -55,6 +55,7 @@ class AdminSubmissionsTable(TemplateView):
         # on the current page using offset and limit
         for s in submission_content[offset:offset + limit]:
             s['status'] = title_case(s['status'])
+            s['entity_name'] = title_case(s['entity_name'])
             s['outcome'] = title_case(s['outcome'])
             s['received_timestamp'] = parser.parse(s['received_timestamp']) if s['received_timestamp'] else None
             s['updated_at'] = parser.parse(s['updated_at']) if s['updated_at'] else None
@@ -63,7 +64,7 @@ class AdminSubmissionsTable(TemplateView):
                 'outcome': title_case(t['outcome'])
             } for t in (s['view_modal_content'] or [])]
 
-        context['header'] = ['Received', 'Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
+        context['header'] = ['Received', 'Entity Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['filter_options'] = ['All', 'In Process', 'Complete']
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
