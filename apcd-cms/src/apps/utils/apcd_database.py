@@ -170,7 +170,7 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.registration_year
                 FROM registrations 
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN submitters on registrations.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
+                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -1035,44 +1035,6 @@ def get_user_submissions_and_logs(user):
         if conn is not None:
             conn.close()  
 
-
-def get_all_submissions():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        query = """
-            SELECT 
-                submissions.submission_id,
-                submissions.apcd_id,
-                submissions.submitter_id, 
-                submissions.zip_file_name,
-                submissions.status,
-                submissions.outcome,
-                submissions.received_timestamp,
-                submissions.updated_at,
-                apcd_orgs.official_name
-            FROM submissions
-            JOIN apcd_orgs
-                ON submissions.apcd_id = apcd_orgs.apcd_id
-            ORDER BY submissions.received_timestamp DESC
-        """ 
-        cur = conn.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
 def get_all_submissions_and_logs():
     cur = None
     conn = None
@@ -1088,14 +1050,13 @@ def get_all_submissions_and_logs():
         query = """
             SELECT json_build_object(
                 'submission_id', submissions.submission_id,
-                'apcd_id', submissions.apcd_id,
+                'entity_name', submitters.entity_name,
                 'submitter_id', submissions.submitter_id,
                 'file_name', submissions.zip_file_name,
                 'status', submissions.status,
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -1116,7 +1077,7 @@ def get_all_submissions_and_logs():
                 ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, submitters.org_name)
+            GROUP BY (submissions.submission_id, submitters.entity_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1387,7 +1348,7 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                submitters.org_name
+                submitters.entity_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
@@ -1438,7 +1399,7 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                submitters.org_name,
+                submitters.entity_name,
                 standard_codes.item_value
             FROM exceptions
             JOIN submitters
