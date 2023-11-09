@@ -1020,44 +1020,6 @@ def get_user_submissions_and_logs(user):
         if conn is not None:
             conn.close()  
 
-
-def get_all_submissions():
-    cur = None
-    conn = None
-    try:
-        conn = psycopg2.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        query = """
-            SELECT 
-                submissions.submission_id,
-                submissions.apcd_id,
-                submissions.submitter_id, 
-                submissions.zip_file_name,
-                submissions.status,
-                submissions.outcome,
-                submissions.received_timestamp,
-                submissions.updated_at,
-                apcd_orgs.official_name
-            FROM submissions
-            JOIN apcd_orgs
-                ON submissions.apcd_id = apcd_orgs.apcd_id
-            ORDER BY submissions.received_timestamp DESC
-        """ 
-        cur = conn.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
 def get_all_submissions_and_logs():
     cur = None
     conn = None
@@ -1073,14 +1035,13 @@ def get_all_submissions_and_logs():
         query = """
             SELECT json_build_object(
                 'submission_id', submissions.submission_id,
-                'apcd_id', submissions.apcd_id,
+                'entity_name', submitters.entity_name,
                 'submitter_id', submissions.submitter_id,
                 'file_name', submissions.zip_file_name,
                 'status', submissions.status,
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -1101,7 +1062,7 @@ def get_all_submissions_and_logs():
                 ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, submitters.org_name)
+            GROUP BY (submissions.submission_id, submitters.entity_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
