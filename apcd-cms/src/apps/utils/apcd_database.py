@@ -308,9 +308,7 @@ def get_registration_entities(reg_id=None, submitter_code=None):
                 registration_entities.file_pc,
                 registration_entities.file_dc
                 FROM registration_entities 
-                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN submitters on registration_entities.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}'" if submitter_code is not None else ''}"""
-
+                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
@@ -521,8 +519,7 @@ def get_registration_contacts(reg_id=None, submitter_code=None):
                 registration_contacts.contact_phone,
                 registration_contacts.contact_email
                 FROM registration_contacts 
-                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN submitters on registration_contacts.registration_id = submitters.registration_id WHERE submitter_code = '{str(submitter_code)}'" if submitter_code is not None else ''}"""
+                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}"""
         cur = conn.cursor()
         cur.execute(query)
         return cur.fetchall()
