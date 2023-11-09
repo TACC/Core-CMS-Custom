@@ -18,6 +18,12 @@ class SubmittersTable(RegistrationsTable):
             data = json.loads(submitter_code)
             submitter_code = data['submitter_code']
             registrations_content = get_registrations(submitter_code=submitter_code)
+            registrations_entities = []
+            registrations_contacts = []
+            for reg in registrations_content:
+                reg_id = int(reg[0])
+                registrations_entities.append(get_registration_entities(reg_id=reg_id))  # get entities and contacts for reg id's
+                registrations_contacts.append(get_registration_contacts(reg_id=reg_id))  # we have already verified are associated w/ given submitter code
             registrations_entities = get_registration_entities(submitter_code=submitter_code)
             registrations_contacts = get_registration_contacts(submitter_code=submitter_code)            
             context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
