@@ -528,31 +528,4 @@
         btnStatus();
       });
     </script>
-    <script id="state-dropdown-text-handler">
-      function stateOptionText (stateSelectDropdown, action) {
-        var selectedState, selectedStateValue, selectedStateDisplayVal;
-        selectedState = stateSelectDropdown.selectedOptions[0];
-        selectedStateValue = selectedState.value;
-        selectedStateDisplayVal = selectedState.getAttribute("data-display-value");
-        if (action === 'reset') {
-          selectedState.innerHTML = selectedStateValue;
-        }
-        else if (action === 'select') {
-          selectedState.innerHTML = selectedStateDisplayVal; /* sets dropdown to display state abbreviation only */
-        }
-      }
-      var regStrEnd, stateSelectDropdowns;
-      regStrEnd = 
-            {% if r %}
-              "_{{r.reg_id}}"
-            {% else %}
-              ""
-            {% endif %}
-      ;
-      stateSelectDropdowns = document.querySelectorAll(`select[id=state${regStrEnd}]`);
-      stateSelectDropdowns.forEach(selector => {
-        selector.addEventListener('input', (event) => stateOptionText(event.target, 'select')),
-        selector.addEventListener('focus', (event) => stateOptionText(event.target, 'reset')) /* assumes user will click away before interacting again */
-      });
-  </script>
 </aside>
