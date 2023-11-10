@@ -225,7 +225,7 @@ def create_registration(form, renewal=False):
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
-            "{}".format(datetime.now().year + (1 if renewal else 0))
+            form['reg_year']
         )
         cur.execute(operation, values)
         conn.commit()
@@ -264,7 +264,8 @@ def update_registration(form, reg_id):
             city = %s,
             state = %s,
             zip = %s,
-            updated_at= %s
+            updated_at= %s,
+            registration_year = %s
         WHERE registration_id = %s
         RETURNING registration_id"""
         values = (
@@ -276,6 +277,7 @@ def update_registration(form, reg_id):
             form['state'][:2],
             form['zip_code'],
             datetime.now(),
+            form['reg_year'],
             reg_id
         )
         cur.execute(operation, values)

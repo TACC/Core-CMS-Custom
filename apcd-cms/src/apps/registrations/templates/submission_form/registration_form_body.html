@@ -56,6 +56,24 @@
         </div>
         </div>
 
+        <div class="field-wrapper textinput required">
+            <div class="field-errors" style="display: none"></div>
+    
+            <label for="reg_year">
+                Registration Year<span class="asterisk">*</span>
+            </label>
+    
+            <input
+            type="text"
+            class="textinput"
+            name="reg_year"
+            id="reg_year"
+            pattern="(202[3-9]|20[3-9][0-9]|2100)"
+            value='{% if renew %}{{r.year|add:"1"}}{% else %}{{r.year}}{% endif %}'
+            required
+            >
+        </div>
+    
         <div class="field-wrapper select required">
         <div class="field-errors" style="display: none"></div>
 
