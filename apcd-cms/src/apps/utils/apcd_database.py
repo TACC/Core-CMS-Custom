@@ -170,9 +170,9 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.registration_year
                 FROM registrations
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
+                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = ANY(%s) ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (submitter_code,))
         return cur.fetchall()
 
     except Exception as error:
@@ -225,7 +225,7 @@ def create_registration(form, renewal=False):
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
-            "{}".format(datetime.now().year + (1 if renewal else 0))
+            form['reg_year']
         )
         cur.execute(operation, values)
         conn.commit()
@@ -264,7 +264,8 @@ def update_registration(form, reg_id):
             city = %s,
             state = %s,
             zip = %s,
-            updated_at= %s
+            updated_at= %s,
+            registration_year = %s
         WHERE registration_id = %s
         RETURNING registration_id"""
         values = (
@@ -276,6 +277,7 @@ def update_registration(form, reg_id):
             form['state'][:2],
             form['zip_code'],
             datetime.now(),
+            form['reg_year'],
             reg_id
         )
         cur.execute(operation, values)
