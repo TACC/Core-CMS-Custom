@@ -74,6 +74,7 @@ def _set_modal_content(reg, reg_ent, reg_cont, org_types):
         'address': reg[8],
         'zip': reg[11],
         'for_self': reg[4],
+        'year': reg[12],
         'entities': [_set_entities(ent) for ent in reg_ent],
         'contacts': [_set_contacts(cont) for cont in reg_cont],
         'org_types': org_types,
