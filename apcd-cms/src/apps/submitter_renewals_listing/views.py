@@ -14,7 +14,6 @@ class SubmittersTable(RegistrationsTable):
     def get(self, request, *args, **kwargs):
         try:
             response = get_submitter_code(request.user)
-            submitter_code = response.content
             submitter_code = json.loads(response.content)['submitter_code']
             registrations_content = []
             registrations_entities = []
