@@ -68,6 +68,7 @@ def _set_contacts(reg_cont):
 def _set_modal_content(reg, reg_ent, reg_cont, org_types):
     return {
         'biz_name': reg[7],
+        "year": reg[12] if (reg[12]) else None,
         'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
         'city': reg[9],
         'state': reg[10],

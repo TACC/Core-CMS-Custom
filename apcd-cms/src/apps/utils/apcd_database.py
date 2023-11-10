@@ -170,9 +170,9 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.registration_year
                 FROM registrations
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = '{str(submitter_code)}' ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
+                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code IN (%s) ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
-        cur.execute(query)
+        cur.execute(query, (submitter_code))
         return cur.fetchall()
 
     except Exception as error:

@@ -15,21 +15,18 @@ class SubmittersTable(RegistrationsTable):
         try:
             response = get_submitter_code(request.user)
             submitter_code = response.content
-            data = json.loads(submitter_code)
-            submitter_code = data['submitter_code']
-            registrations_content = get_registrations(submitter_code=submitter_code)
+            submitter_code = json.loads(response.content)['submitter_code']
+            registrations_content = []
             registrations_entities = []
             registrations_contacts = []
-            for reg in registrations_content:
-                reg_id = int(reg[0])
-                registrations_entities.append(get_registration_entities(reg_id=reg_id))  # get entities and contacts for reg id's
-                registrations_contacts.append(get_registration_contacts(reg_id=reg_id))  # we have already verified are associated w/ given submitter code
-            registrations_entities = get_registration_entities(submitter_code=submitter_code)
-            registrations_contacts = get_registration_contacts(submitter_code=submitter_code)            
+            registration_list = get_registrations(submitter_code=submitter_code)
+            for registration in registration_list:
+                registrations_content.append(registration)
             context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
             template = loader.get_template(self.template_name)
             return HttpResponse(template.render(context, request))
-        except:
+        except Exception as e:
+            logger.error("An error occurred: %s", str(e))
             context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
             template = loader.get_template('submitter_listing_error.html')
             return HttpResponse(template.render(context, request))
@@ -40,14 +37,30 @@ class SubmittersTable(RegistrationsTable):
         return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
-        context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
-        context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['pagination_url_namespaces'] = 'register:submitter_regis_table'
-        return context
+        registrations_entities = []
+        registrations_contacts = []
+        try:
+            for registration in registrations_content:
+                reg_id = registration[0]
+                contacts = get_registration_contacts(reg_id=reg_id)
+                entity = get_registration_entities(reg_id=reg_id)
+                for c in contacts:
+                    registrations_contacts.append(c)
+                for e in entity:                 
+                    registrations_entities.append(e) 
+            context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+            context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
+            context['pagination_url_namespaces'] = 'register:submitter_regis_table'
+            return context
+        except Exception as e:
+            logger.error("A context error occurred: %s", str(e))
+            context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
+            return context
 
 
 def get_submitter_code(request):
     submitter = get_submitter_info(str(request))
+    submitter_codes = []
     for i in submitter:
-        submitter_code = i[1]
-    return JsonResponse(({'submitter_code' : submitter_code} if submitter_code else ""), safe=False)
+        submitter_codes.append(i[1])
+    return JsonResponse({'submitter_code' : submitter_codes} if submitter_codes else [], safe=False)
