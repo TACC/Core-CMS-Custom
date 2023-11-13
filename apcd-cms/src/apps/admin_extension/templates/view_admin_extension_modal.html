@@ -7,7 +7,7 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Extension Details ID: {{r.extension_id}} for {{r.org_name}}</h4>
+          <h4 class="modal-title">Extension Details ID {{r.extension_id}} for {{r.entity_name}}</h4>
           <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&#xe912;</span>
           </button>
@@ -20,8 +20,8 @@
                     <dl class="c-data-list--is-vert c-data-list--is-wide">
                         <dt class="c-data-list__key">Created</dt>
                         <dd class="c-data-list__value">{{r.created_at}}</dd>
-                        <dt class="c-data-list__key">Organization</dt>
-                        <dd class="c-data-list__value">{{r.org_name}}</dd>
+                        <dt class="c-data-list__key">Entity Organization</dt>
+                        <dd class="c-data-list__value">{{r.entity_name}}</dd>
                         <dt class="c-data-list__key">Requestor</dt>
                         <dd class="c-data-list__value">{{r.requestor_name}}</dd>
                         <dt class="c-data-list__key">Requestor Email</dt>

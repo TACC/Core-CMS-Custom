@@ -9,13 +9,6 @@ input[name^="zip_code"] {
     width: 10ch;
     box-sizing: content-box;
 }
-select[name^="state"] {
-    --length: 2ch;
-    --ui-buffer: 2.5ch; /* to make room for dropdown arrows */
-
-    width: calc( var(--length) + var(--ui-buffer) );
-    box-sizing: content-box;
-}
 /* for a Contact */
 input[name^="contact_phone"] {
     width: 17ch;

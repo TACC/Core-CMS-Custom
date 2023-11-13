@@ -35,7 +35,7 @@ class ExceptionThresholdFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = apcd_database.get_submitter_info(user)
 
         file_type = self.request.GET.get('file_type')
 
@@ -52,7 +52,7 @@ class ExceptionThresholdFormView(TemplateView):
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "org_name": title_case(sub[4])
+                "entity_name": title_case(sub[4])
             }
 
         def _set_cdl(file_type):
@@ -77,12 +77,8 @@ class ExceptionThresholdFormView(TemplateView):
             errors = []
             submitters = request.session.get('submitters')
 
-            submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name']))
-            if _err_msg(submitter):
-                errors.append(_err_msg(submitter))
-
+            # To create counter of exception requests and corresponding fields
             max_iterations = 1
-            
             for i in range(2, 6):
                 if form.get('field-threshold-exception_{}'.format(i)):
                     max_iterations += 1
@@ -90,6 +86,9 @@ class ExceptionThresholdFormView(TemplateView):
                     break
 
             for iteration in range(max_iterations):
+                submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name_{}'.format(iteration + 1)]))
+                if _err_msg(submitter):
+                    errors.append(_err_msg(submitter))
                 except_response = apcd_database.create_threshold_exception(form, iteration + 1, submitter)
                 if _err_msg(except_response):
                     errors.append(_err_msg(except_response))
@@ -127,7 +126,7 @@ class ExceptionOtherFormView(TemplateView):
 
         user = self.request.user.username
 
-        submitters = apcd_database.get_submitter_for_extend_or_except(user)
+        submitters = apcd_database.get_submitter_info(user)
         
         self.request.session['submitters'] = submitters
 
@@ -137,7 +136,7 @@ class ExceptionOtherFormView(TemplateView):
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "org_name": title_case(sub[4])
+                "entity_name": title_case(sub[4])
             }
 
         context["submitters"] = []

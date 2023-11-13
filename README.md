@@ -96,9 +96,15 @@ Set up a new local CMS instance.
 
 ## Update Project
 
-Update an existing local CMS instance.
+To update an existing CMS instance.
 
-1. If CMS Docker image changed, rebuild Docker Containers:
+### New Major [Core CMS] Version (or v3.12)
+
+Read [Upgrade Project] for developer instructions.
+
+### New Branch (or Minor or Patch [Core CMS] Version)
+
+1. If CMS Docker files changed, rebuild Docker Containers:
 
     ```sh
     cd custom_project_dir
@@ -177,3 +183,5 @@ To upgrade components of an existing project (e.g. [Core CMS]), read [Upgrade Pr
 [Port Project]: ./docs/port-project.md
 [Upgrade Project]: ./docs/upgrade-project.md
 [Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
+
+[Upgrade Project]: https://github.com/TACC/Core-CMS/blob/main/docs/upgrade-project.md

@@ -45,18 +45,17 @@
           {% for r in page %}
               <tr>
                   <td>{{r.biz_name}}</td>
+                  <td>{{r.year}}</td>
                   <td>{{r.type}}</td>
                   <td>{{r.location}}</td>
                   <td>{{r.reg_status}}</td>
                   <td>
                     {% include "view_registration_modal.html" %}
                     {% include "edit_registration_modal.html" %}
-                    {% include "create_submitter_modal.html" %}
                     <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
                       <option value="">Select Action</option>
                       <option value="viewRegistration">View Record</option>
                       <option value="editRegistration">Edit Record</option>
-                      <option value="createSubmitter">Create Submitter</option>
                     </select>
                   </td>
               </tr>

@@ -1,0 +1,15 @@
+.status-filter.org-filter {
+    width: max-content;
+}
+
+/* SEE: https://css-tricks.com/responsive-data-tables/ */
+@media (max-width: 767px) {
+    /* To label the cells */
+    /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
+    .submitters-table td:nth-of-type(1):before { content: "Business Name"; }
+    .submitters-table td:nth-of-type(2):before { content: "Year"; }
+    .submitters-table td:nth-of-type(3):before { content: "Type"; }
+    .submitters-table td:nth-of-type(4):before { content: "Location"; }
+    .submitters-table td:nth-of-type(5):before { content: "Registration Status"; }
+    .submitters-table td:nth-of-type(6):before { content: "Actions"; }
+}

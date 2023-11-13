@@ -85,11 +85,11 @@ class AdminExceptionsTable(TemplateView):
                 'approved_expiration_date': exception[18],
                 'status': title_case(exception[19])if exception[3] else None,
                 'notes': exception[20],
-                'org_name': exception[21],
+                'entity_name': exception[21],
                 'data_file_name': exception[22]
             }
 
-        context['header'] = ['Created', 'Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
         context['outcome_options'] = []
@@ -109,11 +109,11 @@ class AdminExceptionsTable(TemplateView):
             exception_table_entries.append(_set_exceptions(exception))
             # to be able to access any exception in a template using exceptions var in the future
             context['exceptions'].append(_set_exceptions(exception))
-            org_name = title_case(exception[21])
+            entity_name = title_case(exception[21])
             status = title_case(exception[19])
             outcome = title_case(exception[5])
-            if org_name not in context['org_options']:
-                context['org_options'].append(org_name)
+            if entity_name not in context['org_options']:
+                context['org_options'].append(entity_name)
                 # to make sure All is first in the dropdown filter options after sorting alphabetically
                 context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
             if status not in context['status_options']:
@@ -122,9 +122,8 @@ class AdminExceptionsTable(TemplateView):
                     # to make sure All is first in the dropdown filter options after sorting alphabetically
                     context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
             if outcome not in context['outcome_options']:
-                if outcome != None:
-                    context['outcome_options'].append(outcome)
-                    context['outcome_options'] = sorted(context['outcome_options'])
+                context['outcome_options'].append(outcome)
+                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x is not None, x))
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
@@ -136,7 +135,7 @@ class AdminExceptionsTable(TemplateView):
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
-            exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'org_name')
+            exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'entity_name')
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, exception_table_entries))

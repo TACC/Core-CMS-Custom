@@ -8,6 +8,7 @@ custom_urls = [
     path('administration/', include('apps.admin_extension.urls', namespace='admin_extension')),
     path('apcd-login/', include('apps.apcd_login.urls', namespace='apcd_login')),
     path('register/', include('apps.registrations.urls', namespace='register')),
+    path('register/', include('apps.submitter_renewals_listing.urls', namespace='submitter_regis_table')),
     path('submissions/', include('apps.extension.urls', namespace='extension')),
     path('submissions/', include('apps.exception.urls', namespace='exception')),
     path('submissions/', include('apps.submissions.urls', namespace='submissions'))
