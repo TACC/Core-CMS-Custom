@@ -1,5 +1,4 @@
 name: APCD CMS Builds
-run-name: ${{ github.actor }} is building Docker Image for APCD CMS on branch ${{ github.ref_name }}
 on:
   workflow_dispatch:
   push:
