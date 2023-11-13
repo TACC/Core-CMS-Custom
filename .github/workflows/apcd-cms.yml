@@ -1,5 +1,5 @@
 name: APCD CMS Builds
-run-name: ${{ github.actor }} is building Docker Image for APCD CMS on branch ${{ github.actor }}
+run-name: ${{ github.actor }} is building Docker Image for APCD CMS on branch ${{ github.ref_name }}
 on:
   workflow_dispatch:
   push:
@@ -18,9 +18,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set shortsha and branch environment variables
+        id: vars
         run: |
-          echo "BRANCH_NAME=$(echo ${GITHUB_REF_NAME} | sed 's/[^[:alnum:]\.\_\-]/-/g')" >> "$GITHUB_ENV";
-          echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV";
+          echo "BRANCH_NAME=$(echo ${GITHUB_REF_NAME} | sed 's/[^[:alnum:]\.\_\-]/-/g')" >> "$GITHUB_OUTPUT";
+          echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT";
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -36,4 +37,4 @@ jobs:
         with:
           context: apcd-cms
           push: true
-          tags: taccwma/apcd-cms:$SHORT_SHA,taccwma/apcd-cms:$BRANCH_NAME
+          tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}
