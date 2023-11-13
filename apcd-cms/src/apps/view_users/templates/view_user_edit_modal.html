@@ -27,8 +27,8 @@
                     </label>
         
                       <div class="field-errors" style="display: none"></div>
-                        <textarea name="user_name" cols="40" rows="1" class="textinput" type="text" id="name"
-                          minlength="2" maxlength="200">{{r.user_name}}</textarea>
+                        <input name="user_name" class="textinput" type="text" id="name"
+                          value='{{r.user_name}}' required></textarea>
 
                       </div>
                       <div class="field-wrapper text required">
@@ -37,8 +37,9 @@
                         </label>
             
                           <div class="field-errors" style="display: none"></div>
-                            <textarea name="user_email" cols="40" rows="1" class="textinput" type="text" id="email"
-                              minlength="2" maxlength="200">{{r.user_email}}</textarea>
+                            <input name="user_email" class="textinput" type="email" id="email"
+                              pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$" value='{{r.user_email}}' required
+                              >
 
                           </div>
                 
