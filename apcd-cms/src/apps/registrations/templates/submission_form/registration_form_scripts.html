@@ -160,7 +160,7 @@
               class="integerfield"
               id="license_number_${entities}${reg_id_substr}"
               inputmode="numeric"
-              pattern="^[1-9]+[0-9]*$"
+              pattern="\\d{1,10}"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
@@ -177,7 +177,7 @@
               class="integerfield"
               id="naic_company_code_${entities}${reg_id_substr}"
               inputmode="numeric"
-              pattern="^[1-9]+[0-9]*$"
+              pattern="\\d{1,10}"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
