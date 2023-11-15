@@ -368,7 +368,13 @@
                                     name="types_of_plans_{{ plan_type|lower }}_{{ent_no}}_{{r.reg_id}}"
                                     id="types_of_plans_{{ plan_type|lower }}_{{ent_no}}_{{r.reg_id}}"
                                     {% if plan_type_selected %}checked{% endif %}
-                                    />{{ plan_type }}</label
+                                    /><span>
+                                        {{ plan_type }}
+                                        {% if plan_type == 'Medicaid' %}
+                                            <small>(for state use only)</small>
+                                        {% endif %}
+                                    </span>
+                                </label
                                 >
                             </li>
                         {% endfor %}                
@@ -630,7 +636,11 @@
                             name="types_of_plans_medicaid_1"
                             id="types_of_plans_medicaid_1"
                             required
-                            />Medicaid</label
+                            />
+                            <span>Medicaid 
+                                <small>(for state use only)</small>
+                            </span>
+                        </label
                         >
                     </li>
                 </ul>
