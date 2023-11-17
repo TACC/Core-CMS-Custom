@@ -320,7 +320,7 @@
                         class="integerfield"
                         id="license_number_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        pattern="\d{1,10}"
+                        pattern="^(?!0+$)[0-9]{1,10}$"
                         {% if entity.license %} value="{{ entity.license }}" {% endif %}
                         />
 
@@ -340,7 +340,7 @@
                         class="integerfield"
                         id="naic_company_code_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        pattern="\d{1,10}"
+                        pattern="^(?!0+$)[0-9]{1,10}$"
                         {% if entity.naic %} value="{{ entity.naic }}" {% endif %}
                         />
 
@@ -569,7 +569,7 @@
                     class="integerfield"
                     id="license_number_1"
                     inputmode="numeric"
-                    pattern="\d{1,10}"
+                    pattern="^(?!0+$)[0-9]{1,10}$"
                     required
                 />
 
@@ -589,7 +589,7 @@
                     class="integerfield"
                     id="naic_company_code_1"
                     inputmode="numeric"
-                    pattern="\d{1,10}"
+                    pattern="^(?!0+$)[0-9]{1,10}$"
                     required
                 />
 
