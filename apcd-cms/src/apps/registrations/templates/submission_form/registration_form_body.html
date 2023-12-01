@@ -273,6 +273,7 @@
                         class="textinput"
                         id="entity_name_{{ent_no}}_{{r.reg_id}}"
                         value="{{ entity.ent_name }}"
+                        maxlength="255"
                     />
                     </div>
                     <div class="field-wrapper required">
@@ -523,6 +524,7 @@
                 required
                 class="textinput"
                 id="entity_name_1"
+                maxlength="255"
                 />
             </div>
             <div class="field-wrapper required">
@@ -809,6 +811,7 @@
                         class="textinput"
                         id="contact_type_{{forloop.counter}}_{{r.reg_id}}"
                         value="{{ contact.role }}"
+                        maxlength="100"
                         />
                     </div>
                     <div class="field-wrapper textinput required">
@@ -823,6 +826,7 @@
                         class="textinput"
                         id="contact_name_{{forloop.counter}}_{{r.reg_id}}"
                         value="{{ contact.name }}"
+                        maxlength="100"
                         />
                     </div>
                     <div class="field-wrapper telephoneinput required">
@@ -879,6 +883,7 @@
                         id="contact_email_{{forloop.counter}}_{{r.reg_id}}"
                         pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$"
                         value="{{ contact.email }}"
+                        maxlength="50"
                         />
                     </div>
                     <div class="field-wrapper checkboxinput">
@@ -927,6 +932,7 @@
                     required
                     class="textinput"
                     id="contact_type"
+                    maxlength="100"
                 />
                 </div>
                 <div class="field-wrapper textinput required">
@@ -940,6 +946,7 @@
                     required
                     class="textinput"
                     id="contact_name"
+                    maxlength="100"
                 />
                 </div>
                 <div class="field-wrapper telephoneinput required">
@@ -994,6 +1001,7 @@
                     class="emailinput"
                     id="contact_email"
                     pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$"
+                    maxlength="50"
                 />
                 </div>
                 <div class="field-wrapper checkboxinput">

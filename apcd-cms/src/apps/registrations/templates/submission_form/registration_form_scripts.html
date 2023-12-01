@@ -117,6 +117,7 @@
             required
             class="textinput"
             id="entity_name_${entities}${reg_id_substr}"
+            maxlength="255"
           />
           <div id="help-text-entity_name_${entities}" class="help-text">
           </div>
@@ -440,6 +441,7 @@
                 required
                 class="textinput"
                 id="contact_type_${contacts}${reg_id_substr}"
+                maxlength="100"
               />
             </div>
             <div class="field-wrapper textinput required">
@@ -451,6 +453,7 @@
                 required
                 class="textinput"
                 id="contact_name_${contacts}${reg_id_substr}"
+                maxlength="100"
               />
             </div>
             <div class="field-wrapper telephoneinput required">
@@ -496,6 +499,7 @@
                 class="emailinput"
                 pattern="^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\.[a-z]{2,4}$"
                 id="contact_email_${contacts}${reg_id_substr}"
+                maxlength="50"
               />
             </div>
             <div class="field-wrapper checkboxinput">
