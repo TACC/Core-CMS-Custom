@@ -16,21 +16,10 @@
 # DJANGO CMS SETTINGS
 ########################
 
-# CMS_TEMPLATES = (
-#     ('standard.html', 'Standard'),
-#     ('fullwidth.html', 'Full Width'),
-
-#     # Portal homepage placeholder
-#     ('home_portal.html', 'Standard Portal Homepage'),
-
-#     # Portal guide pages
-#     ('guide.html', 'Guide'),
-#     ('guides/getting_started.tam.html', 'Guide: Getting Started'),
-#     # ('guides/getting_started.v2.html', 'Guide: Getting Started'),
-#     ('guides/data_transfer.html', 'Guide: Data Transfer'),
-#     ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
-#     ('guides/portal_technology.html', 'Guide: Portal Technology Stack'),
-# )
+CMS_TEMPLATES = (
+    ('standard.html', 'Standard'),
+    ('fullwidth.html', 'Full Width'),
+)
 
 ########################
 # TACC: BRANDING
@@ -70,7 +59,6 @@ LOGO =  [
 # TACC: PORTAL
 ########################
 
-# Does this CMS site have a portal?
 # INCLUDES_CORE_PORTAL = False
 # INCLUDES_PORTAL_NAV = False
 # INCLUDES_SEARCH_BAR = False
