@@ -53,8 +53,8 @@ FAVICON = {
 # TACC: PORTAL
 ########################
 
-# INCLUDES_CORE_PORTAL = False
-INCLUDES_PORTAL_NAV = False
+INCLUDES_CORE_PORTAL = True
+# INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = False
 
 ########################
