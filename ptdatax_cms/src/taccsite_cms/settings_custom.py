@@ -56,3 +56,11 @@ FAVICON = {
 # INCLUDES_CORE_PORTAL = False
 INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = False
+
+########################
+# TACC: CORE STYLES
+########################
+
+# Only use integer numbers (not "v1", not "0.11.0"),
+# so templates can load based on simple comparisons
+TACC_CORE_STYLES_VERSION = 2
