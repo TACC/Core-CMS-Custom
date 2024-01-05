@@ -60,10 +60,10 @@ def _set_contacts(reg_cont):
     return {
         'cont_id': reg_cont[0],
         'notif': reg_cont[2],
-        'role': reg_cont[3] if reg_cont[3] else None,
-        'name': reg_cont[4] if reg_cont[4] else None,
+        'role': reg_cont[3],
+        'name': reg_cont[4],
         'phone': format_phone_number(reg_cont[5]) if reg_cont[5] else None,
-        'email': reg_cont[6] if reg_cont[6] else None,
+        'email': reg_cont[6],
     }
 def _set_modal_content(reg, reg_ent, reg_cont, org_types):
     return {
