@@ -174,8 +174,8 @@ To port a project from [Core CMS Resources], read [Port Project].
 [Docker Compose]: https://docs.docker.com/compose/install/
 [Python]: https://www.python.org/downloads/
 
-[Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
+[Deploy Project]: https://tacc-main.atlassian.net/wiki/x/2AVv
 [Port Project]: ./docs/port-project.md
-[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
+[Django CMS User Guide]: https://tacc-main.atlassian.net/wiki/x/phdv
 
 [Upgrade Project]: https://github.com/TACC/Core-CMS/blob/main/docs/upgrade-project.md
