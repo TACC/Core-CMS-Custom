@@ -55,7 +55,7 @@ Verify project name is compatible with Django 3.2.
     > [Core CMS] already defines the `static` directory for each project.
 
 
-## [Core-CMS] v4 Future Changes
+## [Core CMS] v4 Future Changes
 
 ### Update Settings
 
