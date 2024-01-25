@@ -164,7 +164,7 @@ To port a project from [Core CMS Resources], read [Port Project].
 
 ## Upgrade Project
 
-To upgrade components of an existing project (e.g. [Core CMS]), read [Upgrade Project].
+To upgrade the [Core CMS] of an existing project, read [Upgrade Project].
 
 <!-- Link Aliases -->
 
