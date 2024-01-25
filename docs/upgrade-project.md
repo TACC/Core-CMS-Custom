@@ -73,7 +73,7 @@ Remove unnecessary settings.
 
 ### Move Images
 
-Verify project name is compatible with Django 3.2.
+Simplify image paths.
 
 1. Remove any subdirectories of your project's static `img` directory, i.e.
 
