@@ -2,6 +2,7 @@ from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.registrations_data_formatting import _set_registration
 from apps.submitter_renewals_listing.views import get_submitter_code
+from apps.utils.apcd_groups import has_groups
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -25,7 +26,7 @@ class SubmissionFormView(View):
         formatted_reg_data = []
         renew = False
         reg_id = request.GET.get('reg_id', None)
-        if reg_id and (apcd_database.get_user_role(request.user.username) in ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
+        if reg_id and (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
             try:
                 response = get_submitter_code(request.user)
                 submitter_code = json.loads(response.content)['submitter_code']
