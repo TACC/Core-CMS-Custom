@@ -7,7 +7,7 @@
 ########################
 
 # Set on server, NOT here
-# https://confluence.tacc.utexas.edu/x/coR9E
+# https://tacc-main.atlassian.net/wiki/x/ZhVv
 # EMAIL_BACKEND = "..."
 # EMAIL_HOST = "..."
 # DEFAULT_FROM_EMAIL = "..."

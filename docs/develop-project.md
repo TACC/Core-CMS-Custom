@@ -75,4 +75,4 @@ If there is a change that should be made in all CMS projects, consider whether i
 
 [TACC UI Patterns]: https://tacc.utexas.edu/static/ui/
 
-[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
+[Django CMS User Guide]: https://tacc-main.atlassian.net/wiki/x/phdv

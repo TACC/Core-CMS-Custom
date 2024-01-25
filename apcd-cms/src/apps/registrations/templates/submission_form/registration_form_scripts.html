@@ -117,6 +117,7 @@
             required
             class="textinput"
             id="entity_name_${entities}${reg_id_substr}"
+            maxlength="255"
           />
           <div id="help-text-entity_name_${entities}" class="help-text">
           </div>
@@ -160,7 +161,7 @@
               class="integerfield"
               id="license_number_${entities}${reg_id_substr}"
               inputmode="numeric"
-              pattern="^[1-9]+[0-9]*$"
+              pattern="^(?!0+$)[0-9]{1,10}$"
               required
             />
             <div id="help-text-license_number_${entities}" class="help-text">
@@ -177,7 +178,7 @@
               class="integerfield"
               id="naic_company_code_${entities}${reg_id_substr}"
               inputmode="numeric"
-              pattern="^[1-9]+[0-9]*$"
+              pattern="^(?!0+$)[0-9]{1,10}$"
               required
             />
             <div id="help-text-naic_company_code_${entities}" class="help-text">
@@ -223,8 +224,11 @@
                         name="types_of_plans_medicaid_${entities}${reg_id_substr}"
                         id="types_of_plans_medicaid_${entities}${reg_id_substr}"
                         required
-                        />Medicaid</label
-                    >
+                        >
+                        <span>Medicaid 
+                          <small>(for state use only)</small>
+                        </span>
+                    </label>
                 </li>
             </ul>
         </div>
@@ -437,6 +441,7 @@
                 required
                 class="textinput"
                 id="contact_type_${contacts}${reg_id_substr}"
+                maxlength="100"
               />
             </div>
             <div class="field-wrapper textinput required">
@@ -448,6 +453,7 @@
                 required
                 class="textinput"
                 id="contact_name_${contacts}${reg_id_substr}"
+                maxlength="100"
               />
             </div>
             <div class="field-wrapper telephoneinput required">
@@ -493,6 +499,7 @@
                 class="emailinput"
                 pattern="^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\.[a-z]{2,4}$"
                 id="contact_email_${contacts}${reg_id_substr}"
+                maxlength="50"
               />
             </div>
             <div class="field-wrapper checkboxinput">

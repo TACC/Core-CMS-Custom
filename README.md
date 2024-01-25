@@ -89,7 +89,7 @@ Set up a new local CMS instance.
         - This page will automatically be your local homepage.
 
 > **Note**
-> A local machine CMS will be empty. It will **not** have content from staging nor production. To have that, follow and adapt instructions to [copy a database](https://confluence.tacc.utexas.edu/x/W4DZDg).
+> A local machine CMS will be empty. It will **not** have content from staging nor production. To have that, follow and adapt instructions to [copy a database](https://tacc-main.atlassian.net/wiki/x/GwBJAg).
 
 > **Note**
 > A local machine CMS does **not** include **nor** integrate with an instance of [Core Portal]. There are no reliable instructions to do either. **Help welcome.**
@@ -179,9 +179,9 @@ To upgrade components of an existing project (e.g. [Core CMS]), read [Upgrade Pr
 [Docker Compose]: https://docs.docker.com/compose/install/
 [Python]: https://www.python.org/downloads/
 
-[Deploy Project]: https://confluence.tacc.utexas.edu/x/Lo99E
+[Deploy Project]: https://tacc-main.atlassian.net/wiki/x/2AVv
 [Port Project]: ./docs/port-project.md
 [Upgrade Project]: ./docs/upgrade-project.md
-[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
+[Django CMS User Guide]: https://tacc-main.atlassian.net/wiki/x/phdv
 
 [Upgrade Project]: https://github.com/TACC/Core-CMS/blob/main/docs/upgrade-project.md
