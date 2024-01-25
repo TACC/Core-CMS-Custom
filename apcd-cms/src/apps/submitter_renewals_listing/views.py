@@ -33,7 +33,7 @@ class SubmittersTable(RegistrationsTable):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not (get_user_role(request.user.username) in ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
             return HttpResponseRedirect('/')
-        return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
+        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         registrations_entities = []
