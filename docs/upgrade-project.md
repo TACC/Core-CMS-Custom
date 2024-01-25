@@ -4,8 +4,10 @@
 
 - [Core-CMS v3.11 to v3.12](#core-cms-v311-to-v312)
     1. [Rename Project](#rename-project)
-    2. [Update Settings](#update-settings)
-    3. [Move Images](#move-images)
+
+- [Core-CMS v4 Future Changes](#core-cms-v4-future-changes)
+    1. [Update Settings](#update-settings)
+    2. [Move Images](#move-images)
 
 ## [Core CMS] v3.11 to v3.12
 
@@ -52,6 +54,9 @@ Verify project name is compatible with Django 3.2.
     > **Note**
     > [Core CMS] already defines the `static` directory for each project.
 
+
+## [Core CMS] v4 Future Changes
+
 ### Update Settings
 
 Remove unnecessary settings.
@@ -68,7 +73,7 @@ Remove unnecessary settings.
 
 ### Move Images
 
-Verify project name is compatible with Django 3.2.
+Simplify image paths.
 
 1. Remove any subdirectories of your project's static `img` directory, i.e.
 
@@ -79,6 +84,7 @@ Verify project name is compatible with Django 3.2.
 
 2. Rename **all** references to the previous image paths e.g.
     - in `settings_custom.py`
+
 
 <!-- Link Aliases -->
 
