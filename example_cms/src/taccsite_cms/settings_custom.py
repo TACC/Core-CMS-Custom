@@ -29,7 +29,7 @@ CMS_TEMPLATES = (
 #
 # _CUSTOM_BRANDING = [
 #     "example",
-#     "example_cms/img/org_logos/example-logo.png",
+#     "example_cms/img/some-logo.png",
 #     "",
 #     "https://example.com",
 #     "_blank",
@@ -46,7 +46,7 @@ CMS_TEMPLATES = (
 
 LOGO =  [
     "example",
-    "example_cms/img/org_logos/portal.png",
+    "example_cms/img/portal.png",
     "",
     "/",
     "_self",
@@ -55,6 +55,10 @@ LOGO =  [
     "True"
 ]
 
+FAVICON = {
+    "img_file_src": "example_cms/img/favicon.ico"
+}
+
 ########################
 # TACC: PORTAL
 ########################
@@ -62,3 +66,9 @@ LOGO =  [
 # INCLUDES_CORE_PORTAL = False
 # INCLUDES_PORTAL_NAV = False
 # INCLUDES_SEARCH_BAR = False
+
+########################
+# TACC: CORE STYLES
+########################
+
+TACC_CORE_STYLES_VERSION = 2
