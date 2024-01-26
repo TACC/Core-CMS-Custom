@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_user_role, get_submitter_info, get_registration_entities
+from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_submitter_info, get_registration_entities
+from apps.utils.apcd_groups import has_groups
 from apps.admin_regis_table.views import RegistrationsTable
 import logging
 import json
@@ -31,9 +32,9 @@ class SubmittersTable(RegistrationsTable):
             return HttpResponse(template.render(context, request))
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not (get_user_role(request.user.username) in ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
+        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
             return HttpResponseRedirect('/')
-        return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
+        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         registrations_entities = []
