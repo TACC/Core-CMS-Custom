@@ -99,8 +99,8 @@ INCLUDES_SEARCH_BAR = True
 ########################
 
 # TACC settings
-TACC_BLOG_SHOW_CATEGORIES = False
-TACC_BLOG_SHOW_TAGS = False
+PORTAL_BLOG_SHOW_CATEGORIES = False
+PORTAL_BLOG_SHOW_TAGS = False
 
 ########################
 # NEWS / BLOG
