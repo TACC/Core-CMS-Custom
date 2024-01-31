@@ -34,6 +34,7 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "a2cps_cms/img/org_logos/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "a2cps_cms/img/org_logos/favicon.ico",
 }

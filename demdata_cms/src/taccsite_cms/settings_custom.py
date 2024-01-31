@@ -84,8 +84,9 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg",
 }
 
 ########################

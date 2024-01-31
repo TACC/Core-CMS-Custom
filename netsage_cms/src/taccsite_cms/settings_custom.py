@@ -81,8 +81,9 @@ LOGO =  [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "netsage_cms/img/favicons/netsage_icon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "netsage_cms/img/favicons/netsage_icon.ico",
 }
 
 ########################

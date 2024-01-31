@@ -70,8 +70,9 @@ LOGO =  [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "site_cms/img/favicons/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "site_cms/img/favicons/favicon.ico",
 }
 
 ########################

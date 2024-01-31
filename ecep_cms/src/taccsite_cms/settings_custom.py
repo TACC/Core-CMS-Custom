@@ -74,8 +74,9 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "ecep_cms/img/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "ecep_cms/img/favicon.ico",
 }
 
 ########################
