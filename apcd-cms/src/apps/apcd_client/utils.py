@@ -14,7 +14,7 @@ def get_apcd_token(username):
     if response.status_code != 200 and 'detail' in response_json:
         match response_json['detail']:
             case "Incorrect username":
-                raise HttpResponse('Not present in database', status=401)
+                raise HttpResponse('User is not present in database', status=401)
             case "Incorrect username or password":
                 raise HttpResponse('Bad client_secret', status=401)
             case _:
