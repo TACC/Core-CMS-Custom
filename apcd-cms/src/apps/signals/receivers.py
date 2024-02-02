@@ -1,7 +1,8 @@
 import logging
 from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_in
-from apps.apcd_client.utils import get_apcd_token, APCDToken
+from apps.apcd_client.utils import get_apcd_token
+from apps.apcd_client.models import APCDToken
 
 logger = logging.getLogger(__name__)
 
