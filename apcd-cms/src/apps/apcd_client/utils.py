@@ -1,29 +1,32 @@
+import logging
 import time
 import requests
 from django.conf import settings
-from django.http import JsonResponse, HttpResponse
+from requests.exceptions import HTTPError
+
+logger = logging.getLogger(__name__)
 
 
 def get_apcd_token(username):
     url = f"{settings.TACC_APCD_API_HOST}/auth/access-token"
     key = settings.TACC_APCD_API_KEY
-    response = requests.post(url, data={"client_id": username, "client_secret": key})
 
+    response = requests.post(url, data={"client_id": username, "client_secret": key})
     response_json = response.json()
 
     if response.status_code != 200 and 'detail' in response_json:
         match response_json['detail']:
             case "Incorrect username":
-                raise HttpResponse('User is not present in database', status=401)
+                raise HTTPError('User is not present in database', status=401)
             case "Incorrect username or password":
-                raise HttpResponse('Bad client_secret', status=401)
+                raise HTTPError('Bad client_secret', status=401)
             case _:
-                raise HttpResponse(response_json['detail'], status=response.status_code)
+                raise HTTPError(response_json['detail'], status=response.status_code)
     elif response.status_code != 200:
-        raise JsonResponse(response_json, status=response.status_code)
+        raise HTTPError(response_json, status=response.status_code)
     elif 'access_token' not in response_json:
         logger.debug(response_json)
-        raise HttpResponse("Bad response from server", status=400)
+        raise HTTPError("Bad response from server", status=400)
 
     token_data = {
         'created': int(time.time()),
