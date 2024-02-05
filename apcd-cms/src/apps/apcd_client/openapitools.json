@@ -1,0 +1,20 @@
+{
+    "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+    "spaces": 2,
+    "generator-cli": {
+      "version": "7.2.0",
+      "generators": {
+        "v1": {
+          "inputSpec": "./spec.yml",
+          "generatorName": "python",
+          "output": "#{cwd}",
+          "additionalProperties":{
+            "packageVersion": "v1",
+            "packageName": "apcd",
+            "generateSourceCodeOnly": true
+          },
+          "modelPackage": "models"
+        }
+      }
+    }
+  }

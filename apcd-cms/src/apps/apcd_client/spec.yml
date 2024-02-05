@@ -1,0 +1,3417 @@
+openapi: 3.0.2
+info:
+  title: APCD API
+  version: 0.1.0
+paths:
+  /:
+    get:
+      summary: Root
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /list_endpoints/:
+    get:
+      summary: Get All Urls
+      operationId: get_all_urls_list_endpoints__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /auth/access-token:
+    post:
+      tags:
+        - Authenticate
+      summary: Get Access Token
+      operationId: get_access_token_auth_access_token_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_get_access_token_auth_access_token_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /registrations/:
+    get:
+      tags:
+        - Registration
+      summary: Get All Registrations
+      operationId: get_all_registrations_registrations__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 5
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Registrations Registrations  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Registration'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Registration
+      summary: Create One Registration
+      operationId: create_one_registration_registrations__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationWithChildren'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /registrations/submitter_code:
+    get:
+      tags:
+        - Registration
+      summary: Get All Paginated Registration By Submitter Code
+      operationId: get_all_paginated_registration_by_submitter_code_registrations_submitter_code_get
+      parameters:
+        - required: false
+          schema:
+            title: Page
+            minimum: 1
+            type: integer
+            default: 1
+          name: page
+          in: query
+        - required: false
+          schema:
+            title: Per Page
+            maximum: 50
+            minimum: 1
+            type: integer
+            default: 5
+          name: per_page
+          in: query
+        - required: false
+          schema:
+            title: Submitter Code
+            type: string
+          name: submitter_code
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_Registration_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /registrations/{registration_id}:
+    get:
+      tags:
+        - Registration
+      summary: Get One Registration
+      operationId: get_one_registration_registrations__registration_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Registration Id
+            type: integer
+          name: registration_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationWithChildren'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - Registration
+      summary: Update One Registration
+      operationId: update_one_registration_registrations__registration_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Registration Id
+            type: integer
+          name: registration_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/:
+    get:
+      tags:
+        - Submitter
+      summary: Get All Submitters
+      description: |-
+        Get a list of submitters based on a criteria, filter options below:
+
+        - **Option 1**: submitter_id and payor_code
+        - **Option 2**: payor_code
+        - **Option 3**: submitter_code
+
+            *Skip and limit can be used with all filter options
+      operationId: get_all_submitters_submitters__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+        - required: false
+          schema:
+            title: Payor Code
+            type: integer
+            default: 0
+          name: payor_code
+          in: query
+        - required: false
+          schema:
+            title: Submitter Code
+            type: string
+          name: submitter_code
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Submitters Submitters  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}:
+    get:
+      tags:
+        - Submitter
+      summary: Get One Submitter
+      operationId: get_one_submitter_submitters__submitter_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmittersWithChildren'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}/contacts:
+    get:
+      tags:
+        - Submitter
+      summary: Get Submitters Contacts
+      operationId: get_submitters_contacts_submitters__submitter_id__contacts_get
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+        - required: false
+          schema:
+            title: Valid Notifier
+            type: boolean
+          name: valid_notifier
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}/calendar:
+    get:
+      tags:
+        - Submitter
+      summary: Get Submitters Calendar
+      operationId: get_submitters_calendar_submitters__submitter_id__calendar_get
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+        - required: false
+          schema:
+            title: Start Date
+            maxLength: 6
+            minLength: 6
+            type: string
+          name: start_date
+          in: query
+        - required: false
+          schema:
+            title: End Date
+            maxLength: 6
+            minLength: 6
+            type: string
+          name: end_date
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Submitters Calendar Submitters  Submitter Id  Calendar Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmitterCalendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}/exceptions:
+    get:
+      tags:
+        - Submitter
+      summary: Get Submitters Exception
+      operationId: get_submitters_exception_submitters__submitter_id__exceptions_get
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+        - required: false
+          schema:
+            title: Currently Granted
+            type: boolean
+          name: currently_granted
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Submitters Exception Submitters  Submitter Id  Exceptions Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmitterException'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}/add-user:
+    post:
+      tags:
+        - Submitter
+      summary: Add One User To Submitter
+      operationId: add_one_user_to_submitter_submitters__submitter_id__add_user_post
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitterUserCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submitters/{submitter_id}/remove-user:
+    put:
+      tags:
+        - Submitter
+      summary: Remove One User To Submitter
+      operationId: remove_one_user_to_submitter_submitters__submitter_id__remove_user_put
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Id
+            type: integer
+          name: submitter_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitterUserUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /users:
+    get:
+      tags:
+        - User
+      summary: Get All Users
+      operationId: get_all_users_users_get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 5
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Users Users Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - User
+      summary: Create One User
+      operationId: create_one_user_users_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /users/orgs:
+    get:
+      tags:
+        - User
+      summary: Get All User Orgs
+      operationId: get_all_user_orgs_users_orgs_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /users/paged_users:
+    get:
+      tags:
+        - User
+      summary: Get Paginated All Users
+      operationId: get_paginated_all_users_users_paged_users_get
+      parameters:
+        - required: false
+          schema:
+            title: Page
+            minimum: 1
+            type: integer
+            default: 1
+          name: page
+          in: query
+        - required: false
+          schema:
+            title: Per Page
+            maximum: 50
+            minimum: 1
+            type: integer
+            default: 5
+          name: per_page
+          in: query
+        - required: false
+          schema:
+            title: Status
+            type: string
+          name: status
+          in: query
+        - required: false
+          schema:
+            title: Org
+            type: string
+          name: org
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_User_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /users/{user_number}:
+    get:
+      tags:
+        - User
+      summary: Get One User
+      operationId: get_one_user_users__user_number__get
+      parameters:
+        - required: true
+          schema:
+            title: User Number
+            type: integer
+          name: user_number
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - User
+      summary: Update One User
+      operationId: update_one_user_users__user_number__put
+      parameters:
+        - required: true
+          schema:
+            title: User Number
+            type: integer
+          name: user_number
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /file_inbox:
+    get:
+      tags:
+        - File Inbox
+      summary: Get All File Inbox
+      operationId: get_all_file_inbox_file_inbox_get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 5
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All File Inbox File Inbox Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInbox'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - File Inbox
+      summary: Create One File Inbox
+      operationId: create_one_file_inbox_file_inbox_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileInboxCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInbox'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /file_inbox/{received_id}:
+    get:
+      tags:
+        - File Inbox
+      summary: Get One File Inbox
+      operationId: get_one_file_inbox_file_inbox__received_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Received Id
+            type: integer
+          name: received_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInbox'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - File Inbox
+      summary: Update One File Inbox
+      operationId: update_one_file_inbox_file_inbox__received_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Received Id
+            type: integer
+          name: received_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileInboxUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInbox'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /file_inbox/filename/{zip_file_name}:
+    get:
+      tags:
+        - File Inbox
+      summary: Get One File Inbox By File Name
+      operationId: get_one_file_inbox_by_file_name_file_inbox_filename__zip_file_name__get
+      parameters:
+        - required: true
+          schema:
+            title: Zip File Name
+            type: string
+          name: zip_file_name
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInboxWithUser'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /calendars/:
+    get:
+      tags:
+        - Submitter Calendar
+      summary: Get All Calendars
+      description: |-
+        Get a list of submitter calendar records based on a criteria, filter options below:
+
+        Note: If using **start_date/end_date**, both fields are required. Otherwise, these fields are ignored in your filter
+
+        - **Option 1**: submitter_code, start_date, and end_date
+        - **Option 2**: payor_code, start_date, and end_date
+        - **Option 3**: start_date and end_date
+        - **Option 4**: submitter_id
+
+            *Skip and limit can be used with all filter options
+      operationId: get_all_calendars_calendars__get
+      parameters:
+        - required: false
+          schema:
+            title: Submitter Id
+          name: submitter_id
+          in: query
+        - required: false
+          schema:
+            title: Start Date
+          name: start_date
+          in: query
+        - required: false
+          schema:
+            title: End Date
+          name: end_date
+          in: query
+        - required: false
+          schema:
+            title: Payor Code
+          name: payor_code
+          in: query
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Calendars Calendars  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmitterCalendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Submitter Calendar
+      summary: Create One Calendar
+      operationId: create_one_calendar_calendars__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitterCalendarCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitterCalendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /calendars/{submitter_calendar_id}:
+    get:
+      tags:
+        - Submitter Calendar
+      summary: Get One Calendar
+      operationId: get_one_calendar_calendars__submitter_calendar_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Calendar Id
+            type: integer
+          name: submitter_calendar_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitterCalendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - Submitter Calendar
+      summary: Update One Calendar
+      operationId: update_one_calendar_calendars__submitter_calendar_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Submitter Calendar Id
+            type: integer
+          name: submitter_calendar_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitterCalendarUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitterCalendar'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submissions/:
+    get:
+      tags:
+        - Submission
+      summary: Get All Submissions
+      operationId: get_all_submissions_submissions__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Submissions Submissions  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submission'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Submission
+      summary: Create One Submission
+      operationId: create_one_submission_submissions__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submissions/paged_submissions:
+    get:
+      tags:
+        - Submission
+      summary: Get Paginated All Submissions
+      operationId: get_paginated_all_submissions_submissions_paged_submissions_get
+      parameters:
+        - required: false
+          schema:
+            title: Page
+            minimum: 1
+            type: integer
+            default: 1
+          name: page
+          in: query
+        - required: false
+          schema:
+            title: Per Page
+            maximum: 50
+            minimum: 1
+            type: integer
+            default: 5
+          name: per_page
+          in: query
+        - required: false
+          schema:
+            title: Status
+            type: string
+          name: status
+          in: query
+        - required: false
+          schema:
+            title: Order
+            type: string
+          name: order
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_Submission_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submissions/{submission_id}:
+    get:
+      tags:
+        - Submission
+      summary: Get One Submission
+      operationId: get_one_submission_submissions__submission_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Submission Id
+            type: integer
+          name: submission_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionWithChildren'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - Submission
+      summary: Update One Submission
+      operationId: update_one_submission_submissions__submission_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Submission Id
+            type: integer
+          name: submission_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submission_logs/:
+    get:
+      tags:
+        - Submission Log
+      summary: Get All Submission Logs
+      operationId: get_all_submission_logs_submission_logs__get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Submission Logs Submission Logs  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmissionLog'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    post:
+      tags:
+        - Submission Log
+      summary: Create One Submission Log
+      operationId: create_one_submission_log_submission_logs__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionLogCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionLog'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submission_logs/paged_submission_logs:
+    get:
+      tags:
+        - Submission Log
+      summary: Get Paginated All Submissions
+      operationId: get_paginated_all_submissions_submission_logs_paged_submission_logs_get
+      parameters:
+        - required: false
+          schema:
+            title: Page
+            minimum: 1
+            type: integer
+            default: 1
+          name: page
+          in: query
+        - required: false
+          schema:
+            title: Per Page
+            maximum: 50
+            minimum: 1
+            type: integer
+            default: 5
+          name: per_page
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse_SubmissionLog_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submission_logs/partial:
+    get:
+      tags:
+        - Submission Log
+      summary: Get All Partial Submission Logs
+      operationId: get_all_partial_submission_logs_submission_logs_partial_get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /submission_logs/{log_id}:
+    get:
+      tags:
+        - Submission Log
+      summary: Get One Submission Log
+      operationId: get_one_submission_log_submission_logs__log_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Log Id
+            type: integer
+          name: log_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionLog'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+    put:
+      tags:
+        - Submission Log
+      summary: Update One Submission Log
+      operationId: update_one_submission_log_submission_logs__log_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Log Id
+            type: integer
+          name: log_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionLogUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionLog'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /cdl:
+    get:
+      tags:
+        - CDL
+      summary: Get All Cdl
+      operationId: get_all_cdl_cdl_get
+      parameters:
+        - required: false
+          schema:
+            title: Skip
+            type: integer
+            default: 0
+          name: skip
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+          name: limit
+          in: query
+        - required: false
+          schema:
+            title: File Type
+            type: string
+          name: file_type
+          in: query
+        - required: false
+          schema:
+            title: Data Type
+            type: string
+          name: data_type
+          in: query
+        - required: false
+          schema:
+            title: Requirement Status
+            type: string
+          name: requirement_status
+          in: query
+        - required: false
+          schema:
+            title: Element Name
+            type: string
+          name: element_name
+          in: query
+        - required: false
+          schema:
+            title: Cdl Number
+            type: string
+          name: cdl_number
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+  /cdl/data_element_names:
+    get:
+      tags:
+        - CDL
+      summary: Get All Cdl Data Element Names
+      operationId: get_all_cdl_data_element_names_cdl_data_element_names_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /cdl/cdl_numbers:
+    get:
+      tags:
+        - CDL
+      summary: Get All Cdl Numbers
+      operationId: get_all_cdl_numbers_cdl_cdl_numbers_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+        - OAuth2PasswordBearer: []
+  /tickets/new:
+    post:
+      tags:
+        - Tickets
+      summary: Create Ticket
+      operationId: create_ticket_tickets_new_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketDetails'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - OAuth2PasswordBearer: []
+components:
+  schemas:
+    Body_get_access_token_auth_access_token_post:
+      title: Body_get_access_token_auth_access_token_post
+      required:
+        - client_id
+        - client_secret
+      type: object
+      properties:
+        grant_type:
+          title: Grant Type
+          pattern: password
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+        scope:
+          title: Scope
+          type: string
+          default: ''
+        client_id:
+          title: Client Id
+          type: string
+        client_secret:
+          title: Client Secret
+          type: string
+    FileInbox:
+      title: FileInbox
+      required:
+        - file_name
+        - file_size_mb
+        - file_count
+        - file_type
+        - file_owner
+        - payor_code
+        - received_id
+      type: object
+      properties:
+        file_name:
+          title: File Name
+          maxLength: 255
+          type: string
+        file_size_mb:
+          title: File Size Mb
+          type: number
+        file_count:
+          title: File Count
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 10
+          type: string
+        file_owner:
+          title: File Owner
+          maxLength: 20
+          type: string
+        transaction_type:
+          title: Transaction Type
+          maxLength: 1
+          type: string
+        submitter_code:
+          title: Submitter Code
+          maxLength: 8
+          minLength: 3
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        routed_to:
+          title: Routed To
+          maxLength: 100
+          type: string
+        comment:
+          title: Comment
+          maxLength: 8000
+          type: string
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        file_me:
+          title: File Me
+          type: boolean
+        received_date:
+          title: Received Date
+          type: string
+          format: date-time
+        calendar_item_id:
+          title: Calendar Item Id
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+        duplicate_sequence:
+          title: Duplicate Sequence
+          type: integer
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    FileInboxCreate:
+      title: FileInboxCreate
+      required:
+        - file_name
+        - file_size_mb
+        - file_count
+        - file_type
+        - file_owner
+        - transaction_type
+        - submitter_code
+        - payor_code
+        - data_period_start
+        - data_period_end
+        - routed_to
+        - comment
+        - file_pv
+        - file_mc
+        - file_pc
+        - file_dc
+        - file_me
+        - received_date
+      type: object
+      properties:
+        file_name:
+          title: File Name
+          maxLength: 255
+          type: string
+        file_size_mb:
+          title: File Size Mb
+          type: number
+        file_count:
+          title: File Count
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 10
+          type: string
+        file_owner:
+          title: File Owner
+          maxLength: 20
+          type: string
+        transaction_type:
+          title: Transaction Type
+          maxLength: 1
+          type: string
+        submitter_code:
+          title: Submitter Code
+          maxLength: 8
+          minLength: 3
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        routed_to:
+          title: Routed To
+          maxLength: 100
+          type: string
+        comment:
+          title: Comment
+          maxLength: 8000
+          type: string
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        file_me:
+          title: File Me
+          type: boolean
+        received_date:
+          title: Received Date
+          type: string
+          format: date-time
+        calendar_item_id:
+          title: Calendar Item Id
+          type: integer
+    FileInboxUpdate:
+      title: FileInboxUpdate
+      required:
+        - file_name
+        - submitter_code
+        - payor_code
+        - file_pv
+        - file_mc
+        - file_pc
+        - file_dc
+        - file_me
+        - received_date
+      type: object
+      properties:
+        file_name:
+          title: File Name
+          maxLength: 255
+          type: string
+        file_size_mb:
+          title: File Size Mb
+          type: number
+        file_count:
+          title: File Count
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 10
+          type: string
+        file_owner:
+          title: File Owner
+          maxLength: 20
+          type: string
+        transaction_type:
+          title: Transaction Type
+          maxLength: 1
+          type: string
+        submitter_code:
+          title: Submitter Code
+          maxLength: 8
+          minLength: 3
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        routed_to:
+          title: Routed To
+          maxLength: 100
+          type: string
+        comment:
+          title: Comment
+          maxLength: 8000
+          type: string
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        file_me:
+          title: File Me
+          type: boolean
+        received_date:
+          title: Received Date
+          type: string
+          format: date-time
+        calendar_item_id:
+          title: Calendar Item Id
+          type: integer
+    FileInboxWithUser:
+      title: FileInboxWithUser
+      required:
+        - file_name
+        - file_size_mb
+        - file_count
+        - file_type
+        - file_owner
+        - payor_code
+        - received_id
+      type: object
+      properties:
+        file_name:
+          title: File Name
+          maxLength: 255
+          type: string
+        file_size_mb:
+          title: File Size Mb
+          type: number
+        file_count:
+          title: File Count
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 10
+          type: string
+        file_owner:
+          title: File Owner
+          maxLength: 20
+          type: string
+        transaction_type:
+          title: Transaction Type
+          maxLength: 1
+          type: string
+        submitter_code:
+          title: Submitter Code
+          maxLength: 8
+          minLength: 3
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        routed_to:
+          title: Routed To
+          maxLength: 100
+          type: string
+        comment:
+          title: Comment
+          maxLength: 8000
+          type: string
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        file_me:
+          title: File Me
+          type: boolean
+        received_date:
+          title: Received Date
+          type: string
+          format: date-time
+        calendar_item_id:
+          title: Calendar Item Id
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+        duplicate_sequence:
+          title: Duplicate Sequence
+          type: integer
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    PaginatedResponse_Registration_:
+      title: PaginatedResponse[Registration]
+      required:
+        - total_count
+        - current_count
+        - total_pages
+        - current_page
+        - items
+      type: object
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+          description: Total number of records in the database matching criteria
+        current_count:
+          title: Current Count
+          type: integer
+          description: Number of items returned in the response
+        total_pages:
+          title: Total Pages
+          type: integer
+          description: Total number of pages matching criteria
+        current_page:
+          title: Current Page
+          type: integer
+          description: Current page of data being sent
+        items:
+          title: Items
+          type: array
+          items:
+            $ref: '#/components/schemas/Registration'
+          description: List of items returned in the response matching criteria
+    PaginatedResponse_SubmissionLog_:
+      title: PaginatedResponse[SubmissionLog]
+      required:
+        - total_count
+        - current_count
+        - total_pages
+        - current_page
+        - items
+      type: object
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+          description: Total number of records in the database matching criteria
+        current_count:
+          title: Current Count
+          type: integer
+          description: Number of items returned in the response
+        total_pages:
+          title: Total Pages
+          type: integer
+          description: Total number of pages matching criteria
+        current_page:
+          title: Current Page
+          type: integer
+          description: Current page of data being sent
+        items:
+          title: Items
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionLog'
+          description: List of items returned in the response matching criteria
+    PaginatedResponse_Submission_:
+      title: PaginatedResponse[Submission]
+      required:
+        - total_count
+        - current_count
+        - total_pages
+        - current_page
+        - items
+      type: object
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+          description: Total number of records in the database matching criteria
+        current_count:
+          title: Current Count
+          type: integer
+          description: Number of items returned in the response
+        total_pages:
+          title: Total Pages
+          type: integer
+          description: Total number of pages matching criteria
+        current_page:
+          title: Current Page
+          type: integer
+          description: Current page of data being sent
+        items:
+          title: Items
+          type: array
+          items:
+            $ref: '#/components/schemas/Submission'
+          description: List of items returned in the response matching criteria
+    PaginatedResponse_User_:
+      title: PaginatedResponse[User]
+      required:
+        - total_count
+        - current_count
+        - total_pages
+        - current_page
+        - items
+      type: object
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+          description: Total number of records in the database matching criteria
+        current_count:
+          title: Current Count
+          type: integer
+          description: Number of items returned in the response
+        total_pages:
+          title: Total Pages
+          type: integer
+          description: Total number of pages matching criteria
+        current_page:
+          title: Current Page
+          type: integer
+          description: Current page of data being sent
+        items:
+          title: Items
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+          description: List of items returned in the response matching criteria
+    Registration:
+      title: Registration
+      required:
+        - registration_id
+      type: object
+      properties:
+        applicable_period_start:
+          title: Applicable Period Start
+          type: integer
+        applicable_period_end:
+          title: Applicable Period End
+          type: integer
+        org_type:
+          title: Org Type
+          type: string
+        business_name:
+          title: Business Name
+          type: string
+        mail_address:
+          title: Mail Address
+          type: string
+        city:
+          title: City
+          type: string
+        state:
+          title: State
+          type: string
+        zip:
+          title: Zip
+          type: string
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+        registration_id:
+          title: Registration Id
+          type: integer
+        posted_date:
+          title: Posted Date
+          type: string
+          format: date
+        registration_status:
+          title: Registration Status
+          type: string
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    RegistrationContact:
+      title: RegistrationContact
+      required:
+        - registration_contact_id
+        - registration_id
+      type: object
+      properties:
+        notify_flag:
+          title: Notify Flag
+          type: boolean
+        contact_type:
+          title: Contact Type
+          type: string
+        contact_name:
+          title: Contact Name
+          type: string
+        contact_phone:
+          title: Contact Phone
+          type: string
+        contact_email:
+          title: Contact Email
+          type: string
+        registration_contact_id:
+          title: Registration Contact Id
+          type: integer
+        registration_id:
+          title: Registration Id
+          type: integer
+    RegistrationContactCreate:
+      title: RegistrationContactCreate
+      required:
+        - notify_flag
+        - contact_type
+        - contact_name
+        - contact_phone
+        - contact_email
+      type: object
+      properties:
+        notify_flag:
+          title: Notify Flag
+          type: boolean
+        contact_type:
+          title: Contact Type
+          type: string
+        contact_name:
+          title: Contact Name
+          type: string
+        contact_phone:
+          title: Contact Phone
+          type: string
+        contact_email:
+          title: Contact Email
+          type: string
+    RegistrationCreate:
+      title: RegistrationCreate
+      required:
+        - applicable_period_start
+        - applicable_period_end
+        - org_type
+        - business_name
+        - mail_address
+        - city
+        - state
+        - zip
+        - file_me
+        - file_pv
+        - file_mc
+        - file_pc
+        - file_dc
+        - submission_method
+        - submitting_for_self
+      type: object
+      properties:
+        applicable_period_start:
+          title: Applicable Period Start
+          type: integer
+        applicable_period_end:
+          title: Applicable Period End
+          type: integer
+        org_type:
+          title: Org Type
+          type: string
+        business_name:
+          title: Business Name
+          type: string
+        mail_address:
+          title: Mail Address
+          type: string
+        city:
+          title: City
+          type: string
+        state:
+          title: State
+          type: string
+        zip:
+          title: Zip
+          type: string
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+        contacts:
+          title: Contacts
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationContactCreate'
+        entities:
+          title: Entities
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationEntityCreate'
+    RegistrationEntity:
+      title: RegistrationEntity
+      required:
+        - registration_entity_id
+        - registration_id
+      type: object
+      properties:
+        entity_name:
+          title: Entity Name
+          type: string
+        fein:
+          title: Fein
+          type: string
+        license_number:
+          title: License Number
+          type: integer
+        naic_company_code:
+          title: Naic Company Code
+          type: integer
+        total_covered_lives:
+          title: Total Covered Lives
+          type: integer
+        claims_and_encounters_volume:
+          title: Claims And Encounters Volume
+          type: integer
+        total_claims_value:
+          title: Total Claims Value
+          type: integer
+        registration_entity_id:
+          title: Registration Entity Id
+          type: integer
+        registration_id:
+          title: Registration Id
+          type: integer
+    RegistrationEntityCreate:
+      title: RegistrationEntityCreate
+      required:
+        - entity_name
+        - total_covered_lives
+        - claims_and_encounters_volume
+        - total_claims_value
+      type: object
+      properties:
+        entity_name:
+          title: Entity Name
+          type: string
+        fein:
+          title: Fein
+          type: string
+        license_number:
+          title: License Number
+          type: integer
+        naic_company_code:
+          title: Naic Company Code
+          type: integer
+        total_covered_lives:
+          title: Total Covered Lives
+          type: integer
+        claims_and_encounters_volume:
+          title: Claims And Encounters Volume
+          type: integer
+        total_claims_value:
+          title: Total Claims Value
+          type: integer
+    RegistrationUpdate:
+      title: RegistrationUpdate
+      type: object
+      properties:
+        applicable_period_start:
+          title: Applicable Period Start
+          type: integer
+        applicable_period_end:
+          title: Applicable Period End
+          type: integer
+        org_type:
+          title: Org Type
+          type: string
+        business_name:
+          title: Business Name
+          type: string
+        mail_address:
+          title: Mail Address
+          type: string
+        city:
+          title: City
+          type: string
+        state:
+          title: State
+          type: string
+        zip:
+          title: Zip
+          type: string
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+    RegistrationWithChildren:
+      title: RegistrationWithChildren
+      required:
+        - registration_id
+      type: object
+      properties:
+        applicable_period_start:
+          title: Applicable Period Start
+          type: integer
+        applicable_period_end:
+          title: Applicable Period End
+          type: integer
+        org_type:
+          title: Org Type
+          type: string
+        business_name:
+          title: Business Name
+          type: string
+        mail_address:
+          title: Mail Address
+          type: string
+        city:
+          title: City
+          type: string
+        state:
+          title: State
+          type: string
+        zip:
+          title: Zip
+          type: string
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+        registration_id:
+          title: Registration Id
+          type: integer
+        posted_date:
+          title: Posted Date
+          type: string
+          format: date
+        registration_status:
+          title: Registration Status
+          type: string
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        contacts:
+          title: Contacts
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationContact'
+          default: []
+        entities:
+          title: Entities
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationEntity'
+          default: []
+    Submission:
+      title: Submission
+      required:
+        - apcd_id
+        - submitter_id
+        - zip_file_name
+        - received_timestamp
+        - data_period_start
+        - data_period_end
+        - submission_id
+      type: object
+      properties:
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        zip_file_name:
+          title: Zip File Name
+          type: string
+        received_timestamp:
+          title: Received Timestamp
+          type: string
+          format: date-time
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        test_submission_flag:
+          title: Test Submission Flag
+          maxLength: 1
+          type: string
+        status:
+          title: Status
+          type: string
+        outcome:
+          title: Outcome
+          type: string
+        outcome_reason:
+          title: Outcome Reason
+          type: string
+        compressed_size:
+          title: Compressed Size
+          type: integer
+        processed_timestamp:
+          title: Processed Timestamp
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+        submission_id:
+          title: Submission Id
+          type: integer
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    SubmissionCreate:
+      title: SubmissionCreate
+      required:
+        - apcd_id
+        - submitter_id
+        - zip_file_name
+        - received_timestamp
+        - data_period_start
+        - data_period_end
+        - test_submission_flag
+        - status
+        - compressed_size
+        - processed_timestamp
+        - payor_code
+      type: object
+      properties:
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        zip_file_name:
+          title: Zip File Name
+          type: string
+        received_timestamp:
+          title: Received Timestamp
+          type: string
+          format: date-time
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        test_submission_flag:
+          title: Test Submission Flag
+          maxLength: 1
+          type: string
+        status:
+          title: Status
+          type: string
+        outcome:
+          title: Outcome
+          type: string
+        outcome_reason:
+          title: Outcome Reason
+          type: string
+        compressed_size:
+          title: Compressed Size
+          type: integer
+        processed_timestamp:
+          title: Processed Timestamp
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+    SubmissionLog:
+      title: SubmissionLog
+      required:
+        - submission_id
+        - validation_suite
+        - outcome
+        - log_id
+      type: object
+      properties:
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 2
+          type: string
+        validation_suite:
+          title: Validation Suite
+          maxLength: 50
+          type: string
+        outcome:
+          title: Outcome
+          maxLength: 15
+          type: string
+        data_row_count:
+          title: Data Row Count
+          type: integer
+        stage_two_upload:
+          title: Stage Two Upload
+          type: boolean
+        json_path:
+          title: Json Path
+          maxLength: 300
+          type: string
+        html_path:
+          title: Html Path
+          maxLength: 300
+          type: string
+        log_id:
+          title: Log Id
+          type: integer
+        json_log:
+          title: Json Log
+          type: object
+        html_log:
+          title: Html Log
+          type: string
+    SubmissionLogCreate:
+      title: SubmissionLogCreate
+      required:
+        - submission_id
+        - validation_suite
+        - outcome
+        - json_log
+      type: object
+      properties:
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 2
+          type: string
+        validation_suite:
+          title: Validation Suite
+          maxLength: 50
+          type: string
+        outcome:
+          title: Outcome
+          maxLength: 15
+          type: string
+        data_row_count:
+          title: Data Row Count
+          type: integer
+        stage_two_upload:
+          title: Stage Two Upload
+          type: boolean
+        json_path:
+          title: Json Path
+          maxLength: 300
+          type: string
+        html_path:
+          title: Html Path
+          maxLength: 300
+          type: string
+        json_log:
+          title: Json Log
+          type: object
+        html_log:
+          title: Html Log
+          type: string
+    SubmissionLogUpdate:
+      title: SubmissionLogUpdate
+      type: object
+      properties:
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_type:
+          title: File Type
+          maxLength: 2
+          type: string
+        validation_suite:
+          title: Validation Suite
+          maxLength: 50
+          type: string
+        outcome:
+          title: Outcome
+          maxLength: 15
+          type: string
+        data_row_count:
+          title: Data Row Count
+          type: integer
+        stage_two_upload:
+          title: Stage Two Upload
+          type: boolean
+        json_path:
+          title: Json Path
+          maxLength: 300
+          type: string
+        html_path:
+          title: Html Path
+          maxLength: 300
+          type: string
+    SubmissionUpdate:
+      title: SubmissionUpdate
+      type: object
+      properties:
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        zip_file_name:
+          title: Zip File Name
+          type: string
+        received_timestamp:
+          title: Received Timestamp
+          type: string
+          format: date-time
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        test_submission_flag:
+          title: Test Submission Flag
+          maxLength: 1
+          type: string
+        status:
+          title: Status
+          type: string
+        outcome:
+          title: Outcome
+          type: string
+        outcome_reason:
+          title: Outcome Reason
+          type: string
+        compressed_size:
+          title: Compressed Size
+          type: integer
+        processed_timestamp:
+          title: Processed Timestamp
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+    SubmissionWithChildren:
+      title: SubmissionWithChildren
+      required:
+        - apcd_id
+        - submitter_id
+        - zip_file_name
+        - received_timestamp
+        - data_period_start
+        - data_period_end
+        - submission_id
+      type: object
+      properties:
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        zip_file_name:
+          title: Zip File Name
+          type: string
+        received_timestamp:
+          title: Received Timestamp
+          type: string
+          format: date-time
+        data_period_start:
+          title: Data Period Start
+          type: integer
+        data_period_end:
+          title: Data Period End
+          type: integer
+        test_submission_flag:
+          title: Test Submission Flag
+          maxLength: 1
+          type: string
+        status:
+          title: Status
+          type: string
+        outcome:
+          title: Outcome
+          type: string
+        outcome_reason:
+          title: Outcome Reason
+          type: string
+        compressed_size:
+          title: Compressed Size
+          type: integer
+        processed_timestamp:
+          title: Processed Timestamp
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        received_id:
+          title: Received Id
+          type: integer
+        submission_id:
+          title: Submission Id
+          type: integer
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    Submitter:
+      title: Submitter
+      required:
+        - submitter_id
+        - apcd_id
+        - registration_id
+      type: object
+      properties:
+        org_name:
+          title: Org Name
+          type: string
+        submitter_code:
+          title: Submitter Code
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        fein:
+          title: Fein
+          maxLength: 10
+          type: string
+        license_number:
+          title: License Number
+          type: integer
+        naic_company_code:
+          title: Naic Company Code
+          type: integer
+        fingerprint:
+          title: Fingerprint
+          maxLength: 50
+          type: string
+        development:
+          title: Development
+          type: boolean
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        registration_id:
+          title: Registration Id
+          type: integer
+        encryption_key:
+          title: Encryption Key
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+        status:
+          title: Status
+          type: string
+        test_submissions_only:
+          title: Test Submissions Only
+          type: boolean
+        compliant:
+          title: Compliant
+          type: boolean
+        last_updated_timestamp:
+          title: Last Updated Timestamp
+          type: string
+          format: date-time
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+    SubmitterCalendar:
+      title: SubmitterCalendar
+      required:
+        - data_period_start
+        - data_period_end
+        - file_me
+        - file_pv
+        - file_mc
+        - file_pc
+        - file_dc
+        - granted_reprieve
+        - cancelled
+        - calendar_item_id
+        - submitter_id
+      type: object
+      properties:
+        data_period_start:
+          title: Data Period Start
+          maxLength: 6
+          minLength: 6
+          type: string
+        data_period_end:
+          title: Data Period End
+          maxLength: 6
+          minLength: 6
+          type: string
+        expected_submission_date:
+          title: Expected Submission Date
+          type: string
+          format: date
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        granted_reprieve:
+          title: Granted Reprieve
+          type: boolean
+        cancelled:
+          title: Cancelled
+          type: boolean
+        calendar_item_id:
+          title: Calendar Item Id
+          type: integer
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        submitter_id:
+          title: Submitter Id
+          type: integer
+    SubmitterCalendarCreate:
+      title: SubmitterCalendarCreate
+      required:
+        - data_period_start
+        - data_period_end
+        - file_me
+        - file_pv
+        - file_mc
+        - file_pc
+        - file_dc
+        - granted_reprieve
+        - cancelled
+        - submitter_id
+      type: object
+      properties:
+        data_period_start:
+          title: Data Period Start
+          maxLength: 6
+          minLength: 6
+          type: string
+        data_period_end:
+          title: Data Period End
+          maxLength: 6
+          minLength: 6
+          type: string
+        expected_submission_date:
+          title: Expected Submission Date
+          type: string
+          format: date
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        granted_reprieve:
+          title: Granted Reprieve
+          type: boolean
+        cancelled:
+          title: Cancelled
+          type: boolean
+        submitter_id:
+          title: Submitter Id
+          type: integer
+    SubmitterCalendarUpdate:
+      title: SubmitterCalendarUpdate
+      type: object
+      properties:
+        data_period_start:
+          title: Data Period Start
+          maxLength: 6
+          minLength: 6
+          type: string
+        data_period_end:
+          title: Data Period End
+          maxLength: 6
+          minLength: 6
+          type: string
+        expected_submission_date:
+          title: Expected Submission Date
+          type: string
+          format: date
+        submission_id:
+          title: Submission Id
+          type: integer
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        granted_reprieve:
+          title: Granted Reprieve
+          type: boolean
+        cancelled:
+          title: Cancelled
+          type: boolean
+        submitter_id:
+          title: Submitter Id
+          type: integer
+    SubmitterException:
+      title: SubmitterException
+      required:
+        - exception_id
+        - submitter_id
+        - requestor_name
+        - request_type
+        - created_at
+      type: object
+      properties:
+        exception_id:
+          title: Exception Id
+          type: integer
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        requestor_name:
+          title: Requestor Name
+          maxLength: 100
+          type: string
+        request_type:
+          title: Request Type
+          maxLength: 20
+          type: string
+        explanation_justification:
+          title: Explanation Justification
+          type: string
+        submitter_code:
+          title: Submitter Code
+          maxLength: 8
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        user_id:
+          title: User Id
+          maxLength: 20
+          type: string
+        requestor_email:
+          title: Requestor Email
+          maxLength: 50
+          type: string
+        data_file:
+          title: Data File
+          maxLength: 2
+          minLength: 2
+          type: string
+        field_number:
+          title: Field Number
+          maxLength: 10
+          type: string
+        required_threshold:
+          title: Required Threshold
+          type: integer
+        requested_threshold:
+          title: Requested Threshold
+          type: integer
+        requested_expiration_date:
+          title: Requested Expiration Date
+          type: string
+          format: date
+        approved_threshold:
+          title: Approved Threshold
+          type: integer
+        approved_expiration_date:
+          title: Approved Expiration Date
+          type: string
+          format: date
+        status:
+          title: Status
+          maxLength: 10
+          type: string
+        outcome:
+          title: Outcome
+          maxLength: 15
+          type: string
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+    SubmitterUserCreate:
+      title: SubmitterUserCreate
+      required:
+        - user_id
+      type: object
+      properties:
+        user_id:
+          title: User Id
+          type: string
+    SubmitterUserUpdate:
+      title: SubmitterUserUpdate
+      required:
+        - user_id
+      type: object
+      properties:
+        user_id:
+          title: User Id
+          type: string
+    SubmitterUsersWithChildren:
+      title: SubmitterUsersWithChildren
+      required:
+        - user_id
+        - submitter_id
+        - user_number
+        - user
+      type: object
+      properties:
+        user_id:
+          title: User Id
+          type: string
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        user_number:
+          title: User Number
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+    SubmittersWithChildren:
+      title: SubmittersWithChildren
+      required:
+        - submitter_id
+        - apcd_id
+        - registration_id
+      type: object
+      properties:
+        org_name:
+          title: Org Name
+          type: string
+        submitter_code:
+          title: Submitter Code
+          type: string
+        payor_code:
+          title: Payor Code
+          type: integer
+        file_me:
+          title: File Me
+          type: boolean
+        file_pv:
+          title: File Pv
+          type: boolean
+        file_mc:
+          title: File Mc
+          type: boolean
+        file_pc:
+          title: File Pc
+          type: boolean
+        file_dc:
+          title: File Dc
+          type: boolean
+        submission_method:
+          title: Submission Method
+          type: string
+        fein:
+          title: Fein
+          maxLength: 10
+          type: string
+        license_number:
+          title: License Number
+          type: integer
+        naic_company_code:
+          title: Naic Company Code
+          type: integer
+        fingerprint:
+          title: Fingerprint
+          maxLength: 50
+          type: string
+        development:
+          title: Development
+          type: boolean
+        submitter_id:
+          title: Submitter Id
+          type: integer
+        apcd_id:
+          title: Apcd Id
+          type: integer
+        registration_id:
+          title: Registration Id
+          type: integer
+        encryption_key:
+          title: Encryption Key
+          type: string
+        submitting_for_self:
+          title: Submitting For Self
+          type: boolean
+        status:
+          title: Status
+          type: string
+        test_submissions_only:
+          title: Test Submissions Only
+          type: boolean
+        compliant:
+          title: Compliant
+          type: boolean
+        last_updated_timestamp:
+          title: Last Updated Timestamp
+          type: string
+          format: date-time
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+        notes:
+          title: Notes
+          type: string
+        users:
+          title: Users
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitterUsersWithChildren'
+          default: []
+    TicketDetails:
+      title: TicketDetails
+      required:
+        - file_name
+        - message
+      type: object
+      properties:
+        file_name:
+          title: File Name
+          type: string
+        message:
+          title: Message
+          maxLength: 6000
+          type: string
+    User:
+      title: User
+      required:
+        - user_id
+        - user_number
+      type: object
+      properties:
+        notes:
+          title: Notes
+          type: string
+        user_id:
+          title: User Id
+          type: string
+        user_number:
+          title: User Number
+          type: integer
+        role_name:
+          title: Role Name
+          type: string
+        user_email:
+          title: User Email
+          type: string
+          format: email
+        user_name:
+          title: User Name
+          maxLength: 100
+          type: string
+        org_name:
+          title: Org Name
+          maxLength: 50
+          type: string
+        role_id:
+          title: Role Id
+          type: integer
+        active:
+          title: Active
+          type: boolean
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+    UserCreate:
+      title: UserCreate
+      required:
+        - user_id
+        - user_email
+        - user_name
+        - org_name
+        - active
+        - role_id
+      type: object
+      properties:
+        notes:
+          title: Notes
+          type: string
+        user_id:
+          title: User Id
+          type: string
+        user_email:
+          title: User Email
+          type: string
+          format: email
+        user_name:
+          title: User Name
+          maxLength: 100
+          type: string
+        org_name:
+          title: Org Name
+          maxLength: 50
+          type: string
+        active:
+          title: Active
+          type: boolean
+        role_id:
+          title: Role Id
+          type: integer
+    UserUpdate:
+      title: UserUpdate
+      required:
+        - user_id
+      type: object
+      properties:
+        notes:
+          title: Notes
+          type: string
+        user_id:
+          title: User Id
+          type: string
+        user_email:
+          title: User Email
+          type: string
+          format: email
+        user_name:
+          title: User Name
+          maxLength: 100
+          type: string
+        org_name:
+          title: Org Name
+          maxLength: 50
+          type: string
+        role_id:
+          title: Role Id
+          type: integer
+        active:
+          title: Active
+          type: boolean
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+  securitySchemes:
+    OAuth2PasswordBearer:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: /auth/access-token

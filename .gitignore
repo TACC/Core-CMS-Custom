@@ -168,3 +168,5 @@ portal_crypt.key
 
 # vim stuff
 *.swp
+apcd-cms/src/apps/apcd_client/.openapi-generator/FILES
+apcd-cms/src/apps/apcd_client/.openapi-generator/VERSION
