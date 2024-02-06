@@ -1,0 +1,87 @@
+@import url('@tacc/core-styles/src/lib/_imports/tools/media-queries.css');
+
+/* Base */
+
+.root {
+  /* FAQ: No styles necessary, but defining class to avoid build error */
+}
+
+/* Debug */
+/* FAQ: To color-code panels, ucncomment the code in this section */
+
+/* Color-code panels to easily track movement of multiple panels */
+/*
+.root::before          { background-color: dimgray; }
+.root > *:nth-child(1) { background-color: deeppink; }
+.root > *:nth-child(2) { background-color: deepskyblue; }
+.root > *:nth-child(3) { background-color: gold; }
+.root > *:nth-child(4) { background-color: springgreen; }
+.root::after           { background-color: lavender; }
+*/
+
+/* 1 Column */
+
+.one-column {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+/* 2 Columns */
+
+/* Always */
+.two-column,
+.multi-column {
+  --vertical-buffer: 40px;
+}
+.two-column > *,
+.multi-column > * {
+  break-inside: avoid;
+}
+
+/* Narrow */
+@media screen and (--medium-and-below) {
+  .two-column > *,
+  .multi-column > * {
+    margin-bottom: var(--vertical-buffer);
+  }
+}
+
+/* Wide */
+@media screen and (--medium-and-above) {
+  .two-column,
+  .multi-column {
+    column-gap: 48px;
+    column-rule: 1px solid rgb(112 112 112 / 25%);
+    column-fill: auto;
+  }
+  .two-column > *:not(:last-child),
+  .multi-column > *:not(:last-child) {
+    margin-bottom: var(--vertical-buffer);
+  }
+}
+
+/* Tall & Wide */
+@media screen and (--short-and-above) and (--medium-and-above) {
+  .two-column,
+  .multi-column {
+    column-count: 2;
+  }
+}
+
+/* Short & Wide */
+@media screen and (--short-and-below) and (--medium-to-wide) {
+  .two-column {
+    column-count: 2;
+  }
+}
+@media screen and (--short-and-below) and (--wide-and-above) {
+  .two-column {
+    column-count: 2;
+  }
+  .multi-column {
+    column-count: 3;
+  }
+}
+
+@custom-media --short-and-below (height < 634px);
+@custom-media --short-and-above (height >= 634px);
