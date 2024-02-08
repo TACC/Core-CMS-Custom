@@ -326,6 +326,9 @@
           <label for="claims_encounters_volume_${entities}${reg_id_substr}">
             Claims and Encounters Volume<span class="asterisk">*</span>
           </label>
+          <div class="help-text">
+            Enter a whole number.
+          </div>
           <input
             type="text"
             name="claims_encounters_volume_${entities}${reg_id_substr}"
@@ -434,7 +437,7 @@
         contactBlock.innerHTML = `
             <div class="field-wrapper textinput required">
               <div class="field-errors" style="display: none"></div>
-              <label for="contact_type_${contacts}${reg_id_substr}"> Role<span class="asterisk">*</span> </label>
+              <label for="contact_type_${contacts}${reg_id_substr}"> Company Role<span class="asterisk">*</span> </label>
               <input
                 type="text"
                 name="contact_type_${contacts}${reg_id_substr}"
