@@ -72,6 +72,10 @@
             value='{% if renew %}{{r.year|add:"1"}}{% else %}{{r.year}}{% endif %}'
             required
             >
+
+            <div class="help-text">
+                Enter the registration year. Must be 2023 or later.
+            </div>
         </div>
     
         <div class="field-wrapper select required">
@@ -467,6 +471,10 @@
                         pattern="^[1-9]+[0-9]*$"
                         value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
+
+                    <div class="help-text">
+                        Enter a whole number.
+                    </div>
                     </div>
 
                     <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
@@ -758,6 +766,10 @@
                 inputmode="numeric"
                 pattern="^[1-9]+[0-9]*$"
                 />
+
+                <div class="help-text">
+                    Enter a whole number.
+                </div>
             </div>
 
             <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
@@ -801,7 +813,7 @@
                         <div class="field-errors" style="display: none"></div>
 
                         <label for="contact_type_{{forloop.counter}}_{{r.reg_id}}">
-                        Role<span class="asterisk">*</span>
+                        Company Role<span class="asterisk">*</span>
                         </label>
 
                         <input
@@ -923,7 +935,7 @@
                 <div class="field-errors" style="display: none"></div>
 
                 <label for="contact_type">
-                    Role<span class="asterisk">*</span>
+                    Company Role<span class="asterisk">*</span>
                 </label>
 
                 <input
