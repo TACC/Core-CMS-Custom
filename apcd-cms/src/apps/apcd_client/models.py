@@ -2,6 +2,7 @@
 """
 import logging
 import time
+import apcd
 from django.db import models
 from django.conf import settings
 from django.db import transaction
@@ -95,6 +96,17 @@ class APCDToken(models.Model):
     def refresh_tokens(self):
         token_data = get_apcd_token(self.user)
         self.update(**token_data)
+
+    def get_client(self):
+        """Provide APCD ApiClient to use for APCD API resources
+        :return: apcd.ApiClient
+        :rtype: :ApiClient
+        """
+        configuration = apcd.Configuration(
+            host=settings.TACC_APCD_API_HOST,
+            access_token=self.get_token()
+        )
+        return apcd.ApiClient(configuration)
 
     def __str__(self):
         access_token_masked = self.access_token[-5:]
