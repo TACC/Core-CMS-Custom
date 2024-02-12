@@ -2,12 +2,12 @@
 # TACC WMA CMS SITE:
 # *.TAPISPROJECT.TACC.UTEXAS.EDU
 
-# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
-#      because current infrastructure lacks ability to reference default values
-
 ########################
 # TACC: BRANDING
 ########################
+
+# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
+#      because current infrastructure lacks ability to reference default values
 
 _NSF_BRANDING = [
     "nsf",
