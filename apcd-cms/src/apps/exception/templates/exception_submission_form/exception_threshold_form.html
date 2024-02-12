@@ -380,6 +380,7 @@
           // exception block number
           function getHelpText(fieldSelection, file_type, exceptions) {
             helpText = document.getElementById(`help-text-threshold-requested_${exceptions}`);
+            thresholdInput = document.getElementById(`threshold-requested_${exceptions}`)
             $.ajax({
                 url: "{% url 'exception:get-cdls' %}",
                 type: 'GET',
@@ -388,9 +389,10 @@
                 },
                 success: function(response) {
                   let cdls = response;
-                  //To change help text for requested threshold percentage
+                  //To change input's max value & help text for requested threshold percentage
                     for (let i = 0; i < cdls.length; i++)
                       if (fieldSelection == cdls[i].field_list_code) {
+                          thresholdInput.max = cdls[i].threshold_value
                           helpText.innerHTML = "";
                           helpText.innerHTML = `Must be less than the ${cdls[i].threshold_value}% required.`
                       };
