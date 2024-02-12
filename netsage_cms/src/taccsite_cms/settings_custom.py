@@ -1,37 +1,14 @@
 # CUSTOM SETTINGS VALUES.
-# TACC WMA CMS SITE:
+# TACC WMA (SAD) CMS SITE:
 # *.NETSAGE.TACC.UTEXAS.EDU
-
-########################
-# DJANGO: EMAIL
-########################
-
-# Set on server, NOT here
-# https://tacc-main.atlassian.net/wiki/x/ZhVv
-# EMAIL_BACKEND = "..."
-# EMAIL_HOST = "..."
-# DEFAULT_FROM_EMAIL = "..."
-
-########################
-# DJANGO_CMS
-########################
-
-CMS_TEMPLATES = (
-    ('standard.html', 'Standard'),
-    ('fullwidth.html', 'Full Width'),
-
-    ('guide.html', 'Guide'),
-    ('guides/getting_started.tam.html', 'Guide: Getting Started'),
-    ('guides/data_transfer.html', 'Guide: Data Transfer'),
-    ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
-    ('guides/portal_technology.html', 'Guide: Portal Technology Stack'),
-)
 
 ########################
 # TACC: BRANDING
 ########################
 
-_NSF_BRANDING = [
+# NOTE: Variables NSF_BRANDING, TACC_BRANDING, and UTEXAS_BRANDING are duplicated from Core-CMS cuz current infrastructure lacks ability to reference default values.
+
+NSF_BRANDING = [
     "nsf",
     "site_cms/img/org_logos/nsf-white.png",
     "branding-nsf",
@@ -42,7 +19,7 @@ _NSF_BRANDING = [
     "True"
 ]
 
-_TACC_BRANDING = [
+TACC_BRANDING = [
     "tacc",
     "site_cms/img/org_logos/tacc-white.png",
     "branding-tacc",
@@ -53,7 +30,7 @@ _TACC_BRANDING = [
     "True"
 ]
 
-_UTEXAS_BRANDING = [
+UTEXAS_BRANDING = [
     "utexas",
     "site_cms/img/org_logos/utaustin-white.png",
     "branding-utaustin",
@@ -64,13 +41,13 @@ _UTEXAS_BRANDING = [
     "True"
 ]
 
-BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
+BRANDING = [ NSF_BRANDING, TACC_BRANDING, UTEXAS_BRANDING ]
 
 ########################
 # TACC: LOGO & FAVICON
 ########################
 
-LOGO =  [
+LOGO = [
     "netsage",
     "netsage_cms/img/org_logos/netsage_logo_color.png",
     "",
