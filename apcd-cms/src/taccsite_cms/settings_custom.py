@@ -41,6 +41,7 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "apcd-cms/img/favicons/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "apcd-cms/img/favicons/favicon.ico",
 }

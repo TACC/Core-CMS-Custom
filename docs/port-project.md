@@ -47,7 +47,7 @@ Follow [Core CMS: Upgrade Project: from v3.N to v3.12](https://github.com/TACC/C
 
 #### Has a [Core Portal]
 
-**If** the custom project has a [Core Portal] i.e. settings has `FAVICON` and:
+**If** the custom project has a [Core Portal] i.e. settings has `PORTAL_FAVICON` and:
 
 - **either** settings has `INCLUDES_CORE_PORTAL = True`
 - **or** settings does **not** have `INCLUDES_CORE_PORTAL`
@@ -57,7 +57,7 @@ Then:
 1. You must edit [Core Portal Deployments].
 2. Edit `custom_project_dir/camino/___.settings_custom.py` (not `___.cms.…`).
 3. Change `_PORTAL_ICON_FILENAME` to:\
-    `/static/` + ( the `img_file_src` of `FAVICON` )
+    `/static/` + ( the `img_file_src` of `PORTAL_FAVICON` )
 
 #### Expects CSS Build Step
 

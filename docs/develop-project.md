@@ -45,7 +45,7 @@ Edit `./src/taccsite_cms/settings_custom.py`.
 
 To know what settings are available, see [Core-CMS `settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
 
-The settings usually edited are `LOGO` and `..._BRANDING`.
+The settings usually edited are `PORTAL_LOGO` and `..._BRANDING`.
 
 ## Create a Custom App
 

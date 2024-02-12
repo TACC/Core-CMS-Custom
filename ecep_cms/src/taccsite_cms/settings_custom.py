@@ -2,9 +2,6 @@
 # TACC WMA CMS SITE:
 # *.ECEP.TACC.UTEXAS.EDU
 
-# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
-#      because current infrastructure lacks ability to reference default values
-
 ########################
 # DJANGO CMS SETTINGS
 ########################
@@ -23,6 +20,8 @@ CMS_TEMPLATES = (
 ########################
 # TACC: BRANDING
 ########################
+
+# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_") cuz current infrastructure lacks ability to reference default values
 
 _NSF_BRANDING = [
     "nsf",
@@ -74,8 +73,9 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "ecep_cms/img/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "ecep_cms/img/favicon.ico",
 }
 
 ########################
@@ -99,8 +99,8 @@ INCLUDES_SEARCH_BAR = True
 ########################
 
 # TACC settings
-TACC_BLOG_SHOW_CATEGORIES = False
-TACC_BLOG_SHOW_TAGS = False
+PORTAL_BLOG_SHOW_CATEGORIES = False
+PORTAL_BLOG_SHOW_TAGS = False
 
 ########################
 # NEWS / BLOG

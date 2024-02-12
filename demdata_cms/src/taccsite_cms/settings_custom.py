@@ -1,7 +1,6 @@
 # CUSTOM SETTINGS VALUES.
 # TACC WMA CMS SITE:
 # *.DEMOCTRATIZING-SITE.TACC.UTEXAS.EDU
-# https://democratizingdata.ai/
 
 ########################
 # TACC: PORTAL
@@ -84,8 +83,9 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg",
 }
 
 ########################

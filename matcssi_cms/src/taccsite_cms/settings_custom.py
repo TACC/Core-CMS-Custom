@@ -27,6 +27,7 @@ LOGO = [
     "True"
 ]
 
-FAVICON = {
-    "img_file_src": "matcssi_cms/img/favicons/favicon.ico"
+PORTAL_FAVICON = {
+    "is_remote": False,
+    "img_file_src": "matcssi_cms/img/favicons/favicon.ico",
 }
