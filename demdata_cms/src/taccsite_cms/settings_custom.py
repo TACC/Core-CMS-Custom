@@ -1,7 +1,6 @@
 # CUSTOM SETTINGS VALUES.
 # TACC WMA CMS SITE:
 # *.DEMOCTRATIZING-SITE.TACC.UTEXAS.EDU
-# https://democratizingdata.ai/
 
 ########################
 # TACC: PORTAL
