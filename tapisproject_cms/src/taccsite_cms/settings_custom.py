@@ -1,6 +1,6 @@
 # CUSTOM SETTINGS VALUES.
 # TACC WMA CMS SITE:
-# *.TAPIS-PROJECT.ORG
+# *.TAPISPROJECT.TACC.UTEXAS.EDU
 
 # FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
 #      because current infrastructure lacks ability to reference default values

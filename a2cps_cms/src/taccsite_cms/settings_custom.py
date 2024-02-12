@@ -2,7 +2,6 @@
 # TACC WMA CMS SITE:
 # *.A2CPS.TACC.UTEXAS.EDU
 
-
 ########################
 # DJANGO CMS SETTINGS
 ########################
