@@ -3,7 +3,7 @@
 # *.ECEP.TACC.UTEXAS.EDU
 
 ########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
@@ -16,6 +16,14 @@ CMS_TEMPLATES = (
     ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
     ('guides/portal_technology.html', 'Guide: Portal Technology Stack')
 )
+
+########################
+# TACC: SEARCH
+########################
+
+# Support Google search instead of Portal's Elasticsearch
+SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
+SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
 
 ########################
 # TACC: BRANDING
@@ -59,7 +67,7 @@ _UTEXAS_BRANDING = [
 BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO = [
@@ -78,14 +86,6 @@ FAVICON = {
 }
 
 ########################
-# TACC: SEARCH
-########################
-
-# Support Google search instead of Portal's Elasticsearch
-SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
-SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
-
-########################
 # TACC: PORTAL
 ########################
 
@@ -94,15 +94,7 @@ INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = True
 
 ########################
-# TACC: NEWS/BLOG
-########################
-
-# TACC settings
-TACC_BLOG_SHOW_CATEGORIES = False
-TACC_BLOG_SHOW_TAGS = False
-
-########################
-# NEWS / BLOG
+# DJANGOCMS_BLOG
 ########################
 
 # REQ: Assumes various "NEWS / BLOG" are installed via `custom_app_settings.py`
@@ -126,6 +118,13 @@ BLOG_AUTO_NAMESPACE = 'News'
 
 # Miscellaneous settings
 BLOG_ENABLE_COMMENTS = False
+
+########################
+# DJANGOCMS_BLOG: TACC
+########################
+
+TACC_BLOG_SHOW_CATEGORIES = False
+TACC_BLOG_SHOW_TAGS = False
 
 ########################
 # TACC: CORE STYLES

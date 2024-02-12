@@ -3,7 +3,7 @@
 # *.MISE.TACC.UTEXAS.EDU
 
 ########################
-# DJANGO (EMAIL)
+# DJANGO: EMAIL
 ########################
 
 # Set on server, NOT here
@@ -13,7 +13,7 @@
 # DEFAULT_FROM_EMAIL = "..."
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO = [

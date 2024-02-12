@@ -3,7 +3,7 @@
 # *.APCD.TACC.UTEXAS.EDU
 
 ########################
-# DJANGO (EMAIL)
+# DJANGO: EMAIL
 ########################
 
 # Set on server, NOT here
@@ -13,7 +13,7 @@
 # DEFAULT_FROM_EMAIL = "..."
 
 ########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
@@ -27,7 +27,7 @@ CMS_TEMPLATES = (
 )
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO = [

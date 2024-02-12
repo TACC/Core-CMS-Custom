@@ -3,7 +3,7 @@
 # *.PROJECT_DOMAIN.TACC.UTEXAS.EDU
 
 ########################
-# DJANGO (EMAIL)
+# DJANGO: EMAIL
 ########################
 
 # Set on server, NOT here
@@ -13,7 +13,7 @@
 # DEFAULT_FROM_EMAIL = "..."
 
 ########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
@@ -41,7 +41,7 @@ CMS_TEMPLATES = (
 # BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING, NSF_BRANDING, _CUSTOM_BRANDING ]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO =  [

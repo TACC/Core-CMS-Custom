@@ -3,7 +3,7 @@
 # *.NETSAGE.TACC.UTEXAS.EDU
 
 ########################
-# DJANGO (EMAIL)
+# DJANGO: EMAIL
 ########################
 
 # Set on server, NOT here
@@ -13,7 +13,7 @@
 # DEFAULT_FROM_EMAIL = "..."
 
 ########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
@@ -67,7 +67,7 @@ _UTEXAS_BRANDING = [
 BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO =  [
@@ -89,7 +89,6 @@ FAVICON = {
 # TACC: PORTAL
 ########################
 
-# Does this CMS site have a portal?
 INCLUDES_CORE_PORTAL = False
 INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = False

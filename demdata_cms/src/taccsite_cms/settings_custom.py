@@ -3,16 +3,7 @@
 # *.DEMOCTRATIZING-SITE.TACC.UTEXAS.EDU
 
 ########################
-# TACC: PORTAL
-########################
-
-# Does this CMS site have a portal (default value: True)?
-INCLUDES_CORE_PORTAL = False
-INCLUDES_PORTAL_NAV = False
-INCLUDES_SEARCH_BAR = False
-
-########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
@@ -69,7 +60,7 @@ BRANDING = [ TACC_BRANDING, UTEXAS_BRANDING ] # this matches prod 2022
 # BRANDING = [] # prod 2022 hides bar via snippet CSS but should also do this
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO = [
@@ -86,6 +77,14 @@ LOGO = [
 FAVICON = {
     "img_file_src": "demdata_cms/img/favicons/Favicon_64x64.svg"
 }
+
+########################
+# TACC: PORTAL
+########################
+
+INCLUDES_CORE_PORTAL = False
+INCLUDES_PORTAL_NAV = False
+INCLUDES_SEARCH_BAR = False
 
 ########################
 # TACC: CORE STYLES

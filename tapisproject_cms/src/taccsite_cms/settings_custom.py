@@ -56,7 +56,7 @@ UHAWAII_BRANDING = [
 BRANDING = [ _NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING, UHAWAII_BRANDING ]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO =  [
@@ -81,9 +81,3 @@ FAVICON = {
 INCLUDES_CORE_PORTAL = False
 INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = False
-
-########################
-# TACC: GOOGLE ANALYTICS
-########################
-
-GOOGLE_ANALYTICS_PROPERTY_ID = "G-5EQ8Y25ZTM"
