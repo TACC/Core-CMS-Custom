@@ -16,10 +16,13 @@
 # DJANGO_CMS
 ########################
 
-CMS_TEMPLATES = (
-    ('standard.html', 'Standard'),
-    ('fullwidth.html', 'Full Width'),
-)
+# CMS_TEMPLATES = (
+#     ('standard.html', 'Standard'),
+#     ('fullwidth.html', 'Full Width'),
+
+#     ('guide.html', 'Guide'),
+#     ('guides/portal_technology.html', 'Guide: Portal Technology Stack'),
+# }
 
 ########################
 # TACC: BRANDING
