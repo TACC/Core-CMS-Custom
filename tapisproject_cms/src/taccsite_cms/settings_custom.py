@@ -1,15 +1,20 @@
 # CUSTOM SETTINGS VALUES.
-# TACC WMA CMS SITE:
-# *.TAPIS-PROJECT.ORG
+# TACC WMA (SAD) CMS SITE:
+# *.TAPISPROJECT.TACC.UTEXAS.EDU
 
-# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
-#      because current infrastructure lacks ability to reference default values
+########################
+# DJANGO: AUTH
+########################
+
+AUTH_LDAP_SERVER_URI = "ldap://cluster.ldap.tacc.utexas.edu"
 
 ########################
 # TACC: BRANDING
 ########################
 
-_NSF_BRANDING = [
+# NOTE: Variables NSF_BRANDING, TACC_BRANDING, and UTEXAS_BRANDING are duplicated from Core-CMS cuz current infrastructure lacks ability to reference default values.
+
+NSF_BRANDING = [
     "nsf",
     "site_cms/img/org_logos/nsf-white.png",
     "branding-nsf",
@@ -20,7 +25,7 @@ _NSF_BRANDING = [
     "True"
 ]
 
-_TACC_BRANDING = [
+TACC_BRANDING = [
     "tacc",
     "site_cms/img/org_logos/tacc-white.png",
     "branding-tacc",
@@ -31,7 +36,7 @@ _TACC_BRANDING = [
     "True"
 ]
 
-_UTEXAS_BRANDING = [
+UTEXAS_BRANDING = [
     "utexas",
     "site_cms/img/org_logos/utaustin-white.png",
     "branding-utaustin",
@@ -53,13 +58,13 @@ UHAWAII_BRANDING = [
     "True"
 ]
 
-BRANDING = [ _NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING, UHAWAII_BRANDING ]
+BRANDING = [ NSF_BRANDING, TACC_BRANDING, UTEXAS_BRANDING, UHAWAII_BRANDING ]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
-LOGO =  [
+LOGO = [
     "tapis",
     "tapisproject_cms/img/org_logos/tapis-logo-navbar.png",
     "",
@@ -81,9 +86,3 @@ FAVICON = {
 INCLUDES_CORE_PORTAL = False
 INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = False
-
-########################
-# TACC: GOOGLE ANALYTICS
-########################
-
-GOOGLE_ANALYTICS_PROPERTY_ID = "G-5EQ8Y25ZTM"

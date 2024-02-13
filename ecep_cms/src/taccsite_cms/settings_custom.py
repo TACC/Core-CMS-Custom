@@ -2,29 +2,30 @@
 # TACC WMA CMS SITE:
 # *.ECEP.TACC.UTEXAS.EDU
 
-# FAQ: Some _VARIABLES are duplicated from settings.py (but prefixed with "_")
-#      because current infrastructure lacks ability to reference default values
-
 ########################
-# DJANGO CMS SETTINGS
+# DJANGO_CMS
 ########################
 
 CMS_TEMPLATES = (
     ('standard.html', 'Standard'),
     ('fullwidth.html', 'Full Width'),
-
-    ('guide.html', 'Guide'),
-    ('guides/getting_started.html', 'Guide: Getting Started'),
-    ('guides/data_transfer.html', 'Guide: Data Transfer'),
-    ('guides/data_transfer.globus.html', 'Guide: Globus Data Transfer'),
-    ('guides/portal_technology.html', 'Guide: Portal Technology Stack')
 )
+
+########################
+# TACC: SEARCH
+########################
+
+# Support Google search instead of Portal's Elasticsearch
+SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
+SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
 
 ########################
 # TACC: BRANDING
 ########################
 
-_NSF_BRANDING = [
+# NOTE: Variables NSF_BRANDING, TACC_BRANDING, and UTEXAS_BRANDING are duplicated from Core-CMS cuz current infrastructure lacks ability to reference default values.
+
+NSF_BRANDING = [
     "nsf",
     "site_cms/img/nsf-white.png",
     "branding-nsf",
@@ -35,7 +36,7 @@ _NSF_BRANDING = [
     "True"
 ]
 
-_TACC_BRANDING = [
+TACC_BRANDING = [
     "tacc",
     "site_cms/img/tacc-white.png",
     "branding-tacc",
@@ -46,7 +47,7 @@ _TACC_BRANDING = [
     "True"
 ]
 
-_UTEXAS_BRANDING = [
+UTEXAS_BRANDING = [
     "utexas",
     "site_cms/img/utaustin-white.png",
     "branding-utaustin",
@@ -57,10 +58,10 @@ _UTEXAS_BRANDING = [
     "True"
 ]
 
-BRANDING = [_NSF_BRANDING, _TACC_BRANDING, _UTEXAS_BRANDING]
+BRANDING = [ NSF_BRANDING, TACC_BRANDING, UTEXAS_BRANDING ]
 
 ########################
-# TACC: LOGOS
+# TACC: LOGO & FAVICON
 ########################
 
 LOGO = [
@@ -79,14 +80,6 @@ FAVICON = {
 }
 
 ########################
-# TACC: SEARCH
-########################
-
-# Support Google search instead of Portal's Elasticsearch
-SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
-SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
-
-########################
 # TACC: PORTAL
 ########################
 
@@ -95,15 +88,7 @@ INCLUDES_PORTAL_NAV = False
 INCLUDES_SEARCH_BAR = True
 
 ########################
-# TACC: NEWS/BLOG
-########################
-
-# TACC settings
-TACC_BLOG_SHOW_CATEGORIES = False
-TACC_BLOG_SHOW_TAGS = False
-
-########################
-# NEWS / BLOG
+# DJANGOCMS_BLOG
 ########################
 
 # REQ: Assumes various "NEWS / BLOG" are installed via `custom_app_settings.py`
@@ -127,6 +112,13 @@ BLOG_AUTO_NAMESPACE = 'News'
 
 # Miscellaneous settings
 BLOG_ENABLE_COMMENTS = False
+
+########################
+# DJANGOCMS_BLOG: TACC
+########################
+
+TACC_BLOG_SHOW_CATEGORIES = False
+TACC_BLOG_SHOW_TAGS = False
 
 ########################
 # TACC: CORE STYLES
