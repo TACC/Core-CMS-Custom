@@ -7,7 +7,7 @@ from apps.utils.utils import table_filter
 from apps.utils.registrations_data_formatting import _set_registration
 from apps.components.paginator.paginator import paginator
 import logging
-from dateutil import parser
+from datetime import date as datetimeDate
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ class RegistrationsTable(TemplateView):
 
         def getDate(row):
             date = row[1]
-            return date if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
+            return date if date is not None else datetimeDate(1,1,1)  # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
         registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
 
