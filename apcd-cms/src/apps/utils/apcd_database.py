@@ -1349,7 +1349,7 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                COALESCE(submitters.entity_name, '') as entity_name
+                COALESCE(NULLIF(submitters.entity_name, ''), '') as entity_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
@@ -1400,7 +1400,7 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                COALESCE(submitters.entity_name, '') as entity_name,
+                COALESCE(NULLIF(submitters.entity_name, ''), '') as entity_name,
                 standard_codes.item_value
             FROM exceptions
             JOIN submitters

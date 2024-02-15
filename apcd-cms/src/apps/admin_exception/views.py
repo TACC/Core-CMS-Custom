@@ -116,6 +116,8 @@ class AdminExceptionsTable(TemplateView):
                 context['org_options'].append(entity_name)
                 # to make sure All is first in the dropdown filter options after sorting alphabetically
                 context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
+                # Remove empty strings
+                context['org_options'] = [option for option in context['org_options'] if option != '']
             if status not in context['status_options']:
                 if status != None:
                     context['status_options'].append(status)
