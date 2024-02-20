@@ -2,7 +2,6 @@ import eslint from '@rollup/plugin-eslint';
 import { defineConfig, type PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import {resolve} from 'path';
-import { visualizer } from "rollup-plugin-visualizer";
 
 
 export default defineConfig({
@@ -33,6 +32,5 @@ export default defineConfig({
     plugins: [
         {...eslint({include: 'src/**/*.+(js|jsx|ts|tsx)', fix: false}), enforce: 'pre', },
         react(),
-        visualizer() as PluginOption
       ],
 })
