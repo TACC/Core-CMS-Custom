@@ -73,8 +73,6 @@ class RegistrationsTable(TemplateView):
         registrations_contacts = get_registration_contacts()   
 
         context = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
-        # template = loader.get_template(self.template_name)
-        print(context)
         return JsonResponse({'response': context})
 
 
