@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "apcd-components/*":["src/components/*"],
-      "shared-components/*": ["src/shared-components/*"],
+      "core-components/*": ["src/core-components/*"],
       "hooks/*": ["src/hooks/*"],
       "utils/*": ["src/utils/*"],
     },

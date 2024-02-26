@@ -16,7 +16,7 @@ export default defineConfig({
   },
     resolve: {
       alias: {
-        'shared-components': resolve(__dirname, 'src/shared-components'),
+        'core-components': resolve(__dirname, 'src/core-components'),
         'hooks': resolve(__dirname, 'src/hooks'),
         'utils': resolve(__dirname, 'src/utils'),
       }
