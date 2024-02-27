@@ -1,0 +1,18 @@
+@import url('@tacc/core-styles/dist/settings/color--portal.css');
+
+.copy-button {
+  /* WARNING: Must match JavaScript `transitionDuration` */
+  --transition-duration: 0.15;
+
+  transition: color var(--transition-duration),
+    background-color var(--transition-duration);
+}
+
+.copy-button.is-copied,
+/* FAQ: The pseudo-classes override Bootstrap */
+.copy-button.is-copied:hover,
+.copy-button.is-copied:focus,
+.copy-button.is-copied:active {
+  background-color: var(--global-color-success--normal);
+  color: var(--global-color-primary--xx-light);
+}
