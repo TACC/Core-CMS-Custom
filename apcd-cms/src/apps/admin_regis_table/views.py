@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
@@ -72,17 +72,17 @@ class RegistrationsTable(TemplateView):
         registrations_entities = get_registration_entities()
         registrations_contacts = get_registration_contacts()   
 
-        context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
-        template = loader.get_template(self.template_name)
-        return HttpResponse(template.render(context, request))
+        context = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+        return JsonResponse({'response': context})
+
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
-        context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
+    def get_registration_list_json(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
+        context = {}
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
         context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
@@ -95,7 +95,7 @@ class RegistrationsTable(TemplateView):
 
         def getDate(row):
             date = row[1]
-            return date if date is not None else datetimeDate(1,1,1)  # put 'None' date entries all together at end of listing w/ date 1-1-0001
+            return date if date is not None else datetimeDate(1,1,1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
         registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
 
@@ -125,6 +125,9 @@ class RegistrationsTable(TemplateView):
             registration_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), registration_table_entries, 'biz_name')
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, registration_table_entries))
+        page_info = paginator(self.request, registration_table_entries)
+        context['page'] = [{'biz_name': obj['biz_name'], 'year': obj['year'], 'type': obj['type'], 'location': obj['location'], 'reg_status': obj['reg_status'], 'reg_id': obj['reg_id']} for obj in page_info['page']]
+
+        #context['page'] = list(page_info['page'].object_list.values())
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context
