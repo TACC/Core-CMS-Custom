@@ -126,5 +126,5 @@ class RegistrationsTable(TemplateView):
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, registration_table_entries))
-        context['pagination_url_namespaces'] = 'administration:admin_regis_table'
+        context['pagination_url_namespaces'] = 'admin_regis_table:admin_regis_table'
         return context
