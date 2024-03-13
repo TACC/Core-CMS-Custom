@@ -19,7 +19,7 @@ services:
       - core_cms_net
 
   postgres:
-    image: postgres:11.5
+    image: postgres:14.9
     environment:
       - POSTGRES_PASSWORD=taccforever
       - POSTGRES_USER=postgresadmin

@@ -1,4 +1,4 @@
 from django.apps import AppConfig
 
 class SubmissionConfig(AppConfig):
-    name = 'admin_submissions'
+    name = 'apps.admin_submissions'
