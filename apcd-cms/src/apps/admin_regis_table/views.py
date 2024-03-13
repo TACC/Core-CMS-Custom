@@ -82,7 +82,7 @@ class RegistrationsTable(TemplateView):
 
         def getDate(row):
             date = row[1]
-            return date if date is not None else datetimeDate(1,1,1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
+            return date if date is not None else datetimeDate(1, 1, 1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
         registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
 
@@ -109,12 +109,12 @@ class RegistrationsTable(TemplateView):
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
-            registration_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), registration_table_entries, 'biz_name')
+            registration_table_entries = table_filter(org_filter.replace("(", "").replace(")", ""), registration_table_entries, 'biz_name')
 
         context['query_str'] = queryStr
         page_info = paginator(self.request, registration_table_entries)
-        context['page'] = [{'biz_name': obj['biz_name'], 'year': obj['year'], 'type': obj['type'], 'location': obj['location'], 'reg_status': obj['reg_status'], 'reg_id': obj['reg_id']} for obj in page_info['page']]
-
-        #context['page'] = list(page_info['page'].object_list.values())
+        context['page'] = [{'biz_name': obj['biz_name'], 'year': obj['year'], 'type': obj['type'], 'location': obj['location'], 'reg_status': obj['reg_status'], 'reg_id': obj['reg_id'], 'view_modal_content': obj['view_modal_content']} for obj in page_info['page']]
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context
