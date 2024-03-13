@@ -30,7 +30,9 @@ export default defineConfig({
       },
     },
     plugins: [
-        {...eslint({include: 'src/**/*.+(js|jsx|ts|tsx)', fix: false}), enforce: 'pre', },
         react(),
       ],
+    optimizeDeps: {
+        include: ['react-refresh'],
+      },
 })

@@ -8,11 +8,27 @@
 
 
 {% block extra_js %}
-<script type="module">
-import { setupAdminRegistrations } from "{% static 'apcd-components.es.js' %}";
-setupAdminRegistrations();
-</script>
+  {% if settings.DEBUG %}
+    <script type="module">
+      import RefreshRuntime from "http://localhost:3000/dist/@react-refresh"
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => {}
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+    <script type="module">
+      import('http://localhost:3000/dist/apcd-components.es.js').then((module) => {
+        module.setupAdminRegistrations();
+      });
+    </script>
+  {% else %}
+    <script type="module">
+      import { setupAdminRegistrations } from "{% static 'apcd-components.es.js' %}";
+      setupAdminRegistrations();
+    </script>
+  {% endif %}
 {% endblock %}
+
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}

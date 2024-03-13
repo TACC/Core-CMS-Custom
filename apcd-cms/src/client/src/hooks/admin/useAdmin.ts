@@ -12,8 +12,11 @@ const getRegistrations = async (params: any) => {
 };
 
 export const useRegistrations = (
-  params: any
+  status?: string, 
+  org?: string,
+  page?:number,
 ): UseQueryResult<RegistrationResult> => {
+  const params: { status?: string; org?: string, page?:number } = {status, org, page};
   const query = useQuery(['registrations', params], () =>
     getRegistrations(params)
   ) as UseQueryResult<RegistrationResult>;
