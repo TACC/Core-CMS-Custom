@@ -1,4 +1,4 @@
-# v3.9.3
+# v3.12.0-beta.3
 FROM taccwma/core-cms:aba079b
 
 WORKDIR /code
