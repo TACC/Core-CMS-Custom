@@ -1,5 +1,5 @@
 from django.conf import settings
-import psycopg2
+import psycopg
 from datetime import datetime, date
 import re
 import logging
@@ -13,7 +13,7 @@ def get_users():
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -57,7 +57,7 @@ def update_user(form):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -114,7 +114,7 @@ def get_user_role(user):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -146,7 +146,7 @@ def get_registrations(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -172,7 +172,10 @@ def get_registrations(reg_id=None, submitter_code=None):
                 {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
                 {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = ANY(%s) ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
         cur = conn.cursor()
-        cur.execute(query, (submitter_code,))
+        if submitter_code:
+            cur.execute(query, (submitter_code,))
+        else:
+            cur.execute(query)
         return cur.fetchall()
 
     except Exception as error:
@@ -189,7 +192,7 @@ def create_registration(form, renewal=False):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -246,7 +249,7 @@ def update_registration(form, reg_id):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -298,7 +301,7 @@ def get_registration_entities(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -386,7 +389,7 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None, ol
             file_dc
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -439,7 +442,7 @@ def update_registration_entity(form, reg_id, iteration, no_entities):
             reg_id,
             form['ent_id_{}'.format(str_end)]
         )
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -485,7 +488,7 @@ def delete_registration_entity(reg_id, ent_id):
     conn = None
     values = ()
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -519,7 +522,7 @@ def get_registration_contacts(reg_id=None, submitter_code=None):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -588,7 +591,7 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None, o
             contact_email
         ) VALUES (%s,%s,%s,%s,%s,%s)"""
 
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -632,7 +635,7 @@ def update_registration_contact(form, reg_id, iteration, no_contacts):
             reg_id,
             form[f'cont_id_{iteration}']
         )
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -669,7 +672,7 @@ def delete_registration_contact(reg_id, cont_id):
     conn = None
     values = ()
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -703,7 +706,7 @@ def create_submitter(form, reg_data):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -763,7 +766,7 @@ def create_other_exception(form, sub_data):
     conn = None
     values = ()
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -816,7 +819,7 @@ def create_threshold_exception(form, iteration, sub_data):
     conn = None
     values = ()
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -873,7 +876,7 @@ def get_cdl_exceptions(file_type):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -909,7 +912,7 @@ def get_submissions(user):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -943,7 +946,7 @@ def get_submission_logs(submission_id):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -984,7 +987,7 @@ def get_user_submissions_and_logs(user):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1040,7 +1043,7 @@ def get_all_submissions_and_logs():
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1142,7 +1145,7 @@ def create_extension(form, iteration, sub_data):
             explanation_justification
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1168,7 +1171,7 @@ def update_extension(form):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1231,7 +1234,7 @@ def get_submitter_info(user):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1269,7 +1272,7 @@ def get_applicable_data_periods(submitter_id):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1278,7 +1281,7 @@ def get_applicable_data_periods(submitter_id):
             sslmode='require',
         )
         cur = conn.cursor()
-        query = """ SELECT data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        query = """ SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
         cur.execute(query, (submitter_id,))
         return cur.fetchall()
 
@@ -1295,7 +1298,7 @@ def get_current_exp_date(submitter_id, applicable_data_period):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1321,7 +1324,7 @@ def get_all_extensions():
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1349,7 +1352,7 @@ def get_all_extensions():
                 extensions.requestor_email,
                 extensions.explanation_justification,
                 extensions.notes,
-                submitters.entity_name
+                COALESCE(NULLIF(submitters.entity_name, ''), '') as entity_name
             FROM extensions
             JOIN submitters
                 ON extensions.submitter_id = submitters.submitter_id
@@ -1369,7 +1372,7 @@ def get_all_exceptions():
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],
@@ -1400,7 +1403,7 @@ def get_all_exceptions():
                 exceptions.approved_expiration_date,
                 exceptions.status,
                 exceptions.notes,
-                submitters.entity_name,
+                COALESCE(NULLIF(submitters.entity_name, ''), '') as entity_name,
                 standard_codes.item_value
             FROM exceptions
             JOIN submitters
@@ -1423,7 +1426,7 @@ def update_exception(form):
     cur = None
     conn = None
     try:
-        conn = psycopg2.connect(
+        conn = psycopg.connect(
             host=APCD_DB['host'],
             dbname=APCD_DB['database'],
             user=APCD_DB['user'],

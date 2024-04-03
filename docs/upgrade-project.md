@@ -83,9 +83,13 @@ Simplify image paths.
     | to | `taccsite_custom/static/custom_project_dir/img/...` |
 
 2. Rename **all** references to the previous image paths e.g.
-    - in `settings_custom.py`
+    - `/custom_project_dir/taccsite_cms/settings_custom.py` [^1]
+    - [Core Portal Deployments]:`/project_dir/camino/cms.settings_custom.py` [^1]
 
+[^1]: The `cms.settings_custom.py` is committed in [Core Portal Deployments]. A `settings_custom.py` in [Core CMS Custom] is `.gitignore`'d.
 
 <!-- Link Aliases -->
 
 [Core CMS]: https://github.com/TACC/Core-CMS
+[Core CMS Custom]: https://github.com/TACC/Core-CMS-Custom
+[Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
