@@ -21,7 +21,7 @@ def get_users():
             port=APCD_DB['port'],
             sslmode='require'
         )
-        query = """SELECT 
+        query = """SELECT
         users.role_id,
         users.user_id,
         users.user_email,
@@ -33,11 +33,11 @@ def get_users():
         users.active,
         users.user_number,
         roles.role_name
-        FROM users 
-        NATURAL JOIN roles 
-        LEFT JOIN submitter_users ON users.user_id = submitter_users.user_id 
-        AND users.user_number = submitter_users.user_number 
-        LEFT JOIN submitters on submitter_users.submitter_id = submitters.submitter_id 
+        FROM users
+        LEFT JOIN roles on roles.role_id = users.role_id
+        LEFT JOIN submitter_users ON users.user_id = submitter_users.user_id
+        AND users.user_number = submitter_users.user_number
+        LEFT JOIN submitters on submitter_users.submitter_id = submitters.submitter_id
         ORDER BY submitters.entity_name ASC;
         """
         cur = conn.cursor()
