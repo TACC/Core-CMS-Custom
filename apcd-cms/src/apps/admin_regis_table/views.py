@@ -30,18 +30,7 @@ class RegistrationsTable(TemplateView):
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-        
-        def _new_submitter(form, reg_data=reg_data):
-            errors = []
-            
-            sub_resp = create_submitter(form, reg_data)
-            template = loader.get_template('create_submitter_success.html')
-            if _err_msg(sub_resp) or type(sub_resp) != int:
-                errors.append(_err_msg(sub_resp))
-                template = loader.get_template('create_submitter_error.html')
-
-            return template
-        
+                
         def _edit_registration(form, reg_entities=reg_entities, reg_contacts=reg_contacts):
             errors = []
             reg_resp = update_registration(form, reg_id)
@@ -61,8 +50,6 @@ class RegistrationsTable(TemplateView):
                 template = loader.get_template('edit_registration_error.html')
             return template
 
-        if 'create-submitter-form' in form:
-            template = _new_submitter(form)
         elif 'edit-registration-form' in form:
             template = _edit_registration(form)
         return HttpResponse(template.render({}, request))
