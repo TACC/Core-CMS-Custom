@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
+from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.registrations_data_formatting import _set_registration
@@ -50,7 +50,7 @@ class RegistrationsTable(TemplateView):
                 template = loader.get_template('edit_registration_error.html')
             return template
 
-        elif 'edit-registration-form' in form:
+        if 'edit-registration-form' in form:
             template = _edit_registration(form)
         return HttpResponse(template.render({}, request))
 

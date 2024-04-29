@@ -695,16 +695,6 @@ def delete_registration_contact(reg_id, cont_id):
         if conn is not None:
             conn.close()
 
-    except Exception as error:
-        logger.error(error)
-        return error
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
 
 def create_other_exception(form, sub_data):
     cur = None
