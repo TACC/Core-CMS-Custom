@@ -5,16 +5,16 @@ def _set_registration(reg, reg_ents, reg_conts):
             'pbm': 'Pharmacy Benefit Manager (PBM)'
     }
     return {
-            'biz_name': reg[7],
-            'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
+            'biz_name': reg[5],
+            'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
             'location': '{city}, {state}'.format
                 (
-                    city=reg[9],
-                    state=reg[10]
+                    city=reg[7],
+                    state=reg[8]
                 ),
-            'reg_status': reg[5].title(),
+            'reg_status': reg[3].title(),
             'reg_id': reg[0],
-            'year': reg[12],
+            'year': reg[10],
             'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
         }
 def _set_entities(reg_ent):
@@ -67,14 +67,14 @@ def _set_contacts(reg_cont):
     }
 def _set_modal_content(reg, reg_ent, reg_cont, org_types):
     return {
-        'biz_name': reg[7],
-        'type': org_types[reg[6]] if (reg[6] and reg[6] in org_types.keys()) else None,
-        'city': reg[9],
-        'state': reg[10],
-        'address': reg[8],
-        'zip': reg[11],
-        'for_self': reg[4],
-        'year': reg[12],
+        'biz_name': reg[5],
+        'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
+        'city': reg[7],
+        'state': reg[8],
+        'address': reg[6],
+        'zip': reg[9],
+        'for_self': reg[2],
+        'year': reg[10],
         'entities': [_set_entities(ent) for ent in reg_ent],
         'contacts': [_set_contacts(cont) for cont in reg_cont],
         'org_types': org_types,
