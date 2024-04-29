@@ -157,8 +157,6 @@ def get_registrations(reg_id=None, submitter_code=None):
         query = f"""SELECT DISTINCT
                 registrations.registration_id,
                 registrations.posted_date,
-                registrations.applicable_period_start,
-                registrations.applicable_period_end,
                 registrations.submitting_for_self,
                 registrations.registration_status,
                 registrations.org_type,
@@ -203,8 +201,6 @@ def create_registration(form, renewal=False):
         cur = conn.cursor()
         operation = """INSERT INTO registrations(
             posted_date,
-            applicable_period_start,
-            applicable_period_end,
             submitting_for_self,
             registration_status,
             org_type,
@@ -214,12 +210,10 @@ def create_registration(form, renewal=False):
             state,
             zip,
             registration_year
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
-            None,
-            None,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
             form['type'],
