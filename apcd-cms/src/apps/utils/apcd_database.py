@@ -807,6 +807,7 @@ def create_threshold_exception(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+
 def get_cdl_exceptions(file_type):
     cur = None
     conn = None
@@ -843,80 +844,6 @@ def get_cdl_exceptions(file_type):
         if conn is not None:
             conn.close()
 
-def get_submissions(user):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-
-        query = """SELECT * FROM submissions
-            WHERE submitter_id
-            IN (
-                SELECT submitter_users.submitter_id FROM submitter_users 
-                WHERE user_id = %s )
-        """
-
-        cur = conn.cursor()
-        cur.execute(query, (user,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-def get_submission_logs(submission_id):
-
-    cur = None
-    conn = None
-    try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-
-   
-        query = """SELECT
-            submission_logs.log_id,
-            submission_logs.submission_id,
-            submission_logs.file_type,
-            submission_logs.validation_suite,
-            submission_logs.json_log,
-            submission_logs.outcome,
-            standard_codes.item_value
-        FROM submission_logs
-        LEFT JOIN standard_codes 
-                ON UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
-        WHERE submission_id= (%s)
-        """ 
-
-        cur = conn.cursor()
-        cur.execute(query, (submission_id,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
 
 def get_user_submissions_and_logs(user):
     cur = None
