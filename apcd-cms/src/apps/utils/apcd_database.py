@@ -157,8 +157,6 @@ def get_registrations(reg_id=None, submitter_code=None):
         query = f"""SELECT DISTINCT
                 registrations.registration_id,
                 registrations.posted_date,
-                registrations.applicable_period_start,
-                registrations.applicable_period_end,
                 registrations.submitting_for_self,
                 registrations.registration_status,
                 registrations.org_type,
@@ -203,8 +201,6 @@ def create_registration(form, renewal=False):
         cur = conn.cursor()
         operation = """INSERT INTO registrations(
             posted_date,
-            applicable_period_start,
-            applicable_period_end,
             submitting_for_self,
             registration_status,
             org_type,
@@ -214,12 +210,10 @@ def create_registration(form, renewal=False):
             state,
             zip,
             registration_year
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         RETURNING registration_id"""
         values = (
             datetime.now(),
-            None,
-            None,
             True if form['on-behalf-of'] == 'true' else False,
             'Received',
             form['type'],
@@ -702,65 +696,6 @@ def delete_registration_contact(reg_id, cont_id):
             conn.close()
 
 
-def create_submitter(form, reg_data):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        operation = """INSERT INTO submitters(
-            registration_id,
-            org_name,
-            file_me,
-            file_pv,
-            file_mc,
-            file_pc,
-            file_dc,
-            submitting_for_self,
-            submitter_code,
-            payor_code,
-            encryption_key,
-            created_at,
-            status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        RETURNING submitter_id"""
-        values = (
-            reg_data[0],
-            reg_data[13],
-            reg_data[6],
-            reg_data[5],
-            reg_data[4],
-            reg_data[7],
-            reg_data[8],
-            reg_data[9],
-            form['submit_code'],
-            _set_int(form['payor_code']),
-            form['encryption_key'],
-            datetime.now(),
-            'new'
-        )
-        cur.execute(operation, values)
-        conn.commit()
-        return cur.fetchone()[0]
-
-    except Exception as error:
-        logger.error(error)
-        return error
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-
 def create_other_exception(form, sub_data):
     cur = None
     conn = None
@@ -872,6 +807,7 @@ def create_threshold_exception(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+
 def get_cdl_exceptions(file_type):
     cur = None
     conn = None
@@ -908,80 +844,6 @@ def get_cdl_exceptions(file_type):
         if conn is not None:
             conn.close()
 
-def get_submissions(user):
-    cur = None
-    conn = None
-    try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-
-        query = """SELECT * FROM submissions
-            WHERE submitter_id
-            IN (
-                SELECT submitter_users.submitter_id FROM submitter_users 
-                WHERE user_id = %s )
-        """
-
-        cur = conn.cursor()
-        cur.execute(query, (user,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
-
-def get_submission_logs(submission_id):
-
-    cur = None
-    conn = None
-    try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-
-   
-        query = """SELECT
-            submission_logs.log_id,
-            submission_logs.submission_id,
-            submission_logs.file_type,
-            submission_logs.validation_suite,
-            submission_logs.json_log,
-            submission_logs.outcome,
-            standard_codes.item_value
-        FROM submission_logs
-        LEFT JOIN standard_codes 
-                ON UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
-        WHERE submission_id= (%s)
-        """ 
-
-        cur = conn.cursor()
-        cur.execute(query, (submission_id,))
-        return cur.fetchall()
-
-    except Exception as error:
-        logger.error(error)
-
-    finally:
-        if cur is not None:
-            cur.close()
-        if conn is not None:
-            conn.close()
 
 def get_user_submissions_and_logs(user):
     cur = None
