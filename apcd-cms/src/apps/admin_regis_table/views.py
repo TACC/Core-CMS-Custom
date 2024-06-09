@@ -8,6 +8,8 @@ from apps.utils.registrations_data_formatting import _set_registration
 from apps.components.paginator.paginator import paginator
 import logging
 from datetime import date as datetimeDate
+from django.conf import settings
+
 
 logger = logging.getLogger(__name__)
 
@@ -123,4 +125,5 @@ class RegistrationsTable(TemplateView):
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
+        logger.info(context)
         return context
