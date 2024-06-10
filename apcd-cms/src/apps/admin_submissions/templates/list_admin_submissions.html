@@ -10,6 +10,13 @@
 <link rel="stylesheet" href="{% static 'admin_submissions/css/admin_table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 
+{% block extra_js %}
+  <script type="module">
+    import { setupAdminSubmissions } from "{% static 'apcd-components.es.js' %}";
+    setupAdminSubmissions();
+  </script>
+{% endblock %}
+
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
@@ -37,34 +44,8 @@
       {% endif %}
     </div>
   </div>
-
-  <table id="submissionTable" class="submission-table">
-      <thead>
-          <tr>
-              {% for k in header %}
-              <th>{{k}}</th>
-              {% endfor %}
-          </tr>
-      </thead>
-      <tbody>
-          {% for r in page %}
-              <tr>
-                <td>{{r.received_timestamp}}</td>
-                <td>{{r.entity_name}}</td>
-                <td colspan="2">{{r.file_name}}</td>
-                <td>{{r.outcome}}</td>
-                <td>{{r.status}}</td>
-                <td>{{r.updated_at}}</td>
-                  <td>
-                    {% include "view_admin_submission_logs_modal.html" %}
-                    <a href='' data-toggle="modal" data-target="#viewAdminSubmissionLogsModal_{{r.submission_id}}" data-backdrop="static">View Logs</a>
-                  </td>
-              </tr>
-          {% endfor %}
-      </tbody>
-  </table>
-
-    {% include 'paginator.html' %}
+  <div id="react-root"></div>
+  {% include 'paginator.html' %}
 </div>
 <script>
   function filterTableByStatus() {
