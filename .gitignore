@@ -5,8 +5,9 @@
 .DS_Store
 
 # ignore secrets & settings
+## so dev learns those should not be committed in this repo
 *secrets.py
-*settings_secret.py
+*settings_custom.py
 *settings_local.py
 
 # no node modules
