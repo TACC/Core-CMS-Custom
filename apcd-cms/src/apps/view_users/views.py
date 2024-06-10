@@ -43,9 +43,8 @@ class ViewUsersTable(TemplateView):
         user_content = get_users()
 
 
-        context = self.get_context_data(user_content, *args,**kwargs)
-        template = loader.get_template(self.template_name)
-        return HttpResponse(template.render(context, request))
+        context = self.get_view_users_json(user_content, *args,**kwargs)
+        return JsonResponse({'response': context})
         ##END FORM FUNCTION
 
     user_content = get_users()
@@ -55,8 +54,8 @@ class ViewUsersTable(TemplateView):
            return HttpResponseRedirect('/')
         return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, user_content=user_content, *args, **kwargs):
-        context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
+    def get_view_users_json(self, user_content=user_content, *args, **kwargs):
+        context = {}
 
         def _set_user(usr):
             return {
@@ -124,7 +123,8 @@ class ViewUsersTable(TemplateView):
             table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'entity_name_no_parens')
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, table_entries))
-        context['pagination_url_namespaces'] = 'administration:view_users'
+        page_info = paginator(self.request, table_entries)
+        context['page'] = [{'user_id': obj['user_id'], 'user_name': obj['user_name'], 'entity_name': obj['entity_name'], 'role_name': obj['role_name'], 'status': obj['status'], 'user_number': obj['user_number']} for obj in page_info['page']]
 
+        context['pagination_url_namespaces'] = 'administration:view_users'
         return context

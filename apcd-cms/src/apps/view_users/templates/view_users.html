@@ -7,6 +7,13 @@
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'view_users_table/css/table.css' %}">
 
+{% block extra_js %}
+<script type="module">
+import { setupViewUsers } from "{% static 'apcd-components.es.js' %}";
+setupViewUsers();
+</script>
+{% endblock %}
+
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
