@@ -15,11 +15,12 @@ services:
       - ./src/taccsite_cms/settings_custom.py:/code/taccsite_cms/settings_custom.py
       - ./src/taccsite_cms/settings_local.py:/code/taccsite_cms/settings_local.py
       - ./src/taccsite_cms/secrets.py:/code/taccsite_cms/secrets.py
+      - ./src/client/dist/apcd-components.es.js:/code/taccsite_custom/apcd_cms/static/apcd-components.es.js
     networks:
       - core_cms_net
 
   postgres:
-    image: postgres:11.5
+    image: postgres:14.9
     environment:
       - POSTGRES_PASSWORD=taccforever
       - POSTGRES_USER=postgresadmin

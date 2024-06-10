@@ -1,4 +1,4 @@
 from django.apps import AppConfig
 
 class AdminExceptionConfig(AppConfig):
-    name = 'admin_exception'
+    name = 'apps.admin_exception'
