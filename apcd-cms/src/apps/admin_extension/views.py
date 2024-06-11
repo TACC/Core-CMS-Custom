@@ -10,6 +10,7 @@ from src.apps.utils.extensions_data_formatting import _set_extension
 from apps.components.paginator.paginator import paginator
 from dateutil import parser
 from datetime import datetime
+from datetime import date as datetimeDate
 import logging
 
 logger = logging.getLogger(__name__)
@@ -47,9 +48,8 @@ class AdminExtensionsTable(TemplateView):
         logger.info('get request received')
         extensions_content = get_all_extensions()
 
-
-        context = self.get_extension_list_json(extensions_content, *args, **kwargs)
-        return JsonResponse({'response': {} })
+        #context = self.get_extension_list_json(extensions_content, *args, **kwargs)
+        return JsonResponse({'response': "" })
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user): 
@@ -76,7 +76,7 @@ class AdminExtensionsTable(TemplateView):
 
         extension_table_entries = []
         for extension in extensions_content:
-            extension_table_entries.append(_setaaa_extension(extension))
+            extension_table_entries.append(_set_extension(extension))
             org_name = extension[7]
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
