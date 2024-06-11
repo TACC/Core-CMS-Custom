@@ -42,41 +42,8 @@ setupViewUsers();
      </div>
   </div>
  
-  <table id="usersTable" class="users-table sortable"><table class="o-fixed-header-table o-table-wrap--flexible-horz users-table">
-      <thead>
-          <tr>
-              {% for k in header %}
-              <th>{{k}}</th>
-              {% endfor %}
-              <th style="display: none">active</th>
-          </tr>
-      </thead>
-      <tbody id="usersTableBody">
-          {% for r in page %}
-              <tr>
-                  <td>{{r.user_id}}</td>
-                  <td>{{r.user_name}}</td>
-                  <td>{{r.entity_name}}</td>
-                  <td>{{r.role_name}}</td>
-                  <td>{{r.status}}</td>
-                  <td>{{r.user_number}}</td>
-                  <td class="modal-cell">
-                    {% include "view_user_modal.html" %}
-                    {% include "view_user_edit_modal.html" %}                   
-                      <select id='actionsDropdown_{{r.user_id}}'  onchange="openAction('{{r.user_id}}')">
-                        <div class="filter-container">
-                          <div class="filter-content">
-                            <option value="">Select Action</option>
-                            <option value="viewUser">View Record</option>
-                            <option value="editUser">Edit Record</option>
-                          </div>
-                        </div>
-                      </select>
-                  </td>
-              </tr>
-          {% endfor %}
-      </tbody>
-  </table>
+  <div id="react-root"></div>
+  
   {% include 'paginator.html' %} 
 </div>
 <script>

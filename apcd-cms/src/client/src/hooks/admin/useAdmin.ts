@@ -21,8 +21,8 @@ export const useRegistrations = (
   return { ...query };
 };
 
-export const getUsers = async (params: any) => {
-  const url = `administration/view_users/api/`;
+const getUsers = async (params: any) => {
+  const url = `administration/view-users/api/`;
   const response = await fetchUtil({
     url,
     params,
