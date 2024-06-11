@@ -8,21 +8,28 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 function setupAdminRegistrations(): void {
-  ReactDOM.render(
-    <QueryClientProvider client={queryClient}>
-      <AdminRegistrations />
-    </QueryClientProvider>,
-    document.getElementById('react-root')
-  );
+  const root = document.getElementById('admin-registrations-root');
+  if (root) {
+    ReactDOM.render(
+      <QueryClientProvider client={queryClient}>
+        <AdminRegistrations />
+      </QueryClientProvider>,
+      root
+    );
+  }
 }
 
 function setupViewUsers(): void {
-  ReactDOM.render(
-    <QueryClientProvider client={queryClient}>
-      <ViewUsers />
-    </QueryClientProvider>,
-    document.getElementById('react-root')
-  );
+  const root = document.getElementById('react-root');
+  if (root) {
+    ReactDOM.render(
+      <QueryClientProvider client={queryClient}>
+        <ViewUsers />
+      </QueryClientProvider>,
+      root
+    );
+  }
 }
 
-export { setupAdminRegistrations, setupViewUsers };
+setupAdminRegistrations();
+setupViewUsers();
