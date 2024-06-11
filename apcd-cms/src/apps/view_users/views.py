@@ -58,7 +58,7 @@ class ViewUsersTable(TemplateView):
             'header': ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More'],
             'page': [],
             'status_options': ['All', 'Active', 'Inactive'],
-            'org_options': ['All', 'Organization A', 'Organization B', 'Not Applicable'],
+            'org_options': ['All', 'TEST Meritan Health', 'UT Health - SPH CHCH: APCD', 'None', 'Not Applicable'],
             'selected_status': 'All',
             'query_str': '',
             'pagination_url_namespaces': 'administration:view_users'
@@ -72,6 +72,8 @@ class ViewUsersTable(TemplateView):
                 'role_name': usr[10],
                 'status': 'Active' if usr[8] else 'Inactive',
                 'user_number': usr[9],
+                'view_link': f"/administration/view-user-details/{usr[1]}",  
+                'edit_link': f"/administration/edit-user/{usr[1]}", 
             }
 
         for user in user_content:

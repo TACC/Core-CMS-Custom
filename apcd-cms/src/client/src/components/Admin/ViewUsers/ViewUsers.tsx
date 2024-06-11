@@ -54,6 +54,15 @@ export const ViewUsers: React.FC = () => {
     fetchFilteredData();
   }, [status, org]);
 
+  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, userId: string) => {
+    const action = event.target.value;
+    if (action === 'view') {
+      window.location.href = `/administration/view-user-details/${userId}`;
+    } else if (action === 'edit') {
+      window.location.href = `/administration/edit-user/${userId}`;
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -111,9 +120,11 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                  <a href={`/administration/view-user-details/${user.user_id}`} target="_blank" rel="noopener noreferrer">
-                    See More
-                  </a>
+                  <select onChange={(event) => handleActionChange(event, user.user_id)}>
+                    <option value="">Select Action</option>
+                    <option value="view">View Record</option>
+                    <option value="edit">Edit Record</option>
+                  </select>
                 </td>
               </tr>
             ))}
