@@ -24,67 +24,7 @@
   <hr />
   <p style="margin-bottom: 30px">All completed submissions by organizations</p>
   <hr />
-  <div class="filter-container">
-    <div class="filter-content">
-      <span><b>Filter by Status: </b></span>
-      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
-        {% for option in filter_options %}
-          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
-        {% endfor %}
-      </select>
-      <span><b>Sort by: </b></span>
-      <select id="dateSort" class="status-filter" onchange="sortByDate()">
-        <option class="dropdown-text" {% if not selected_sort %}selected{% else %}hidden{% endif %} disabled> </option>
-        {% for option, display_text in sort_options.items %}
-          <option class="dropdown-text" value={{option}} {% if option == selected_sort %}selected{% endif %}>{{ display_text }}</option>
-        {% endfor %}
-      </select>
-      {% if selected_status or selected_sort %}
-        <button onclick="clearSelections()">Clear Options</button>
-      {% endif %}
-    </div>
-  </div>
   <div id="react-root"></div>
   {% include 'paginator.html' %}
 </div>
-<script>
-  function filterTableByStatus() {
-      var filterDropdown, filterValue, url_params, url, xhr;
-      filterDropdown = document.getElementById("statusFilter");
-      filterValue =  filterDropdown.value;
-      url_params = `?status=${filterValue}`;
-      {% if selected_sort %}
-          url_params = `?sort={{selected_sort}}&status=${filterValue}`;
-      {% endif %}
-      url = `/administration/list-submissions/${url_params}`;
-      xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
-      xhr.send();
-      window.location.href = url;
-      window.location.load();
-  }
-  function sortByDate() {
-      var sortDropdown, sortValue, url_params, url, xhr;
-      sortDropdown = document.getElementById('dateSort');
-      sortValue =  sortDropdown.value;
-      url_params = `?sort=${sortValue}`;
-      {% if selected_status %}
-          url_params = `?sort=${sortValue}&status={{selected_status}}`;
-      {% endif %}
-      url = `/administration/list-submissions/${url_params}`;
-      xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
-      xhr.send();
-      window.location.href = url;
-      window.location.load();
-  }
-  function clearSelections() {
-      var xhr;
-      xhr = new XMLHttpRequest();
-      xhr.open('GET', '/administration/list-submissions/')
-      xhr.send()
-      window.location.href = '/administration/list-submissions/';
-      window.location.load();
-  }
-</script>  
 {% endblock %}

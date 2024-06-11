@@ -26,18 +26,29 @@ export type SubmissionRow = {
   outcome: string;
   received_timestamp: string;
   updated_at: string;
+  view_modal_content: SubmissionLogsModalContent[];
 }
 
 export type SubmissionResult = {
   header: string[];
   status_options: string[];
   filter_options: string[];
-  sort_options: string[];
+  sort_options: { name: string; value: string }[]
   selected_status: string;
   selected_sort: string;
   query_str: string;
   pagination_url_namespaces: string;
   page: SubmissionRow[];
+  page_num: number;
+  total_pages: number;
 };
+
+export type SubmissionLogsModalContent = {
+  log_id: string;
+  entity_name: string;
+  file_type: string;
+  validation_suite: string;
+  outcome: string;
+}
 
 export { useRegistrations, useSubmissions } from './useAdmin';

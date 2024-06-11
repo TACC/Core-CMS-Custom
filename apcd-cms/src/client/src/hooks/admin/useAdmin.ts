@@ -31,8 +31,11 @@ const getSubmissions = async (params: any) => {
 };
 
 export const useSubmissions = (
-  params: any
+  status?: string,
+  sort?: string,
+  page?: number
 ): UseQueryResult<SubmissionResult> => {
+  const params: { status?: string; sort?: string, page?:number } = {status, sort, page};
   const query = useQuery(['submissions', params], () =>
     getSubmissions(params)
   ) as UseQueryResult<SubmissionResult>;

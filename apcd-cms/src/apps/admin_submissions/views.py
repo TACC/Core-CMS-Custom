@@ -46,7 +46,7 @@ class AdminSubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
@@ -69,8 +69,12 @@ class AdminSubmissionsTable(TemplateView):
             } for t in (s['view_modal_content'] or [])]
 
         context['header'] = ['Received', 'Entity Organization', 'File Name', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        context['filter_options'] = ['All', 'In Process', 'Complete']
-        context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
+        context['status_options'] = ['All', 'In Process', 'Complete']
+        context['sort_options'] = [
+            {'name': '', 'value': ''},
+            {'name': 'Newest Received', 'value': 'newDate'},
+            {'name': 'Oldest Received', 'value': 'oldDate'}
+        ]
 
         context['query_str'] = queryStr
         page_info = paginator(self.request, submission_content, limit)
@@ -83,6 +87,9 @@ class AdminSubmissionsTable(TemplateView):
             'received_timestamp': obj['received_timestamp'],
             'updated_at': obj['updated_at']
         } for obj in page_info['page']]
+
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
 
         context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
         return context
