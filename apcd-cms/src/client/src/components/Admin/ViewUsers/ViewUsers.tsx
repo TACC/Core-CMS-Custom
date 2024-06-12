@@ -22,9 +22,10 @@ export const ViewUsers: React.FC = () => {
         setError(null);
 
         // Fetch dropdown options
-        const optionsResponse = await axios.get('/administration/view-users/api/options/');
-        setStatusOptions(optionsResponse.data.response.status_options || []);
-        setFilterOptions(optionsResponse.data.response.org_options || []);
+        const optionsResponse = await axios.get('/administration/view-users/api/options');
+        console.log("Dropdown options response:", optionsResponse.data);
+        setStatusOptions(optionsResponse.data.status_options || []);
+        setFilterOptions(optionsResponse.data.org_options || []);
 
         const queryParams = new URLSearchParams(location.search);
         const statusParam = queryParams.get('status') || 'All';
@@ -56,8 +57,8 @@ export const ViewUsers: React.FC = () => {
       const userResponse = await axios.get('/administration/view-users/api/', {
         params: { status: statusFilter, org: orgFilter },
       });
+      console.log("User data fetched:", userResponse.data);
       setUserData(userResponse.data.response);
-
     } catch (err) {
       setError('Error fetching filtered data');
       console.error('Error fetching filtered data:', err);
@@ -70,9 +71,8 @@ export const ViewUsers: React.FC = () => {
     const queryParams = new URLSearchParams();
     if (newStatus !== 'All') queryParams.set('status', newStatus);
     if (newOrg !== 'All') queryParams.set('org', newOrg);
-    navigate({ search: queryParams.toString() }); // Use navigate
+    navigate({ search: queryParams.toString() });
   };
-
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = event.target.value;

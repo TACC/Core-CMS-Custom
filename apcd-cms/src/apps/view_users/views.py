@@ -1,20 +1,70 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.utils import table_filter
-from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
 
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
-    ##FORM FUNCTION
-    def post(self, request):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        # Check if the request is for API data or template
+        if 'options' in request.path:
+            return self.get_options(request)
+        if 'modal' in request.path:
+            return self.get_modals(request, kwargs['modal_type'])
+        
+        # Handle filtering parameters
+        status = request.GET.get('status', 'All')
+        org = request.GET.get('org', 'All')
+
+        try:
+            # Fetch and filter users
+            user_content = get_users()
+            filtered_users = self.filter_users(user_content, status, org)
+            context = self.get_view_users_json(filtered_users)
+            return JsonResponse({'response': context})
+        except Exception as e:
+            logger.error("Error fetching filtered user data: %s", e)
+            return JsonResponse({'error': str(e)}, status=500)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_view_users_json(get_users()))
+        return context
+
+    def get_options(self, request):
+        try:
+            status_options = ['All', 'Active', 'Inactive']
+            org_options = ['All', 'TEST Meritan Health', 'UTHealth - SPH CHCD: APCD', 'None', 'Not Applicable']
+            return JsonResponse({
+                'status_options': status_options,
+                'org_options': org_options
+            })
+        except Exception as e:
+            logger.error("Error fetching options data: %s", e)
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    def get_modals(self, request, modal_type):
+        if modal_type == 'view':
+            modal_template = 'view_users_modal.html'
+        elif modal_type == 'edit':
+            modal_template = 'edit_users_modal.html'
+        else:
+            return JsonResponse({'error': 'Invalid modal type'}, status=400)
+        
+        modal_content = loader.render_to_string(modal_template)
+        return JsonResponse({'content': modal_content})
+
+    def post(self, request):
         form = request.POST.copy()
         
         def _err_msg(resp):
@@ -39,28 +89,8 @@ class ViewUsersTable(TemplateView):
         
         template = _edit_user(form)
         return HttpResponse(template.render({}, request))
-    
-    def get(self, request, *args, **kwargs):
-        status = request.GET.get('status', 'All')
-        org = request.GET.get('org', 'All')
-        try:
-            # Fetch all users
-            user_content = get_users()
-            # Filter users based on status and org
-            filtered_users = self.filter_users(user_content, status, org)
-            context = self.get_view_users_json(filtered_users)
-            return JsonResponse({'response': context})
-        except Exception as e:
-            logger.error("Error fetching user data: %s", e)
-            return JsonResponse({'error': str(e)}, status=500)
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           return HttpResponseRedirect('/')
-        return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
 
     def filter_users(self, users, status, org):
-        # Convert to a list of dicts for easier filtering
         def _set_user(usr):
             return {
                 'role_id': usr[0],
@@ -78,7 +108,6 @@ class ViewUsersTable(TemplateView):
 
         user_list = [_set_user(user) for user in users]
 
-        # Apply filtering
         if status != 'All':
             user_list = [user for user in user_list if user['status'] == status]
 
@@ -87,7 +116,7 @@ class ViewUsersTable(TemplateView):
 
         return user_list
     
-    def get_view_users_json(self, user_content, *args, **kwargs):
+    def get_view_users_json(self, user_content):
         context = {
             'header': ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More'],
             'page': [],

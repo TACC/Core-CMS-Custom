@@ -1,6 +1,7 @@
-// library.ts
+// library.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AdminRegistrations } from './Admin/Registrations';
 import { ViewUsers } from './Admin/ViewUsers';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -12,7 +13,9 @@ function setupAdminRegistrations(): void {
   if (root) {
     ReactDOM.render(
       <QueryClientProvider client={queryClient}>
-        <AdminRegistrations />
+        <BrowserRouter>
+          <AdminRegistrations />
+        </BrowserRouter>
       </QueryClientProvider>,
       root
     );
@@ -24,7 +27,9 @@ function setupViewUsers(): void {
   if (root) {
     ReactDOM.render(
       <QueryClientProvider client={queryClient}>
-        <ViewUsers />
+        <BrowserRouter>
+          <ViewUsers />
+        </BrowserRouter>
       </QueryClientProvider>,
       root
     );
