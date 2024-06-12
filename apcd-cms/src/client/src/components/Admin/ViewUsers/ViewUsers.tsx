@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserRow, UserResult } from 'hooks/admin';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -10,6 +11,9 @@ export const ViewUsers: React.FC = () => {
   const [userData, setUserData] = useState<UserResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOptionsAndData = async () => {
@@ -22,8 +26,16 @@ export const ViewUsers: React.FC = () => {
         setStatusOptions(optionsResponse.data.response.status_options || []);
         setFilterOptions(optionsResponse.data.response.org_options || []);
 
+        const queryParams = new URLSearchParams(location.search);
+        const statusParam = queryParams.get('status') || 'All';
+        const orgParam = queryParams.get('org') || 'All';
+
         // Fetch initial user data
-        fetchData('All', 'All');
+        fetchData(statusParam, orgParam);
+
+        // Update state with URL params
+        setStatus(statusParam);
+        setOrg(orgParam);
       } catch (err) {
         setError('Error fetching data');
         console.error('Error fetching data:', err);
@@ -33,7 +45,7 @@ export const ViewUsers: React.FC = () => {
     };
 
     fetchOptionsAndData();
-  }, []);
+  }, [location.search]);
 
   const fetchData = async (statusFilter: string, orgFilter: string) => {
     try {
@@ -44,7 +56,6 @@ export const ViewUsers: React.FC = () => {
       const userResponse = await axios.get('/administration/view-users/api/', {
         params: { status: statusFilter, org: orgFilter },
       });
-      console.log('User response:', userResponse.data); // Log the response to debug
       setUserData(userResponse.data.response);
 
     } catch (err) {
@@ -55,16 +66,24 @@ export const ViewUsers: React.FC = () => {
     }
   };
 
+  const updateURL = (newStatus: string, newOrg: string) => {
+    const queryParams = new URLSearchParams();
+    if (newStatus !== 'All') queryParams.set('status', newStatus);
+    if (newOrg !== 'All') queryParams.set('org', newOrg);
+    navigate({ search: queryParams.toString() }); // Use navigate
+  };
+
+
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = event.target.value;
     setStatus(newStatus);
-    fetchData(newStatus, org);
+    updateURL(newStatus, org);
   };
 
   const handleOrgChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newOrg = event.target.value;
     setOrg(newOrg);
-    fetchData(status, newOrg);
+    updateURL(status, newOrg);
   };
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, userId: string) => {
