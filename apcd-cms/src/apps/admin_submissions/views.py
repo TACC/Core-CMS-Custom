@@ -80,12 +80,14 @@ class AdminSubmissionsTable(TemplateView):
         page_info = paginator(self.request, submission_content, limit)
 
         context['page'] = [{
+            'submission_id': obj['submission_id'],
             'status': obj['status'],
             'entity_name': obj['entity_name'],
             'file_name': obj['file_name'],
             'outcome': obj['outcome'],
             'received_timestamp': obj['received_timestamp'],
-            'updated_at': obj['updated_at']
+            'updated_at': obj['updated_at'],
+            'view_modal_content': obj['view_modal_content'],
         } for obj in page_info['page']]
 
         context['page_num'] = page_num

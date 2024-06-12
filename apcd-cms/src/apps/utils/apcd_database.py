@@ -924,18 +924,23 @@ def get_all_submissions_and_logs():
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
                 'view_modal_content', (
-                    SELECT COALESCE(json_agg(json_build_object(
-                        'log_id', submission_logs.log_id,
-                        'submission_id', submission_logs.submission_id,
-                        'file_type', submission_logs.file_type,
-                        'validation_suite', submission_logs.validation_suite,
-                        'outcome', submission_logs.outcome,
-                        'file_type_name', (
-                            SELECT standard_codes.item_value FROM standard_codes
-                            WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
-                            LIMIT 1
-                        )
-                    )), '[]'::json)
+                    SELECT CASE
+                            WHEN COUNT(submission_logs.log_id) = 0 THEN '[]'::json
+                            ELSE json_agg(json_build_object(
+                                'log_id', submission_logs.log_id,
+                                'submission_id', submission_logs.submission_id,
+                                'file_type', submission_logs.file_type,
+                                'validation_suite', submission_logs.validation_suite,
+                                'outcome', submission_logs.outcome,
+                                'file_type_name', (
+                                    SELECT standard_codes.item_value 
+                                    FROM standard_codes
+                                    WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) 
+                                    AND list_name='submission_file_type'
+                                    LIMIT 1
+                                )
+                            ))
+                        END
                 )
             )
             FROM submissions
