@@ -17,14 +17,13 @@ export const ViewUsers: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch dropdown options and user data
-        const optionsResponse = await axios.get('/administration/view-users/api/');
-        const data = optionsResponse.data.response;
-        
-        setStatusOptions(data.status_options);
-        setFilterOptions(data.org_options);
-        setUserData(data);
+        // Fetch dropdown options
+        const optionsResponse = await axios.get('/administration/view-users/api/options/');
+        setStatusOptions(optionsResponse.data.response.status_options || []);
+        setFilterOptions(optionsResponse.data.response.org_options || []);
 
+        // Fetch initial user data
+        fetchData('All', 'All');
       } catch (err) {
         setError('Error fetching data');
         console.error('Error fetching data:', err);
@@ -36,23 +35,37 @@ export const ViewUsers: React.FC = () => {
     fetchOptionsAndData();
   }, []);
 
-  useEffect(() => {
-    if (status === 'All' && org === 'All') return;
+  const fetchData = async (statusFilter: string, orgFilter: string) => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    const fetchFilteredData = async () => {
-      try {
-        const userResponse = await axios.get('/administration/view-users/api/', {
-          params: { status, org },
-        });
-        setUserData(userResponse.data.response);
-      } catch (err) {
-        setError('Error fetching filtered data');
-        console.error('Error fetching filtered data:', err);
-      }
-    };
+      // Fetch filtered user data
+      const userResponse = await axios.get('/administration/view-users/api/', {
+        params: { status: statusFilter, org: orgFilter },
+      });
+      console.log('User response:', userResponse.data); // Log the response to debug
+      setUserData(userResponse.data.response);
 
-    fetchFilteredData();
-  }, [status, org]);
+    } catch (err) {
+      setError('Error fetching filtered data');
+      console.error('Error fetching filtered data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newStatus = event.target.value;
+    setStatus(newStatus);
+    fetchData(newStatus, org);
+  };
+
+  const handleOrgChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newOrg = event.target.value;
+    setOrg(newOrg);
+    fetchData(status, newOrg);
+  };
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, userId: string) => {
     const action = event.target.value;
@@ -79,25 +92,25 @@ export const ViewUsers: React.FC = () => {
             id="statusFilter"
             className="status-filter"
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={handleStatusChange}
           >
-            {statusOptions.map(option => (
+            {statusOptions.length > 0 ? statusOptions.map(option => (
               <option key={option} value={option}>{option}</option>
-            ))}
+            )) : <option>Loading...</option>}
           </select>
           <span><b>Filter by Organization: </b></span>
           <select
             id="organizationFilter"
             className="status-filter"
             value={org}
-            onChange={(e) => setOrg(e.target.value)}
+            onChange={handleOrgChange}
           >
-            {filterOptions.map(option => (
+            {filterOptions.length > 0 ? filterOptions.map(option => (
               <option key={option} value={option}>{option}</option>
-            ))}
+            )) : <option>Loading...</option>}
           </select>
           {(status !== 'All' || org !== 'All') && (
-            <button onClick={() => { setStatus('All'); setOrg('All'); }}>Clear Options</button>
+            <button onClick={() => { setStatus('All'); setOrg('All'); fetchData('All', 'All'); }}>Clear Options</button>
           )}
         </div>
       </div>
@@ -120,8 +133,8 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                  <select onChange={(event) => handleActionChange(event, user.user_id)}>
-                    <option value="">Select Action</option>
+                  <select onChange={(event) => handleActionChange(event, user.user_id)} defaultValue="">
+                    <option value="" disabled>Select Action</option>
                     <option value="view">View Record</option>
                     <option value="edit">Edit Record</option>
                   </select>
@@ -134,3 +147,5 @@ export const ViewUsers: React.FC = () => {
     </div>
   );
 };
+
+export default ViewUsers;
