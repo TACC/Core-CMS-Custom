@@ -36,8 +36,6 @@ export type UserResult = {
   page: UserRow[];
 };
 
-export { useRegistrations, useUsers } from './useAdmin';
-
 export type SubmissionRow = {
   submission_id: string;
   submitter_id: string;
@@ -72,4 +70,4 @@ export type SubmissionLogsModalContent = {
   outcome: string;
 }
 
-export { useRegistrations, useSubmissions } from './useAdmin';
+export { useRegistrations, useSubmissions, useUsers } from './useAdmin';
