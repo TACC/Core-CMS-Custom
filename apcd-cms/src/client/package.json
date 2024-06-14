@@ -11,6 +11,7 @@
     "react-query": "^3.34.15",
     "react-router-dom": "^6.23.1",
     "react-table": "^7.8.0",
+    "reactstrap": "^9.2.2",
     "typescript": "^4.4.3"
   },
   "scripts": {
