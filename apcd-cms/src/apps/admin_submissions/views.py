@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_all_submissions_and_logs
 from apps.utils.apcd_groups import is_apcd_admin
@@ -13,17 +13,21 @@ class AdminSubmissionsTable(TemplateView):
 
     template_name = 'list_admin_submissions.html'
 
+    def get(self, request, *args, **kwargs):
+        submission_content = get_all_submissions_and_logs()
+        context = self.get_submission_list_json(submission_content, *args, **kwargs)
+
+        return JsonResponse({'response': context})
+
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user): 
             return HttpResponseRedirect('/')
         return super(AdminSubmissionsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
+    def get_submission_list_json(self, submission_content, *args, **kwargs):
 
-        context = super(AdminSubmissionsTable, self).get_context_data(*args, **kwargs)
-
-        submission_content = get_all_submissions_and_logs()
-
+        context = {}
         queryStr = ''
         dateSort = self.request.GET.get('sort')
         status_filter = self.request.GET.get('status')
@@ -42,7 +46,7 @@ class AdminSubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
@@ -64,11 +68,30 @@ class AdminSubmissionsTable(TemplateView):
                 'outcome': title_case(t['outcome'])
             } for t in (s['view_modal_content'] or [])]
 
-        context['header'] = ['Received', 'Entity Organization', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        context['filter_options'] = ['All', 'In Process', 'Complete']
-        context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
+        context['header'] = ['Received', 'Entity Organization', 'File Name', 'Outcome', 'Status', 'Last Updated', 'Actions']
+        context['status_options'] = ['All', 'In Process', 'Complete']
+        context['sort_options'] = [
+            {'name': '', 'value': ''},
+            {'name': 'Newest Received', 'value': 'newDate'},
+            {'name': 'Oldest Received', 'value': 'oldDate'}
+        ]
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, submission_content, limit))
+        page_info = paginator(self.request, submission_content, limit)
+
+        context['page'] = [{
+            'submission_id': obj['submission_id'],
+            'status': obj['status'],
+            'entity_name': obj['entity_name'],
+            'file_name': obj['file_name'],
+            'outcome': obj['outcome'],
+            'received_timestamp': obj['received_timestamp'],
+            'updated_at': obj['updated_at'],
+            'view_modal_content': obj['view_modal_content'],
+        } for obj in page_info['page']]
+
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
+
         context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
         return context
