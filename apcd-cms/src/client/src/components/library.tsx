@@ -3,9 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { AdminRegistrations } from './Admin/Registrations';
-import { AdminExtensions } from './Admin/Extensions';
 import { ViewUsers } from './Admin/ViewUsers';
 import { AdminSubmissions } from './Admin/Submissions';
+import { AdminExtensions } from './Admin/Extensions';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
