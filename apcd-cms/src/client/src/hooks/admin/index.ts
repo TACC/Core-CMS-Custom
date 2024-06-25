@@ -18,3 +18,27 @@ export type RegistrationResult = {
 };
 
 export { useRegistrations } from './useAdmin';
+
+export type ExtensionRow = {
+  created: string;
+  org_name: string;
+  requestor: string;
+  type: string;
+  ext_outcome: string;
+  ext_status: string;
+  ext_id: string;
+  submitter_id: string;
+  approved_expiration_date: string;
+};
+
+export type ExtensionResult = {
+  header: string[];
+  status_options: string[];
+  org_options: string[];
+  selected_status: string;
+  query_str: string;
+  pagination_url_namespaces: string;
+  page: ExtensionRow[];
+};
+
+export { useExtensions } from './useAdmin';
