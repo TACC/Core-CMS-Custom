@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AdminRegistrations } from './components/Admin/Registrations';
 import { ViewUsers } from './components/Admin/ViewUsers';
 import { AdminSubmissions } from './components/Admin/Submissions';
+import { AdminExtensions } from './components/Admin/Extensions';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const componentMap: { [key: string]: React.ComponentType } = {
   'list-registrations-root': AdminRegistrations,
   'view-users-root': ViewUsers,
   'list-admin-submissions': AdminSubmissions,
+  'admin-extensions-root': AdminExtensions,
   // Add new components with html id in the list above.
 };
 
