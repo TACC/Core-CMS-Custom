@@ -1,0 +1,3 @@
+.container {
+  composes: o-fixed-header-table from '@tacc/core-styles/dist/objects/o-fixed-header-table.css';
+}

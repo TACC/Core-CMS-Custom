@@ -1,11 +1,18 @@
 {% extends "standard.html" %}
 {% load static %}
-
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+
+
+{% block extra_js %}
+<script type="module">
+import { setupAdminRegistrations } from "{% static 'apcd-components.es.js' %}";
+setupAdminRegistrations();
+</script>
+{% endblock %}
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -33,35 +40,7 @@
       {% endif %}
     </div>
   </div>
-  <table id="registrationTable" class="registration-table">
-      <thead>
-          <tr>
-              {% for k in header %}
-              <th>{{k}}</th>
-              {% endfor %}
-          </tr>
-      </thead>
-      <tbody>
-          {% for r in page %}
-              <tr>
-                  <td>{{r.biz_name}}</td>
-                  <td>{{r.year}}</td>
-                  <td>{{r.type}}</td>
-                  <td>{{r.location}}</td>
-                  <td>{{r.reg_status}}</td>
-                  <td>
-                    {% include "view_registration_modal.html" %}
-                    {% include "edit_registration_modal.html" %}
-                    <select id='actionsDropdown_{{r.reg_id}}' class='status-filter' onchange="openAction('{{r.reg_id}}')">
-                      <option value="">Select Action</option>
-                      <option value="viewRegistration">View Record</option>
-                      <option value="editRegistration">Edit Record</option>
-                    </select>
-                  </td>
-              </tr>
-          {% endfor %}
-      </tbody>
-  </table>
+  <div id="react-root"></div>
   {% include 'paginator.html' %}
 </div>
 <script>

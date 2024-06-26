@@ -1,0 +1,9 @@
+.clamped {
+  --lines: 4;
+
+  composes: x-truncate--many-lines from '@tacc/core-styles/dist/tools/x-truncate.css';
+}
+
+.expanded {
+  composes: x-untruncate--many-lines from '@tacc/core-styles/dist/tools/x-truncate.css';
+}
