@@ -91,7 +91,7 @@ PORTAL_FAVICON = {
 ########################
 
 # Does this CMS site have a portal?
-PORTAL_MANAGES_AUTH = False
+PORTAL_IS_TACC_CORE_PORTAL = False
 PORTAL_HAS_LOGIN = False
 PORTAL_HAS_SEARCH = False
 

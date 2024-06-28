@@ -90,7 +90,7 @@ PORTAL_SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
 # TACC: PORTAL
 ########################
 
-PORTAL_MANAGES_AUTH = False
+PORTAL_IS_TACC_CORE_PORTAL = False
 PORTAL_HAS_LOGIN = False
 PORTAL_HAS_SEARCH = True
 

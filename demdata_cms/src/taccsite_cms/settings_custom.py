@@ -7,7 +7,7 @@
 ########################
 
 # Does this CMS site have a portal (default value: True)?
-PORTAL_MANAGES_AUTH = False
+PORTAL_IS_TACC_CORE_PORTAL = False
 PORTAL_HAS_LOGIN = False
 PORTAL_HAS_SEARCH = False
 
