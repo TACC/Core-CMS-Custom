@@ -7,9 +7,9 @@
 ########################
 
 # Does this CMS site have a portal (default value: True)?
-INCLUDES_CORE_PORTAL = False
-INCLUDES_PORTAL_NAV = False
-INCLUDES_SEARCH_BAR = False
+PORTAL_MANAGES_AUTH = False
+PORTAL_HAS_LOGIN = False
+PORTAL_HAS_SEARCH = False
 
 ########################
 # DJANGO CMS SETTINGS

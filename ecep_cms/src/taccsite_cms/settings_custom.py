@@ -83,16 +83,16 @@ PORTAL_FAVICON = {
 ########################
 
 # Support Google search instead of Portal's Elasticsearch
-SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
-SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
+PORTAL_SEARCH_PATH = '/site-search' # cuz Portal Nginx config hijacks /search
+PORTAL_SEARCH_QUERY_PARAM_NAME = 'q' # as Google expects
 
 ########################
 # TACC: PORTAL
 ########################
 
-INCLUDES_CORE_PORTAL = False
-INCLUDES_PORTAL_NAV = False
-INCLUDES_SEARCH_BAR = True
+PORTAL_MANAGES_AUTH = False
+PORTAL_HAS_LOGIN = False
+PORTAL_HAS_SEARCH = True
 
 ########################
 # TACC: NEWS/BLOG

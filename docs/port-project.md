@@ -49,8 +49,8 @@ Follow [Core CMS: Upgrade Project: from v3.N to v3.12](https://github.com/TACC/C
 
 **If** the custom project has a [Core Portal] i.e. settings has `PORTAL_FAVICON` and:
 
-- **either** settings has `INCLUDES_CORE_PORTAL = True`
-- **or** settings does **not** have `INCLUDES_CORE_PORTAL`
+- **either** settings has `PORTAL_MANAGES_AUTH = True`
+- **or** settings does **not** have `PORTAL_MANAGES_AUTH`
 
 Then:
 
