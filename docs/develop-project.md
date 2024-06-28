@@ -48,7 +48,7 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 To know what settings are available, see [TACC/Core-CMS:`/taccsite_cms/settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
 
-The settings usually edited are `LOGO` and `..._BRANDING`.
+The settings usually edited are `PORTAL_LOGO` and `..._BRANDING`.
 
 ## Create a Custom App
 
