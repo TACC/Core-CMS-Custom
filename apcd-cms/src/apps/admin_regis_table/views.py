@@ -1,13 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, create_submitter, update_registration, update_registration_contact, update_registration_entity
+from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.registrations_data_formatting import _set_registration
 from apps.components.paginator.paginator import paginator
 import logging
-from dateutil import parser
+from datetime import date as datetimeDate
 
 logger = logging.getLogger(__name__)
 
@@ -30,18 +30,7 @@ class RegistrationsTable(TemplateView):
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-        
-        def _new_submitter(form, reg_data=reg_data):
-            errors = []
-            
-            sub_resp = create_submitter(form, reg_data)
-            template = loader.get_template('create_submitter_success.html')
-            if _err_msg(sub_resp) or type(sub_resp) != int:
-                errors.append(_err_msg(sub_resp))
-                template = loader.get_template('create_submitter_error.html')
-
-            return template
-        
+                
         def _edit_registration(form, reg_entities=reg_entities, reg_contacts=reg_contacts):
             errors = []
             reg_resp = update_registration(form, reg_id)
@@ -61,9 +50,7 @@ class RegistrationsTable(TemplateView):
                 template = loader.get_template('edit_registration_error.html')
             return template
 
-        if 'create-submitter-form' in form:
-            template = _new_submitter(form)
-        elif 'edit-registration-form' in form:
+        if 'edit-registration-form' in form:
             template = _edit_registration(form)
         return HttpResponse(template.render({}, request))
 
@@ -95,7 +82,7 @@ class RegistrationsTable(TemplateView):
 
         def getDate(row):
             date = row[1]
-            return date if date is not None else parser.parse('1-1-0001')  # put 'None' date entries all together at end of listing
+            return date if date is not None else datetimeDate(1,1,1)  # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
         registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
 
@@ -126,5 +113,5 @@ class RegistrationsTable(TemplateView):
 
         context['query_str'] = queryStr
         context.update(paginator(self.request, registration_table_entries))
-        context['pagination_url_namespaces'] = 'administration:admin_regis_table'
+        context['pagination_url_namespaces'] = 'admin_regis_table:admin_regis_table'
         return context

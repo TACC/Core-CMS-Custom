@@ -26,18 +26,26 @@ Follow steps in [Create a New Project](./develop-project.md#create-a-new-project
 
 <details><summary>Reminders</summary>
 
-1. From [Core CMS Resources] `/taccsite_custom/custom_project_dir`.\
-    To `/custom_project_dir/src/taccsite_custom/custom_project_dir`.
+1. | Move | Content |
+    | - | - |
+    | From | [Core CMS Resources] `/taccsite_custom/custom_project_dir`. |
+    | To | `/custom_project_dir/src/taccsite_custom/custom_project_dir` |
 
-2. From `/taccsite_custom/custom_project_dir/settings_custom.py`.\
-    To `/custom_project_dir/src/taccsite_cms/settings_custom.py`.
+2. | Copy | Settings |
+    | - | - |
+    | From | [TACC/Core-Portal-Deployments][Core Portal Deployments]:`/project_dir/camino/settings_custom.py`. |
+    | To | `/custom_project_dir/src/taccsite_cms/settings_custom.py`.[^1] |
 
-3. The name `custom_project_dir` **must** use underscores, **not** dashes.
+3. | Use | Not |
+    | - | - |
+    | `custom_project_dir` | `custom-project-dir` |
 
     > **Important**
     > A valid Python application uses underscores.
 
 </details>
+
+[^1]: The `cms.settings_custom.py` is committed in [Core Portal Deployments]. A `settings_custom.py` in [Core CMS Custom] is `.gitignore`'d.
 
 ### Migrate Project to [Core CMS] v3.12
 
@@ -55,9 +63,13 @@ Follow [Core CMS: Upgrade Project: from v3.N to v3.12](https://github.com/TACC/C
 Then:
 
 1. You must edit [Core Portal Deployments].
-2. Edit `custom_project_dir/camino/___.settings_custom.py` (not `___.cms.…`).
-3. Change `_PORTAL_ICON_FILENAME` to:\
-    `/static/` + ( the `img_file_src` of `PORTAL_FAVICON` )
+2. Edit Portal settings for the appropriate server.\
+    <sup>E.g. `project_dir/camino/___.settings_custom.py` where `___` is `dev`, `pprd`, `prod` as appropriate (**not** `cms`).</sup>
+3. Update `_PORTAL_ICON_FILENAME`:
+    | if `is_remote` is | then set value to |
+    | - | - |
+    | `False` | `/static/` **+** the `img_file_src` of `PORTAL_FAVICON` |
+    | `True` | the `img_file_src` of `PORTAL_FAVICON` |
 
 #### Expects CSS Build Step
 

@@ -3,7 +3,7 @@ CUSTOM_APPS = [
     # ...
 
     ########################
-    # NEWS / BLOG
+    # DJANGOCMS_BLOG
     ########################
 
     # 'filer',              # already in Core

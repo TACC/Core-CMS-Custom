@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ViewUsersConfig(AppConfig):
-    name = 'view_users'
+    name = 'apps.view_users'

@@ -109,6 +109,8 @@ class AdminExtensionsTable(TemplateView):
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
                 context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
+                # Remove empty strings
+                context['org_options'] = [option for option in context['org_options'] if option != '']
             if status not in context['status_options']:
                 context['status_options'].append(status)
                 context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
