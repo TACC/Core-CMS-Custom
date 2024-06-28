@@ -1,5 +1,4 @@
-# TACC/Core-CMS#792
-FROM taccwma/core-cms:feat-cmd-79-support-new-core-cms-settings-prefix
+FROM taccwma/core-cms:v4.12.0-beta.1
 
 WORKDIR /code
 
