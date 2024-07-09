@@ -1,0 +1,11 @@
+/* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
+
+/* To add unique homepage patterns */
+@import url("./_imports/trumps/s-home.css");
+
+/* To let homepage use other patterns */
+@import url("https://unpkg.com/@tacc/core-styles@0.13.0/dist/trumps/s-article-list.css");
+@import url("https://unpkg.com/@tacc/core-styles@0.13.0/dist/trumps/s-article-preview.css");
+
+/* To un-migrate "from v1 to v2" styles */
+@layer cosmetic.migration { * { all: revert; } }
