@@ -1,4 +1,4 @@
-{% extends "standard.html" %}
+{% extends "apcd_cms/templates/standard.html" %}
 {% load static %}
 
 {% block content %}
@@ -9,9 +9,7 @@
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
-  <div id="react-root"></div>
+  <div id="view-users-root"></div>
 </div>
-
-<script src="{% static 'apcd-components.es.js' %}"></script> 
 
 {% endblock %}
