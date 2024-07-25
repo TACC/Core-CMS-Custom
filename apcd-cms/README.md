@@ -11,12 +11,14 @@ See [Core-CMS-Custom](../README.md).
 
 ## Build
 
-1. cd to apcd-cms/src/client
-2. run npm ci.
-3. Make code changes
-4. cd to apcd-cms/src
-5. run make build.
-6. make start
+1. cd to acpd-cms
+2. run make build
+3. run make start
+4. cd to apcd-cms/src/client
+5. run npm ci
+6. run npm run build
+7. run npm run dev
+8. Make code changes and observe changes live in browser.
 
 
 ## Converting existing page to react based page
@@ -47,21 +49,14 @@ See [Core-CMS-Custom](../README.md).
     - Export the component
 	- Add exports in index.ts
 	
-3. Define library method for initializing your method
-    - export it.
+3. Update apcd-cms/src/client/src/main.tsx:
+    - add import for your component
+    - update componentMap to add the 
 	
 
 ### Template
 
-Use a block like this at the top of the template:
+* Update the first line: standard.html to use this {% extends "apcd_cms/templates/standard.html" %}
+* Add a div element where the component will render, Example: (make the id name distinct)
+   <div id="list-registrations-root"></div>
 
-```
-{% block extra_js %}
-<script type="module">
-import { <your_component_method> } from "{% static 'apcd-components.es.js' %}";
-your_component_method();
-</script>
-{% endblock %}
-```
-
-Replace <your_component_method> with your component.
