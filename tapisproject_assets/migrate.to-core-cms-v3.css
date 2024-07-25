@@ -34,7 +34,7 @@ table {
 :is(td,th) {
   color: usnet; /* Bootstrap: none (inherit) | TACC: var(--global-color-primary--dark) */
 }
-/* FAQ: Did not restore, because it makes table easier to scan *//*
+/* FAQ: Did not restore, because table is easier to scan as is *//*
 tr:nth-child(2n) :is(th,td) {
   background: unset; /* Bootstrap: none (inherit) | TACC: var(--global-color-primary--x-light) *\/
 }
