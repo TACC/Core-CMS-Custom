@@ -1,18 +1,10 @@
-{% extends "standard.html" %}
+{% extends "apcd_cms/templates/standard.html" %}
 {% load static %}
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'apcd-cms/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'apcd-cms/css/modal.css' %}">
 <link rel="stylesheet" href="{% static 'admin_extension/css/table.css' %}">
-
-{% block extra_js %}
-<script type="module">
-import { setupAdminExtensions } from "{% static 'apcd-components.es.js' %}";
-setupAdminExtensions();
-</script>
-{% endblock %}
-
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
@@ -40,7 +32,7 @@ setupAdminExtensions();
       {% endif %}
     </div>
   </div>
-   <div id="react-root"></div>
+   <div id="admin-extensions-root"></div>
   {% include 'paginator.html' %}
 </div>
 <script>
