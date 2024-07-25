@@ -1,4 +1,4 @@
 /* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
 
 /* To un-migrate "from v1 to v2" styles */
-@import url("./_migrations/v1_v2/revert.css") layer(cosmetic.migration);
+@import url("./_migrations/v1_v2/revert.css") layer(migration);

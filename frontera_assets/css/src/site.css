@@ -1,10 +1,10 @@
 /* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
-@layer cosmetic;
+@layer migration;
 
 /* To change color scheme */
-@import url("./_imports/settings/color.css") layer(cosmetic);
+@import url("./_imports/settings/color.css");
 
 /* To migrate styles "from v1 to v2" */
 /* SEE: TACC/Core-CMS:/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css */
-@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(cosmetic.migration);
-@import url("./_migrations/v1_v2/frontera.css") layer(cosmetic.migration);
+@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(migration);
+@import url("./_migrations/v1_v2/frontera.css") layer(migration);
