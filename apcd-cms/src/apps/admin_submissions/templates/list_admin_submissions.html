@@ -1,4 +1,4 @@
-{% extends "standard.html" %}
+{% extends "apcd_cms/templates/standard.html" %}
 {% load static %}
 
 {% block content %}
@@ -10,13 +10,6 @@
 <link rel="stylesheet" href="{% static 'admin_submissions/css/admin_table.css' %}">
 <link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
 
-{% block extra_js %}
-  <script type="module">
-    import { setupAdminSubmissions } from "{% static 'apcd-components.es.js' %}";
-    setupAdminSubmissions();
-  </script>
-{% endblock %}
-
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
@@ -24,7 +17,7 @@
   <hr />
   <p style="margin-bottom: 30px">All completed submissions by organizations</p>
   <hr />
-  <div id="react-root"></div>
+  <div id="list-admin-submissions"></div>
   {% include 'paginator.html' %}
 </div>
 {% endblock %}
