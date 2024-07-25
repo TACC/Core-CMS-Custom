@@ -1,4 +1,4 @@
-/*! @tacc/core-cms-custom.frontera 0.0.1 | MIT | frontera-portal.tacc.utexas.edu */@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(migration);@layer migration;:root{--global-color-accent--x-light:#f2dfbd;--global-color-accent--light:#bda374;--global-color-accent--normal:#877453;--global-color-accent--dark:#64563e;--global-color-accent--x-dark:#403014;--global-color-accent--alt:#e0d8c9;--global-color-accent--weak:#9d702140}@layer migration{
+/*! @tacc/core-cms-custom.frontera 0.0.2 | MIT | frontera-portal.tacc.utexas.edu */@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(migration);@layer migration;:root{--global-color-accent--x-light:#f2dfbd;--global-color-accent--light:#bda374;--global-color-accent--normal:#877453;--global-color-accent--dark:#64563e;--global-color-accent--x-dark:#403014;--global-color-accent--alt:#e0d8c9;--global-color-accent--weak:#9d702140}@layer migration{
 
 /*!
  * CoreV1 Portal Stylesheet `frontera.css`

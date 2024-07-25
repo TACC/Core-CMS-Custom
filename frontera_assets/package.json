@@ -1,6 +1,6 @@
 {
   "name": "@tacc/core-cms-custom.frontera",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": "TACC ACI WMA <wma-portals@gmail.com>",
   "description": "The TACC ACI-WMA custom assets used by Frontera Portal.",
