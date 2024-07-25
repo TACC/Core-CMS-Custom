@@ -1,4 +1,5 @@
-/* To un-migrate "from v1 to v2" styles */
+/* To undo all styles in a layer */
+/* WARNING: Use this only in the correct @layer */
 * {
-    all: revert;
+    all: revert-layer;
 }
