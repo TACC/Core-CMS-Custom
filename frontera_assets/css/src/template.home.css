@@ -8,4 +8,4 @@
 @import url("https://unpkg.com/@tacc/core-styles@0.13.0/dist/trumps/s-article-preview.css");
 
 /* To un-migrate "from v1 to v2" styles */
-@layer cosmetic.migration { * { all: revert; } }
+@import url("./_migrations/v1_v2/revert.css");

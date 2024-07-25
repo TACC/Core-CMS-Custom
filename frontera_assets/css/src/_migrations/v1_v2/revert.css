@@ -1,0 +1,4 @@
+/* To un-migrate "from v1 to v2" styles */
+* {
+    all: revert;
+}
