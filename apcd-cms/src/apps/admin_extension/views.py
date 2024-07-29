@@ -8,7 +8,7 @@ from apps.utils.utils import table_filter
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
 from dateutil import parser
-from datetime import datetime
+from datetime import date as datetimeDate
 import logging
 
 logger = logging.getLogger(__name__)
