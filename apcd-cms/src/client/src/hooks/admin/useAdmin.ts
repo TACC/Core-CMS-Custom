@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { RegistrationResult, UserResult, SubmissionResult } from '.';
+import { ExtensionResult, RegistrationResult, UserResult, SubmissionResult } from '.';
 
 const getRegistrations = async (params: any) => {
   const url = `/administration/list-registration-requests/api/`;
@@ -44,6 +44,25 @@ export const useSubmissions = (
   const query = useQuery(['submissions', params], () =>
     getSubmissions(params)
   ) as UseQueryResult<SubmissionResult>;
+
+  return { ...query };
+};
+
+const getExtensions = async (params: any) => {
+  const url = `administration/list-extensions/api/`;
+  const response = await fetchUtil({
+    url,
+    params,
+  });
+  return response.response;
+};
+
+export const useExtensions = (
+  params: any
+): UseQueryResult<ExtensionResult> => {
+  const query = useQuery(['extensions', params], () =>
+    getExtensions(params)
+  ) as UseQueryResult<ExtensionResult>;
 
   return { ...query };
 };
