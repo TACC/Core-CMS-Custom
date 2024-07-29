@@ -1,46 +1,6 @@
-/*
-CoreV1 Portal Stylesheet `frontera.scss`
-HOW: Manually find and retain code that is still used
-SRC: https://fronteraweb.tacc.utexas.edu/static/main.___.css
-SRC: https://bitbucket.org/taccaci/frontera/src/master/client/css/frontera.scss
-*/
+/*! @tacc/core-cms-custom.frontera 0.0.2 | MIT | frontera-portal.tacc.utexas.edu */
 
 /*!
  * CoreV1 Portal Stylesheet `frontera.css`
  * https://bitbucket.org/taccaci/frontera/src/master/client/css/frontera.scss
- */
-/* FAQ: Though CMS default font is `Benton Sans`, old content uses these */
-@font-face {
-    font-family: BentonSansBold;
-    src: url("../../../../fonts/archive/BentonSans-Bold.otf");
-}
-
-@font-face {
-    font-family: BentonSansMedium;
-    src: url("../../../../fonts/archive/BentonSans-Medium.otf");
-}
-
-@font-face {
-    font-family: BentonSansItalic;
-    src: url("../../../../fonts/archive/BentonSans-MediumItalic.otf");
-}
-
-/* … */
-
-/* HELP: Wesley assumes that old content uses these… but where? */
-@font-face {
-	font-family: 'icon-worksregular';
-	src: url('../../../../fonts/archive/icon-works-webfont.eot');
-	src: url('../../../../fonts/archive/icon-works-webfont.eot?#iefix') format('embedded-opentype'),
-		url('../../../../fonts/archive/icon-works-webfont.woff') format('woff'),
-		url('../../../../fonts/archive/icon-works-webfont.svg#icon-worksregular') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
-
-.iconworks:before {
-		content: attr(data-icon);
-		font-family:icon-worksregular;
-}
-
-/* … */
+ */@font-face{font-family:BentonSansBold;src:url(../../fonts/archive/BentonSans-Bold.otf)}@font-face{font-family:BentonSansMedium;src:url(../../fonts/archive/BentonSans-Medium.otf)}@font-face{font-family:BentonSansItalic;src:url(../../fonts/archive/BentonSans-MediumItalic.otf)}@font-face{font-family:icon-worksregular;font-style:normal;font-weight:400;src:url(../../fonts/archive/icon-works-webfont.eot);src:url(../../fonts/archive/icon-works-webfont.eot?#iefix) format("embedded-opentype"),url(../../fonts/archive/icon-works-webfont.woff) format("woff"),url(../../fonts/archive/icon-works-webfont.svg#icon-worksregular) format("svg")}.iconworks:before{content:attr(data-icon);font-family:icon-worksregular}
