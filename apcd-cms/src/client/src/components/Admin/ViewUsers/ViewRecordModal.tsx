@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { UserRow } from 'hooks/admin';
-import styles from './ViewRecordModal.module.scss';
+import styles from './ViewRecordModal.module.scss';  // Import SCSS module
 
 interface UserDetailsModalProps {
   isOpen: boolean;
@@ -9,13 +9,18 @@ interface UserDetailsModalProps {
   user: UserRow | null;
 }
 
-const ViewRecordModal: React.FC<UserDetailsModalProps> = ({ isOpen, toggle, user }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, toggle, user }) => {
   if (!user) return null;
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className={styles.customModal}>
-      <ModalHeader toggle={toggle} className={`${styles.customModalHeader}`}>
-        Details for User: {user.user_name} ({user.user_id})
+      <ModalHeader>
+        <Label className={styles.customModalTitle}>
+          Details for User: {user.user_name} ({user.user_id})
+        </Label>
+        <button type="button" className={`close ${styles.customCloseButton}`} onClick={toggle}>
+          <span aria-hidden="true">&times;</span> {/* Use &times; for a standard close icon */}
+        </button>
       </ModalHeader>
       <ModalBody>
         <p><strong>User ID:</strong> {user.user_id}</p>
@@ -29,11 +34,8 @@ const ViewRecordModal: React.FC<UserDetailsModalProps> = ({ isOpen, toggle, user
         <p><strong>Updated Date:</strong> {user.updated_at}</p>
         <p><strong>Notes:</strong> {user.notes !== null ? user.notes : "None"}</p>
       </ModalBody>
-      <ModalFooter>
-        <Button color="secondary" onClick={toggle}>Close</Button>
-      </ModalFooter>
     </Modal>
   );
 };
 
-export default ViewRecordModal;
+export default UserDetailsModal;
