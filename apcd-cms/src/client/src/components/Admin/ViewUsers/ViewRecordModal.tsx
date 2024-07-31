@@ -14,14 +14,14 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, toggle, use
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className={styles.customModal}>
-      <ModalHeader>
+      <div className={`modal-header ${styles.modalHeader}`}>
         <Label className={styles.customModalTitle}>
           Details for User: {user.user_name} ({user.user_id})
         </Label>
         <button type="button" className={`close ${styles.customCloseButton}`} onClick={toggle}>
-          <span aria-hidden="true">&times;</span> {/* Use &times; for a standard close icon */}
+          <span aria-hidden="true">&#xe912;</span>
         </button>
-      </ModalHeader>
+      </div>
       <ModalBody>
         <p><strong>User ID:</strong> {user.user_id}</p>
         <p><strong>Name:</strong> {user.user_name}</p>
