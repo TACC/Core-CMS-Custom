@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserRow, UserResult } from 'hooks/admin';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import ViewRecordModal from './ViewRecordModal';  // Import the modal component
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -14,6 +14,7 @@ export const ViewUsers: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+  const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export const ViewUsers: React.FC = () => {
 
         // Fetch dropdown options
         const optionsResponse = await axios.get('/administration/view-users/api/options');
-        console.log("Dropdown options response:", optionsResponse.data);
         setStatusOptions(optionsResponse.data.status_options || []);
         setFilterOptions(optionsResponse.data.org_options || []);
 
@@ -60,7 +60,6 @@ export const ViewUsers: React.FC = () => {
       const userResponse = await axios.get('/administration/view-users/api/', {
         params: { status: statusFilter, org: orgFilter },
       });
-      console.log("User data fetched:", userResponse.data);
       setUserData(userResponse.data.response);
     } catch (err) {
       setError('Error fetching filtered data');
@@ -92,9 +91,9 @@ export const ViewUsers: React.FC = () => {
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, user: UserRow) => {
     const action = event.target.value;
     if (action === 'view') {
-      console.log("Selected user for view:", user);
       setSelectedUser(user);
       setModalIsOpen(true);
+      setDropdownValue('');
     } else if (action === 'edit') {
       window.location.href = `/administration/edit-user/${user.user_id}`;
     }
@@ -162,7 +161,10 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                  <select onChange={(event) => handleActionChange(event, user)} defaultValue="">
+                <select
+                    onChange={(event) => handleActionChange(event, user)}
+                    value={dropdownValue} 
+                  >
                     <option value="" disabled>Select Action</option>
                     <option value="view">View Record</option>
                     <option value="edit">Edit Record</option>
@@ -174,26 +176,11 @@ export const ViewUsers: React.FC = () => {
         </table>
       </div>
       {selectedUser && (
-        <Modal isOpen={modalIsOpen} toggle={closeModal}>
-          <ModalHeader toggle={closeModal} style={{ textTransform: 'none' }}>
-            Details for User: {selectedUser.user_name} ({selectedUser.user_id})
-          </ModalHeader>
-          <ModalBody>
-            <p><strong>User ID:</strong> {selectedUser.user_id}</p>
-            <p><strong>Name:</strong> {selectedUser.user_name}</p>
-            <p><strong>User Number:</strong> {selectedUser.user_number}</p>
-            <p><strong>Email:</strong> {selectedUser.user_email}</p>
-            <p><strong>Entity Organization:</strong> {selectedUser.entity_name}</p>
-            <p><strong>Role:</strong> {selectedUser.role_name}</p>
-            <p><strong>Status:</strong> {selectedUser.status}</p>
-            <p><strong>Created Date:</strong> {selectedUser.created_at}</p>
-            <p><strong>Updated Date:</strong> {selectedUser.updated_at}</p>
-            <p><strong>Notes:</strong> {selectedUser.notes}</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={closeModal}>Close</Button>
-          </ModalFooter>
-        </Modal>
+        <ViewRecordModal
+          isOpen={modalIsOpen}
+          toggle={closeModal}
+          user={selectedUser}
+        />
       )}
     </div>
   );

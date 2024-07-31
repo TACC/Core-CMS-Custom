@@ -1,0 +1,10 @@
+$modal-width: 55%;
+
+.customModal {
+  max-width: 55% !important;
+  width: 55%;
+}
+
+.customModalHeader {
+  text-transform: none !important;  // Prevent text from being all caps
+}
