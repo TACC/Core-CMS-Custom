@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { UserRow } from 'hooks/admin';
-import styles from './ViewRecordModal.module.scss';  // Import SCSS module
+import styles from './ViewUsers.module.scss';  // Import SCSS module
 
 interface UserDetailsModalProps {
   isOpen: boolean;

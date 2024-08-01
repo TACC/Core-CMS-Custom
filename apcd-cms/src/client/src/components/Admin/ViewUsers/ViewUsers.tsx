@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserRow, UserResult } from 'hooks/admin';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ViewRecordModal from './ViewRecordModal';  // Import the modal component
+import ViewRecordModal from './ViewRecordModal';  
+import EditRecordModal from './EditRecordModal';
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -12,7 +13,8 @@ export const ViewUsers: React.FC = () => {
   const [userData, setUserData] = useState<UserResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
   const [dropdownValue, setDropdownValue] = useState<string>('');
 
@@ -90,17 +92,20 @@ export const ViewUsers: React.FC = () => {
 
   const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, user: UserRow) => {
     const action = event.target.value;
+    setSelectedUser(user);
+    setDropdownValue('');
     if (action === 'view') {
-      setSelectedUser(user);
-      setModalIsOpen(true);
-      setDropdownValue('');
+      setViewModalOpen(true);
+      setEditModalOpen(false);
     } else if (action === 'edit') {
-      window.location.href = `/administration/edit-user/${user.user_id}`;
+      setEditModalOpen(true);
+      setViewModalOpen(false);
     }
   };
 
   const closeModal = () => {
-    setModalIsOpen(false);
+    setViewModalOpen(false);
+    setEditModalOpen(false);
     setSelectedUser(null);
   };
 
@@ -161,7 +166,7 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                <select
+                  <select
                     onChange={(event) => handleActionChange(event, user)}
                     value={dropdownValue} 
                   >
@@ -175,9 +180,16 @@ export const ViewUsers: React.FC = () => {
           </tbody>
         </table>
       </div>
-      {selectedUser && (
+      {selectedUser && viewModalOpen && (
         <ViewRecordModal
-          isOpen={modalIsOpen}
+          isOpen={viewModalOpen}
+          toggle={closeModal}
+          user={selectedUser}
+        />
+      )}
+      {selectedUser && editModalOpen && (
+        <EditRecordModal
+          isOpen={editModalOpen}
           toggle={closeModal}
           user={selectedUser}
         />
