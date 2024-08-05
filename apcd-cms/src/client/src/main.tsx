@@ -25,7 +25,7 @@ function setupComponent(rootId: string, Component: React.ComponentType): void {
 }
 
 // Mapping of element IDs to components
-const componentMap: { [key: string]: React.ComponentType } = {
+const componentMap: { [key: string]: React.ComponentType<any> } = {
   'list-registrations-root': AdminRegistrations,
   'view-users-root': ViewUsers,
   'list-admin-submissions': AdminSubmissions,
@@ -34,7 +34,7 @@ const componentMap: { [key: string]: React.ComponentType } = {
 };
 
 function setupApp(): void {
-  Object.keys(componentMap).forEach(id => {
+  Object.keys(componentMap).forEach((id) => {
     const elem = document.getElementById(id);
     if (elem) {
       setupComponent(id, componentMap[id]);

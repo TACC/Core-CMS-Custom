@@ -1,3 +1,3 @@
-import { AdminSubmissions } from "./AdminSubmissions";
+import { AdminSubmissions } from './AdminSubmissions';
 
 export { AdminSubmissions };
