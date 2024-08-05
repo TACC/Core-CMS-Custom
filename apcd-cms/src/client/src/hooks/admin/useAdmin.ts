@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { RegistrationResult, UserResult, SubmissionResult } from '.';
+import { RegistrationResult, UserResult, SubmissionResult, ExceptionResult } from '.';
 
 const getRegistrations = async (params: any) => {
   const url = `/administration/list-registration-requests/api/`;
@@ -57,6 +57,32 @@ export const useSubmissions = (
   const query = useQuery(['submissions', params], () =>
     getSubmissions(params)
   ) as UseQueryResult<SubmissionResult>;
+
+  return { ...query };
+};
+
+const getExceptions = async (params: any) => {
+  const url = `administration/list-exceptions/api/`;
+  const response = await fetchUtil({
+    url,
+    params,
+  });
+  return response.response;
+};
+
+export const useExceptions = (
+  status?: string,
+  org?: string,
+  page?: number
+): UseQueryResult<ExceptionResult> => {
+  const params: { status?: string; org?: string; page?: number } = {
+    status,
+    org,
+    page,
+  };
+  const query = useQuery(['exceptions', params], () =>
+    getExceptions(params)
+  ) as UseQueryResult<ExceptionResult>;
 
   return { ...query };
 };
