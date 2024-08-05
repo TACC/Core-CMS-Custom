@@ -135,6 +135,10 @@ class ViewUsersTable(TemplateView):
                 'role_name': usr['role_name'],
                 'status': usr['status'],
                 'user_number': usr['user_number'],
+                'user_email': usr['user_email'],
+                'notes': usr['notes'],
+                'created_at': usr['created_at'],
+                'updated_at': usr['updated_at'],
                 'view_link': f"/administration/view-user-details/{usr['user_id']}",
                 'edit_link': f"/administration/edit-user/{usr['user_id']}",
             }

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserRow, UserResult } from 'hooks/admin';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ViewRecordModal from './ViewRecordModal';  
+import EditRecordModal from './EditRecordModal';
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -11,6 +13,10 @@ export const ViewUsers: React.FC = () => {
   const [userData, setUserData] = useState<UserResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+  const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,7 +29,6 @@ export const ViewUsers: React.FC = () => {
 
         // Fetch dropdown options
         const optionsResponse = await axios.get('/administration/view-users/api/options');
-        console.log("Dropdown options response:", optionsResponse.data);
         setStatusOptions(optionsResponse.data.status_options || []);
         setFilterOptions(optionsResponse.data.org_options || []);
 
@@ -32,7 +37,7 @@ export const ViewUsers: React.FC = () => {
         const orgParam = queryParams.get('org') || 'All';
 
         // Fetch initial user data
-        fetchData(statusParam, orgParam);
+        await fetchData(statusParam, orgParam);
 
         // Update state with URL params
         setStatus(statusParam);
@@ -57,7 +62,6 @@ export const ViewUsers: React.FC = () => {
       const userResponse = await axios.get('/administration/view-users/api/', {
         params: { status: statusFilter, org: orgFilter },
       });
-      console.log("User data fetched:", userResponse.data);
       setUserData(userResponse.data.response);
     } catch (err) {
       setError('Error fetching filtered data');
@@ -86,13 +90,23 @@ export const ViewUsers: React.FC = () => {
     updateURL(status, newOrg);
   };
 
-  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, userId: string) => {
+  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, user: UserRow) => {
     const action = event.target.value;
+    setSelectedUser(user);
+    setDropdownValue('');
     if (action === 'view') {
-      window.location.href = `/administration/view-user-details/${userId}`;
+      setViewModalOpen(true);
+      setEditModalOpen(false);
     } else if (action === 'edit') {
-      window.location.href = `/administration/edit-user/${userId}`;
+      setEditModalOpen(true);
+      setViewModalOpen(false);
     }
+  };
+
+  const closeModal = () => {
+    setViewModalOpen(false);
+    setEditModalOpen(false);
+    setSelectedUser(null);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -152,7 +166,10 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                  <select onChange={(event) => handleActionChange(event, user.user_id)} defaultValue="">
+                  <select
+                    onChange={(event) => handleActionChange(event, user)}
+                    value={dropdownValue} 
+                  >
                     <option value="" disabled>Select Action</option>
                     <option value="view">View Record</option>
                     <option value="edit">Edit Record</option>
@@ -163,6 +180,20 @@ export const ViewUsers: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {selectedUser && viewModalOpen && (
+        <ViewRecordModal
+          isOpen={viewModalOpen}
+          toggle={closeModal}
+          user={selectedUser}
+        />
+      )}
+      {selectedUser && editModalOpen && (
+        <EditRecordModal
+          isOpen={editModalOpen}
+          toggle={closeModal}
+          user={selectedUser}
+        />
+      )}
     </div>
   );
 };
