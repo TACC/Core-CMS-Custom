@@ -1,6 +1,11 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { RegistrationResult, UserResult, SubmissionResult, ExceptionResult } from '.';
+import {
+  RegistrationResult,
+  UserResult,
+  SubmissionResult,
+  ExceptionResult,
+} from '.';
 
 const getRegistrations = async (params: any) => {
   const url = `/administration/list-registration-requests/api/`;

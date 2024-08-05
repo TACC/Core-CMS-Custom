@@ -22,8 +22,10 @@ export const ViewUsers: React.FC = () => {
         setError(null);
 
         // Fetch dropdown options
-        const optionsResponse = await axios.get('/administration/view-users/api/options');
-        console.log("Dropdown options response:", optionsResponse.data);
+        const optionsResponse = await axios.get(
+          '/administration/view-users/api/options'
+        );
+        console.log('Dropdown options response:', optionsResponse.data);
         setStatusOptions(optionsResponse.data.status_options || []);
         setFilterOptions(optionsResponse.data.org_options || []);
 
@@ -57,7 +59,7 @@ export const ViewUsers: React.FC = () => {
       const userResponse = await axios.get('/administration/view-users/api/', {
         params: { status: statusFilter, org: orgFilter },
       });
-      console.log("User data fetched:", userResponse.data);
+      console.log('User data fetched:', userResponse.data);
       setUserData(userResponse.data.response);
     } catch (err) {
       setError('Error fetching filtered data');
@@ -86,7 +88,10 @@ export const ViewUsers: React.FC = () => {
     updateURL(status, newOrg);
   };
 
-  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, userId: string) => {
+  const handleActionChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    userId: string
+  ) => {
     const action = event.target.value;
     if (action === 'view') {
       window.location.href = `/administration/view-user-details/${userId}`;
@@ -102,34 +107,58 @@ export const ViewUsers: React.FC = () => {
     <div className="container">
       <h1>View Users</h1>
       <hr />
-      <p style={{ marginBottom: "30px" }}>View submitted users.</p>
+      <p style={{ marginBottom: '30px' }}>View submitted users.</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
-          <span><b>Filter by Status: </b></span>
+          <span>
+            <b>Filter by Status: </b>
+          </span>
           <select
             id="statusFilter"
             className="status-filter"
             value={status}
             onChange={handleStatusChange}
           >
-            {statusOptions.length > 0 ? statusOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            )) : <option>Loading...</option>}
+            {statusOptions.length > 0 ? (
+              statusOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))
+            ) : (
+              <option>Loading...</option>
+            )}
           </select>
-          <span><b>Filter by Organization: </b></span>
+          <span>
+            <b>Filter by Organization: </b>
+          </span>
           <select
             id="organizationFilter"
             className="status-filter"
             value={org}
             onChange={handleOrgChange}
           >
-            {filterOptions.length > 0 ? filterOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            )) : <option>Loading...</option>}
+            {filterOptions.length > 0 ? (
+              filterOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))
+            ) : (
+              <option>Loading...</option>
+            )}
           </select>
           {(status !== 'All' || org !== 'All') && (
-            <button onClick={() => { setStatus('All'); setOrg('All'); fetchData('All', 'All'); }}>Clear Options</button>
+            <button
+              onClick={() => {
+                setStatus('All');
+                setOrg('All');
+                fetchData('All', 'All');
+              }}
+            >
+              Clear Options
+            </button>
           )}
         </div>
       </div>
@@ -152,8 +181,15 @@ export const ViewUsers: React.FC = () => {
                 <td>{user.status}</td>
                 <td>{user.user_number}</td>
                 <td>
-                  <select onChange={(event) => handleActionChange(event, user.user_id)} defaultValue="">
-                    <option value="" disabled>Select Action</option>
+                  <select
+                    onChange={(event) =>
+                      handleActionChange(event, user.user_id)
+                    }
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Select Action
+                    </option>
                     <option value="view">View Record</option>
                     <option value="edit">Edit Record</option>
                   </select>

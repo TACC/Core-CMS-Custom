@@ -91,7 +91,7 @@ class RegistrationsTable(TemplateView):
             associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
-            org_name = registration[7]
+            org_name = registration[5]
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
 

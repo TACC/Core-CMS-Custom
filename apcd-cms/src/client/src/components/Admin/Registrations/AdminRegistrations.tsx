@@ -7,6 +7,7 @@ import {
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import ViewRegistrationModal from '../ViewRegistrationModal/ViewRegistrationModal';
+import EditRegistrationModal from '../EditRegistrationModal/EditRegistrationModal';
 import styles from './AdminRegistrations.module.css';
 
 export const AdminRegistrations: React.FC<RegistrationResult> = () => {
@@ -19,6 +20,8 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
     page
   );
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const [selectedRegistration, setSelectedRegistration] =
     useState<RegistrationRow | null>(null);
 
@@ -55,6 +58,8 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
     );
     if (selectedOption == 'viewRegistration') {
       setIsViewModalOpen(true);
+    } else if (selectedOption == 'editRegistration') {
+      setIsEditModalOpen(true);
     }
     actionsDropdown.selectedIndex = 0;
   };
@@ -143,11 +148,18 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
         />
       </div>
       {selectedRegistration && (
-        <ViewRegistrationModal
-          registration={selectedRegistration}
-          isVisible={isViewModalOpen}
-          onClose={() => setIsViewModalOpen(false)}
-        />
+        <>
+          <ViewRegistrationModal
+            registration={selectedRegistration}
+            isVisible={isViewModalOpen}
+            onClose={() => setIsViewModalOpen(false)}
+          />
+          <EditRegistrationModal
+            registration={selectedRegistration}
+            isVisible={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+          />
+        </>
       )}
     </div>
   );

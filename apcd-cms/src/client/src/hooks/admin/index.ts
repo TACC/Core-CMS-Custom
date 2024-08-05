@@ -135,4 +135,9 @@ export type ExceptionResult = {
   pagination_url_namespaces: string;
   page: ExceptionRow[];
 };
-export { useRegistrations, useSubmissions, useUsers, useExceptions } from './useAdmin';
+export {
+  useRegistrations,
+  useSubmissions,
+  useUsers,
+  useExceptions,
+} from './useAdmin';
