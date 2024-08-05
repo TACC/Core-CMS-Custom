@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.paginator import Paginator, EmptyPage
 from django.views.generic.base import TemplateView
 from django.template import loader
@@ -7,6 +7,7 @@ from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
 from apps.utils.utils import table_filter
 from apps.components.paginator.paginator import paginator
+from datetime import date as datetimeDate
 from dateutil import parser
 import logging
 
@@ -47,22 +48,34 @@ class AdminExceptionsTable(TemplateView):
             return HttpResponseRedirect('/')
         return super(AdminExceptionsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
+    def get(self, *args, **kwargs):
 
-        context = super(AdminExceptionsTable, self).get_context_data(*args, **kwargs)
+        # context = super(AdminExceptionsTable, self).get_context_data(*args, **kwargs)
 
         exception_content = get_all_exceptions()
-        # To get filters from params
-        queryStr = ''
-        status_filter = self.request.GET.get('status')
-        org_filter = self.request.GET.get('org')
+
+        context = self.get_exception_list_json(exception_content, *args, **kwargs)
+        return JsonResponse({'response': context})
+
+    def get_exception_list_json(self, exception_content, *args, **kwargs):
+        context = {}
+
+        context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
+        context['status_options'] = ['All']
+        context['org_options'] = ['All']
+        context['outcome_options'] = []
+        context['exceptions'] = []
+        context['action_options'] = ['Select Action', 'View Record', 'Edit Record']
 
         try:
             page_num = int(self.request.GET.get('page'))
         except:
             page_num = 1
 
-        def _set_exceptions(exception):
+        queryStr = ''
+        status_filter = self.request.GET.get('status')
+        org_filter = self.request.GET.get('org')
+        def _set_exception(exception): 
             return {
                 'exception_id': exception[0],
                 'submitter_id': exception[1],
@@ -88,14 +101,6 @@ class AdminExceptionsTable(TemplateView):
                 'entity_name': exception[21],
                 'data_file_name': exception[22]
             }
-
-        context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
-        context['status_options'] = ['All']
-        context['org_options'] = ['All']
-        context['outcome_options'] = []
-        # In case you need to access an exception directly within the template in the future
-        context['exceptions'] = []
-
         def getDate(row):
             date = row[6]
             return date if date is not None else parser.parse('1-1-0001')
@@ -106,9 +111,9 @@ class AdminExceptionsTable(TemplateView):
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
-            exception_table_entries.append(_set_exceptions(exception))
+            exception_table_entries.append(_set_exception(exception))
             # to be able to access any exception in a template using exceptions var in the future
-            context['exceptions'].append(_set_exceptions(exception))
+            context['exceptions'].append(_set_exception(exception))
             entity_name = title_case(exception[21])
             status = title_case(exception[19])
             outcome = title_case(exception[5])
@@ -140,7 +145,11 @@ class AdminExceptionsTable(TemplateView):
             exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'entity_name')
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, exception_table_entries))
+        # context.update(paginator(self.request, exception_table_entries))
+        page_info = paginator(self.request, exception_table_entries)
+        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 'exception_id': obj['exception_id']} for obj in page_info['page']]
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
 
         return context
+
+    

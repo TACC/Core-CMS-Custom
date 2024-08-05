@@ -70,4 +70,24 @@ export type SubmissionLogsModalContent = {
   outcome: string;
 }
 
-export { useRegistrations, useSubmissions, useUsers } from './useAdmin';
+export type ExceptionRow = {
+  created_at: string;
+  entity_name: string;
+  requestor_name: string;
+  requestor_type: string;
+  outcome: string;
+  status: string;
+  exception_id: string;
+};
+
+export type ExceptionResult = {
+  header: string[];
+  status_options: string[];
+  org_options: string[];
+  selected_status: string;
+  selected_org: string;
+  query_str: string;
+  pagination_url_namespaces: string;
+  page: ExceptionRow[];
+};
+export { useRegistrations, useSubmissions, useUsers, useExceptions } from './useAdmin';
