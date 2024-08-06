@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Label, FormGroup, Row, Col } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, Button, Label, FormGroup, Row, Col } from 'reactstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -31,15 +31,25 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
     role_name: Yup.string().required('Role is required'),
     notes: Yup.string().max(2000, 'Notes cannot exceed 2000 characters').nullable(),
   });
+  
 
   const handleSave = async (values: UserRow, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    const { user_number } = values;
+    const url = `/users/${user_number}/`;
     try {
-      const response = await axios.post('/administration/edit-user/api/', values);
+      const response = await axios.put(url, values); // Assuming it's a PUT request to update user data
       console.log('Save successful:', response.data);
       setSuccessModalOpen(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving data:', error);
-      setErrorMessage('An error occurred while saving the data. Please try again.');
+      console.log(url)
+      if (error.response && error.response.data) {
+        // Use error message from the server response
+        setErrorMessage(error.response.data.message || 'An error occurred while saving the data. Please try again.');
+      } else {
+        // Use generic error message
+        setErrorMessage('An error occurred while saving the data. Please try again.');
+      }
       setErrorModalOpen(true);
     } finally {
       setSubmitting(false);
@@ -81,7 +91,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
           >
             {({ isSubmitting }) => (
               <Form>
-                <Row form>
+                <Row>
                   <Col md={3}>
                     <FormGroup>
                       <Label for="user_name" className={styles.customLabel}><strong>Name</strong></Label>
@@ -138,7 +148,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
                     </FormGroup>
                   </Col>
                 </Row>
-                <Row form>
+                <Row>
                   <Col md={6}>
                     <FormGroup>
                       <Label for="notes" className={styles.customLabel}><strong>Notes</strong></Label>
@@ -182,7 +192,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
 
       <Modal isOpen={successModalOpen} toggle={() => setSuccessModalOpen(false)} className={styles.customModal}>
         <div className={`modal-header ${styles.modalHeader}`}>
-            <Label toggle={() => setSuccessModalOpen(false)} className={styles.customModalTitle}>
+            <Label  className={styles.customModalTitle}>
                 Success
             </Label>
             <button type="button" className={`close ${styles.customCloseButton}`} onClick={toggle}>
@@ -196,7 +206,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
 
       <Modal isOpen={errorModalOpen} toggle={() => setErrorModalOpen(false)} className={styles.customModal}>
         <div className={`modal-header ${styles.modalHeader}`}>
-            <Label toggle={() => setErrorModalOpen(false)} className={styles.customModalTitle}>
+            <Label className={styles.customModalTitle}>
                 Error
             </Label>
             <button type="button" className={`close ${styles.customCloseButton}`} onClick={toggle}>
