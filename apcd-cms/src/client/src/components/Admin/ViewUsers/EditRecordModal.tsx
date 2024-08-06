@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, ModalBody, ModalFooter, Button, Label, FormGroup, Row, Col } from 'reactstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import axios from 'axios';
+import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';  // Import SCSS module
@@ -37,7 +37,11 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
     const { user_number } = values;
     const url = `/users/${user_number}/`;
     try {
-      const response = await axios.put(url, values); // Assuming it's a PUT request to update user data
+      const response = await fetchUtil({
+        url,
+        method: 'PUT',
+        body: values,
+      });
       console.log('Save successful:', response.data);
       setSuccessModalOpen(true);
     } catch (error: any) {
