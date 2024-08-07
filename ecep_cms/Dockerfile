@@ -1,4 +1,5 @@
-FROM taccwma/core-cms:v4.12.0
+# TACC/Core-CMS v4.14 candidate
+FROM taccwma/core-cms:fix-CMD-176-conditional-elastic-search
 
 WORKDIR /code
 
