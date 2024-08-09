@@ -13,4 +13,5 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
 RUN chmod u+x /code/client/build_client.sh && /code/client/build_client.sh
-RUN cp /code/client/dist/apcd-components.es.js /code/taccsite_custom/apcd_cms/static/
+RUN cp -R /code/client/dist/static/assets/. /code/taccsite_custom/apcd_cms/static/assets/
+RUN cp -R /code/client/dist/react-assets.html /code/taccsite_custom/apcd_cms/templates/react-asset.html

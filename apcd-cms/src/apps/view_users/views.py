@@ -1,20 +1,70 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.utils import table_filter
-from apps.components.paginator.paginator import paginator
 import logging
 
 logger = logging.getLogger(__name__)
 
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
-    ##FORM FUNCTION
-    def post(self, request):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        # Check if the request is for API data or template
+        if 'options' in request.path:
+            return self.get_options(request)
+        if 'modal' in request.path:
+            return self.get_modals(request, kwargs['modal_type'])
+        
+        # Handle filtering parameters
+        status = request.GET.get('status', 'All')
+        org = request.GET.get('org', 'All')
+
+        try:
+            # Fetch and filter users
+            user_content = get_users()
+            filtered_users = self.filter_users(user_content, status, org)
+            context = self.get_view_users_json(filtered_users)
+            return JsonResponse({'response': context})
+        except Exception as e:
+            logger.error("Error fetching filtered user data: %s", e)
+            return JsonResponse({'error': str(e)}, status=500)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_view_users_json(get_users()))
+        return context
+
+    def get_options(self, request):
+        try:
+            status_options = ['All', 'Active', 'Inactive']
+            org_options = ['All', 'TEST Meritan Health', 'UTHealth - SPH CHCD: APCD', 'None', 'Not Applicable']
+            return JsonResponse({
+                'status_options': status_options,
+                'org_options': org_options
+            })
+        except Exception as e:
+            logger.error("Error fetching options data: %s", e)
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    def get_modals(self, request, modal_type):
+        if modal_type == 'view':
+            modal_template = 'view_users_modal.html'
+        elif modal_type == 'edit':
+            modal_template = 'edit_users_modal.html'
+        else:
+            return JsonResponse({'error': 'Invalid modal type'}, status=400)
+        
+        modal_content = loader.render_to_string(modal_template)
+        return JsonResponse({'content': modal_content})
+
+    def post(self, request):
         form = request.POST.copy()
         
         def _err_msg(resp):
@@ -39,92 +89,57 @@ class ViewUsersTable(TemplateView):
         
         template = _edit_user(form)
         return HttpResponse(template.render({}, request))
-    def get(self, request, *args, **kwargs):
-        user_content = get_users()
 
+    def filter_users(self, users, status, org):
+        def _set_user(usr):
+            return {
+                'role_id': usr[0],
+                'user_id': usr[1],
+                'user_email': usr[2],
+                'user_name': usr[3],
+                'entity_name': usr[4] if usr[4] else "Not Applicable",
+                'created_at': usr[5],
+                'updated_at': usr[6],
+                'notes': usr[7],
+                'status': 'Active' if usr[8] else 'Inactive',
+                'user_number': usr[9],
+                'role_name': usr[10],
+            }
 
-        context = self.get_context_data(user_content, *args,**kwargs)
-        template = loader.get_template(self.template_name)
-        return HttpResponse(template.render(context, request))
-        ##END FORM FUNCTION
+        user_list = [_set_user(user) for user in users]
 
-    user_content = get_users()
+        if status != 'All':
+            user_list = [user for user in user_list if user['status'] == status]
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-           return HttpResponseRedirect('/')
-        return super(ViewUsersTable, self).dispatch(request, *args, **kwargs)
+        if org != 'All':
+            user_list = [user for user in user_list if user['entity_name'] == org]
 
-    def get_context_data(self, user_content=user_content, *args, **kwargs):
-        context = super(ViewUsersTable, self).get_context_data(*args, **kwargs)
+        return user_list
+    
+    def get_view_users_json(self, user_content):
+        context = {
+            'header': ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More'],
+            'page': [],
+            'status_options': ['All', 'Active', 'Inactive'],
+            'org_options': ['All', 'TEST Meritan Health', 'UTHealth - SPH CHCD: APCD', 'None', 'Not Applicable'],
+            'selected_status': 'All',
+            'query_str': '',
+            'pagination_url_namespaces': 'administration:view_users'
+        }
 
         def _set_user(usr):
             return {
-                    'role_id': usr[0],
-                    'user_id': usr[1],
-                    'user_email': usr[2],
-                    'user_name': usr[3],
-                    'entity_name': usr[4] if usr[4] else "Not Applicable",
-                    'created_at': usr[5],
-                    'updated_at': usr[6],
-                    'notes': usr[7],
-                    'status': 'Active' if usr[8] else 'Inactive',
-                    'user_number': usr[9],
-                    'role_name': usr[10],
-                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "Not Applicable",  # just for filtering purposes
-                    'active': usr[8],
-                }
+                'user_id': usr['user_id'],
+                'user_name': usr['user_name'],
+                'entity_name': usr['entity_name'],
+                'role_name': usr['role_name'],
+                'status': usr['status'],
+                'user_number': usr['user_number'],
+                'view_link': f"/administration/view-user-details/{usr['user_id']}",
+                'edit_link': f"/administration/edit-user/{usr['user_id']}",
+            }
 
-        context['header'] = ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More']
-        context['status_options'] = ['All', 'Active', 'Inactive']
-        context['filter_options'] = ['All']
-        context['role_options'] = ['SUBMITTER_USER', 'SUBMITTER_ADMIN','APCD_ADMIN']
-
-        context['status'] = ['Active', 'Inactive']
-
-        # this kind of sucks, we should make this not hard coded, just getting it to work for now
-        context['roles'] = [
-            {'role_id': 1, 'role_name': 'APCD_ADMIN'},
-            {'role_id': 2, 'role_name': 'SUBMITTER_ADMIN'},
-            {'role_id': 3, 'role_name': 'SUBMITTER_USER'}
-        ]
-        
-        try:
-            page_num = int(self.request.GET.get('page'))
-        except:
-            page_num = 1        
-        table_entries = []
         for user in user_content:
-            table_entries.append(_set_user(user,))
-            org_name = user[4]
-            if org_name not in context['filter_options']:  # prevent duplicates
-                context['filter_options'].append(user[4])
-            if org_name is None and 'Not Applicable' not in context['filter_options']:
-                context['filter_options'].append('Not Applicable')
-
-        queryStr = ''
-        status_filter = self.request.GET.get('status')
-        org_filter = self.request.GET.get('org')
-        role_filter = self.request.GET.get('role_name')
-
-        context['selected_status'] = None
-        if status_filter is not None and status_filter !='All':
-            context['selected_status'] = status_filter
-            queryStr += f'&status={status_filter}'
-            table_entries = table_filter(status_filter, table_entries, 'status', False)
-
-        if role_filter is not None and role_filter !='All':
-            context['selected_role'] = role_filter
-            table_entries = table_filter(role_filter, table_entries, 'role_name', False)        
-
-        context['selected_org'] = None
-        if org_filter is not None and org_filter != 'All':
-            context['selected_org'] = org_filter
-            queryStr += f'&org={org_filter}'
-            table_entries = table_filter(org_filter.replace("(", "").replace(")",""), table_entries, 'entity_name_no_parens')
-
-        context['query_str'] = queryStr
-        context.update(paginator(self.request, table_entries))
-        context['pagination_url_namespaces'] = 'administration:view_users'
+            context['page'].append(_set_user(user))
 
         return context

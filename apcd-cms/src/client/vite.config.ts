@@ -1,18 +1,23 @@
 import eslint from '@rollup/plugin-eslint';
 import { defineConfig, type PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
-import {resolve} from 'path';
+import path, {resolve} from 'path';
 
 
 export default defineConfig({
     css: { preprocessorOptions: { scss: { charset: false } } },
     build: {
       outDir: 'dist',
-      lib: {
-        entry: resolve(__dirname, 'src/components/library.tsx'),
-        name: 'APCDComponents',
-        fileName: 'apcd-components'
-    }
+      rollupOptions: {
+        input: {
+          imports: path.resolve(__dirname, 'react-assets.html'),
+        },
+        output: {
+          entryFileNames: 'static/assets/[name].[hash].js',
+          chunkFileNames: 'static/assets/[name].[hash].js',
+          assetFileNames: 'static/assets/[name].[hash].[ext]'
+        }
+      },
   },
     resolve: {
       alias: {
@@ -33,4 +38,7 @@ export default defineConfig({
         {...eslint({include: 'src/**/*.+(js|jsx|ts|tsx)', fix: false}), enforce: 'pre', },
         react(),
       ],
+    optimizeDeps: {
+        include: ['react-refresh'],
+      },
 })
