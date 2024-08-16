@@ -115,6 +115,28 @@ export type SubmissionLogsModalContent = {
   outcome: string;
 };
 
+export type ExtensionRow = {
+  created: string;
+  org_name: string;
+  requestor: string;
+  type: string;
+  ext_outcome: string;
+  ext_status: string;
+  ext_id: string;
+  submitter_id: string;
+  approved_expiration_date: string;
+};
+
+export type ExtensionResult = {
+  header: string[];
+  status_options: string[];
+  org_options: string[];
+  selected_status: string;
+  query_str: string;
+  pagination_url_namespaces: string;
+  page: ExtensionRow[];
+};
+
 export type ExceptionRow = {
   created_at: string;
   entity_name: string;
@@ -135,7 +157,9 @@ export type ExceptionResult = {
   pagination_url_namespaces: string;
   page: ExceptionRow[];
 };
+
 export {
+  useExtensions,
   useRegistrations,
   useSubmissions,
   useUsers,
