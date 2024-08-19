@@ -7,7 +7,7 @@ import { ViewUsers } from './components/Admin/ViewUsers';
 import { AdminSubmissions } from './components/Admin/Submissions';
 import { AdminExtensions } from './components/Admin/Extensions';
 import { AdminExceptions } from './components/Admin/Exceptions';
-import { AdminExceptions } from './components/Admin/Exceptions';
+import { ViewExceptionModal } from './components/Admin/ViewExceptiontionModal';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -33,7 +33,7 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'list-admin-submissions': AdminSubmissions,
   'admin-extensions-root': AdminExtensions,
   'admin-exceptions-root': AdminExceptions,
-  'admin-exceptions-root': AdminExceptions,
+  'view-exception-modal-root': ViewExceptionModal,
   // Add new components with html id in the list above.
 };
 

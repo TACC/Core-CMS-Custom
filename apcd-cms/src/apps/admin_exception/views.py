@@ -99,7 +99,26 @@ class AdminExceptionsTable(TemplateView):
                 'status': title_case(exception[19])if exception[3] else None,
                 'notes': exception[20],
                 'entity_name': exception[21],
-                'data_file_name': exception[22]
+                'data_file_name': exception[22],
+                'view_modal_content': {
+                    'exception_id': exception[0],
+                    'created_at':  exception[6],
+                    'requestor_name': exception[2],
+                    'requestor_email': exception[11],
+                    'request_type': title_case(exception[3]) if exception[3] else None,
+                    'status': title_case(exception[19])if exception[3] else None,
+                    'outcome': title_case(exception[5]) if exception[3] else None,
+                    'data_file_name': exception[22],
+                    'field_number': exception[13],
+                    'required_threshold': exception[14],
+                    'requested_threshold': exception[15],
+                    'approved_threshold': exception[17],
+                    'requested_expiration_date': exception[16],
+                    'approved_expiration_date': exception[18],
+                    'explanation_justification': exception[4],
+                    'notes': exception[20],
+                    'updated_at': exception[7],
+                }
             }
         def getDate(row):
             date = row[6]
@@ -108,6 +127,9 @@ class AdminExceptionsTable(TemplateView):
         # sort exceptions by newest to oldest
         exception_content = sorted(exception_content, key=lambda row:getDate(row), reverse=True) 
 
+        limit = 50
+        offset = limit * (page_num - 1)
+        
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
@@ -146,10 +168,13 @@ class AdminExceptionsTable(TemplateView):
 
         context['query_str'] = queryStr
         # context.update(paginator(self.request, exception_table_entries))
-        page_info = paginator(self.request, exception_table_entries)
-        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 'exception_id': obj['exception_id']} for obj in page_info['page']]
+        page_info = paginator(self.request, exception_table_entries, limit)
+        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content']} for obj in page_info['page']]
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
 
-        return context
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
 
-    
+        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
+
+        return context
