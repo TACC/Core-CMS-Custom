@@ -6,10 +6,10 @@ export const AdminExceptions: React.FC = () => {
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useExceptions(
-          status,
-          org,
-          page
-        );
+    status,
+    org,
+    page
+  );
 
   useEffect(() => {
     refetch();
@@ -46,7 +46,7 @@ export const AdminExceptions: React.FC = () => {
 
   return (
     <div>
-    <div className="filter-container">
+      <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -88,24 +88,24 @@ export const AdminExceptions: React.FC = () => {
           </div>
         </div>
       </div>
-    <table id="exceptionTable" className="exception-table">
-      <thead>
-        <tr>
-          {data?.header.map((columnName: string, index: number) => (
-            <th key={index}>{columnName}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data?.page.map((row: ExceptionRow, rowIndex: number) => (
-          <tr key={rowIndex}>
-            <td>{row.created_at}</td>
-            <td>{row.entity_name}</td>
-            <td>{row.requestor_name}</td>
-            <td>{row.requestor_type}</td>
-            <td>{row.outcome}</td>
-            <td>{row.status}</td>
-            <td className="modal-cell">
+      <table id="exceptionTable" className="exception-table">
+        <thead>
+          <tr>
+            {data?.header.map((columnName: string, index: number) => (
+              <th key={index}>{columnName}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data?.page.map((row: ExceptionRow, rowIndex: number) => (
+            <tr key={rowIndex}>
+              <td>{row.created_at}</td>
+              <td>{row.entity_name}</td>
+              <td>{row.requestor_name}</td>
+              <td>{row.requestor_type}</td>
+              <td>{row.outcome}</td>
+              <td>{row.status}</td>
+              <td className="modal-cell">
                 <select
                   id={`actionsDropdown_${row.exception_id}`}
                   defaultValue=""
@@ -116,11 +116,11 @@ export const AdminExceptions: React.FC = () => {
                   <option value="viewAdminExceptions">View Record</option>
                   <option value="editException">Edit Record</option>
                 </select>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
