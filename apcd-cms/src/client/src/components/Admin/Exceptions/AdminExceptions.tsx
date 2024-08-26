@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import {
-  useRegistrations,
-  RegistrationResult,
-  RegistrationRow,
-} from 'hooks/admin';
-import LoadingSpinner from 'core-components/LoadingSpinner';
-import Paginator from 'core-components/Paginator';
-import ViewRegistrationModal from '../ViewRegistrationModal/ViewRegistrationModal';
-import EditRegistrationModal from '../EditRegistrationModal/EditRegistrationModal';
-import styles from './AdminRegistrations.module.css';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useExceptions, ExceptionRow } from 'hooks/admin';
 
-export const AdminRegistrations: React.FC<RegistrationResult> = () => {
+export const AdminExceptions: React.FC = () => {
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, refetch } = useRegistrations(
+  const { data, isLoading, isError, refetch } = useExceptions(
     status,
     org,
     page
   );
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const [selectedRegistration, setSelectedRegistration] =
-    useState<RegistrationRow | null>(null);
 
   useEffect(() => {
     refetch();
@@ -36,11 +22,7 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="loading-placeholder">
-        <LoadingSpinner />
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   if (isError) {
@@ -49,19 +31,17 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
 
   const openAction = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    reg_id: string
+    exception_id: string
   ) => {
-    const actionsDropdown = event.target;
-    const selectedOption = actionsDropdown.value;
-    setSelectedRegistration(
-      data?.page.find((x) => x.reg_id === reg_id) ?? null
-    );
-    if (selectedOption == 'viewRegistration') {
-      setIsViewModalOpen(true);
-    } else if (selectedOption == 'editRegistration') {
-      setIsEditModalOpen(true);
-    }
-    actionsDropdown.selectedIndex = 0;
+    // const actionsDropdown = event.target;
+    // const selectedOption = actionsDropdown.value;
+    // setSelectedRegistration(
+    //   data?.page.find((x) => x.reg_id === reg_id) ?? null
+    // );
+    // if (selectedOption == 'viewRegistration') {
+    //   setIsViewModalOpen(true);
+    // }
+    // actionsDropdown.selectedIndex = 0;
   };
 
   return (
@@ -108,7 +88,7 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
           </div>
         </div>
       </div>
-      <table id="registrationTable" className="registration-table">
+      <table id="exceptionTable" className="exception-table">
         <thead>
           <tr>
             {data?.header.map((columnName: string, index: number) => (
@@ -117,50 +97,30 @@ export const AdminRegistrations: React.FC<RegistrationResult> = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.page.map((row: RegistrationRow, rowIndex: number) => (
+          {data?.page.map((row: ExceptionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.biz_name}</td>
-              <td>{row.year}</td>
-              <td>{row.type}</td>
-              <td>{row.location}</td>
-              <td>{row.reg_status}</td>
-              <td>
+              <td>{row.created_at}</td>
+              <td>{row.entity_name}</td>
+              <td>{row.requestor_name}</td>
+              <td>{row.requestor_type}</td>
+              <td>{row.outcome}</td>
+              <td>{row.status}</td>
+              <td className="modal-cell">
                 <select
-                  id={`actionsDropdown_${row.reg_id}`}
+                  id={`actionsDropdown_${row.exception_id}`}
                   defaultValue=""
                   className="status-filter"
-                  onChange={(e) => openAction(e, row.reg_id)}
+                  onChange={(e) => openAction(e, row.exception_id)}
                 >
                   <option value="">Select Action</option>
-                  <option value="viewRegistration">View Record</option>
-                  <option value="editRegistration">Edit Record</option>
+                  <option value="viewAdminExceptions">View Record</option>
+                  <option value="editException">Edit Record</option>
                 </select>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className={styles.paginatorContainer}>
-        <Paginator
-          pages={data?.total_pages ?? 0}
-          current={data?.page_num ?? 0}
-          callback={setPage}
-        />
-      </div>
-      {selectedRegistration && (
-        <>
-          <ViewRegistrationModal
-            registration={selectedRegistration}
-            isVisible={isViewModalOpen}
-            onClose={() => setIsViewModalOpen(false)}
-          />
-          <EditRegistrationModal
-            registration={selectedRegistration}
-            isVisible={isEditModalOpen}
-            onClose={() => setIsEditModalOpen(false)}
-          />
-        </>
-      )}
     </div>
   );
 };

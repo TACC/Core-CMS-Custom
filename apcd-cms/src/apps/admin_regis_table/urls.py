@@ -8,5 +8,5 @@ urlpatterns = [
     path(r'list-registration-requests/api/', RegistrationsTable.as_view(), name='admin_regis_table_api'),
     path(r'list-registration-requests/api/?status=(?P<status>)/', RegistrationsTable.as_view(), name='admin_regis_table_api'),
     path(r'list-registration-requests/api/?org=(?P<org>)/', RegistrationsTable.as_view(), name='admin_regis_table_api'),
-    path(r'list-registration-requests/api/?status=(?P<status>)&org=(?P<org>)/', RegistrationsTable.as_view(), name='admin_regis_table_api')
+    path(r'list-registration-requests/api/?status=(?P<status>)&org=(?P<org>)/', RegistrationsTable.as_view(), name='admin_regis_table_api'),
 ]

@@ -116,34 +116,58 @@ export const ViewUsers: React.FC = () => {
     <div className="container">
       <h1>View Users</h1>
       <hr />
-      <p style={{ marginBottom: "30px" }}>View submitted users.</p>
+      <p style={{ marginBottom: '30px' }}>View submitted users.</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
-          <span><b>Filter by Status: </b></span>
+          <span>
+            <b>Filter by Status: </b>
+          </span>
           <select
             id="statusFilter"
             className="status-filter"
             value={status}
             onChange={handleStatusChange}
           >
-            {statusOptions.length > 0 ? statusOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            )) : <option>Loading...</option>}
+            {statusOptions.length > 0 ? (
+              statusOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))
+            ) : (
+              <option>Loading...</option>
+            )}
           </select>
-          <span><b>Filter by Organization: </b></span>
+          <span>
+            <b>Filter by Organization: </b>
+          </span>
           <select
             id="organizationFilter"
             className="status-filter"
             value={org}
             onChange={handleOrgChange}
           >
-            {filterOptions.length > 0 ? filterOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            )) : <option>Loading...</option>}
+            {filterOptions.length > 0 ? (
+              filterOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))
+            ) : (
+              <option>Loading...</option>
+            )}
           </select>
           {(status !== 'All' || org !== 'All') && (
-            <button onClick={() => { setStatus('All'); setOrg('All'); fetchData('All', 'All'); }}>Clear Options</button>
+            <button
+              onClick={() => {
+                setStatus('All');
+                setOrg('All');
+                fetchData('All', 'All');
+              }}
+            >
+              Clear Options
+            </button>
           )}
         </div>
       </div>
