@@ -35,7 +35,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
 
   const handleSave = async (values: UserRow, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     const { user_number } = values;
-    const url = `/users/${user_number}/`;
+    const url = `administration/users/${user_number}/`;
     try {
       const response = await fetchUtil({
         url,
