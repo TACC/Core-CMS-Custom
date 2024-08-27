@@ -1,10 +1,12 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
+from django.views import View
 from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -71,31 +73,6 @@ class ViewUsersTable(TemplateView):
         modal_content = loader.render_to_string(modal_template)
         return JsonResponse({'content': modal_content})
 
-    def post(self, request):
-        form = request.POST.copy()
-        
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-        
-        def _edit_user(form):
-            errors = []
-            user_response = update_user(form)
-            if _err_msg(user_response):
-                errors.append(_err_msg(user_response))
-            if len(errors) != 0:
-                logger.debug(print(errors))
-                template = loader.get_template('view_user_edit_error.html')
-            else:
-                logger.debug(print("success"))
-                template = loader.get_template('view_user_edit_success.html')
-            return template
-        
-        template = _edit_user(form)
-        return HttpResponse(template.render({}, request))
 
     def filter_users(self, users, status, org):
         def _set_user(usr):
@@ -154,3 +131,30 @@ class ViewUsersTable(TemplateView):
             context['page'].append(_set_user(user))
 
         return context
+
+
+class UpdateUserView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+    def _err_msg(self, resp):
+        if hasattr(resp, 'pgerror'):
+            return resp.pgerror
+        if isinstance(resp, Exception):
+            return str(resp)
+        return None
+
+    def put(self, request, user_number):
+        data = json.loads(request.body)
+        errors = []
+        user_response = update_user(data)
+        if self._err_msg(user_response):
+            errors.append(self._err_msg(user_response))
+        if len(errors) != 0:
+            logger.debug(print(errors))
+            return JsonResponse({'message': 'Cannot edit user'}, status=500)
+
+        return JsonResponse({'message': 'User updated successfully'})
