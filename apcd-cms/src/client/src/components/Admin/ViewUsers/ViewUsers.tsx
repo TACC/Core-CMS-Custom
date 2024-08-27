@@ -4,6 +4,9 @@ import { UserRow, UserResult } from 'hooks/admin';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ViewRecordModal from './ViewRecordModal';  
 import EditRecordModal from './EditRecordModal';
+import LoadingSpinner from 'core-components/LoadingSpinner';
+import Paginator from 'core-components/Paginator';
+import styles from './ViewUsers.module.scss';  // Import SCSS module
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -11,12 +14,13 @@ export const ViewUsers: React.FC = () => {
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
   const [userData, setUserData] = useState<UserResult | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setLoading] = useState(true);
+  const [isError, setError] = useState<string | null>(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
   const [dropdownValue, setDropdownValue] = useState<string>('');
+  const [page, setPage] = useState(1);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,18 +55,26 @@ export const ViewUsers: React.FC = () => {
     };
 
     fetchOptionsAndData();
-  }, [location.search]);
+  }, [location.search, page]);
 
-  const fetchData = async (statusFilter: string, orgFilter: string) => {
+  const fetchData = async (statusFilter: string, orgFilter: string, page: number = 1) => {
     try {
       setLoading(true);
       setError(null);
-
-      // Fetch filtered user data
+  
+      // Fetch filtered user data with pagination
       const userResponse = await axios.get('/administration/view-users/api/', {
-        params: { status: statusFilter, org: orgFilter },
+        params: { status: statusFilter, org: orgFilter, page: page },  // Include the page parameter
       });
       setUserData(userResponse.data.response);
+
+      console.log('userResponse.data:', userResponse.data);
+      console.log('userResponse.data.response:', userResponse.data.response);
+      console.log('Total Pages:', userResponse.data.response.total_pages);
+      console.log('Current Page Number:', userResponse.data.response.page_num);
+
+
+
     } catch (err) {
       setError('Error fetching filtered data');
       console.error('Error fetching filtered data:', err);
@@ -70,7 +82,7 @@ export const ViewUsers: React.FC = () => {
       setLoading(false);
     }
   };
-
+  
   const updateURL = (newStatus: string, newOrg: string) => {
     const queryParams = new URLSearchParams();
     if (newStatus !== 'All') queryParams.set('status', newStatus);
@@ -109,8 +121,23 @@ export const ViewUsers: React.FC = () => {
     setSelectedUser(null);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= (userData?.total_pages ?? 1)) {
+      setPage(newPage);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="loading-placeholder">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error loading data</div>;
+  }
 
   return (
     <div className="container">
@@ -203,6 +230,13 @@ export const ViewUsers: React.FC = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className={styles.paginatorContainer}>
+        <Paginator
+          pages={userData?.total_pages ?? 0}  
+          current={userData?.page_num ?? 0}                      
+          callback={setPage}  // Pass setPage as the callback function          
+        />
       </div>
       {selectedUser && viewModalOpen && (
         <ViewRecordModal

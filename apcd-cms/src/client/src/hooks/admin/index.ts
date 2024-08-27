@@ -83,6 +83,8 @@ export type UserResult = {
   query_str: string;
   pagination_url_namespaces: string;
   page: UserRow[];
+  page_num: number;
+  total_pages: number;
 };
 
 export type SubmissionRow = {

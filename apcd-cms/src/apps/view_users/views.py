@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
@@ -16,21 +17,27 @@ class ViewUsersTable(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # Check if the request is for API data or template
         if 'options' in request.path:
             return self.get_options(request)
         if 'modal' in request.path:
             return self.get_modals(request, kwargs['modal_type'])
         
-        # Handle filtering parameters
         status = request.GET.get('status', 'All')
         org = request.GET.get('org', 'All')
+        page_number = int(request.GET.get('page', 1))
+        items_per_page = int(request.GET.get('limit', 10))  # Default to 10 items per page
 
         try:
-            # Fetch and filter users
             user_content = get_users()
             filtered_users = self.filter_users(user_content, status, org)
-            context = self.get_view_users_json(filtered_users)
+
+            paginator = Paginator(filtered_users, items_per_page)
+            page_info = paginator.get_page(page_number)
+
+            context = self.get_view_users_json(list(page_info))
+            context['page_num'] = page_info.number
+            context['total_pages'] = paginator.num_pages
+
             return JsonResponse({'response': context})
         except Exception as e:
             logger.error("Error fetching filtered user data: %s", e)
