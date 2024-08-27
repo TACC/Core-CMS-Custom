@@ -129,7 +129,7 @@ class AdminExceptionsTable(TemplateView):
 
         limit = 50
         offset = limit * (page_num - 1)
-        
+
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
@@ -167,7 +167,6 @@ class AdminExceptionsTable(TemplateView):
             exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'entity_name')
 
         context['query_str'] = queryStr
-        # context.update(paginator(self.request, exception_table_entries))
         page_info = paginator(self.request, exception_table_entries, limit)
         context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content']} for obj in page_info['page']]
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
