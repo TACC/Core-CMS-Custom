@@ -1,0 +1,48 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'view_users_table/css/modal.css' %}">
+<div id="viewUserModal_{{r.user_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Details for User: {{r.user_name}} ({{r.user_id}})</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- <p>{{modal_content}}</p> -->
+        <div>
+          <dl class="c-data-list--is-vert c-data-list--is-wide">
+                <dt class="c-data-list__key">User ID</dt>
+                <dd class="c-data-list__value">{{r.user_id}}</dd>
+                <dt class="c-data-list__key">Name</dt>
+                <dd class="c-data-list__value">{{r.user_name}}</dd>
+                <dt class="c-data-list__key">User Number</dt>
+                <dd class="c-data-list__value">{{r.user_number}}</dd>
+                <dt class="c-data-list__key">Email</dt>
+                <dd class="c-data-list__value">{{r.user_email}}</dd>
+                <dt class="c-data-list__key">Entity Organization</dt>
+                <dd class="c-data-list__value">{{r.entity_name}}</dd>
+                <dt class="c-data-list__key">Role</dt>
+                <dd class="c-data-list__value">{{r.role_name}}</dd>
+                <dt class="c-data-list__key">Status</dt>
+                <dd class="c-data-list__value">{{r.status}}</dd>
+                <dt class="c-data-list__key">Created</dt>
+                <dd class="c-data-list__value">{{r.created_at}}</dd>
+                <dt class="c-data-list__key">Updated</dt>
+                <dd class="c-data-list__value">{{r.updated_at}}</dd>
+                <dt class="c-data-list__key">Notes</dt>
+                <dd class="c-data-list__value">{{r.notes}}</dd>
+              </dl>
+        </div>
+      </div>
+            </dd>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

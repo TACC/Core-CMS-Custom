@@ -1,0 +1,41 @@
+/* TAPIS upgrade to v3.11.4 revealed UI bugs.
+    The typical v1_v2 migration did not help;
+    the result was very different from prod.
+    So just fix major discrepencies found in:
+    https://tacc-main.atlassian.net/wiki/x/LYJl */
+
+
+
+/* BOOTSTRAP */
+
+/* To override TACC :root color with Bootstrap color only where necessary */
+a {
+  --global-color-link-on-light--normal: #007bff;
+}
+a:hover {
+  --global-color-link-on-light--normal: #0056b3;
+}
+
+/* To restore font size of buttons (whose text appeared smaller than before) */
+/* https://tapis-project.org/documentation/ */
+.btn {
+  font-size: 16px; /* Bootstrap: 1rem (browser default 16px) | TACC: html 10px. */
+}
+
+/* To restore darker text */
+body {
+  color: #212529; /* Bootstrap: #212529 | TACC: var(--global-color-primary--x-dark) */
+}
+
+/* To restore table styles */
+table {
+  border-collapse: collapse; /* Bootstrap: collapse | TACC: separate */
+}
+:is(td,th) {
+  color: usnet; /* Bootstrap: none (inherit) | TACC: var(--global-color-primary--dark) */
+}
+/* FAQ: Did not restore, because table is easier to scan as is *//*
+tr:nth-child(2n) :is(th,td) {
+  background: unset; /* Bootstrap: none (inherit) | TACC: var(--global-color-primary--x-light) *\/
+}
+*/

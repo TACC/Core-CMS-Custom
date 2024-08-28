@@ -1,0 +1,127 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_exception/css/modal.css' %}">
+<div id="editExceptionModal_{{r.exception_id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Exception ID {{r.exception_id}} for {{r.entity_name}}</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&#xe912;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+        <h4 class="modal-header">Edit Selected Exception</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="field-wrapper textinput required disabled">
+              <input type="hidden" name="exception_id" id="exception_id" value="{{r.exception_id}}">
+            </div>
+              <div class="o-grid o-grid--col-auto-count">
+                <!-- To not allow edit of approved_threshold 
+                  unless it is a threshold exception request-->
+                {% if r.request_type == 'Threshold' %}             
+                <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
+                  <label for="approved_threshold" >Approved Threshold </label>
+                  </label>
+                <!-- Value set so if there isn't an approved threshold from DB, None is not displayed and field is blank-->
+                  <input type="numeric" name="approved_threshold" class="approved_threshold" 
+                    inputmode="numeric" id="approved_threshold" value="{{r.approved_threshold|default:''}}"/>
+                    <div id="help-text-approved_threshold" class="help-text">
+                      Requested: {{r.requested_threshold}}%
+                    </div>
+                </div>
+                {% endif %}
+                <div class="field-wrapper numberinput required" >
+                  <div class="field-errors" style="display: none"></div>
+
+                  <label for="approved" name="date-row">Approved Expiration Date</label>
+
+                  <input type="date" name="approved" class="numeric" id="approved" 
+                    inputmode="numeric"/>
+                    <div id="help-text-approved" class="help-text">
+                      Current: {{r.approved_expiration_date}}
+                    </div>
+                </div>
+                <div class="field-wrapper textinput required">
+              <label for="status">
+                Exception Status
+              </label>
+              <select name='status'  class="choicefield" id='status'>
+                <!-- To make sure hard coded 'All' option doesn't populate in edit modal dropdown-->
+                {% for option in status_options %}
+                {% if option != 'All' %}
+                <option class="dropdown-text" {% if option == r.status %}selected{% endif %}>{{ option }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field-wrapper textinput required">
+              <label for="status">
+                Exception Outcome
+              </label>
+              <select name='outcome' class="choicefield" id='outcome'>
+                {% for option in outcome_options %}
+                <option class="dropdown-text" {% if option == r.outcome %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            </div>
+            <div class="field-wrapper textarea required">
+            <label for="notes">
+              Exception Notes
+            </label>
+              <textarea name="notes" cols="40" rows="5" class="textinput" type="text" id="notes"
+                minlength="2" maxlength="2000">{{r.notes|default:''}}</textarea>
+                <div class="help-text">
+                  2000 character limit
+                </div>
+              </div>
+            <div class="button-wrapper submit">
+            <button class="form-button" type="submit" value="Submit">
+              Submit
+            </button>
+          </div>
+          <hr>
+        </form>
+      </div>
+              <div class="modal-section">
+                <h4 class="modal-header">Current Exception Information</h4>
+                  <dl class="c-data-list--is-vert c-data-list--is-wide">
+                    <dt class="c-data-list__key">Created</dt>
+                    <dd class="c-data-list__value">{{r.created_at}}</dd>
+                    <dt class="c-data-list__key">Entity Organization</dt>
+                    <dd class="c-data-list__value">{{r.entity_name}}</dd>
+                    <dt class="c-data-list__key">Requestor</dt>
+                    <dd class="c-data-list__value">{{r.requestor_name}}</dd>
+                    <dt class="c-data-list__key">Requestor Email</dt>
+                    <dd class="c-data-list__value">{{r.requestor_email}}</dd>
+                    <dt class="c-data-list__key">Exception Type</dt>
+                    <dd class="c-data-list__value">{{r.request_type}}</dd>  
+                    <dt class="c-data-list__key">Status</dt>
+                    <dd class="c-data-list__value">{{r.status}}</dd>
+                    <dt class="c-data-list__key">Outcome</dt>
+                    <dd class="c-data-list__value">{{r.outcome}}</dd>                   
+                    <dt class="c-data-list__key">File Type</dt>                
+                    <dd class="c-data-list__value">{{r.data_file_name}}</dd>
+                    <dt class="c-data-list__key">Field Number</dt>                
+                    <dd class="c-data-list__value">{{r.field_number}}</dd>
+                    <dt class="c-data-list__key">Required Threshold</dt>                
+                    <dd class="c-data-list__value">{{r.required_threshold}}</dd>
+                    <dt class="c-data-list__key">Requested Expiration Date</dt>                
+                    <dd class="c-data-list__value">{{r.requested_expiration_date}}</dd>
+                    <dt class="c-data-list__key">Explanation Justification</dt>
+                    <dd class="c-data-list__value">{{r.explanation_justification}}</dd>
+                    <dt class="c-data-list__key">Last Updated</dt>
+                    <dd class="c-data-list__value">{{r.updated_at}}</dd> 
+                </dl> 
+                  <hr>
+              </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - "apcd-cms/**"
+      - "apcd_cms/**"
 
 jobs:
   build_commit:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apcd-cms
+        working-directory: apcd_cms
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,6 +34,6 @@ jobs:
       - name: Build & push commit tagged Docker image
         uses: docker/build-push-action@v5
         with:
-          context: apcd-cms
+          context: apcd_cms
           push: true
           tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}

@@ -1,0 +1,124 @@
+{% extends "standard.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'admin_extension/css/table.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>View Extension Requests</h1>
+  <p style="margin-bottom: 30px">All submitted extension requests</p>
+  <hr />
+  <div class="filter-container">
+    <div class="filter-content">
+      <span><b>Filter by Status: </b></span>
+      <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
+        {% for option in status_options %}
+          <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      <span><b>Filter by Organization: </b></span>
+      <select id="organizationFilter" class="status-filter org-filter" onchange="sortByOrg()">
+        <!-- Value set here so dropdown is not blank but set to All-->
+        {% for option in org_options %}
+          <option class="dropdown-text" {% if option == selected_org %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+      {% if selected_status or selected_org %}
+        <button onclick="clearSelections()">Clear Options</button>
+      {% endif %}
+    </div>
+  </div>
+  <table id="extensionTable" class="extension-table">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody id='extensionTableBody'>
+        {% for r in page %}
+              <tr>
+                <td class="created">{{r.created_at}}</td>
+                <td class="entity_name">{{r.entity_name}}</td>
+                <td class="requestor_name">{{r.requestor_name}}</td>
+                <td class="extension_type">{{r.extension_type}}</td>
+                <td class="outcome">{{r.outcome}}</td>
+                <td class="status">{{r.status}}</td>
+                <td class="approved-expiration-date">{{r.approved_expiration_date}}</td>
+                <td class="modal-cell">
+                  {% include "view_admin_extension_modal.html" %}
+                  {% include "edit_extension_modal.html" %}                   
+                    <select id='actionsDropdown_{{r.extension_id}}'  onchange="openAction('{{r.extension_id}}')">
+                      <div class="filter-container">
+                        <div class="filter-content">
+                          <option value="">Select Action</option>
+                          <option value="viewAdminExtensions">View Record</option>
+                          <option value="editExtension">Edit Record</option>
+                        </div>
+                      </div>
+                    </select>
+                </td>
+                </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% include 'paginator.html' %}
+</div>
+<script>
+  
+  function filterTableByStatus() {
+        var statusDropdown, statusValue, url_params, url, xhr;
+        statusDropdown = document.getElementById("statusFilter");
+        statusValue =  statusDropdown.value;
+        url_params = `?status=${statusValue}`;
+        {% if selected_org %}
+            url_params = `?status=${statusValue}&org={{selected_org}}`;
+        {% endif %}
+        url = `/administration/list-extensions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function sortByOrg() {
+        var orgDropdown, orgValue, url_params, url, xhr;
+        orgDropdown = document.getElementById('organizationFilter');
+        orgValue =  orgDropdown.value;
+        url_params = `?org=${orgValue}`;
+        {% if selected_status %}
+            url_params = `?status={{selected_status}}&org=${orgValue}`;
+        {% endif %}
+        url = `/administration/list-extensions/${url_params}`;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.send();
+        window.location.href = url;
+        window.location.load();
+    }
+    function clearSelections() {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', '/administration/list-extensions/')
+        xhr.send()
+        window.location.href = '/administration/list-extensions/';
+        window.location.load();
+    }
+    function openAction(extension_id) {
+    var actionsDropdown, selectedOption, modal_id;
+    actionsDropdown = document.getElementById(`actionsDropdown_${extension_id}`);
+    /* grabs dropdown option number selected by user via selectedIndex, 
+      then grabs actual value associated with that option via 
+      options[index].value */
+    selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+    modal_id = `${selectedOption}Modal_${extension_id}`;
+    $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+  
+    actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+  }
+</script>
+{% endblock %}
