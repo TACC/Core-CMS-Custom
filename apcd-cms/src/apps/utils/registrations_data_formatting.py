@@ -12,7 +12,7 @@ def _set_registration(reg, reg_ents, reg_conts):
                     city=reg[9],
                     state=reg[10]
                 ),
-            'reg_status': reg[5].title(),
+            'reg_status': reg[5].title() if reg[5] else None,
             'reg_id': reg[0],
             'year': reg[12],
             'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
