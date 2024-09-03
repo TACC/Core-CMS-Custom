@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.views import View
 from django.template import loader
@@ -27,7 +27,7 @@ class ViewUsersTable(TemplateView):
         status = request.GET.get('status', 'All')
         org = request.GET.get('org', 'All')
         page_number = int(request.GET.get('page', 1))
-        items_per_page = int(request.GET.get('limit', 10))  # Default to 10 items per page
+        items_per_page = int(request.GET.get('limit', 50)) 
 
         try:
             user_content = get_users()
@@ -73,7 +73,32 @@ class ViewUsersTable(TemplateView):
         modal_content = loader.render_to_string(modal_template)
         return JsonResponse({'content': modal_content})
 
+    def post(self, request):
+        form = request.POST.copy()
 
+        def _err_msg(resp):
+            if hasattr(resp, 'pgerror'):
+                return resp.pgerror
+            if isinstance(resp, Exception):
+                return str(resp)
+            return None
+
+        def _edit_user(form):
+            errors = []
+            user_response = update_user(form)
+            if _err_msg(user_response):
+                errors.append(_err_msg(user_response))
+            if len(errors) != 0:
+                logger.debug(print(errors))
+                template = loader.get_template('view_user_edit_error.html')
+            else:
+                logger.debug(print("success"))
+                template = loader.get_template('view_user_edit_success.html')
+            return template
+
+        template = _edit_user(form)
+        return HttpResponse(template.render({}, request))
+    
     def filter_users(self, users, status, org):
         def _set_user(usr):
             return {

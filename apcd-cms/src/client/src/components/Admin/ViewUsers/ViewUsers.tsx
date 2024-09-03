@@ -41,7 +41,7 @@ export const ViewUsers: React.FC = () => {
         const orgParam = queryParams.get('org') || 'All';
 
         // Fetch initial user data
-        await fetchData(statusParam, orgParam);
+        await fetchData(statusParam, orgParam, page);
 
         // Update state with URL params
         setStatus(statusParam);
@@ -67,14 +67,6 @@ export const ViewUsers: React.FC = () => {
         params: { status: statusFilter, org: orgFilter, page: page },  // Include the page parameter
       });
       setUserData(userResponse.data.response);
-
-      console.log('userResponse.data:', userResponse.data);
-      console.log('userResponse.data.response:', userResponse.data.response);
-      console.log('Total Pages:', userResponse.data.response.total_pages);
-      console.log('Current Page Number:', userResponse.data.response.page_num);
-
-
-
     } catch (err) {
       setError('Error fetching filtered data');
       console.error('Error fetching filtered data:', err);
@@ -234,8 +226,8 @@ export const ViewUsers: React.FC = () => {
       <div className={styles.paginatorContainer}>
         <Paginator
           pages={userData?.total_pages ?? 0}  
-          current={userData?.page_num ?? 0}                      
-          callback={setPage}  // Pass setPage as the callback function          
+          current={userData?.page_num ?? 1}                      
+          callback={handlePageChange}  // Pass setPage as the callback function          
         />
       </div>
       {selectedUser && viewModalOpen && (
