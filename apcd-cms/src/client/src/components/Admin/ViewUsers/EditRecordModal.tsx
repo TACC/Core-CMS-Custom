@@ -10,9 +10,10 @@ interface EditRecordModalProps {
   isOpen: boolean;
   toggle: () => void;
   user: UserRow | null;
+  onEditSuccess?: (updatedUser: UserRow) => void;
 }
 
-const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user }) => {
+const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user, onEditSuccess }) => {  
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -32,7 +33,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
     notes: Yup.string().max(2000, 'Notes cannot exceed 2000 characters').nullable(),
   });
   
-
   const handleSave = async (values: UserRow, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
     const { user_number } = values;
     const url = `administration/users/${user_number}/`;
@@ -42,11 +42,15 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
         method: 'PUT',
         body: values,
       });
-      console.log('Save successful:', response.data);
+  
+      if (onEditSuccess && response) {
+        onEditSuccess(response); 
+      }
+  
       setSuccessModalOpen(true);
     } catch (error: any) {
       console.error('Error saving data:', error);
-      console.log(url)
+      console.log(url);
       if (error.response && error.response.data) {
         // Use error message from the server response
         setErrorMessage(error.response.data.message || 'An error occurred while saving the data. Please try again.');
@@ -59,6 +63,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
       setSubmitting(false);
     }
   };
+  
 
   const userFields = [
     { label: 'User ID', value: user.user_id },
@@ -70,7 +75,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({ isOpen, toggle, user 
     { label: 'Status', value: user.status },
     { label: 'Created Date', value: user.created_at },
     { label: 'Updated Date', value: user.updated_at },
-    { label: 'Notes', value: user.notes !== null ? user.notes : 'None' },
+    { label: 'Notes', value: user.notes ? user.notes : "None" },
   ];
 
   return (

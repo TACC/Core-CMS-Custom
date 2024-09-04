@@ -32,7 +32,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, toggle, use
         <p><strong>Status:</strong> {user.status}</p>
         <p><strong>Created Date:</strong> {user.created_at}</p>
         <p><strong>Updated Date:</strong> {user.updated_at}</p>
-        <p><strong>Notes:</strong> {user.notes !== null ? user.notes : "None"}</p>
+        <p><strong>Notes:</strong> {user.notes ? user.notes : "None"}</p>
       </ModalBody>
     </Modal>
   );

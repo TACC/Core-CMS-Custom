@@ -64,7 +64,7 @@ export const ViewUsers: React.FC = () => {
   
       // Fetch filtered user data with pagination
       const userResponse = await axios.get('/administration/view-users/api/', {
-        params: { status: statusFilter, org: orgFilter, page: page },  // Include the page parameter
+        params: { status: statusFilter, org: orgFilter, page: page },  
       });
       setUserData(userResponse.data.response);
     } catch (err) {
@@ -107,16 +107,22 @@ export const ViewUsers: React.FC = () => {
     }
   };
 
-  const closeModal = () => {
-    setViewModalOpen(false);
-    setEditModalOpen(false);
-    setSelectedUser(null);
-  };
-
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= (userData?.total_pages ?? 1)) {
       setPage(newPage);
     }
+  };
+
+  const handleEditSuccess = (updatedUser: UserRow) => {
+    // Refresh user data after editing is successful
+    fetchData(status, org, page);
+    setEditModalOpen(false);
+  };
+
+  const closeModal = () => {
+    setViewModalOpen(false);
+    setEditModalOpen(false);
+    setSelectedUser(null);
   };
 
   if (isLoading) {
@@ -242,6 +248,7 @@ export const ViewUsers: React.FC = () => {
           isOpen={editModalOpen}
           toggle={closeModal}
           user={selectedUser}
+          onEditSuccess={handleEditSuccess}
         />
       )}
     </div>
