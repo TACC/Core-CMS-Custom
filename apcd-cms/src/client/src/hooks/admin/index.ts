@@ -64,12 +64,16 @@ export type RegistrationResult = {
 
 export type UserRow = {
   user_id: string;
+  user_email: string;
   user_name: string;
   entity_name: string;
   role_name: string;
   status: string;
   user_number: string;
-};
+  created_at: string;
+  updated_at: string;
+  notes: string;
+}
 
 export type UserResult = {
   header: string[];
@@ -79,6 +83,8 @@ export type UserResult = {
   query_str: string;
   pagination_url_namespaces: string;
   page: UserRow[];
+  page_num: number;
+  total_pages: number;
 };
 
 export type SubmissionRow = {
