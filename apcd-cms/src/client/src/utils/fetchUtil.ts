@@ -18,7 +18,14 @@ interface FetchUtilParams {
   body?: any;
 }
 
-export async function fetchUtil({ url, params, method = 'GET', headers = {}, body, ...options }: FetchUtilParams) {
+export async function fetchUtil({
+  url,
+  params,
+  method = 'GET',
+  headers = {},
+  body,
+  ...options
+}: FetchUtilParams) {
   const request = new URL(url, window.location.origin);
   for (const [key, val] of Object.entries(params || {})) {
     request.searchParams.append(key, val);
@@ -28,7 +35,7 @@ export async function fetchUtil({ url, params, method = 'GET', headers = {}, bod
     method,
     credentials: 'same-origin',
     headers: {
-      'X-CSRFToken': Cookies.get('csrftoken') ||'',
+      'X-CSRFToken': Cookies.get('csrftoken') || '',
       'Content-Type': 'application/json',
       ...headers,
     },
