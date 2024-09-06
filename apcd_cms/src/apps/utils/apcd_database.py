@@ -778,8 +778,9 @@ def create_threshold_exception(form, iteration, sub_data):
             field_number,
             requested_threshold,
             explanation_justification,
-            status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            status,
+            required_threshold
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             _clean_value(form['business-name_{}'.format(iteration)]),
