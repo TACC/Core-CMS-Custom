@@ -13,8 +13,15 @@ input[id^="threshold-requested"]::-webkit-outer-spin-button
   -moz-appearance:textfield;
 }
 
+[id^="required_threshold"] {
+  background-color: #e9ecef; 
+  color: #6c757d; 
+  border-color: #ced4da;
+  cursor: not-allowed; 
+}
+
 /* Field Sizes */
-[id^="threshold-requested"], [id^="expiration-date"] {
+[id^="threshold-requested"], [id^="expiration-date"], [id^="required_threshold"] {
   min-width: 15ch;
 }
 /* To make sure sup values are not cut off when set as a label*/
