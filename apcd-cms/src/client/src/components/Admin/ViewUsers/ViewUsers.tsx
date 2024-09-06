@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserRow, UserResult } from 'hooks/admin';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ViewRecordModal from './ViewRecordModal';  
+import ViewRecordModal from './ViewRecordModal';
 import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
-import styles from './ViewUsers.module.scss';  // Import SCSS module
+import styles from './ViewUsers.module.scss'; // Import SCSS module
 
 export const ViewUsers: React.FC = () => {
   const [statusOptions, setStatusOptions] = useState<string[]>([]);
@@ -32,7 +32,9 @@ export const ViewUsers: React.FC = () => {
         setError(null);
 
         // Fetch dropdown options
-        const optionsResponse = await axios.get('/administration/view-users/api/options');
+        const optionsResponse = await axios.get(
+          '/administration/view-users/api/options'
+        );
         setStatusOptions(optionsResponse.data.status_options || []);
         setFilterOptions(optionsResponse.data.org_options || []);
 
@@ -57,14 +59,18 @@ export const ViewUsers: React.FC = () => {
     fetchOptionsAndData();
   }, [location.search, page]);
 
-  const fetchData = async (statusFilter: string, orgFilter: string, page: number = 1) => {
+  const fetchData = async (
+    statusFilter: string,
+    orgFilter: string,
+    page: number = 1
+  ) => {
     try {
       setLoading(true);
       setError(null);
-  
+
       // Fetch filtered user data with pagination
       const userResponse = await axios.get('/administration/view-users/api/', {
-        params: { status: statusFilter, org: orgFilter, page: page },  
+        params: { status: statusFilter, org: orgFilter, page: page },
       });
       setUserData(userResponse.data.response);
     } catch (err) {
@@ -74,7 +80,7 @@ export const ViewUsers: React.FC = () => {
       setLoading(false);
     }
   };
-  
+
   const updateURL = (newStatus: string, newOrg: string) => {
     const queryParams = new URLSearchParams();
     if (newStatus !== 'All') queryParams.set('status', newStatus);
@@ -94,7 +100,10 @@ export const ViewUsers: React.FC = () => {
     updateURL(status, newOrg);
   };
 
-  const handleActionChange = (event: React.ChangeEvent<HTMLSelectElement>, user: UserRow) => {
+  const handleActionChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    user: UserRow
+  ) => {
     const action = event.target.value;
     setSelectedUser(user);
     setDropdownValue('');
@@ -217,9 +226,11 @@ export const ViewUsers: React.FC = () => {
                 <td>
                   <select
                     onChange={(event) => handleActionChange(event, user)}
-                    value={dropdownValue} 
+                    value={dropdownValue}
                   >
-                    <option value="" disabled>Select Action</option>
+                    <option value="" disabled>
+                      Select Action
+                    </option>
                     <option value="view">View Record</option>
                     <option value="edit">Edit Record</option>
                   </select>
@@ -231,9 +242,9 @@ export const ViewUsers: React.FC = () => {
       </div>
       <div className={styles.paginatorContainer}>
         <Paginator
-          pages={userData?.total_pages ?? 0}  
-          current={userData?.page_num ?? 1}                      
-          callback={handlePageChange}  // Pass setPage as the callback function          
+          pages={userData?.total_pages ?? 0}
+          current={userData?.page_num ?? 1}
+          callback={handlePageChange} // Pass setPage as the callback function
         />
       </div>
       {selectedUser && viewModalOpen && (

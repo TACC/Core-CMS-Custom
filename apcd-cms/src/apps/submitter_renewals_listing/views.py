@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_submitter_info, get_registration_entities
 from apps.utils.apcd_groups import has_groups
+from django.views.generic.base import TemplateView
 from apps.admin_regis_table.views import RegistrationsTable
 import logging
 import json
@@ -22,21 +23,21 @@ class SubmittersTable(RegistrationsTable):
             registration_list = get_registrations(submitter_code=submitter_code)
             for registration in registration_list:
                 registrations_content.append(registration)
-            context = self.get_context_data(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
-            template = loader.get_template(self.template_name)
-            return HttpResponse(template.render(context, request))
+            response_json = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
+            return JsonResponse({'response': response_json})
         except Exception as e:
             logger.error("An error occurred: %s", str(e))
-            context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
-            template = loader.get_template('submitter_listing_error.html')
-            return HttpResponse(template.render(context, request))
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Internal server error',
+            }, status=500)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
+    def get_registration_list_json(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
         registrations_entities = []
         registrations_contacts = []
         try:
@@ -48,14 +49,14 @@ class SubmittersTable(RegistrationsTable):
                     registrations_contacts.append(c)
                 for e in entity:                 
                     registrations_entities.append(e) 
-            context = super().get_context_data(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
-            context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-            context['pagination_url_namespaces'] = 'register:submitter_regis_table'
-            return context
+            reg_data = super().get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+            reg_data['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
+            reg_data['pagination_url_namespaces'] = 'register:submitter_regis_table'
+            return reg_data
         except Exception as e:
-            logger.error("A context error occurred: %s", str(e))
-            context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
-            return context
+            logger.error("A data loading error occurred: %s", str(e))
+            reg_data = super(RegistrationsTable, self).get_registration_list_json(*args, **kwargs)
+            return reg_data
 
 
 def get_submitter_code(request):
@@ -63,4 +64,4 @@ def get_submitter_code(request):
     submitter_codes = []
     for i in submitter:
         submitter_codes.append(i[1])
-    return JsonResponse({'submitter_code' : submitter_codes} if submitter_codes else [], safe=False)
+    return JsonResponse({'submitter_code': submitter_codes} if submitter_codes else [], safe=False)
