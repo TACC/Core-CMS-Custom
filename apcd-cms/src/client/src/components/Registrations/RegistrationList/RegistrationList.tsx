@@ -124,10 +124,10 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
           {data?.page.map((row: RegistrationRow, rowIndex: number) => (
             <tr key={rowIndex}>
               <td>{row.biz_name}</td>
-              <td>{row.year}</td>
+              <td>{row.year ? row.year : 'None'}</td>
               <td>{row.type}</td>
               <td>{row.location}</td>
-              <td>{row.reg_status}</td>
+              <td>{row.reg_status ? row.reg_status : 'None'}</td>
               <td>
                 <select
                   id={`actionsDropdown_${row.reg_id}`}
