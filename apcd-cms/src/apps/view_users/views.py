@@ -1,9 +1,12 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.core.paginator import Paginator
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
+from django.views import View
 from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -16,21 +19,27 @@ class ViewUsersTable(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # Check if the request is for API data or template
         if 'options' in request.path:
             return self.get_options(request)
         if 'modal' in request.path:
             return self.get_modals(request, kwargs['modal_type'])
         
-        # Handle filtering parameters
         status = request.GET.get('status', 'All')
         org = request.GET.get('org', 'All')
+        page_number = int(request.GET.get('page', 1))
+        items_per_page = int(request.GET.get('limit', 50)) 
 
         try:
-            # Fetch and filter users
             user_content = get_users()
             filtered_users = self.filter_users(user_content, status, org)
-            context = self.get_view_users_json(filtered_users)
+
+            paginator = Paginator(filtered_users, items_per_page)
+            page_info = paginator.get_page(page_number)
+
+            context = self.get_view_users_json(list(page_info))
+            context['page_num'] = page_info.number
+            context['total_pages'] = paginator.num_pages
+
             return JsonResponse({'response': context})
         except Exception as e:
             logger.error("Error fetching filtered user data: %s", e)
@@ -66,14 +75,14 @@ class ViewUsersTable(TemplateView):
 
     def post(self, request):
         form = request.POST.copy()
-        
+
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-        
+
         def _edit_user(form):
             errors = []
             user_response = update_user(form)
@@ -86,10 +95,10 @@ class ViewUsersTable(TemplateView):
                 logger.debug(print("success"))
                 template = loader.get_template('view_user_edit_success.html')
             return template
-        
+
         template = _edit_user(form)
         return HttpResponse(template.render({}, request))
-
+    
     def filter_users(self, users, status, org):
         def _set_user(usr):
             return {
@@ -135,6 +144,10 @@ class ViewUsersTable(TemplateView):
                 'role_name': usr['role_name'],
                 'status': usr['status'],
                 'user_number': usr['user_number'],
+                'user_email': usr['user_email'],
+                'notes': usr['notes'],
+                'created_at': usr['created_at'],
+                'updated_at': usr['updated_at'],
                 'view_link': f"/administration/view-user-details/{usr['user_id']}",
                 'edit_link': f"/administration/edit-user/{usr['user_id']}",
             }
@@ -143,3 +156,30 @@ class ViewUsersTable(TemplateView):
             context['page'].append(_set_user(user))
 
         return context
+
+
+class UpdateUserView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+    def _err_msg(self, resp):
+        if hasattr(resp, 'pgerror'):
+            return resp.pgerror
+        if isinstance(resp, Exception):
+            return str(resp)
+        return None
+
+    def put(self, request, user_number):
+        data = json.loads(request.body)
+        errors = []
+        user_response = update_user(data)
+        if self._err_msg(user_response):
+            errors.append(self._err_msg(user_response))
+        if len(errors) != 0:
+            logger.debug(print(errors))
+            return JsonResponse({'message': 'Cannot edit user'}, status=500)
+
+        return JsonResponse({'message': 'User updated successfully'})

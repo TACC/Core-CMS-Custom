@@ -32,11 +32,14 @@ export const AdminExtensions: React.FC = () => {
             <td>{row.ext_status}</td>
             <td>{row.approved_expiration_date}</td>
             <td className="modal-cell">
-                <select id={`actionsDropdown_${row.ext_id}`} onChange={`openAction('${row.ext_id}')`}>
-                      <option value="">Select Action</option>
-                      <option value="viewAdminExtensions">View Record</option>
-                      <option value="editExtension">Edit Record</option>
-                </select>
+              <select
+                id={`actionsDropdown_${row.ext_id}`}
+                onChange={`openAction('${row.ext_id}')`}
+              >
+                <option value="">Select Action</option>
+                <option value="viewAdminExtensions">View Record</option>
+                <option value="editExtension">Edit Record</option>
+              </select>
             </td>
           </tr>
         ))}

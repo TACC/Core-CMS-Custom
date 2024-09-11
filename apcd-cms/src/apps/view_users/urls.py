@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from apps.view_users.views import ViewUsersTable, update_user_view
+from apps.view_users.views import ViewUsersTable, UpdateUserView, UpdateUserView
 
 app_name = 'administration'
 urlpatterns = [
@@ -8,5 +8,6 @@ urlpatterns = [
     path('view-users/api/', ViewUsersTable.as_view(), name='view_users_api'),
     path('view-users/api/options', ViewUsersTable.as_view(), name='view_users_api_options'),
     path('view-users/api/modal/<str:modal_type>/', ViewUsersTable.as_view(), name='view_users_modal'),
-    path('users/<int:user_number>/', update_user_view, name='update_user'), 
+    path('view-users/api/modal/<str:modal_type>/', ViewUsersTable.as_view(), name='view_users_modal'),
+    path('users/<int:user_number>/', UpdateUserView.as_view(), name='update_user'),
 ]
