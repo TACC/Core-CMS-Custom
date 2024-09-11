@@ -46,7 +46,7 @@ const ViewRegistrationModal: React.FC<{
                 {for_self ? 'Self' : 'Other'}
               </dd>
               <dt className="c-data-list__key">Registration Year</dt>
-              <dd className={styles.verticalDataValue}>{year}</dd>
+              <dd className={styles.verticalDataValue}>{year ? year : "None"}</dd>
               <dt className="c-data-list__key">Type</dt>
               <dd className={styles.verticalDataValue}>{type}</dd>
               <dt className="c-data-list__key">Business Name</dt>
@@ -69,11 +69,11 @@ const ViewRegistrationModal: React.FC<{
                 <dt className="c-data-list__key">Name</dt>
                 <dd className={styles.verticalDataValue}>{entity.ent_name}</dd>
                 <dt className="c-data-list__key">FEIN</dt>
-                <dd className={styles.verticalDataValue}>{entity.fein}</dd>
+                <dd className={styles.verticalDataValue}>{entity.fein ? entity.fein : "None"}</dd>
                 <dt className="c-data-list__key">License Number</dt>
-                <dd className={styles.verticalDataValue}>{entity.license}</dd>
+                <dd className={styles.verticalDataValue}>{entity.license ? entity.license : "None"}</dd>
                 <dt className="c-data-list__key">NAIC Company Code</dt>
-                <dd className={styles.verticalDataValue}>{entity.naic}</dd>
+                <dd className={styles.verticalDataValue}>{entity.naic ? entity.naic : "None"}</dd>
                 <h6>Type of Plan</h6>
                 <dd>
                   <dl className="c-data-list--is-vert c-data-list--is-wide">
