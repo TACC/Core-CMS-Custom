@@ -1,0 +1,7 @@
+/* To resize logo */
+.portal-logo {
+    height: 80px;
+}
+.s-header.navbar {
+    --nav-padding-vert: 10px;
+}
