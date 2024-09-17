@@ -5,17 +5,18 @@
         <input type="hidden" name="edit-registration-form" value>
         <input type="hidden" name="reg_id" value="{{r.reg_id}}">
 
-        <label for="reg_status"> Registration Status </label>
-
-        <div class="field-wrapper select">
-            <select name="reg_status" class="choicefield" id="reg_status">
-                {% for option in status_options %}
-                {% if not forloop.first %}
-                    <option class="dropdown-text" {% if option == r.reg_status %}selected{% endif %}>{{ option }}</option>
-                {% endif %}
-                {% endfor %} 
-            </select>
-        </div>
+        {% if not renew %}
+            <label for="reg_status"> Registration Status </label>
+            <div class="field-wrapper select">
+                <select name="reg_status" class="choicefield" id="reg_status">
+                    {% for option in status_options %}
+                    {% if not forloop.first %}
+                        <option class="dropdown-text" {% if option == r.reg_status %}selected{% endif %}>{{ option }}</option>
+                    {% endif %}
+                    {% endfor %} 
+                </select>
+            </div>
+        {% endif %}
 
     {% endif %}
 
