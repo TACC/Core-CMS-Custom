@@ -108,15 +108,15 @@ class AdminExtensionsTable(TemplateView):
             outcome = title_case(extension[8])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
-                context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x))
+                context['org_options'] = sorted(context['org_options'], key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
                 # Remove empty strings
                 context['org_options'] = [option for option in context['org_options'] if option != '']
             if status not in context['status_options']:
                 context['status_options'].append(status)
-                context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
+                context['status_options'] = sorted(context['status_options'], key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
-                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x is not None, x))
+                context['outcome_options'] = sorted(context['outcome_options'],key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
