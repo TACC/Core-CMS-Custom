@@ -72,7 +72,7 @@ class RegistrationsTable(TemplateView):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete', 'Withdrawn']
         context['org_options'] = ['All']
 
         try:
