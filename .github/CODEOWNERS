@@ -1,0 +1,15 @@
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#example-of-a-codeowners-file
+
+# architecture
+/.github/  @wesleyboar
+.gitignore @wesleyboar
+
+# projects
+#             simple customizations
+/*_assets/    @wesleyboar
+#             uses incomplete tup-cms circa 2023
+/demdata_cms/ @wesleyboar
+
+# docs
+/docs/ @wesleyboar
+/README.md @wesleyboar
