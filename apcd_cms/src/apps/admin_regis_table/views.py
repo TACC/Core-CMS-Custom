@@ -72,7 +72,8 @@ class RegistrationsTable(TemplateView):
         context = super(RegistrationsTable, self).get_context_data(*args, **kwargs)
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete', 'Withdrawn']
+        context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
         context['org_options'] = ['All']
 
         try:
@@ -91,22 +92,23 @@ class RegistrationsTable(TemplateView):
             associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
             associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
             registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
-            org_name = registration[7]
+            org_name = registration[5]
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
+                context['org_options'] = sorted(context['org_options'],key=lambda x: (x != 'All', x is None, x if x is not None else ''))
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
-        context['selected_status'] = None
-        if status_filter is not None and status_filter != 'All':
+        context['selected_status'] = 'All'
+        if status_filter and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             registration_table_entries = table_filter(status_filter, registration_table_entries, 'reg_status')
 
-        context['selected_org'] = None
-        if org_filter is not None and org_filter != 'All':
+        context['selected_org'] = 'All'
+        if org_filter and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
             registration_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), registration_table_entries, 'biz_name')

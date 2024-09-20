@@ -21,7 +21,7 @@
     <div class="filter-content">
       <span><b>Filter by Status: </b></span>
       <select id="statusFilter" class="status-filter" onchange="filterTableByStatus()">
-        {% for option in filter_options %}
+        {% for option in status_options %}
           <option class="dropdown-text" {% if option == selected_status %}selected{% endif %}>{{ option }}</option>
         {% endfor %}
       </select>
@@ -32,7 +32,7 @@
           <option class="dropdown-text" value={{option}} {% if option == selected_sort %}selected{% endif %}>{{ display_text }}</option>
         {% endfor %}
       </select>
-      {% if selected_status or selected_sort %}
+      {% if selected_status  != 'All' or selected_sort != None %}
         <button onclick="clearSelections()">Clear Options</button>
       {% endif %}
     </div>

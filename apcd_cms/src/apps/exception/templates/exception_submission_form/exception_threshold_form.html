@@ -7,201 +7,180 @@
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
-
-  <div class="row">
-    <div class="col">
-      <h1>Threshold Exception Request</h1>
-      <hr />
-
-      <p>
-        This form should be completed and submitted only by entities who are
-        eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
-        and associated regulations. Please review the legislation and regulation before
-        submitting this form. Links to both can be found on the
-        <a href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm" target="_blank">Texas All-Payor Claims Database
-          website.</a>
-      </p>
-      <div class="forms">
-
-        <div class="form-wrapper">
-          <form action="" method="POST" id="threshold-form">
-            {% csrf_token %}
-            <div class="form-errors" style="display: none"></div>
-            <div class="exception-header-1">
-
-
-            <hr/>
-              <h4>Requested Threshold Reduction</h4>
-              <div id="exception_block_1">
-                <div class="field-wrapper textinput required">
-                  <label for="business-name_1">
-                    Business Name<span class="asterisk">*</span>
-                  </label>
-                  <div class="field-errors" style="display: none"></div>
-                  <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
-                    {% for submitter in submitters %}
-                    <option class="dropdown-text" value={{submitter.submitter_id}}>
-                      {{submitter.entity_name}} - Payor Code: {{submitter.payor_code}}
-                      </option>
-                    {% endfor %}
-                  </select>
-    
-                </div>
-              <div class="field-wrapper select required">
-                <div class="field-errors" style="display: none"></div>
-  
-                <label for="file_type_1">File Type <span class="asterisk">*</span></label>
-  
-  
-                <select name="file_type_1" required="required" class="choicefield" id="file_type_1"
-                 value="none">
-                  <option value="">-- Choose File Type --</option>
-                  <option value="dc">Dental Claims</option>
-  
-                  <option value="mc">
-                    Medical Claims
+  <h1>Threshold Exception Request</h1>
+  <hr />
+  <p>
+    This form should be completed and submitted only by entities who are
+    eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
+    and associated regulations. Please review the legislation and regulation before
+    submitting this form. Links to both can be found on the
+    <a href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm" target="_blank">Texas All-Payor Claims Database
+      website.</a>
+  </p>
+  <div class="forms">
+    <div class="form-wrapper">
+      <form action="" method="POST" id="threshold-form">
+        {% csrf_token %}
+        <div class="form-errors" style="display: none"></div>
+        <div class="exception-header-1">
+          <hr/>
+          <h4>Requested Threshold Reduction</h4>
+        </div>
+          <div id="exception_block_1">
+            <div class="field-wrapper textinput required">
+              <label for="business-name_1">
+                Business Name<span class="asterisk">*</span>
+              </label>
+              <div class="field-errors" style="display: none"></div>
+              <select name='business-name_1' required='required' class="choicefield" id='business-name_1'>
+                {% for submitter in submitters %}
+                <option class="dropdown-text" value={{submitter.submitter_id}}>
+                  {{submitter.entity_name}} - Payor Code: {{submitter.payor_code}}
                   </option>
-  
-                  <option value="me">
-                    Member Eligibility
-                  </option>
-  
-                  <option value="pc">
-                    Pharmacy Claims
-                  </option>
-  
-                  <option value="pv">
-                    Provider
-                  </option>
-                </select>
-              </div>
-              <div class="field-wrapper select required" >
-                <div class="field-errors" style="display: none"></div>
-                <label for="field-threshold-exception_1">Field Code <span class="asterisk">*</span></label>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field-wrapper select required">
+              <div class="field-errors" style="display: none"></div>
 
-                <select name="field-threshold-exception_1" required="required" class="choicefield" 
-                id="field-threshold-exception_1">
-                  <!-- Populates in jQuery script -->
-                  <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
-                </select>
-              </div>
-              <div class="o-grid o-grid--col-auto-count">
+              <label for="file_type_1">File Type <span class="asterisk">*</span></label>
+
+
+              <select name="file_type_1" required="required" class="choicefield" id="file_type_1"
+                value="none">
+                <option value="">-- Choose File Type --</option>
+                <option value="dc">Dental Claims</option>
+
+                <option value="mc">
+                  Medical Claims
+                </option>
+
+                <option value="me">
+                  Member Eligibility
+                </option>
+
+                <option value="pc">
+                  Pharmacy Claims
+                </option>
+
+                <option value="pv">
+                  Provider
+                </option>
+              </select>
+            </div>
+            <div class="field-wrapper select required" >
+              <div class="field-errors" style="display: none"></div>
+              <label for="field-threshold-exception_1">Field Code <span class="asterisk">*</span></label>
+              <select name="field-threshold-exception_1" required="required" class="choicefield" 
+              id="field-threshold-exception_1">
+                <!-- Populates in jQuery script -->
+                <option class=dropdown-text value=''>-- Select a File Type Above First --</option>
+              </select>
+            </div>
+            <div class="o-grid o-grid--col-auto-count">
               <div class="field-wrapper numberinput required">
                 <div class="field-errors" style="display: none"></div>
-
                 <label name="date-row" for="expiration-date_1">Expiration Date<sup>*</sup><span class="asterisk">*</span> </label>
-
                 <input type="date" name="expiration-date_1" class="numeric" id="expiration-date_1" inputmode="numeric"
                   pattern="\d{4}-\d{2}-\d{2}" required />
               </div>
-                
-
-                <div class="field-wrapper numberinput required">
-                  <div class="field-errors" style="display: none"></div>
-                  <label name="date-row" for="threshold-requested_1">
-                    Requested Threshold Percentage <span class="asterisk">*</span>
-                  </label>
-                  
-                  <div class="s-affixed-input-wrapper">
-                    <input type="number" name="threshold-requested_1" class="textinput" id="threshold-requested_1"
-                      inputmode="numeric" min="0" max="99" required />
-                    <span class="s-affixed-input-wrapper__suffix">%</span>
-                  </div>
-                  <!-- Populates in script-->
-                  <div id="help-text-threshold-requested_1" class="help-text">
-                  </div>
+              <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+                <label name="date-row" for="threshold-requested_1">
+                  Requested Threshold Percentage <span class="asterisk">*</span>
+                </label>
+                <div class="s-affixed-input-wrapper">
+                  <input type="number" name="threshold-requested_1" class="textinput" id="threshold-requested_1"
+                    inputmode="numeric" min="0" max="99" required />
+                  <span class="s-affixed-input-wrapper__suffix">%</span>
+                </div>
+                <!-- Populates in script-->
+                <div id="help-text-threshold-requested_1" class="help-text">
+                </div>
+              </div>
+              <div class="field-wrapper numberinput required">
+                <div class="field-errors" style="display: none"></div>
+                <label name="date-row" for="required_threshold_1">
+                  Required Threshold Percentage
+                </label>
+                <!-- Populates in script--> 
+                <div class="s-affixed-input-wrapper">
+                  <input type="number" name="required_threshold_1" class="textinput" id="required_threshold_1"
+                    inputmode="numeric" min="0" max="99" readonly />
+                  <span class="s-affixed-input-wrapper__suffix">%</span>
                 </div>
               </div>
             </div>
-            <h4 id="exception_header_2" style="display:none">Requested Threshold Reduction 2</h4>
-              <div id="exception_block_2"></div>
-            <h4 id="exception_header_3" style="display:none">Requested Threshold Reduction 3</h4>
-              <div id="exception_block_3"></div>
-            <h4 id="exception_header_4" style="display:none">Requested Threshold Reduction 4</h4>
-              <div id="exception_block_4"></div>
-            <h4 id="exception_header_5" style="display:none">Requested Threshold Reduction 5</h4>
-              <div id="exception_block_5"></div>
-            <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Threshold
-              Exception </button>
-            <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Threshold
-              Exception</button>
-            <hr />
-            <h4>Request and Justification</h4>
-            <div class="field-wrapper textarea required">
-              <p>Provide rationale for the exception request, outlining the reasons why the
-                organization is unable to comply with the relevant requirements. Provide as
-                much detail as possible regarding the exception request, indicating the
-                specific submission requirements for which relief is being sought. If applicable,
-                indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
-                    class="asterisk" id="justification-asterisk">
-                    *</span></label></p>
-
-              <div class="field-errors" style="display: none"></div>
-
-              <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form"
-                type="justification" id="justification" minlength="2" maxlength="2000" required></textarea>
-              <div class="help-text">
-                2000 character limit
-              </div>
-            </div>
-            <hr />
-            <h4>Acknowledgment of Terms</h4>
-            <div class="o-grid o-grid--col-auto-count">
-              <div class="field-wrapper textinput required">
-                <label for="requestor-name">
-                  Requestor Name<span class="asterisk">*</span>
-                </label>
-                <div class="field-errors" style="display: none"></div>
-
-                <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
-              </div>
-              <div class="field-wrapper emailinput required">
-                <label for="requestor-email">
-                  Requestor Email<span class="asterisk">*</span>
-                </label>
-                <div class="field-errors" style="display: none"></div>
-
-                <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
-                  id="requestor-email" pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$" />
-              </div>
-            </div>
-
-            <div class="field-wrapper checkbox required">
-              <div class="field-errors" style="display: none"></div>
-              <label for="accept-terms"> I understand and acknowledge that the Texas Department
-                of Insurance (TDI) may review the validity of the
-                information submitted on this form.</label>
-              <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
-                  required id="accept-terms" />
-                Accept<span class="asterisk">*</span></label>
-            </div>
-            <div class="button-wrapper submit">
-              <button class="form-button" type="submit" value="Submit">
-                Submit
-              </button>
-            </div>
-          </form>
         </div>
-      </div>
-      <div class="form-success" style="display: none">
-        <p>Thank you for your request.</p>
-      </div>
+        <h4 id="exception_header_2" style="display:none">Requested Threshold Reduction 2</h4>
+          <div id="exception_block_2"></div>
+        <h4 id="exception_header_3" style="display:none">Requested Threshold Reduction 3</h4>
+          <div id="exception_block_3"></div>
+        <h4 id="exception_header_4" style="display:none">Requested Threshold Reduction 4</h4>
+          <div id="exception_block_4"></div>
+        <h4 id="exception_header_5" style="display:none">Requested Threshold Reduction 5</h4>
+          <div id="exception_block_5"></div>
+        <button class="c-button c-button--primary" id="exception-add-btn" type="button">+ Add Another Threshold
+          Exception </button>
+        <button class="c-button c-button--secondary" id="exception-drop-btn" type="button">- Remove Last Threshold
+          Exception</button>
+        <hr />
+        <h4>Request and Justification</h4>
+        <div class="field-wrapper textarea required">
+          <p>Provide rationale for the exception request, outlining the reasons why the
+            organization is unable to comply with the relevant requirements. Provide as
+            much detail as possible regarding the exception request, indicating the
+            specific submission requirements for which relief is being sought. If applicable,
+            indicate how the organization plans to become compliant.<sup>**</sup><label for="justification"><span
+                class="asterisk" id="justification-asterisk">
+                *</span></label></p>
 
+          <div class="field-errors" style="display: none"></div>
 
-
-      {# Hidden links for future pages #}
-      {# TODO: Allow this template to render CMS admin-entered markup #}
-      <aside class="row" hidden>
-        <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-          <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
-
-          <p><a href="/submissions/exception">Exception Request</a></p>
-
-          <p><a href="/submissions/extension-request">Extension Request</a></p>
-
-          <p><a href="/workbench/dashboard">Dashboard</a></p>
+          <textarea name="justification" cols="40" rows="10" class="textinput" form="threshold-form"
+            type="justification" id="justification" minlength="2" maxlength="2000" required></textarea>
+          <div class="help-text">
+            2000 character limit
+          </div>
         </div>
-      </aside>
+        <hr />
+        <h4>Acknowledgment of Terms</h4>
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput required">
+            <label for="requestor-name">
+              Requestor Name<span class="asterisk">*</span>
+            </label>
+            <div class="field-errors" style="display: none"></div>
+
+            <input type="text" name="requestor-name" required class="textinput" id="requestor-name" />
+          </div>
+          <div class="field-wrapper emailinput required">
+            <label for="requestor-email">
+              Requestor Email<span class="asterisk">*</span>
+            </label>
+            <div class="field-errors" style="display: none"></div>
+
+            <input type="email" name="requestor-email" required class="emailinput" autocomplete="email"
+              id="requestor-email" pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[a-z]{2,4}$" />
+          </div>
+        </div>
+
+        <div class="field-wrapper checkbox required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="accept-terms"> I understand and acknowledge that the Texas Department
+            of Insurance (TDI) may review the validity of the
+            information submitted on this form.</label>
+          <label for="accept-terms"><input type="checkbox" name="accept-terms" value="true" class="checkbox"
+              required id="accept-terms" />
+            Accept<span class="asterisk">*</span></label>
+        </div>
+        <div class="button-wrapper submit">
+          <button class="form-button" type="submit" value="Submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
 
       {# Scripts #}
 
@@ -317,7 +296,20 @@
                     <!-- Populates in script-->
                     <div id="help-text-threshold-requested_${exceptions}" class="help-text">
                     </div>
+                    </div>
+                    <div class="field-wrapper numberinput required">
+                  <div class="field-errors" style="display: none"></div>
+                  <label name="date-row" for="required_threshold_${exceptions}">
+                    Required Threshold Percentage
+                  </label>
+                  <!-- Populates in script--> 
+                  <div class="s-affixed-input-wrapper">
+                    <input type="number" name="required_threshold_${exceptions}" class="textinput" id="required_threshold_${exceptions}"
+                      inputmode="numeric" min="0" max="99" readonly />
+                    <span class="s-affixed-input-wrapper__suffix">%</span>
                   </div>
+                  </div>
+              </div>
                   </div>`
               };
               return exceptions
@@ -337,12 +329,16 @@
           };
         // Removes helper text and field select options 
           function clearDataOnFileChange(exceptions) {
-            helpText = $(`#help-text-threshold-requested_${exceptions}`)
+            helpText = $(`#help-text-threshold-requested_${exceptions}`);
             fieldDropDown = $(`#field-threshold-exception_${exceptions}`);
+            requiredThreshold = $(`#required_threshold_${exceptions}`);
             for (let i = 0; i < fieldDropDown.length; i++) {
                 fieldDropDown[i].innerHTML = "";
                 helpText[i].innerHTML = "";
             };
+            if (requiredThreshold.length > 0) {
+              requiredThreshold.val('');
+            }
           };
         // To access previously hiddenexception blocks and populate with info from AJAX call.
         // Ppulates based on sliced id name of select element to get exception block number
@@ -381,6 +377,7 @@
           function getHelpText(fieldSelection, file_type, exceptions) {
             helpText = document.getElementById(`help-text-threshold-requested_${exceptions}`);
             thresholdInput = document.getElementById(`threshold-requested_${exceptions}`)
+            requiredThreshold = document.getElementById(`required_threshold_${exceptions}`)
             $.ajax({
                 url: "{% url 'exception:get-cdls' %}",
                 type: 'GET',
@@ -395,6 +392,7 @@
                           thresholdInput.max = cdls[i].threshold_value
                           helpText.innerHTML = "";
                           helpText.innerHTML = `Must be less than the ${cdls[i].threshold_value}% required.`
+                          requiredThreshold.value = `${cdls[i].threshold_value}`;
                       };
                   },
                 error: function(xhr, status, error) {
@@ -478,9 +476,6 @@
           * Exceptions cannot be granted for periods longer than a year.<br />
           ** Exceptions cannot be granted "from any requirement in insurance code Chapter 38".<br />
         </small>
-        <hr />
       </div>
-    </div>
-  </div>
 </div>
 {% endblock %}

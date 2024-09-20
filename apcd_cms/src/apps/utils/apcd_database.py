@@ -255,6 +255,7 @@ def update_registration(form, reg_id):
         operation = """UPDATE registrations
             SET
             submitting_for_self = %s,
+            registration_status = %s,
             org_type = %s,
             business_name = %s,
             mail_address = %s,
@@ -267,6 +268,7 @@ def update_registration(form, reg_id):
         RETURNING registration_id"""
         values = (
             True if form['on-behalf-of'] == 'true' else False,
+            form['reg_status'],
             form['type'],
             _clean_value(form['business-name']),
             _clean_value(form['mailing-address']),
@@ -719,7 +721,7 @@ def create_other_exception(form, sub_data):
             request_type,
             requested_expiration_date,
             explanation_justification,
-            status
+            status,
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
@@ -775,8 +777,9 @@ def create_threshold_exception(form, iteration, sub_data):
             field_number,
             requested_threshold,
             explanation_justification,
-            status
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            status,
+            required_threshold
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             _clean_value(form['business-name_{}'.format(iteration)]),
@@ -791,7 +794,8 @@ def create_threshold_exception(form, iteration, sub_data):
             _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
             _clean_value(form['threshold-requested_{}'.format(iteration)]),
             _clean_value(form['justification']),
-            "pending"
+            "pending",
+            _clean_value((form['required_threshold_{}'.format(iteration)])),
         )
         cur = conn.cursor()
         cur.execute(operation, values)
