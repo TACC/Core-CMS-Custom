@@ -98,8 +98,6 @@ class ViewUsersTable(TemplateView):
             table_entries.append(_set_user(user,))
             org_name = user[4] if user[4] else None
             if org_name not in context['filter_options']:  # prevent duplicates
-                logger.debug(print(org_name))
-                logger.debug(print("filter options is !!!!", context['filter_options']))
                 context['filter_options'].append(user[4])
                 context['filter_options'] = sorted(context['filter_options'],key=lambda x: (x != 'All', x is None, x if x is not None else ''))
                 
