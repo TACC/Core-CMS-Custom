@@ -29,7 +29,7 @@
         {% endfor %}
       </select>
 
-  {% if selected_status or selected_org %}
+      {% if selected_status != 'All' or selected_org != 'All' %}
         <button onclick="clearSelections()">Clear Options</button>
       {% endif %}
      </div>

@@ -64,7 +64,7 @@ class ViewUsersTable(TemplateView):
                     'user_id': usr[1],
                     'user_email': usr[2],
                     'user_name': usr[3],
-                    'entity_name': usr[4] if usr[4] else "Not Applicable",
+                    'entity_name': usr[4] if usr[4] else 'None',
                     'created_at': usr[5],
                     'updated_at': usr[6],
                     'notes': usr[7],
@@ -99,15 +99,14 @@ class ViewUsersTable(TemplateView):
             org_name = user[4]
             if org_name not in context['filter_options']:  # prevent duplicates
                 context['filter_options'].append(user[4])
-            if org_name is None and 'Not Applicable' not in context['filter_options']:
-                context['filter_options'].append('Not Applicable')
+            context['filter_options'] = sorted(context['filter_options'],key=lambda x: (x != 'All', x is None, x if x is not None else ''))
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
         role_filter = self.request.GET.get('role_name')
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter !='All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
@@ -117,7 +116,7 @@ class ViewUsersTable(TemplateView):
             context['selected_role'] = role_filter
             table_entries = table_filter(role_filter, table_entries, 'role_name', False)        
 
-        context['selected_org'] = None
+        context['selected_org'] = 'All'
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
