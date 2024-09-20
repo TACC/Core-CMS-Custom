@@ -463,7 +463,7 @@
                         class="integerfield"
                         id="total_covered_lives_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-             ^(0|[1-9][0-9]*)$
+                        pattern="^(0|[1-9][0-9]*)$"
                         value="{% if not renew %}{{ entity.no_covered }}{% endif %}"
                     />
                     </div>
@@ -482,7 +482,7 @@
                         class="integerfield"
                         id="claims_encounters_volume_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-             ^(0|[1-9][0-9]*)$
+                        pattern="^(0|[1-9][0-9]*)$"
                         value="{% if not renew %}{{ entity.claim_and_enc_vol }}{% endif %}"
                     />
 
@@ -506,7 +506,7 @@
                         class="integerfield"
                         id="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-             ^(0|[1-9][0-9]*)$
+                        pattern="^(0|[1-9][0-9]*)$"
                         value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
@@ -760,7 +760,7 @@
                 class="integerfield"
                 id="total_covered_lives_1"
                 inputmode="numeric"
-     ^(0|[1-9][0-9]*)$
+                pattern="^(0|[1-9][0-9]*)$"
                 />
             </div>
 
@@ -778,7 +778,7 @@
                 class="integerfield"
                 id="claims_encounters_volume_1"
                 inputmode="numeric"
-     ^(0|[1-9][0-9]*)$
+                pattern="^(0|[1-9][0-9]*)$"
                 />
 
                 <div class="help-text">
@@ -801,7 +801,7 @@
                 class="integerfield"
                 id="total_claims_value_1"
                 inputmode="numeric"
-     ^(0|[1-9][0-9]*)$
+                pattern="^(0|[1-9][0-9]*)$"
                 />
             </div>
             {# Additional entities rendered here... #}
