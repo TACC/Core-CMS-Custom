@@ -506,7 +506,7 @@
                         class="integerfield"
                         id="total_claims_value_{{ent_no}}_{{r.reg_id}}"
                         inputmode="numeric"
-                        pattern="^(0|[1-9][0-9]*)$"
+                        pattern="^(0|[1-9][0-9]*)(\.[0-9]{1,2})?$"
                         value="{% if not renew %}{{ entity.claim_val }}{% endif %}"
                     />
                     </div>
@@ -801,7 +801,7 @@
                 class="integerfield"
                 id="total_claims_value_1"
                 inputmode="numeric"
-                pattern="^(0|[1-9][0-9]*)$"
+                pattern="^(0|[1-9][0-9]*)(\.[0-9]{1,2})?$"
                 />
             </div>
             {# Additional entities rendered here... #}
