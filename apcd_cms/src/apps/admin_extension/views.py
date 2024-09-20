@@ -67,14 +67,14 @@ class AdminExtensionsTable(TemplateView):
                 # to separate small carrier into two words
                 'extension_type': title_case(extension[5].replace('_', ' ')) if extension[5] else None,
                 'applicable_data_period': _get_applicable_data_period(extension[6]),
-                'status': title_case(extension[7]),
-                'outcome': title_case(extension[8]),
+                'status': title_case(extension[7]) if extension[7] else 'None',
+                'outcome': title_case(extension[8]) if extension[8] else None,
                 'created_at': extension[9],
                 'updated_at': extension[10],
                 'submitter_code': extension[11],
                 'payor_code': extension[12],
                 'user_id': extension[13],
-                'requestor_name': title_case(extension[14]),
+                'requestor_name': title_case(extension[14]) if extension[14] else None,
                 'requestor_email': extension[15],
                 'explanation_justification': extension[16],
                 'notes': extension[17],
@@ -104,31 +104,31 @@ class AdminExtensionsTable(TemplateView):
             # to be able to access any extension in a template
             context['extensions'].append(_set_extensions(extension))
             entity_name = title_case(extension[18])
-            status = title_case(extension[7])
+            status = title_case(extension[7]) if extension[7] else 'None'
             outcome = title_case(extension[8])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
-                context['org_options'] = sorted(context['org_options'], key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['org_options'] = sorted(context['org_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
                 # Remove empty strings
                 context['org_options'] = [option for option in context['org_options'] if option != '']
             if status not in context['status_options']:
                 context['status_options'].append(status)
-                context['status_options'] = sorted(context['status_options'], key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
-                context['outcome_options'] = sorted(context['outcome_options'],key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
 
         queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             extension_table_entries = table_filter(status_filter, extension_table_entries, 'status')
 
-        context['selected_org'] = None
+        context['selected_org'] = 'All'
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'

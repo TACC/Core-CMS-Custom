@@ -722,8 +722,7 @@ def create_other_exception(form, sub_data):
             requested_expiration_date,
             explanation_justification,
             status,
-            required_threshold
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
             form["business-name"],

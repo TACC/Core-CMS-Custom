@@ -46,7 +46,7 @@ class SubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
@@ -58,18 +58,18 @@ class SubmissionsTable(TemplateView):
         # modifies the object fields for display, only modifies a subset of entries that will be displayed 
         # on the current page using offset and limit
         for s in submission_content[offset:offset + limit]:
-            s['status'] = title_case(s['status'])
-            s['outcome'] = title_case(s['outcome'])
+            s['status'] = title_case(s['status']) if s['status'] else None
+            s['outcome'] = title_case(s['outcome']) if s['outcome'] else None
             s['received_timestamp'] = parser.parse(s['received_timestamp']) if s['received_timestamp'] else None
             s['updated_at'] = parser.parse(s['updated_at']) if s['updated_at'] else None
             s['view_modal_content'] = [{
                 **t,
-                'outcome': title_case(t['outcome'])
+                'outcome': title_case(t['outcome']) if t['outcome'] else None
             } for t in (s['view_modal_content'] or [])]
 
 
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
-        context['filter_options'] = ['All', 'In Process', 'Complete']
+        context['status_options'] = ['All', 'Complete', 'In Process']
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
         context['query_str'] = queryStr

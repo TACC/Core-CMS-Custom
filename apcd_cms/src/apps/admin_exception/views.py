@@ -69,7 +69,7 @@ class AdminExceptionsTable(TemplateView):
                 'requestor_name': exception[2],
                 'request_type': title_case(exception[3]) if exception[3] else None, # to make sure if val doesn't exist, utils don't break page
                 'explanation_justification': exception[4],
-                'outcome': title_case(exception[5]) if exception[3] else None,
+                'outcome': title_case(exception[5]) if exception[5] else None,
                 'created_at': exception[6],
                 'updated_at': exception[7],
                 'submitter_code': exception[8],
@@ -83,7 +83,7 @@ class AdminExceptionsTable(TemplateView):
                 'requested_expiration_date': exception[16],
                 'approved_threshold': exception[17],
                 'approved_expiration_date': exception[18],
-                'status': title_case(exception[19])if exception[3] else None,
+                'status': title_case(exception[19])if exception[19] else 'None',
                 'notes': exception[20],
                 'entity_name': exception[21],
                 'data_file_name': exception[22]
@@ -110,31 +110,29 @@ class AdminExceptionsTable(TemplateView):
             # to be able to access any exception in a template using exceptions var in the future
             context['exceptions'].append(_set_exceptions(exception))
             entity_name = title_case(exception[21])
-            status = title_case(exception[19])
+            status = title_case(exception[19]) if exception[19] else 'None'
             outcome = title_case(exception[5])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
                 # to make sure All is first in the dropdown filter options after sorting alphabetically
-                context['org_options'] = sorted(context['org_options'],key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['org_options'] = sorted(context['org_options'],key=lambda x: (x != 'All', x is None, x if x is not None else ''))
                 # Remove empty strings
                 context['org_options'] = [option for option in context['org_options'] if option != '']
             if status not in context['status_options']:
-                if status != None:
-                    context['status_options'].append(status)
-                    # to make sure All is first in the dropdown filter options after sorting alphabetically
-                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['status_options'].append(status)
+                context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
             if outcome not in context['outcome_options']:
                 context['outcome_options'].append(outcome)
-                context['outcome_options'] = sorted(context['outcome_options'],key=lambda x: (x is not None, x != 'All', x if x is not None else ''))
+                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x != 'All', x is None, x if x is not None else ''))
 
-        context['selected_status'] = None
-        if status_filter is not None and status_filter != 'All':
+        context['selected_status'] = 'All'
+        if status_filter and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             exception_table_entries = table_filter(status_filter, exception_table_entries, 'status')
 
-        context['selected_org'] = None
-        if org_filter is not None and org_filter != 'All':
+        context['selected_org'] = 'All'
+        if org_filter and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
             exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'entity_name')
