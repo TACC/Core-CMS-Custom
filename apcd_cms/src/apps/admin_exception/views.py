@@ -110,7 +110,7 @@ class AdminExceptionsTable(TemplateView):
             # to be able to access any exception in a template using exceptions var in the future
             context['exceptions'].append(_set_exceptions(exception))
             entity_name = title_case(exception[21])
-            status = title_case(exception[19])
+            status = title_case(exception[19]) if exception[19] else 'None'
             outcome = title_case(exception[5])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)

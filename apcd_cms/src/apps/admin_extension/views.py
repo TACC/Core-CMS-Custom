@@ -104,7 +104,7 @@ class AdminExtensionsTable(TemplateView):
             # to be able to access any extension in a template
             context['extensions'].append(_set_extensions(extension))
             entity_name = title_case(extension[18])
-            status = title_case(extension[7])
+            status = title_case(extension[7]) if extension[7] else 'None'
             outcome = title_case(extension[8])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
