@@ -71,13 +71,13 @@ class ViewUsersTable(TemplateView):
                     'status': 'Active' if usr[8] else 'Inactive',
                     'user_number': usr[9],
                     'role_name': usr[10],
-                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "Not Applicable",  # just for filtering purposes
+                    'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "None",  # just for filtering purposes
                     'active': usr[8],
                 }
 
         context['header'] = ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More']
         context['status_options'] = ['All', 'Active', 'Inactive']
-        context['filter_options'] = ['All']
+        context['filter_options'] = ['All', 'None']
         context['role_options'] = ['SUBMITTER_USER', 'SUBMITTER_ADMIN','APCD_ADMIN']
 
         context['status'] = ['Active', 'Inactive']
@@ -96,11 +96,13 @@ class ViewUsersTable(TemplateView):
         table_entries = []
         for user in user_content:
             table_entries.append(_set_user(user,))
-            org_name = user[4]
+            org_name = user[4] if user[4] else None
             if org_name not in context['filter_options']:  # prevent duplicates
+                logger.debug(print(org_name))
+                logger.debug(print("filter options is !!!!", context['filter_options']))
                 context['filter_options'].append(user[4])
                 context['filter_options'] = sorted(context['filter_options'],key=lambda x: (x != 'All', x is None, x if x is not None else ''))
-
+                
         queryStr = ''
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
