@@ -1,9 +1,9 @@
 /* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
-@layer project.migration;
+@layer migration;
 
 /* To change color scheme */
 @import url("./_imports/settings/color.css");
 
 /* To apply "from v1 to v2" migration styles */
-@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(project.migration);
-@import url("./_migrations/v1_v2/frontera.css") layer(project.migration);
+@import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.13.0/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(migration);
+@import url("./_migrations/v1_v2/frontera.css") layer(migration);
