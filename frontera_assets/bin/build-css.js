@@ -13,6 +13,11 @@ const options = {
 };
 
 buildStylesheets(
+  /* input */ `${ROOT}/css/_imports/trumps/s-article-list.postcss`,
+  /* output */ `${ROOT}/css/_imports/trumps/`,
+  /* options */ options
+);
+buildStylesheets(
   /* input */ `${ROOT}/css/_imports/trumps/s-home.postcss`,
   /* output */ `${ROOT}/css/_imports/trumps/`,
   /* options */ options
