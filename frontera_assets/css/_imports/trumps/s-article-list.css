@@ -1,0 +1,18 @@
+/* Overwrite Core-Styles which relies on Font Awesome */
+/* TODO: Update Core-Styles to rely explicitly or not at all */
+/* https://github.com/TACC/Core-Styles/blob/v2.33.1/src/lib/_imports/trumps/s-article-list.css#L138-L149 */
+[class*=s-article-list--] > p:last-child a::before {
+    content: "➔";
+    background-color: var(--global-color-primary--xx-light);
+    width: 1em;
+    height: 1em;
+    box-sizing: content-box;
+    border: 0.25em solid var(--global-color-primary--xx-light);
+    border-radius: 0.75em;
+    padding-left: .0625em;
+    color: var(--global-color-primary--xx-dark);
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75em;
+    font-family: var(--global-font-family--serif);
+}
