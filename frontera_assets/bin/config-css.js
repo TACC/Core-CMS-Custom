@@ -11,4 +11,4 @@ configJson = {
   }
 };
 
-fs.writeFileSync(__dirname + '/../.postcssrc.yml', yaml.dump(configJson), 'utf8');
+fs.writeFileSync(__dirname + '/../.postcssrc.extra.yml', yaml.dump(configJson), 'utf8');
