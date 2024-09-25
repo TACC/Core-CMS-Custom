@@ -1,1 +1,30 @@
-/*! @tacc/core-cms-custom.frontera 0.0.2 | MIT | frontera-portal.tacc.utexas.edu */[class*=s-article-list--]>p:last-child a:before{align-items:center;border:.25em solid var(--global-color-primary--xx-light);border-radius:.75em;box-sizing:content-box;content:"➔";display:inline-flex;font-family:var(--global-font-family--serif);font-size:.75em;height:1em;padding-left:.0625em;padding-top:.0625em;width:1em}.o-section--style-light :is([class*=s-article-list--]>p:last-child a:before){background-color:var(--global-color-primary--xx-dark);color:var(--global-color-primary--xx-light)}.o-section--style-dark:is([class*=s-article-list--]>p:last-child a:before){background-color:var(--global-color-primary--xx-light);color:var(--global-color-primary--xx-dark)}
+/* To replace Font Awesome icon that Core-Styles relies on */
+/* TODO: Update Core-Styles to not rely on it or to do so explicitely */
+/* https://github.com/TACC/Core-Styles/blob/v2.33.1/src/lib/_imports/trumps/s-article-list.css#L138-L149 */
+[class*=s-article-list--] > p:last-child a::before {
+    content: "➔";
+    width: 1em;
+    height: 1em;
+    box-sizing: content-box;
+    border-width: 0.25em;
+    border-style: solid;
+    border-radius: 0.75em;
+    padding-top: .0625em;
+    padding-left: .0625em;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75em;
+    font-family: var(--global-font-family--serif);
+}
+/* FAQ: No space cuz article list and section classes are on same element */
+.o-section--style-dark[class*=s-article-list--] > p:last-child a::before {
+    background-color: var(--global-color-primary--xx-light);
+    border-color: var(--global-color-primary--xx-light);
+    color: var(--global-color-primary--xx-dark);
+}
+/* FAQ: A space cuz article list element is within section class element */
+.o-section--style-light [class*=s-article-list--] > p:last-child a::before {
+    background-color: var(--global-color-primary--xx-dark);
+    border-color: var(--global-color-primary--xx-dark);
+    color: var(--global-color-primary--xx-light);
+}
