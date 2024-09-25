@@ -1,5 +1,3 @@
-@import url("https://cdn.jsdelivr.net/npm/@tacc/core-styles@v2.27.0/src/lib/_imports/settings/color--cms.css");
-
 /* To replace Font Awesome icon that Core-Styles relies on */
 /* TODO: Update Core-Styles to not rely on it or to do so explicitely */
 /* https://github.com/TACC/Core-Styles/blob/v2.33.1/src/lib/_imports/trumps/s-article-list.css#L138-L149 */
@@ -17,11 +15,13 @@
     font-size: 0.75em;
     font-family: var(--global-font-family--serif);
 
-    :--light-context-safe & {
+    /* FAQ: No space cuz article list and section classes are on same element */
+    .o-section--style-dark& {
         background-color: var(--global-color-primary--xx-light);
         color: var(--global-color-primary--xx-dark);
     }
-    :--dark-context-safe & {
+    /* FAQ: A space cuz article list element is within section class element */
+    .o-section--style-light & {
         background-color: var(--global-color-primary--xx-dark);
         color: var(--global-color-primary--xx-light);
     }
