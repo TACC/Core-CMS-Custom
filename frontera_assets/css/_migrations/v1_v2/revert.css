@@ -3,9 +3,4 @@
 /* https://www.mayank.co/blog/revert-layer/#the-versioned-reset */
 *:not(#a#b) {
     all: revert-layer;
-
-    /* To remove unexpected underline on nav links */
-    & .nav-link:focus, .nav-link:hover {
-        text-decoration: none;
-    }
 }
