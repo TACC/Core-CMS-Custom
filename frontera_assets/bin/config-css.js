@@ -5,6 +5,7 @@ const yaml = require('js-yaml');
 
 configJson = {
   plugins: {
+    'postcss-import-url': {},
     'postcss-banner': {
       banner: process.env.npm_package_version
     }

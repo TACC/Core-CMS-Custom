@@ -9,8 +9,9 @@
     "npm": ">=8"
   },
   "dependencies": {
-    "@tacc/core-styles": "^2.27.0",
-    "js-yaml": "^4.1.0"
+    "@tacc/core-styles": "github:TACC/Core-Styles#feat/support-postcss-import-url",
+    "js-yaml": "^4.1.0",
+    "postcss-import-url": "^7.2.0"
   },
   "repository": {
     "type": "git",
