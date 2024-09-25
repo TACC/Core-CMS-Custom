@@ -1,5 +1,6 @@
 /* To undo all styles in a layer */
 /* WARNING: Use this only in the correct @layer */
-* {
+/* https://www.mayank.co/blog/revert-layer/#the-versioned-reset */
+*:not(#a#b) {
     all: revert-layer;
 }
