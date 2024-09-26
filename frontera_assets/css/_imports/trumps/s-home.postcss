@@ -61,7 +61,7 @@
 
 /* To style the overlay */
 .s-home__banner .o-section__banner-overlay {
-  @extend %x-overlay--curtain;
+  @mixin overlay--curtain;
 }
 .o-section--style-dark .s-home__banner .o-section__banner-overlay {
   --color-bkgd-rgb: var(--global-color-primary--x-dark-rgb);
