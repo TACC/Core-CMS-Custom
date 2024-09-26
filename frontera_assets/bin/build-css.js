@@ -9,7 +9,8 @@ const options = {
   verbose: true,
   fileExt: '.css',
   buildId: BUILD_ID,
-  customConfigs: [`${ROOT}/.postcssrc.extra.yml`]
+  customConfigs: [`${ROOT}/.postcssrc.extra.yml`],
+  buildId: process.env.npm_package_version
 };
 
 buildStylesheets(
