@@ -18,8 +18,3 @@ buildStylesheets(
   `${ROOT}/css/_imports/trumps/`,
   options
 );
-buildStylesheets(
-  `${ROOT}/css/_migrations/v1_v2/frontera.postcss`,
-  `${ROOT}/css/_migrations/v1_v2/`,
-  options
-);
