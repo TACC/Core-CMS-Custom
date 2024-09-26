@@ -77,7 +77,7 @@
 /* Text */
 .s-home__banner .o-section__banner-overlay > p {
   /* NOTE: Design did not request truncation; Dev added it for safety */
-  @extend %x-truncate--many-lines;
+  @mixin truncate--many-lines;
   /* WARNING: Using `!important` to fix unclear specifity issue */
   --lines: 6 !important;
 
@@ -176,7 +176,7 @@
 }
 /* Caption: Title */
 .s-home__banner .s-article-preview h3 {
-  @extend %x-truncate--many-lines;
+  @mixin truncate--many-lines;
   --lines: 3;
 
   /* To ensure consistent height of three lines */
