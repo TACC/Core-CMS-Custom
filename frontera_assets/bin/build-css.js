@@ -13,12 +13,12 @@ const options = {
 };
 
 buildStylesheets(
-  /* input */ `${ROOT}/css/_imports/trumps/s-home.postcss`,
-  /* output */ `${ROOT}/css/_imports/trumps/`,
-  /* options */ options
+  `${ROOT}/css/_imports/trumps/s-home.postcss`,
+  `${ROOT}/css/_imports/trumps/`,
+  options
 );
 buildStylesheets(
-  /* input */ `${ROOT}/css/_migrations/v1_v2/frontera.postcss`,
-  /* output */ `${ROOT}/css/_migrations/v1_v2/`,
-  /* options */ options
+  `${ROOT}/css/_migrations/v1_v2/frontera.postcss`,
+  `${ROOT}/css/_migrations/v1_v2/`,
+  options
 );
