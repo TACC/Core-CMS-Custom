@@ -9,7 +9,7 @@
     "npm": ">=8"
   },
   "dependencies": {
-    "@tacc/core-styles": "github:TACC/Core-Styles#feat/WP-280-overlay-mixin"
+    "@tacc/core-styles": "^2.34.0"
   },
   "repository": {
     "type": "git",
