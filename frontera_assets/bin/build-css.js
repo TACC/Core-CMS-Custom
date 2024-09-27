@@ -9,8 +9,8 @@ const options = {
   verbose: true,
   fileExt: '.css',
   buildId: BUILD_ID,
-  customConfigs: [`${ROOT}/.postcssrc.extra.yml`],
-  buildId: process.env.npm_package_version
+  // If custom configuration is desired, then create and pass this file
+  // customConfigs: [`${ROOT}/.postcssrc.extra.yml`],
 };
 
 // FAQ: To build more:
