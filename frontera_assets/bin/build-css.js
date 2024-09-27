@@ -13,6 +13,9 @@ const options = {
   buildId: process.env.npm_package_version
 };
 
+// FAQ: To build more:
+//      1. Clone this function call.
+//      2. Change the file name and path.
 buildStylesheets(
   `${ROOT}/css/_imports/trumps/s-home.postcss`,
   `${ROOT}/css/_imports/trumps/`,
