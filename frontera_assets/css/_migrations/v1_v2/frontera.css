@@ -30,10 +30,10 @@ SRC: https://bitbucket.org/taccaci/frontera/src/master/client/css/frontera.scss
 /*
 @font-face {
     font-family: 'icon-worksregular';
-    src: url('../../../../fonts/archive/icon-works-webfont.eot');
-    src: url('../../../../fonts/archive/icon-works-webfont.eot?#iefix') format('embedded-opentype'),
-        url('../../../../fonts/archive/icon-works-webfont.woff') format('woff'),
-        url('../../../../fonts/archive/icon-works-webfont.svg#icon-worksregular') format('svg');
+    src: url('../../fonts/archive/icon-works-webfont.eot');
+    src: url('../../fonts/archive/icon-works-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../../fonts/archive/icon-works-webfont.woff') format('woff'),
+        url('../../fonts/archive/icon-works-webfont.svg#icon-worksregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
