@@ -7,7 +7,7 @@
 > [!TIP]
 > This is the preferred method.
 
-Add an entry in [`PORTAL_STYLES` in Frontera's CMS settings in Core-Portal-Deployemnts repo](https://github.com/TACC/Core-Portal-Deployments/blob/d6af7b2/frontera-portal/camino/cms.settings_custom.py#L51-L54).
+Add an entry in [`PORTAL_STYLES` in Frontera's CMS settings](https://github.com/TACC/Core-Portal-Deployments/blob/d6af7b2/frontera-portal/camino/cms.settings_custom.py#L51-L54).
 
 #### Styles per Page or per Content
 
@@ -47,7 +47,7 @@ If you have CSS that should use future or non-native features via [PostCSS] via 
 3. Check/Update stylehseets imported from a CDN.
 
     Examples:
-    - [Core Portal Deployments `PORTAL_STYLES`](https://github.com/TACC/Core-Portal-Deployments/blob/feat/WP-197-migrate-frontera/frontera-portal/camino/cms.settings_custom.py#L53)
+    - [CMS setting `PORTAL_STYLES`](https://github.com/TACC/Core-Portal-Deployments/blob/feat/WP-197-migrate-frontera/frontera-portal/camino/cms.settings_custom.py#L53)
     - ["CSS: Homepage" snippet](https://pprd.frontera-portal.tacc.utexas.edu/admin/djangocms_snippet/snippet/38/change/)
 
     Tasks:
