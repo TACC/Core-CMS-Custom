@@ -1,5 +1,8 @@
 /* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
 
+/* To change color scheme */
+@import url("./_imports/settings/color.css");
+
 /* To let homepage use other patterns */
 @import url("https://unpkg.com/@tacc/core-styles@0.13.0/dist/trumps/s-article-list.css");
 @import url("./_imports/trumps/s-article-list.css");
