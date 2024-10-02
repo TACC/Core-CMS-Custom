@@ -2,7 +2,10 @@
   "name": "@tacc/core-cms-custom.frontera",
   "version": "1.0.0",
   "license": "MIT",
-  "author": "TACC ACI WMA <wma-portals@gmail.com>",
+  "author": "TACC ACI WMA <wma-portals@tacc.utexas.edu>",
+  "contributors": [
+    "TACC COA CMD <coa-cmd@tacc.utexas.edu>"
+  ],
   "description": "The TACC ACI-WMA custom assets used by Frontera Portal.",
   "engines": {
     "node": ">=16",
