@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useExceptions, ExceptionRow } from 'hooks/admin';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
-import ViewExceptionModal from '../ViewExceptiontionModal/ViewExceptionModal';
+import ViewExceptionModal from '../ViewExceptionModal/ViewExceptionModal';
+import EditExceptionModal from '../EditExceptionModal/EditExceptionModal';
 import styles from './AdminExceptions.module.css';
 
 export const AdminExceptions: React.FC = () => {
@@ -53,7 +54,9 @@ export const AdminExceptions: React.FC = () => {
     );
     if (selectedOption == 'viewException') {
       setIsViewModalOpen(true);
-    }
+    } else if (selectedOption == 'editException') {
+      setIsEditModalOpen(true);
+    } 
 
     actionsDropdown.selectedIndex = 0;
   };
@@ -148,6 +151,13 @@ export const AdminExceptions: React.FC = () => {
             exception={selectedException}
             isVisible={isViewModalOpen}
             onClose={() => setIsViewModalOpen(false)}
+          />
+          <EditExceptionModal
+            exception={selectedException}
+            statusOptions={data?.status_options}
+            outcomeOptions={data?.outcome_options}
+            isOpen={isEditModalOpen}
+            toggle={() => setIsEditModalOpen(false)}
           />
         </>
       )}

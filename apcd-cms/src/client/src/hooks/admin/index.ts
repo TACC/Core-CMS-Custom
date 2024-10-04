@@ -165,6 +165,9 @@ export type ExceptionRow = {
   requestor_type: string;
   outcome: string;
   status: string;
+  approved_threshold: string;
+  approved_expiration_date: string;
+  notes: string;
   exception_id: string;
   view_modal_content: ExceptionModalContent;
 };
@@ -172,6 +175,7 @@ export type ExceptionRow = {
 export type ExceptionResult = {
   header: string[];
   status_options: string[];
+  outcome_options: string[];
   org_options: string[];
   selected_status: string;
   selected_org: string;
