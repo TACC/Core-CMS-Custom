@@ -15,19 +15,19 @@ class SubmissionsTable(TemplateView):
 
     template_name = 'list_submissions.html'
 
+    def get(self, request, *args, **kwargs):
+        submission_content = get_user_submissions_and_logs(request.user.username)
+        context = self.get_submission_list_json(submission_content, *args, **kwargs)
+        return JsonResponse({'response': context})
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):
             return HttpResponseRedirect('/')
         return super(SubmissionsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
+    def get_submission_list_json(self, submission_content, *args, **kwargs):
 
-        context = super(SubmissionsTable, self).get_context_data(*args, **kwargs)
-
-        user = self.request.user.username
-
-        submission_content = get_user_submissions_and_logs(user)
-
+        context = {}
         queryStr = ''
         dateSort = self.request.GET.get('sort')
         status_filter = self.request.GET.get('status')
@@ -46,7 +46,7 @@ class SubmissionsTable(TemplateView):
         except:
             page_num = 1
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
