@@ -28,6 +28,8 @@ services:
     volumes:
       - core_cms_postgres_data:/var/lib/postgresql/data
     hostname: core_cms_postgres
+    ports:
+      -   127.0.0.1:5432:5432
     container_name: core_cms_postgres
     networks:
       - core_cms_net

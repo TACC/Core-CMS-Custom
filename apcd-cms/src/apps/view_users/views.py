@@ -5,8 +5,11 @@ from django.views import View
 from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.apcd_client.users import get_users as api_get_users
+from django.conf import settings
 import logging
 import json
+from math import ceil
 
 logger = logging.getLogger(__name__)
 
@@ -30,17 +33,21 @@ class ViewUsersTable(TemplateView):
         items_per_page = int(request.GET.get('limit', 50)) 
 
         try:
-            user_content = get_users()
-            filtered_users = self.filter_users(user_content, status, org)
-
-            paginator = Paginator(filtered_users, items_per_page)
-            page_info = paginator.get_page(page_number)
-
-            context = self.get_view_users_json(list(page_info))
-            context['page_num'] = page_info.number
-            context['total_pages'] = paginator.num_pages
-
-            return JsonResponse({'response': context})
+            if settings.SWITCH_TO_API:
+                user_content = api_get_users(request.user, page_num=page_number, limit=items_per_page, status=status, org=org)
+                context = self.get_view_users_json(list(user_content['items']))
+                context['page_num'] = page_number
+                context['total_pages'] = ceil(user_content['total_count']/items_per_page)
+                return JsonResponse({'response': context})
+            else:
+                user_content = get_users()
+                filtered_users = self.filter_users(user_content, status, org)
+                paginator = Paginator(filtered_users, items_per_page)
+                page_info = paginator.get_page(page_number)
+                context = self.get_view_users_json(list(page_info))
+                context['page_num'] = page_info.number
+                context['total_pages'] = paginator.num_pages
+                return JsonResponse({'response': context})
         except Exception as e:
             logger.error("Error fetching filtered user data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
