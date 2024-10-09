@@ -4,9 +4,9 @@ from apps.utils.registrations_data_formatting import _set_registration
 from apps.submitter_renewals_listing.views import get_submitter_code
 from apps.utils.apcd_groups import has_groups
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.shortcuts import redirect
 from requests.auth import HTTPBasicAuth
 import logging
@@ -21,7 +21,7 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class SubmissionFormView(View):
+class RegistrationFormView(TemplateView):
     def get(self, request):
         formatted_reg_data = []
         renew = False
@@ -40,8 +40,8 @@ class SubmissionFormView(View):
                 logger.error(exception)
                 return redirect('/register/request-to-submit/')
         if (request.user.is_authenticated and has_apcd_group(request.user)):
-            template = loader.get_template('submission_form/submission_form.html')
-            return HttpResponse(template.render({'r': formatted_reg_data, 'renew': renew}, request))
+            context = {'registration_data': formatted_reg_data, 'renew': renew}
+            return JsonResponse({'response': context})
         return HttpResponseRedirect('/')
 
 

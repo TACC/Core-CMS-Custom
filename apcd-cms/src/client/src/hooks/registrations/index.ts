@@ -1,4 +1,11 @@
-export type StringMap = {
+import { fullRegistrationResult } from 'hooks/admin';
+
+export type RegFormData = {
+    registration_data: fullRegistrationResult;
+    renew: boolean;
+}
+
+export { useFormData } from './useForm';export type StringMap = {
   [key: string]: string;
 };
 

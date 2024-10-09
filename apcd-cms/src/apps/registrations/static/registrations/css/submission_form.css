@@ -18,7 +18,7 @@ input[name^="contact_phone"] {
 /* Field Layouts */
 
 /* To make (radio/check)box sets take up less vertical space */
-#types_of_files, #types_of_plans, #submission_method, #on-behalf-of {
+#types_of_files, #types_of_plans, #submission_method, #on_behalf_of {
     display: flex;
     flex-wrap: wrap;
     column-gap: 1em;

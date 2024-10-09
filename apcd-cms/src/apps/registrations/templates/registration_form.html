@@ -5,10 +5,15 @@
 
 <link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
 
+{% block extra_js %}
+<script type="module">
+import { setupRegistrationForm } from "{% static 'apcd-components.es.js' %}";
+setupRegistrationForm();
+</script>
+{% endblock %}
+
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
-  {% include 'snippets/tup-175-css-alerts-messages-ui-pattern.html' %}
-
 
 
   <div class="row">
@@ -31,13 +36,7 @@
       <hr />
 
       <div class="forms">
-        <div class="description">
-          <h4>Organization</h4>
-        </div>
-
-        <div class="form-wrapper">
-          {% include "submission_form/registration_form_body.html" %}
-        </div>
+        <div id="react-root"></div>
         <div class="form-success" style="display: none">
           <p>Thank you for your request.</p>
         </div>
