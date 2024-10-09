@@ -11,5 +11,6 @@ custom_urls = [
     path('register/', include('apps.submitter_renewals_listing.urls', namespace='submitter_regis_table')),
     path('submissions/', include('apps.extension.urls', namespace='extension')),
     path('submissions/', include('apps.exception.urls', namespace='exception')),
-    path('submissions/', include('apps.submissions.urls', namespace='submissions'))
+    path('submissions/', include('apps.submissions.urls', namespace='submissions')),
+    path('common_api/', include('apps.common_api.urls', namespace='common_api'))
 ]
