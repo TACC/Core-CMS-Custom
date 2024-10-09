@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSubmissions, SubmissionRow } from 'hooks/admin';
 import { ViewSubmissionLogsModal } from './ViewSubmissionLogsModal';
+import Paginator from 'core-components/Paginator';
+import styles from './AdminSubmissions.module.css';
 
 export const AdminSubmissions: React.FC = () => {
   const [status, setStatus] = useState<string>('');
@@ -101,6 +103,13 @@ export const AdminSubmissions: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <div className={styles.paginatorContainer}>
+        <Paginator
+          pages={data?.total_pages ?? 0}
+          current={data?.page_num ?? 0}
+          callback={setPage}
+        />
+      </div>
     </>
   );
 };
