@@ -42,3 +42,23 @@ class EntitiesView(TemplateView):
             context["submitters"].append(_set_submitter(submitter))
 
         return context
+
+class cdlsView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        file_type = kwargs.get('file_type')
+        
+        cdls = apcd_database.get_cdl_exceptions(file_type)
+        
+        cdls_response = []
+
+        def _set_cdls(cdl):
+            return {
+                "field_list_code": cdl[0],
+                "field_list_value": cdl[1],
+                "threshold_value": cdl[2],
+            }
+
+        for cdl in cdls:
+            cdls_response.append(_set_cdls(cdl))
+
+        return JsonResponse({"cdls": cdls_response})
