@@ -1,0 +1,19 @@
+/* To resize logo */
+.portal-logo {
+    height: 80px;
+}
+.s-header.navbar {
+    --nav-padding-vert: 10px;
+}
+
+/* To vertically align center if #s-header is .navbar-expand-md */
+@media (min-width: 768px) {
+    .s-header .nav-item {
+        display: flex;
+    }
+}
+
+/* To fix position (given header resize code that does not consider everything) */
+.s-header .nav-link {
+    top: unset;
+}
