@@ -89,7 +89,7 @@ export const ExceptionForm: React.FC = () => {
         eligible for an exception to certain data submission requirements under H.B. 2090 (87(R))
         and associated regulations. Please review the legislation and regulation before
         submitting this form. Links to both can be found on the
-        <a href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm" target="_blank">Texas All-Payor Claims Database
+        <a href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm" target="_blank" rel="noreferrer">Texas All-Payor Claims Database
           website.</a>
       </p>
       <div className={styles.exceptionBlock}>
