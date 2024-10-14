@@ -26,15 +26,21 @@ const validationSchema = Yup.object({
 });
 
 interface FormValues {
-  name: string;
-  id: string;
-  year: number;
+  businessName_1: string;
+  file_type_1: string;
+  fieldThresholdException_1: string;
+  expiration_date_1: string;
+  requested_threshold_1: number | '';
+  required_threshold_1: number | '';
 }
 
 const initialValues: FormValues = {
-  name: '',
-  id: '',
-  year: 2024,
+  businessName_1: '',
+  file_type_1: '',
+  fieldThresholdException_1: '',
+  expiration_date_1: '',
+  requested_threshold_1: '',
+  required_threshold_1: '',
 };
 
 export const ExceptionForm: React.FC = () => {
