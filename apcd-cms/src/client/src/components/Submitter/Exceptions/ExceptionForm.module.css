@@ -16,12 +16,11 @@
   gap: 5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  min-width: 15ch;  
+  min-width: 15ch;
 }
-.dateRow input{
+.dateRow input {
   width: 35px;
   font-size: 16px;
-
 }
 .loadingField {
   display: inline-flex;
@@ -31,9 +30,8 @@
   width: 100%;
 }
 .requiredThreshold {
-  background-color: #e9ecef; 
-  color: #6c757d; 
+  background-color: #e9ecef;
+  color: #6c757d;
   border-color: #ced4da;
-  cursor: not-allowed; 
+  cursor: not-allowed;
 }
-
