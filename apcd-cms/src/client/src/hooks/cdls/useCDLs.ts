@@ -15,6 +15,7 @@ export const useCDLs = (
 ): UseQueryResult<cdlObject> => {
   const query = useQuery(['cdls', file_type], () =>
     getCDLS(file_type)
+{enabled: !!file_type}
   ) as UseQueryResult<cdlObject>;
 
   return { ...query };
