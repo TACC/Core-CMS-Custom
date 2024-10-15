@@ -5,10 +5,9 @@ import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
   exception: ExceptionRow;
-  isVisible: boolean;
+  isOpen: boolean;
   onClose: () => void;
-}> = ({ exception, isVisible, onClose }) => {
-
+}> = ({ exception, isOpen, onClose }) => {
   const {
     created_at,
     entity_name,
@@ -30,12 +29,7 @@ export const ViewExceptionModal: React.FC<{
   } = exception.view_modal_content;
 
   return (
-    <Modal
-      title="View Exception"
-      isOpen={isVisible}
-      toggle={onClose}
-      size="lg"
-    >
+    <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
       <div className="modal-header">
         <h4 className="modal-title text-capitalize">View Exception</h4>
         <button type="button" className="close" onClick={onClose}>
@@ -48,7 +42,9 @@ export const ViewExceptionModal: React.FC<{
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Created</dt>
-              <dd className={styles.verticalDataValue}>{created_at}</dd>
+              <dd className={styles.verticalDataValue}>
+                {new Date(created_at).toLocaleString()}
+              </dd>
             </dl>
           </dd>
           <dd>
@@ -108,7 +104,9 @@ export const ViewExceptionModal: React.FC<{
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Requested Threshold</dt>
-              <dd className={styles.verticalDataValue}>{requested_threshold}</dd>
+              <dd className={styles.verticalDataValue}>
+                {requested_threshold}
+              </dd>
             </dl>
           </dd>
           <dd>
@@ -120,19 +118,25 @@ export const ViewExceptionModal: React.FC<{
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Requested Expiration Date</dt>
-              <dd className={styles.verticalDataValue}>{requested_expiration_date}</dd>
+              <dd className={styles.verticalDataValue}>
+                {requested_expiration_date}
+              </dd>
             </dl>
           </dd>
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Approved Expiration Date</dt>
-              <dd className={styles.verticalDataValue}>{approved_expiration_date}</dd>
+              <dd className={styles.verticalDataValue}>
+                {approved_expiration_date}
+              </dd>
             </dl>
           </dd>
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Explanation Justification</dt>
-              <dd className={styles.verticalDataValue}>{explanation_justification}</dd>
+              <dd className={styles.verticalDataValue}>
+                {explanation_justification}
+              </dd>
             </dl>
           </dd>
           <dd>
@@ -144,7 +148,9 @@ export const ViewExceptionModal: React.FC<{
           <dd>
             <dl className={styles.verticalDataList}>
               <dt className="c-data-list__key">Last Updated</dt>
-              <dd className={styles.verticalDataValue}>{updated_at}</dd>
+              <dd className={styles.verticalDataValue}>
+                {new Date(updated_at).toLocaleString()}
+              </dd>
             </dl>
           </dd>
         </div>

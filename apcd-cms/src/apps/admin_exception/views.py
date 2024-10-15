@@ -65,7 +65,8 @@ class AdminExceptionsTable(TemplateView):
         context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
-        context['outcome_options'] = []
+        context['outcome_modal_options'] = ['None']
+        context['status_modal_options'] = ['None']
         context['exceptions'] = []
         context['action_options'] = ['Select Action', 'View Record', 'Edit Record']
 
@@ -84,7 +85,7 @@ class AdminExceptionsTable(TemplateView):
                 'requestor_name': exception[2],
                 'request_type': title_case(exception[3]) if exception[3] else None, # to make sure if val doesn't exist, utils don't break page
                 'explanation_justification': exception[4],
-                'outcome': title_case(exception[5]) if exception[3] else None,
+                'outcome': title_case(exception[5]) if exception[5] else 'None',
                 'created_at': exception[6],
                 'updated_at': exception[7],
                 'submitter_code': exception[8],
@@ -98,7 +99,7 @@ class AdminExceptionsTable(TemplateView):
                 'requested_expiration_date': exception[16],
                 'approved_threshold': exception[17],
                 'approved_expiration_date': exception[18],
-                'status': title_case(exception[19])if exception[3] else None,
+                'status': title_case(exception[19]) if exception[19] else 'None',
                 'notes': exception[20],
                 'entity_name': exception[21],
                 'data_file_name': exception[22],
@@ -108,8 +109,8 @@ class AdminExceptionsTable(TemplateView):
                     'requestor_name': exception[2],
                     'requestor_email': exception[11],
                     'request_type': title_case(exception[3]) if exception[3] else None,
-                    'status': title_case(exception[19])if exception[3] else None,
-                    'outcome': title_case(exception[5]) if exception[3] else None,
+                    'status': title_case(exception[19]) if exception[19] else None,
+                    'outcome': title_case(exception[5]) if exception[5] else None,
                     'data_file_name': exception[22],
                     'field_number': exception[13],
                     'required_threshold': exception[14],
@@ -119,6 +120,7 @@ class AdminExceptionsTable(TemplateView):
                     'approved_expiration_date': exception[18],
                     'explanation_justification': exception[4],
                     'notes': exception[20],
+                    'entity_name': exception[21],
                     'updated_at': exception[7],
                 }
             }
@@ -139,8 +141,8 @@ class AdminExceptionsTable(TemplateView):
             # to be able to access any exception in a template using exceptions var in the future
             context['exceptions'].append(_set_exception(exception))
             entity_name = title_case(exception[21])
-            status = title_case(exception[19])
-            outcome = title_case(exception[5])
+            status = title_case(exception[19]) if exception[19] else 'None'
+            outcome = title_case(exception[5]) if exception[5] else 'None'
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
                 # to make sure All is first in the dropdown filter options after sorting alphabetically
@@ -151,10 +153,13 @@ class AdminExceptionsTable(TemplateView):
                 if status != None:
                     context['status_options'].append(status)
                     # to make sure All is first in the dropdown filter options after sorting alphabetically
-                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))
-            if outcome not in context['outcome_options']:
-                context['outcome_options'].append(outcome)
-                context['outcome_options'] = sorted(context['outcome_options'], key=lambda x: (x is not None, x))
+                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))    
+            if status not in context['status_modal_options']:
+                context['status_modal_options'].append(status)
+                context['status_modal_options'] = sorted(context['status_modal_options'], key=lambda x: (x is not None, x))
+            if outcome not in context['outcome_modal_options']:
+                context['outcome_modal_options'].append(outcome)
+                context['outcome_modal_options'] = sorted(context['outcome_modal_options'], key=lambda x: (x is not None, x))
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
@@ -173,7 +178,8 @@ class AdminExceptionsTable(TemplateView):
         context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
                             'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
                             'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
-                            'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content']} 
+                            'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
+                            'requested_threshold': obj['requested_threshold'],} 
                             for obj in page_info['page']]
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
 

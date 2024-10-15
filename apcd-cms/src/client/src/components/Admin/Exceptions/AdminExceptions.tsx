@@ -17,6 +17,7 @@ export const AdminExceptions: React.FC = () => {
   );
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const [selectedException, setSelectedException] =
     useState<ExceptionRow | null>(null);
@@ -45,20 +46,22 @@ export const AdminExceptions: React.FC = () => {
 
   const openAction = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    exception_id: string
+    exception: ExceptionRow
   ) => {
-    const actionsDropdown = event.target;
-    const selectedOption = actionsDropdown.value;
-    setSelectedException(
-      data?.page.find((x) => x.exception_id === exception_id) ?? null
-    );
+    const selectedOption = event.target.value;
+    setSelectedException(exception);
+    setDropdownValue('');
     if (selectedOption == 'viewException') {
       setIsViewModalOpen(true);
     } else if (selectedOption == 'editException') {
       setIsEditModalOpen(true);
-    } 
+    }
+  };
 
-    actionsDropdown.selectedIndex = 0;
+  const closeAction = () => {
+    refetch();
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
   return (
@@ -116,18 +119,18 @@ export const AdminExceptions: React.FC = () => {
         <tbody>
           {data?.page.map((row: ExceptionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.created_at}</td>
+              <td>{new Date(row.created_at).toLocaleString()}</td>
               <td>{row.entity_name}</td>
               <td>{row.requestor_name}</td>
-              <td>{row.requestor_type}</td>
+              <td>{row.request_type}</td>
               <td>{row.outcome}</td>
               <td>{row.status}</td>
               <td className="modal-cell">
                 <select
                   id={`actionsDropdown_${row.exception_id}`}
-                  defaultValue=""
+                  value={dropdownValue}
                   className="status-filter"
-                  onChange={(e) => openAction(e, row.exception_id)}
+                  onChange={(e) => openAction(e, row)}
                 >
                   <option value="">Select Action</option>
                   <option value="viewException">View Record</option>
@@ -149,15 +152,15 @@ export const AdminExceptions: React.FC = () => {
         <>
           <ViewExceptionModal
             exception={selectedException}
-            isVisible={isViewModalOpen}
-            onClose={() => setIsViewModalOpen(false)}
+            isOpen={isViewModalOpen}
+            onClose={() => closeAction()}
           />
           <EditExceptionModal
             exception={selectedException}
-            statusOptions={data?.status_options}
-            outcomeOptions={data?.outcome_options}
+            statusOptions={data?.status_modal_options}
+            outcomeOptions={data?.outcome_modal_options}
             isOpen={isEditModalOpen}
-            toggle={() => setIsEditModalOpen(false)}
+            onClose={() => closeAction()}
           />
         </>
       )}

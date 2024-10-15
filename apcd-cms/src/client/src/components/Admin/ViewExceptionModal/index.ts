@@ -1,3 +1,3 @@
-import { ViewExceptionModal } from "./ViewExceptionModal";
+import { ViewExceptionModal } from './ViewExceptionModal';
 
 export { ViewExceptionModal };

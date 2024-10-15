@@ -1,3 +1,3 @@
-import EditExceptionModal from "./EditExceptionModal";
+import EditExceptionModal from './EditExceptionModal';
 
 export { EditExceptionModal };

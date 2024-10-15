@@ -162,7 +162,8 @@ export type ExceptionRow = {
   created_at: string;
   entity_name: string;
   requestor_name: string;
-  requestor_type: string;
+  request_type: string;
+  requested_threshold: string;
   outcome: string;
   status: string;
   approved_threshold: string;
@@ -175,7 +176,8 @@ export type ExceptionRow = {
 export type ExceptionResult = {
   header: string[];
   status_options: string[];
-  outcome_options: string[];
+  status_modal_options: string[];
+  outcome_modal_options: string[];
   org_options: string[];
   selected_status: string;
   selected_org: string;
