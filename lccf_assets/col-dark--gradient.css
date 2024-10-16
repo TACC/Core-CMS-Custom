@@ -1,0 +1,31 @@
+/* To not let gradient escape column */
+.col-dark {
+    clip-path: inset(0 0 0 0);
+}
+/* To create a gradient within a column */
+.col-dark::after {
+    display: block;
+    content: "";
+    background: linear-gradient(
+        to bottom,
+        blue var(--gradient-top),
+        purple var(--gradient-end)
+    );
+
+    /* To not let header nor footer hide gradient */
+    --gradient-top: 100px; /* header end position e.g. height */
+    --gradient-end: calc(100% - 150px); /* footer start position */
+
+    /* To fill column */
+    position: fixed;
+    z-index: -1;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}
+/* To adjust for CMS editor toolbar */
+[class*="cms-structure-mode-"] .col-dark::after {
+    --gradient-top: 146px;
+}
