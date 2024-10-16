@@ -15,38 +15,28 @@ import styles from './ExceptionForm.module.css';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 
-//Boiler plate example for validation schema
-
-const validationSchema = Yup.object({
-  name: Yup.string()
-    .max(64, 'Must be 64 characters or less')
-    .required('Required'),
-  id: Yup.string().required('Required'),
-  year: Yup.number().required('Required'),
-});
-
 interface FormValues {
-  businessName_1: string;
-  file_type_1: string;
-  fieldThresholdException_1: string;
-  expiration_date_1: string;
-  requested_threshold_1: number | '';
-  required_threshold_1: number | '';
+  [key: string]: string | number | '';
 }
 
-const initialValues: FormValues = {
-  businessName_1: '',
-  file_type_1: '',
-  fieldThresholdException_1: '',
-  expiration_date_1: '',
-  requested_threshold_1: '',
-  required_threshold_1: '',
-};
-
-export const ExceptionForm: React.FC = () => {
-  const handleSubmit = (values: FormValues) => {
-    console.log('Form values:', values);
+interface ExceptionFormProps {
+  exception: number;
+  formikProps: {
+    errors: any;
+    touched: any;
+    setFieldValue: (
+      field: string,
+      value: any,
+      shouldValidate?: boolean
+    ) => void;
   };
+}
+
+export const ExceptionForm: React.FC<ExceptionFormProps> = ({
+  exception,
+  formikProps,
+}) => {
+  const { errors, touched, setFieldValue } = formikProps;
 
   const [selectedFileType, setSelectedFileType] = useState<string>();
   const [cdlData, setCdlData] = useState<cdlObject>();
@@ -81,283 +71,246 @@ export const ExceptionForm: React.FC = () => {
     );
   };
 
-  if (entitiesLoading) return <LoadingSpinner/>;
+  if (entitiesLoading)
+    return (
+      <div className="loadingField">
+        <LoadingSpinner />
+      </div>
+    );
 
-  return (
-    <>
-      <h1>Exception Request</h1>
-      <hr />
-      <p>
-        This form should be completed and submitted only by entities who are
-        eligible for an exception to certain data submission requirements under
-        H.B. 2090 (87(R)) and associated regulations. Please review the
-        legislation and regulation before submitting this form. Links to both
-        can be found on the
-        <a
-          href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Texas All-Payor Claims Database website.
-        </a>
-      </p>
-      <div className={styles.exceptionBlock}>
-        <h4>Requested Threshold Reduction</h4>
-        <Formik
-          validateOnMount
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ setFieldValue, errors, touched }) => (
-            <Form className="form-wrapper" id="threshold-form">
-              <FormGroup className="field-wrapper required">
-                <Label for="business-name_1">Business Name</Label>
-                {submitterData && (
-                  <InputGroup>
-                    <Field
-                      type="select"
-                      name="business-name_1"
-                      id="business-name_1"
-                    >
-                      {({ field }: { field: any }) => (
-                        <Input
-                          id="business-name_1"
-                          {...field}
-                          invalid={touched.name && !!errors.name}
-                          type="select"
+    return (
+      <>
+        <hr />
+        <h4>Requested Threshold Reduction {exception}</h4>
+        <FormGroup className="field-wrapper required">
+          <Label for={`exceptions[${exception}].businessName`}>Business Name</Label>
+          {submitterData && (
+            <>
+          <InputGroup>
+            <Field
+              type="select"
+              name={`exceptions[${exception}].businessName`}
+              id={`exceptions[${exception}].businessName`}
+            >
+              {({ field }: { field: any }) => (
+                <Input
+                  id={`exceptions[${exception}].businessName`}
+                  {...field}
+                  invalid={
+                    touched.exceptions?.[exception]?.businessName &&
+                    !!errors.exceptions?.[exception]?.businessName
+                  }
+                  type="select"
+                  onChange={(e) => {
+                    setFieldValue(`exceptions[${exception}].businessName`, e.target.value);
+                  }}
+                >
+                  {submitterData?.submitters?.map((submitter: Entities) => (
+                    <option key={submitter.entity_name}>
+                      {submitter.entity_name} - Payor Code:{' '}
+                      {submitter.payor_code}
+                    </option>
+                  ))}
+                </Input>
+              )}
+            </Field>
+            <ErrorMessage
+              name={`exceptions[${exception}].businessName`}
+              component={FormFeedback}
+            />
+          </InputGroup>
+          </>
+        )}
+        {entitiesError && (
+          <SectionMessage type="error">
+            There was an error finding your associated businesses.{' '}
+            <a href="https://txapcd.org/workbench/dashboard/tickets/create">
+              Please submit a ticket.
+            </a>
+          </SectionMessage>
+        )}
+      </FormGroup>
+        <FormGroup className="field-wrapper required">
+          <Label for={`exceptions[${exception}].fileType`}>File Type</Label>
+          <InputGroup>
+            <Field
+              type="select"
+              name={`exceptions[${exception}].fileType`}
+              id={`exceptions[${exception}].fileType`}
+            >
+              {({ field }: { field: any }) => (
+                <Input
+                  {...field}
+                  type="select"
+                  invalid={
+                    touched.exceptions?.[exception]?.fileType &&
+                    !!errors.exceptions?.[exception]?.fileType
+                  }
+                  onChange={(e) => {
+                    handleFileChange(e.target.value);
+                    setFieldValue(`exceptions[${exception}].fileType`, e.target.value);
+                  }}
+                >
+                  <option value="">-- Choose File Type --</option>
+                  <option value="dc">Dental Claims</option>
+                  <option value="mc">Medical Claims</option>
+                  <option value="me">Member Eligibility</option>
+                  <option value="pc">Pharmacy Claims</option>
+                  <option value="pv">Provider</option>
+                </Input>
+              )}
+            </Field>
+            <ErrorMessage
+              name={`exceptions[${exception}].fileType`}
+              component={FormFeedback}
+            />
+          </InputGroup>
+        </FormGroup>
+        <FormGroup className="field-wrapper required">
+          <Label for={`exceptions[${exception}].fieldCode`}>Field Code</Label>
+          <InputGroup>
+            <Field
+              type="select"
+              name={`exceptions[${exception}].fieldCode`}
+              id={`exceptions[${exception}].fieldCode`}
+            >
+              {({ field }: { field: any }) => (
+                <Input
+                  {...field}
+                  type="select"
+                  invalid={
+                    touched.exceptions?.[exception]?.fieldCode &&
+                    !!errors.exceptions?.[exception]?.fieldCode
+                  }
+                  onChange={(e) => {
+                    handleCDLChange(e.target.value);
+                    setFieldValue(`exceptions[${exception}].fieldCode`, e.target.value);
+                  }}
+                >
+                  {cdlData ? (
+                    <>
+                  <option value="">-- Select Field Code --</option>
+                  {cdlData.cdls.map((cdl: any) => (
+                        <option
+                          key={cdl.field_list_code}
+                          id={cdl.field_list_code}
+                          value={cdl.field_list_code}
                         >
-                          {submitterData?.submitters &&
-                            submitterData.submitters.map(
-                              (submitter: Entities) => (
-                                <option key={submitter.entity_name}>
-                                  {submitter.entity_name} - Payor Code:{' '}
-                                  {submitter.payor_code}
-                                </option>
-                              )
-                            )}
-                        </Input>
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="business-name_1"
-                      component={FormFeedback}
-                    />
-                  </InputGroup>
-                )}
-                {entitiesError && (
-                  <SectionMessage type="error">
-                    There was an error finding your associated businesses.{' '}
-                    <a href="https://txapcd.org/workbench/dashboard/tickets/create">
-                      Please submit a ticket.
-                    </a>
-                  </SectionMessage>
-                )}
-              </FormGroup>
-              <FormGroup className="field-wrapper required">
-                <Label for="file_type_1">File Type</Label>
-                <InputGroup>
-                  <Field type="select" name="file_type_1" id="file_type_1">
-                    {({ field }: { field: any }) => (
-                      <Input
-                        id="file_type_1"
-                        className="dropdown-text"
-                        type="select"
-                        {...field}
-                        invalid={touched.name && !!errors.name}
-                        onChange={(e) => {
-                          handleFileChange(e.target.value);
-                        }}
-                      >
-                        <option value="">-- Choose File Type --</option>
-                        <option value="dc">Dental Claims</option>
-
-                        <option value="mc">Medical Claims</option>
-
-                        <option value="me">Member Eligibility</option>
-
-                        <option value="pc">Pharmacy Claims</option>
-
-                        <option value="pv">Provider</option>
-                      </Input>
-                    )}
-                  </Field>
-                  <ErrorMessage name="file_type_1" component={FormFeedback} />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup className="field-wrapper required">
-                <Label for="field-threshold-exception_1">Field Code</Label>
-                {cdlLoading ? (
-                  <LoadingSpinner className={styles.loadingField} />
-                ) : (
-                  <InputGroup>
-                    <Field
-                      type="select"
-                      name="field-threshold-exception_1"
-                      id="field-threshold-exception_1"
-                    >
-                      {({ field }: { field: any }) => (
-                        <Input
-                          id="field-threshold-exception_1"
-                          className="dropdown-text"
-                          type="select"
-                          {...field}
-                          invalid={touched.name && !!errors.name}
-                          onChange={(e) => {
-                            handleCDLChange(e.target.value);
-                          }}
-                        >
-                          {cdlData && (
-                            <>
-                              <option value="">
-                                -- Select a Field Code --
-                              </option>
-                              {cdlData.cdls.map((cdl: any) => (
-                                <option
-                                  key={cdl.field_list_code}
-                                  id={cdl.field_list_code}
-                                  value={cdl.field_list_code}
-                                >
-                                  {cdl.field_list_code}
-                                  {' - '}
-                                  {cdl.field_list_value}
-                                </option>
-                              ))}
-                            </>
-                          )}
-                          {cdlData?.cdls.length === 0 && (
-                            <option value="">
-                              -- Select a File Type Above First --
-                            </option>
-                          )}
-                        </Input>
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="field-threshold-exception_1"
-                      component={FormFeedback}
-                    />
-                  </InputGroup>
-                )}
-              </FormGroup>
-              <div className={styles.dateRow}>
-                <FormGroup className="field-wrapper required">
-                  <Label for="expiration_date_1">Expiration Date</Label>
-                  <InputGroup>
-                    <Field
-                      type="date"
-                      name="expiration_date_1"
-                      id="expiration_date_1"
-                    >
-                      {({ field }: { field: any }) => (
-                        <Input
-                          id="expiration_date_1"
-                          {...field}
-                          invalid={touched.name && !!errors.name}
-                          type="date"
-                          className={styles.expirationDate}
-                        >
-                          {}
-                        </Input>
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="expiration_date_1"
-                      component={FormFeedback}
-                    />
-                  </InputGroup>
-                </FormGroup>
-                <FormGroup className="field-wrapper required">
-                  <Label for="requested_threshold_1">
-                    Requested Threshold Percentage
-                  </Label>
-                  <InputGroup className={styles.thresholdRequested}>
-                    <Field
-                      type="number"
-                      name="requested_threshold_1"
-                      id="requested_threshold_1"
-                      min="0"
-                      max={selectedCDL?.threshold_value}
-                    >
-                      {({ field }: { field: any }) => (
-                        <Input
-                          id="requested_threshold_1"
-                          {...field}
-                          invalid={touched.name && !!errors.name}
-                        >
-                          {}
-                        </Input>
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="requested_threshold_1"
-                      component={FormFeedback}
-                    />
-                  </InputGroup>
-                  {selectedCDL && (
-                    <div className="help-text">
-                      Must be less than the {selectedCDL.threshold_value}{' '}
-                      required.
-                    </div>
+                          {cdl.field_list_code}
+                          {' - '}
+                          {cdl.field_list_value}
+                        </option>
+                      ))}
+                    </>
+                  ) : (
+                    <option value="">
+                      -- Select a File Type Above First --
+                    </option>
                   )}
-                </FormGroup>
-                <FormGroup className="field-wrapper required">
-                  <Label for="required_threshold_1">
-                    Required Threshold Percentage
-                  </Label>
-                  <InputGroup>
-                    <Field
-                      type="number"
-                      name="required_threshold_1"
-                      id="required_threshold_1"
-                      min="0"
-                      max="99"
-                    >
-                      {({ field }: { field: any }) => (
-                        <Input
-                          id="required_threshold_1"
-                          className={styles.requiredThreshold}
-                          readOnly
-                          {...field}
-                          invalid={touched.name && !!errors.name}
-                          value={
-                            selectedCDL?.threshold_value
-                              ? selectedCDL.threshold_value
-                              : ''
-                          }
-                        ></Input>
-                      )}
-                    </Field>
-                    <ErrorMessage
-                      name="required_threshold_1"
-                      component={FormFeedback}
-                    />
-                  </InputGroup>
-                </FormGroup>
-              </div>
-              <div>
-                <Button
-                  className="c-button c-button--primary"
-                  id="exception-add-btn"
-                  type="button"
-                >
-                  + Add Another Threshold Exception
-                </Button>
-                <Button
-                  className="c-button c-button--secondary"
-                  id="exception-drop-btn"
-                  type="button"
-                >
-                  - Remove Last Threshold Exception
-                </Button>
-              </div>
-              <hr />
-              <Button type="submit" className="form-button" value="Submit">
-                Submit
-              </Button>
-            </Form>
-          )}
-        </Formik>
+                </Input>
+              )}
+            </Field>
+            <ErrorMessage
+              name={`exceptions[${exception}].fieldCode`}
+              component={FormFeedback}
+            />
+          </InputGroup>
+        </FormGroup>
+      <div className={styles.fieldRows}>
+      <FormGroup className="field-wrapper required">
+        <Label for={`exceptions[${exception}].expiration_date`}>Expiration Date</Label>
+        <InputGroup>
+          <Field
+            type="date"
+            name={`exceptions[${exception}].expiration_date`}
+            id={`exceptions[${exception}].expiration_date`}
+          >
+            {({ field }: { field: any }) => (
+              <Input
+                {...field}
+                type="date"
+                invalid={
+                  touched.exceptions?.[exception]?.expiration_date &&
+                  !!errors.exceptions?.[exception]?.expiration_date
+                }
+                onChange={(e) => {
+                  setFieldValue(`exceptions[${exception}].expiration_date`, e.target.value);
+                }}
+              />
+            )}
+          </Field>
+          <ErrorMessage
+            name={`exceptions[${exception}].expiration_date`}
+            component={FormFeedback}
+          />
+        </InputGroup>
+      </FormGroup>
+        <FormGroup className="field-wrapper required">
+        <Label for={`exceptions[${exception}].requested_threshold`}>
+          Requested Threshold Percentage
+        </Label>
+        <InputGroup className={styles.thresholdRequested}>
+          <Field
+            type="number"
+            name={`exceptions[${exception}].requested_threshold`}
+            id={`exceptions[${exception}].requested_threshold`}
+            min="0"
+            max={selectedCDL?.threshold_value}
+          >
+            {({ field }: { field: any }) => (
+              <Input
+                {...field}
+                invalid={
+                  touched.exceptions?.[exception]?.requested_threshold &&
+                  !!errors.exceptions?.[exception]?.requested_threshold
+                }
+                onChange={(e) => {
+                  setFieldValue(`exceptions[${exception}].requested_threshold`, e.target.value);
+                }}
+              />
+            )}
+          </Field>
+          <ErrorMessage
+            name={`exceptions[${exception}].requested_threshold`}
+            component={FormFeedback}
+          />
+        </InputGroup>
+        {selectedCDL && (
+          <div className="help-text">
+            Must be less than the {selectedCDL.threshold_value} required.
+          </div>
+        )}
+      </FormGroup>
+        <FormGroup className="field-wrapper required">
+        <Label for={`exceptions[${exception}].required_threshold`}>
+          Required Threshold Percentage
+        </Label>
+
+        <InputGroup>
+          <Field
+            type="number"
+            name={`exceptions[${exception}].required_threshold`}
+            id={`exceptions[${exception}].required_threshold`}
+            min="0"
+            max="99"
+          >
+            {({ field }: { field: any }) => (
+              <Input
+                id={`exceptions[${exception}].required_threshold`}
+                className={styles.requiredThreshold}
+                readOnly
+                {...field}
+                value={selectedCDL?.threshold_value
+                        ? selectedCDL.threshold_value
+                        : ''}
+                onChange={(e) => {
+                  setFieldValue(`exceptions[${exception}].required_threshold`, e.target.value);
+                }}
+              />
+            )}
+          </Field>
+        </InputGroup>
+      </FormGroup>
       </div>
     </>
   );
