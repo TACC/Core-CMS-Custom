@@ -13,30 +13,52 @@ import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
 
-const validationSchema = Yup.object({
+const validationSchema = Yup.object().shape({
+  exceptions: Yup.array().of(
+    Yup.object().shape({
+      businessName: Yup.string().required('Required'),
+      fileType: Yup.string().required('Required'),
+      fieldCode: Yup.string().required('Required'),
+      expiration_date: Yup.date().required('Required'),
+      requested_threshold: Yup.number().required('Required'),
+      required_threshold: Yup.number().required('Required'),
+
+    })
+  ),
   justification: Yup.string()
-    .max(2000, 'Must be 2000 characters or less')
-    .required('Required'),
-  requestorName: Yup.string().required('Required'),
-  requestorEmail: Yup.string().email().required('Required'),
-  acceptTerms: Yup.boolean().isTrue().required('Required'),
-  expirationDate: Yup.date().required('Required'),
+  .max(2000, 'Must be 2000 characters or less')
+  .required('Required'),
+requestorName: Yup.string().required('Required'),
+requestorEmail: Yup.string().email().required('Required'),
+acceptTerms: Yup.boolean().oneOf([true], 'You must accept the terms'),
+expirationDateOther: Yup.date().required('Required'),
 });
 
 interface FormValues {
+  exceptions: object;
   justification: string;
   requestorName: string;
   requestorEmail: string;
   acceptTerms: boolean;
-  expirationDate: Date | null;
+  expirationDateOther: Date | null;
 }
 
 const initialValues: FormValues = {
+    exceptions: [
+      {
+        businessName: '',
+        fileType: '',
+        fieldCode: '',
+        expiration_date: '',
+        requested_threshold: '',
+        required_threshold: '',
+      },
+    ],
   justification: '',
   requestorName: '',
   requestorEmail: '',
   acceptTerms: false,
-  expirationDate: null,
+  expirationDateOther: null,
 };
 
 export const ExceptionFormPage: React.FC = () => {
@@ -78,7 +100,7 @@ export const ExceptionFormPage: React.FC = () => {
         eligible for an exception to certain data submission requirements under
         H.B. 2090 (87(R)) and associated regulations. Please review the
         legislation and regulation before submitting this form. Links to both
-        can be found on the
+        can be found on the {''}
         <a
           href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/index.htm"
           target="_blank"
@@ -102,35 +124,39 @@ export const ExceptionFormPage: React.FC = () => {
         {({ setFieldValue, errors, touched }) => (
           <Form className="form-wrapper" id="threshold-form">
             <div className={styles.fieldRows}>
-            <FormGroup className="field-wrapper required">
-              <Input
-                type="select"
-                name="exceptionType"
-                id="exceptionType"
-                value={selectedExceptionType}
-                onChange={(e) => {setSelectedExceptionType(e.target.value);}
-                }
-              >
-                <option value="">-- Select Exception Type --</option>
-                <option value="threshold">Threshold Exception</option>
-                <option value="other">Other Exception</option>
-              </Input>
-            </FormGroup>
-            {selectedExceptionType != '' && (
-            <SectionMessage type="info">Your changes will not be saved if you
-            change the exception type.</SectionMessage>
-
-            )}
+              <FormGroup className="field-wrapper required">
+                <Input
+                  type="select"
+                  name="exceptionType"
+                  id="exceptionType"
+                  value={selectedExceptionType}
+                  onChange={(e) => {
+                    setSelectedExceptionType(e.target.value);
+                    setFieldValue(`exceptionType`, e.target.value);
+                  }}
+                >
+                  <option value="">-- Select Exception Type --</option>
+                  <option value="threshold">Threshold Exception</option>
+                  <option value="other">Other Exception</option>
+                </Input>
+              </FormGroup>
+              {selectedExceptionType != '' && (
+                <SectionMessage type="info">
+                  Your changes will not be saved if you change the exception
+                  type.
+                </SectionMessage>
+              )}
             </div>
             {selectedExceptionType === 'threshold' && (
               <div className={styles.exceptionBlock}>
                 {[...Array(numberOfExceptionBlocks)].map((_, index) => (
-                  <>
-                    <hr />
-                    <ExceptionForm key={index} exception={index + 1} />
-                  </>
+                  <ExceptionForm
+                    key={index}
+                    exception={index + 1}
+                    formikProps={{ errors, touched, setFieldValue }}
+                  />
                 ))}
-                <div>
+                <div className={styles.fieldRows}>
                   <Button
                     className="c-button c-button--primary"
                     id="exception-add-btn"
@@ -161,25 +187,32 @@ export const ExceptionFormPage: React.FC = () => {
                     <InputGroup>
                       <Field
                         type="date"
-                        name="expirationDate"
-                        id="expirationDate"
+                        name="expirationDateOther"
+                        id="expirationDateOther"
                       >
                         {({ field }: { field: any }) => (
                           <Input
-                            id="expirationDate"
+                            id="expirationDateOther"
                             {...field}
                             invalid={
-                              touched.expirationDate && !!errors.expirationDate
+                              touched.expirationDateOther &&
+                              !!errors.expirationDateOther
                             }
                             type="date"
                             className={styles.expirationDate}
+                            onChange={(e) => {
+                              setFieldValue(
+                                `expirationDateOther`,
+                                e.target.value
+                              );
+                            }}
                           >
                             {}
                           </Input>
                         )}
                       </Field>
                       <ErrorMessage
-                        name="expirationDate"
+                        name="expirationDateOther"
                         component={FormFeedback}
                       />
                     </InputGroup>
@@ -217,6 +250,9 @@ export const ExceptionFormPage: React.FC = () => {
                           }
                           cols={40}
                           rows={5}
+                          onChange={(e) => {
+                            setFieldValue(`justification`, e.target.value);
+                          }}
                         ></textarea>
                       )}
                     </Field>
@@ -248,8 +284,11 @@ export const ExceptionFormPage: React.FC = () => {
                             id="requestorName"
                             {...field}
                             invalid={
-                              touched.justification && !!errors.justification
+                              touched.requestorName && !!errors.requestorName
                             }
+                            onChange={(e) => {
+                              setFieldValue(`requestorName`, e.target.value);
+                            }}
                           >
                             {}
                           </Input>
@@ -276,6 +315,9 @@ export const ExceptionFormPage: React.FC = () => {
                             invalid={
                               touched.requestorEmail && !!errors.requestorEmail
                             }
+                            onChange={(e) => {
+                              setFieldValue(`requestorEmail`, e.target.value);
+                            }}
                           >
                             {}
                           </Input>
@@ -287,9 +329,12 @@ export const ExceptionFormPage: React.FC = () => {
                       />
                     </InputGroup>
                   </FormGroup>
-                  <FormGroup className="field-wrapper checkbox required">
-                    <Label for="acceptTerms">Accept</Label>
-                    <InputGroup>
+                  <FormGroup className="field-wrapper required" check>
+                    <Label for="acceptTerms" check>
+                      {' '}
+                      Accept
+                    </Label>
+                    <InputGroup className={styles.termsCheckbox}>
                       <Field
                         type="checkbox"
                         name="acceptTerms"
@@ -303,12 +348,16 @@ export const ExceptionFormPage: React.FC = () => {
                               touched.acceptTerms && !!errors.acceptTerms
                             }
                             type="checkbox"
-                            className={styles.acceptTerms}
+                            checked={field.value}
+                            onChange={() =>
+                              setFieldValue('acceptTerms', !field.value)
+                            }
                           >
                             {}
                           </Input>
                         )}
                       </Field>
+
                       <ErrorMessage
                         name="acceptTerms"
                         component={FormFeedback}
@@ -320,6 +369,17 @@ export const ExceptionFormPage: React.FC = () => {
                   <Button type="submit" className="form-button" value="Submit">
                     Submit
                   </Button>
+                </div>
+                <div>
+                  <hr />
+                  <small>
+                    * Exceptions cannot be granted for periods longer than a
+                    year.
+                    <br />
+                    ** Exceptions cannot be granted "from any requirement in
+                    insurance code Chapter 38".
+                    <br />
+                  </small>
                 </div>
               </>
             )}

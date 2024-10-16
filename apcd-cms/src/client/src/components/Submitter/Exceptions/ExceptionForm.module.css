@@ -10,14 +10,12 @@
   min-width: 15ch;
 }
 .fieldRows {
-  display: inline-flex;
-  flex-direction: row;
+  display: flex;
   gap: 5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 .fieldRows input {
-  width: inherit;
   font-size: inherit;
 }
 .loadingField {
@@ -33,3 +31,8 @@
   border-color: #ced4da;
   cursor: not-allowed;
 }
+.termsCheckbox input {
+  position: unset;
+  margin-left: 0;
+}
+
