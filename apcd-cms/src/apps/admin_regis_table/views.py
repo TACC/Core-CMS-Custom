@@ -55,13 +55,19 @@ class RegistrationsTable(TemplateView):
         return HttpResponse(template.render({}, request))
 
     def get(self, request, *args, **kwargs):
-        registrations_content = get_registrations()
-        registrations_entities = get_registration_entities()
-        registrations_contacts = get_registration_contacts()   
+        try:
+            registrations_content = get_registrations()
+            registrations_entities = get_registration_entities()
+            registrations_contacts = get_registration_contacts()   
 
-        context = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
-        return JsonResponse({'response': context})
-
+            context = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+            return JsonResponse({'response': context})
+        except Exception as e:
+            logger.error("An error occurred: %s", str(e))
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Internal server error',
+            }, status=500)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):

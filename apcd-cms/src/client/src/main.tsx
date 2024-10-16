@@ -9,7 +9,9 @@ import { AdminExtensions } from './components/Admin/Extensions';
 import { AdminExceptions } from './components/Admin/Exceptions';
 import { ViewExceptionModal } from './components/Admin/ViewExceptionModal';
 import { EditExceptionModal } from './components/Admin/EditExceptionModal';
+import { SubmitterRegistrationList } from './components/Submitter/Registrations';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ExceptionForm } from './components/Submitter/Exceptions';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,8 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'admin-exceptions-root': AdminExceptions,
   'view-exception-modal-root': ViewExceptionModal,
   'edit-exception-modal-root': EditExceptionModal,
+  'list-submitter-registrations-root': SubmitterRegistrationList,
+  'exception-submission-root': ExceptionForm,
   // Add new components with html id in the list above.
 };
 

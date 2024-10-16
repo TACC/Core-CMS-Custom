@@ -1,0 +1,37 @@
+/*Text Style*/
+.justificationAsterisk {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* Field Sizes */
+.thresholdRequested,
+.expirationDate {
+  min-width: 15ch;
+}
+.dateRow {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  min-width: 15ch;
+}
+.dateRow input {
+  width: 35px;
+  font-size: 16px;
+}
+.loadingField {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.requiredThreshold {
+  background-color: #e9ecef;
+  color: #6c757d;
+  border-color: #ced4da;
+  cursor: not-allowed;
+}
