@@ -9,18 +9,16 @@
 .expirationDate {
   min-width: 15ch;
 }
-.dateRow {
+.fieldRows {
   display: inline-flex;
   flex-direction: row;
-  justify-content: space-around;
   gap: 5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  min-width: 15ch;
 }
-.dateRow input {
-  width: 35px;
-  font-size: 16px;
+.fieldRows input {
+  width: inherit;
+  font-size: inherit;
 }
 .loadingField {
   display: inline-flex;

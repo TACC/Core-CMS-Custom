@@ -1,3 +1,4 @@
 import { ExceptionForm } from './ExceptionForm';
+import { ExceptionFormPage } from './ExceptionFormPage';
 
-export { ExceptionForm };
+export { ExceptionForm, ExceptionFormPage };
