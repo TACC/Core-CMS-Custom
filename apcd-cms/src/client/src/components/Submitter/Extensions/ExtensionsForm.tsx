@@ -163,7 +163,7 @@ export const ExtensionRequestForm: React.FC = () => {
               </div>
             ))}
 
-            <Button
+            <Button className="c-button c-button--primary"
               type="button"
               onClick={() =>
                 setFieldValue('extensions', [
@@ -182,7 +182,7 @@ export const ExtensionRequestForm: React.FC = () => {
               + Add Another Extension Request
             </Button>
             {" "}
-            <Button
+            <Button className="c-button c-button--secondary"
               type="button"
               onClick={() =>
                 values.extensions.length > 1 &&
@@ -192,7 +192,7 @@ export const ExtensionRequestForm: React.FC = () => {
               disabled={values.extensions.length === 1}
             >
               - Remove Last Extension Request
-            </Button>
+            </Button >
 
             <hr />
             <h4>Request and Justification</h4>
@@ -257,7 +257,7 @@ export const ExtensionRequestForm: React.FC = () => {
             <ErrorMessage name="acceptTerms" component={FormFeedback} />
           </FormGroup>
           <br />
-          <Button type="submit" color="primary" disabled={isSubmitting}>
+          <Button type="submit" color="primary" className="form-button" disabled={isSubmitting}>
             Submit
           </Button>
           <hr />
