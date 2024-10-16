@@ -1,0 +1,30 @@
+<style id="ctrn-css-homepage-hedda-way">
+/* To strech content vertically */
+body {
+  display: flex;
+  flex-direction: column;
+}
+body > main {
+  flex: 1;
+}
+[class*=container]:has(.o-split-content) {
+  height: 100%;
+}
+.o-split-content {
+  height: 100%;
+}
+
+/* To split the layout */
+.o-split-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.o-split-content__left {
+  grid-column-start: 1;
+  grid-row: 1;
+}
+.o-split-content__right {
+  grid-column-start: 2;
+  grid-row: 1;
+}
+</style>
