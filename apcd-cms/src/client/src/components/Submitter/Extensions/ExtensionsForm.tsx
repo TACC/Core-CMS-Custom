@@ -83,11 +83,14 @@ export const ExtensionRequestForm: React.FC = () => {
                 <h4>Extension Information {index + 1}</h4>
                 <p>This extension is on behalf of the following organization:</p>
                 <FormGroup>
-                  <Label for={`extensions.${index}.businessName`}>
+                  <Label htmlFor={`extensions.${index}.businessName`}>
                       Business Name{' '}
                       <span className={styles.requiredText}>(required)</span>
                   </Label>
-                  <Field as="select" name={`extensions.${index}.businessName`} className="form-control">
+                  <Field as="select" 
+                         name={`extensions.${index}.businessName`} 
+                         id={`extensions.${index}.businessName`} 
+                         className="form-control">
                       <option value="">Select Business Name</option>
                       <option value="Test Meritan Health">Test Meritan Health - Payor Code: 10000003</option>
                       {/* Add more options as necessary */}
@@ -96,11 +99,14 @@ export const ExtensionRequestForm: React.FC = () => {
                 </FormGroup>
 
                 <FormGroup>
-                  <Label for={`extensions.${index}.extensionType`}>
+                  <Label htmlFor={`extensions.${index}.extensionType`}>
                       Extension Type{' '}
                       <span className={styles.requiredText}>(required)</span>
                   </Label>
-                  <Field as="select" name={`extensions.${index}.extensionType`} className="form-control">
+                  <Field as="select" 
+                         name={`extensions.${index}.extensionType`} 
+                         id={`extensions.${index}.extensionType`} 
+                         className="form-control">
                     <option value="">Select Extension Type</option>
                     <option value="regular">Regularly Scheduled Submission</option>
                     <option value="resubmission">Corrected Resubmission</option>
@@ -113,11 +119,14 @@ export const ExtensionRequestForm: React.FC = () => {
                 <Row>
                   <Col md={4}>
                     <FormGroup>
-                      <Label for={`extensions.${index}.applicableDataPeriod`}>
+                      <Label htmlFor={`extensions.${index}.applicableDataPeriod`}>
                         Applicable Data Period <sup>1</sup>
                         <span className={styles.requiredText}>{" "}(required)</span>
                       </Label>
-                      <Field as="select" name={`extensions.${index}.applicableDataPeriod`} className="form-control">
+                      <Field as="select" 
+                             name={`extensions.${index}.applicableDataPeriod`} 
+                             id={`extensions.${index}.applicableDataPeriod`} 
+                             className="form-control">
                         <option value="">-- Select period --</option>
                         <option value="2024-01">January 2024</option>
                         <option value="2024-02">February 2024</option>
@@ -129,7 +138,7 @@ export const ExtensionRequestForm: React.FC = () => {
 
                   <Col md={4}>
                     <FormGroup className={`position-relative ${styles.dateInputContainer}`}>
-                      <Label for={`extensions.${index}.requestedTargetDate`}>
+                      <Label htmlFor={`extensions.${index}.requestedTargetDate`}>
                           Requested Target Date <sup>2</sup>
                           <span className={styles.requiredText}>{" "}(required)</span>
                       </Label>
@@ -145,13 +154,14 @@ export const ExtensionRequestForm: React.FC = () => {
 
                   <Col md={4}>
                     <FormGroup className={`position-relative ${styles.dateInputContainer}`}>
-                      <Label for={`extensions.${index}.currentExpectedDate`}>
+                      <Label htmlFor={`extensions.${index}.currentExpectedDate`}>
                         Current Expected Date <sup>3</sup>
                         <span className={styles.requiredText}>{" "}(required)</span>
                       </Label>
                       <Field
                         type="date"
                         name={`extensions.${index}.currentExpectedDate`}
+                        id={`extensions.${index}.currentExpectedDate`}
                         className="form-control"
                       />
                       <ErrorMessage name={`extensions.${index}.currentExpectedDate`} component={FormFeedback} />
@@ -197,12 +207,13 @@ export const ExtensionRequestForm: React.FC = () => {
             <hr />
             <h4>Request and Justification</h4>
             <FormGroup>
-              <Label for="justification">
+              <Label htmlFor="justification">
                 Justification <span className={styles.requiredText}>(required)</span>
               </Label>
               <Field
                 as="textarea"
                 name="justification"
+                id="justification"
                 rows="5"
                 className="form-control"
                 maxLength="2000"
@@ -216,7 +227,7 @@ export const ExtensionRequestForm: React.FC = () => {
             <Row>
               <Col md={4}>
                 <FormGroup>
-                  <Label for="requestorName">
+                  <Label htmlFor="requestorName">
                     Requestor Name
                     <span className={styles.requiredText}> (required)</span>
                   </Label>
@@ -232,7 +243,7 @@ export const ExtensionRequestForm: React.FC = () => {
 
               <Col md={4}>
                 <FormGroup>
-                  <Label for="requestorEmail">
+                  <Label htmlFor="requestorEmail">
                     Requestor Email
                     <span className={styles.requiredText}> (required)</span>
                   </Label>
