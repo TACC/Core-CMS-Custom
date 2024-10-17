@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useExceptions, ExceptionRow } from 'hooks/admin';
+import LoadingSpinner from 'core-components/LoadingSpinner';
+import Paginator from 'core-components/Paginator';
+import ViewExceptionModal from '../ViewExceptionModal/ViewExceptionModal';
+import EditExceptionModal from '../EditExceptionModal/EditExceptionModal';
+import styles from './AdminExceptions.module.css';
 
 export const AdminExceptions: React.FC = () => {
   const [status, setStatus] = useState('All');
@@ -10,6 +15,12 @@ export const AdminExceptions: React.FC = () => {
     org,
     page
   );
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [dropdownValue, setDropdownValue] = useState<string>('');
+
+  const [selectedException, setSelectedException] =
+    useState<ExceptionRow | null>(null);
 
   useEffect(() => {
     refetch();
@@ -22,7 +33,11 @@ export const AdminExceptions: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-placeholder">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -31,17 +46,22 @@ export const AdminExceptions: React.FC = () => {
 
   const openAction = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    exception_id: string
+    exception: ExceptionRow
   ) => {
-    // const actionsDropdown = event.target;
-    // const selectedOption = actionsDropdown.value;
-    // setSelectedRegistration(
-    //   data?.page.find((x) => x.reg_id === reg_id) ?? null
-    // );
-    // if (selectedOption == 'viewRegistration') {
-    //   setIsViewModalOpen(true);
-    // }
-    // actionsDropdown.selectedIndex = 0;
+    const selectedOption = event.target.value;
+    setSelectedException(exception);
+    setDropdownValue('');
+    if (selectedOption == 'viewException') {
+      setIsViewModalOpen(true);
+    } else if (selectedOption == 'editException') {
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const closeAction = () => {
+    refetch();
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
   return (
@@ -99,21 +119,21 @@ export const AdminExceptions: React.FC = () => {
         <tbody>
           {data?.page.map((row: ExceptionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.created_at}</td>
+              <td>{new Date(row.created_at).toLocaleString()}</td>
               <td>{row.entity_name}</td>
               <td>{row.requestor_name}</td>
-              <td>{row.requestor_type}</td>
+              <td>{row.request_type}</td>
               <td>{row.outcome}</td>
               <td>{row.status}</td>
               <td className="modal-cell">
                 <select
                   id={`actionsDropdown_${row.exception_id}`}
-                  defaultValue=""
+                  value={dropdownValue}
                   className="status-filter"
-                  onChange={(e) => openAction(e, row.exception_id)}
+                  onChange={(e) => openAction(e, row)}
                 >
                   <option value="">Select Action</option>
-                  <option value="viewAdminExceptions">View Record</option>
+                  <option value="viewException">View Record</option>
                   <option value="editException">Edit Record</option>
                 </select>
               </td>
@@ -121,6 +141,29 @@ export const AdminExceptions: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <div className={styles.paginatorContainer}>
+        <Paginator
+          pages={data?.total_pages ?? 0}
+          current={data?.page_num ?? 0}
+          callback={setPage}
+        />
+      </div>
+      {selectedException && (
+        <>
+          <ViewExceptionModal
+            exception={selectedException}
+            isOpen={isViewModalOpen}
+            onClose={() => closeAction()}
+          />
+          <EditExceptionModal
+            exception={selectedException}
+            statusOptions={data?.status_modal_options}
+            outcomeOptions={data?.outcome_modal_options}
+            isOpen={isEditModalOpen}
+            onClose={() => closeAction()}
+          />
+        </>
+      )}
     </div>
   );
 };

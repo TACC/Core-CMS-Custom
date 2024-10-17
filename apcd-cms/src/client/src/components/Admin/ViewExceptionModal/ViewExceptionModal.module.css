@@ -1,0 +1,26 @@
+.modal {
+  color: var(--global-color-primary--xx-dark);
+  padding: 20px;
+  .h-100 {
+    padding: 0 10px;
+  }
+
+  .tr-header {
+    border-bottom-color: #c6c6c6;
+  }
+}
+
+.header {
+  font-weight: 400 !important;
+  background: var(--global-color-primary--x-light);
+  display: flex;
+}
+
+.verticalDataList {
+  width: 100%;
+  padding-left: 40px;
+}
+
+.verticalDataValue {
+  padding-left: 2.5em;
+}

@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from apps.admin_exception.views import AdminExceptionsTable
+from apps.admin_exception.views import AdminExceptionsTable, UpdateExceptionView
 
 app_name = 'admin_exception'
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
          name='admin_exceptions_table_api'),
     path(r'list-exceptions/api/?org=(?P<org>)/', AdminExceptionsTable.as_view(), name='admin_exceptions_table_api'),
     path(r'list-exceptions/api/?status=(?P<status>)&org=(?P<org>)/', AdminExceptionsTable.as_view(),
-         name='admin_exceptions_table_api')
+         name='admin_exceptions_table_api'),
+    path('exceptions/<int:exception_id>/', UpdateExceptionView.as_view(), name='update_exceptions'),
 ]
