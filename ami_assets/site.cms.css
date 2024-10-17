@@ -1,0 +1,3 @@
+/* Override the margin in the CMS page template for better iframe integration. */
+body > main { 0; }
+
