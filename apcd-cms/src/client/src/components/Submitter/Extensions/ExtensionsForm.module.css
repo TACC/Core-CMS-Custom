@@ -1,0 +1,13 @@
+.requiredText {
+    color: red;
+  }
+
+.dateInputField {
+padding-right: 2ch; /* Adjust space for icons or padding */
+min-width: 10ch; /* Minimum width for empty input */
+}
+
+.dateInputContainer {
+display: inline-block;
+}
+  
