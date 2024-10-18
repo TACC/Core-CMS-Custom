@@ -1,2 +1,3 @@
 /* Override the margin in the CMS page template for better iframe integration. */
-html body>main#cms-content { margin-bottom: 0 !important; }
+html body>main#cms-content { margin-bottom: 0; }
+html body>main#cms-content div.container { min-height: 79vh; }
