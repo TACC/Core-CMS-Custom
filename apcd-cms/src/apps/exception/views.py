@@ -10,12 +10,11 @@ import json
 logger = logging.getLogger(__name__)
 
 class ExceptionFormView(TemplateView):
-    template_name = "exception_submission_form.html"
-
     def post(self, request):
+        logger.debug("Am I here" * 10)
         if (request.user.is_authenticated) and has_apcd_group(request.user):
-
             form = request.POST.copy()
+            logger.debug(print(form))
             errors = []
             submitters = apcd_database.get_submitter_info(request.user.username)
             # To create counter of exception requests and corresponding fields
@@ -34,18 +33,11 @@ class ExceptionFormView(TemplateView):
                 if _err_msg(except_response):
                     errors.append(_err_msg(except_response))
 
-            if len(errors):
-                template = loader.get_template(
-                    "exception_submission_form/exception_submission_error.html"
-                )
-                response = HttpResponse(template.render({}, request))
+            if errors:
+                return JsonResponse({'status': 'error', 'errors': errors}, status=400)
             else:
-                template = loader.get_template(
-                    "exception_submission_form/exception_form_success.html"
-                )
-                response = HttpResponse(template.render({}, request))
+                return JsonResponse({'status': 'success'}, status=200)
 
-            return response
         else:
             return HttpResponseRedirect('/')
 
