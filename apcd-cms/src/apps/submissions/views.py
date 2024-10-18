@@ -67,13 +67,25 @@ class SubmissionsTable(TemplateView):
                 'outcome': title_case(t['outcome'])
             } for t in (s['view_modal_content'] or [])]
 
-
         context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['filter_options'] = ['All', 'In Process', 'Complete']
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 
         context['query_str'] = queryStr
-        context.update(paginator(self.request, submission_content, limit))
+        page_info = paginator(self.request, submission_content, limit)
+
+        context['page'] = [{
+            'submission_id': obj['submission_id'],
+            'status': obj['status'],
+            'file_name': obj['file_name'],
+            'outcome': obj['outcome'],
+            'received_timestamp': obj['received_timestamp'],
+            'updated_at': obj['updated_at'],
+            'view_modal_content': obj['view_modal_content'],
+        } for obj in page_info['page']]
+
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'submissions:list_submissions'
 
         return context

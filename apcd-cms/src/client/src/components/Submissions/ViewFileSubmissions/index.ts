@@ -1,3 +1,3 @@
-import { ViewFileSubmissions } from './ViewFileSubmissions';
+import { ViewFileSubmissions } from './ViewSubmissions';
 
 export { ViewFileSubmissions };

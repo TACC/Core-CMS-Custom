@@ -33,46 +33,51 @@ export const ViewFileSubmissions: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="filter-container">
         <div className="filter-content">
-          <span>
-            <b>Filter by Status: </b>
-          </span>
-          <select
-            id="statusFilter"
-            className="status-filter"
-            value={status === '' ? data?.status_options[0] : status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            {data?.status_options.map((option: string, index: number) => (
-              <option className="dropdown-text" key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <span>
-            <b>Sort by: </b>
-          </span>
-          <select
-            id="dateSort"
-            className="status-filter"
-            value={sort === '' ? data?.sort_options[0].value : sort}
-            onChange={(e) => setSort(e.target.value)}
-          >
-            {data?.sort_options.map((option: any, index: number) => (
-              <option
-                className="dropdown-text"
-                key={index}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            ))}
-          </select>
-          {data?.selected_status || data?.selected_sort ? (
-            <button onClick={clearSelections}>Clear Options</button>
-          ) : null}
+          {/* Filter */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span>
+              <b>Filter by Status: </b>
+            </span>
+            <select
+              id="statusFilter"
+              className="status-filter"
+              defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              {data?.filter_options.map((status, index) => (
+                <option className="dropdown-text" key={index} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+            <span>
+              <b>Sort by: </b>
+            </span>
+            <select
+              id="dateSort"
+              className="status-filter"
+              defaultValue=""
+              onChange={(e) => setSort(e.target.value)}
+            >
+              {Object.entries(data?.sort_options || {}).map(
+                (option: any, index: number) => (
+                  <option
+                    className="dropdown-text"
+                    key={index}
+                    value={option.value}
+                  >
+                    {option.name}
+                  </option>
+                )
+              )}
+            </select>
+            {data?.selected_status || data?.selected_sort ? (
+              <button onClick={clearSelections}>Clear Options</button>
+            ) : null}
+          </div>
         </div>
       </div>
       <table id="submissionTable" className="submission-table">
@@ -101,6 +106,6 @@ export const ViewFileSubmissions: React.FC = () => {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
