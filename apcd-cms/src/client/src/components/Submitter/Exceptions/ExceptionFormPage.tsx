@@ -81,7 +81,7 @@ export const ExceptionFormPage: React.FC = () => {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     const url = `submissions/exception/`;
-    console.log(values.exceptions)
+    console.log(values.exceptions);
     try {
       const response = await fetchUtil({
         url,
@@ -169,11 +169,10 @@ export const ExceptionFormPage: React.FC = () => {
       <Formik
         key={numberOfExceptionBlocks}
         initialValues={initialValues}
-
         onSubmit={handleSubmit}
       >
         {({ values, isSubmitting, setFieldValue }) => {
-            console.log("Formik values:", values)
+          console.log('Formik values:', values);
           useEffect(() => {
             if (numberOfExceptionBlocks > values.exceptions.length) {
               const additionalBlocks = Array.from(
@@ -197,14 +196,12 @@ export const ExceptionFormPage: React.FC = () => {
                 values.exceptions.slice(0, numberOfExceptionBlocks)
               );
             }
-
           }, [numberOfExceptionBlocks, values.exceptions, setFieldValue]);
           return (
             <Form className="form-wrapper" id="threshold-form">
               {selectedExceptionType == 'threshold' && (
                 <div>
                   {values.exceptions
-                    .slice(0, numberOfExceptionBlocks)
                     .map((exception, index) => (
                       <ExceptionForm key={index} index={index} />
                     ))}

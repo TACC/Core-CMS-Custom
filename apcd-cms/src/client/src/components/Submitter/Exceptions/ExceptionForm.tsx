@@ -18,13 +18,12 @@ interface Exception {
 }
 
 export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
-  const [selectedFileType, setSelectedFileType] = useState<string>();
   const [cdlData, setCdlData] = useState<cdlObject>();
   const [selectedCDL, setSelectedCDL] = useState<cdl>();
-  const [expirationDate, setExpirationDate] = useState<string>('');
-  const [requestedThreshold, setRequestedThreshold] = useState<number>(0);
-  index = index + 1;
-  
+
+  const { setFieldValue, values } = useFormikContext<any>();
+
+  const selectedFileType = values.exceptions[index]?.fileType;
 
   const {
     data: submitterData,
@@ -44,14 +43,18 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
     }
   }, [fetchedCDLData]);
 
-  const handleFileChange = (file_type: string) => {
-    setSelectedFileType(file_type);
-  };
-  const handleCDLChange = (cdlCode: string) => {
-    setSelectedCDL(
-      cdlData?.cdls.find((cdl) => cdl.field_list_code === cdlCode)
-    );
-  };
+  useEffect(() => {
+    if (selectedCDL) {
+      setFieldValue(
+        `exceptions[${index}].requested_threshold`,
+        selectedCDL?.threshold_value || ''
+      );
+      setFieldValue(
+        `exceptions[${index}].required_threshold`,
+        selectedCDL?.threshold_value || ''
+      );
+    }
+  }, [selectedCDL, setFieldValue, index]);
 
   if (entitiesLoading)
     return (
@@ -73,6 +76,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
               name={`exceptions[${index}].businessName`}
               id={`exceptions[${index}].businessName`}
             >
+              <option>-- Select a Business --</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
                 <option key={submitter.entity_name}>
                   {submitter.entity_name} - Payor Code: {submitter.payor_code}
@@ -102,9 +106,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
           name={`exceptions[${index}].fileType`}
           id={`exceptions[${index}].fileType`}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleFileChange(e.target.value);
+            setFieldValue(`exceptions[${index}].fileType`, e.target.value);
+            setFieldValue(`exceptions[${index}].fieldCode`, '');
           }}
-          value={selectedFileType}
         >
           <option value="">-- Choose File Type --</option>
           <option value="dc">Dental Claims</option>
@@ -126,9 +130,13 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
           name={`exceptions[${index}].fieldCode`}
           id={`exceptions[${index}].fieldCode`}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleCDLChange(e.target.value);
+            setSelectedCDL(
+              cdlData?.cdls.find(
+                (cdl) => cdl.field_list_code === e.target.value
+              )
+            );
+            setFieldValue(`exceptions[${index}].fieldCode`, e.target.value);
           }}
-          value={selectedCDL?.field_list_code}
         >
           {cdlData ? (
             <>
@@ -163,8 +171,6 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             type="date"
             name={`exceptions[${index}].expiration_date`}
             id={`exceptions[${index}].expiration_date`}
-            value={expirationDate} 
-            onChange={(e : any) => setExpirationDate(e.target.value)}
           ></Field>
           <ErrorMessage
             name={`exceptions[${index}].expiration_date`}
@@ -182,8 +188,6 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             min="0"
             className={styles.thresholdRequested}
             max={selectedCDL?.threshold_value}
-            value={requestedThreshold}
-            onChange={(e : any) => setRequestedThreshold(e.target.value)} 
           ></Field>
           <ErrorMessage
             name={`exceptions[${index}].requested_threshold`}
@@ -205,9 +209,6 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             type="number"
             name={`exceptions[${index}].required_threshold`}
             id={`exceptions[${index}].required_threshold`}
-            min="0"
-            max="99"
-            value={selectedCDL?.threshold_value ? selectedCDL.threshold_value : 0}
           ></Field>
         </FormGroup>
       </div>
