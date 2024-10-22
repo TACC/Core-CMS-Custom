@@ -721,7 +721,7 @@ def create_other_exception(form, sub_data):
             request_type,
             requested_expiration_date,
             explanation_justification,
-            status,
+            status
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
