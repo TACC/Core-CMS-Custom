@@ -153,7 +153,7 @@ export const ExceptionFormPage: React.FC = () => {
             value={selectedExceptionType}
             onChange={(e) => {
               setSelectedExceptionType(e.target.value);
-              console.log(setSelectedExceptionType)
+              console.log(setSelectedExceptionType);
             }}
           >
             <option value="">-- Select Exception Type --</option>
@@ -174,53 +174,54 @@ export const ExceptionFormPage: React.FC = () => {
       >
         {({ values, isSubmitting, setFieldValue }) => {
           console.log('Formik values:', values);
-          <Form className="form-wrapper" id="threshold-form">
-            {selectedExceptionType == 'threshold' && (
-              <div>
-                {values.exceptions.map((exception, index) => (
-                  <ExceptionForm key={index} index={index} />
-                ))}
-                <div className={styles.fieldRows}>
-                  <Button
-                    className="c-button c-button--primary"
-                    type="button"
-                    onClick={() =>
-                      setFieldValue('exceptions', [
-                        ...values.exceptions,
-                        {
-                          businessName: '',
-                          fileType: '',
-                          fieldCode: '',
-                          expiration_date: '',
-                          requested_threshold: 0,
-                          required_threshold: 0,
-                        },
-                      ])
-                    }
-                    disabled={values.exceptions.length >= 5}
-                    color="primary"
-                  >
-                    + Add Another Threshold Exception
-                  </Button>
-                  <Button
-                    className="c-button c-button--secondary"
-                    type="button"
-                    onClick={() =>
-                      values.exceptions.length > 1 &&
-                      setFieldValue(
-                        'exceptions',
-                        values.exceptions.slice(0, -1)
-                      )
-                    }
-                    disabled={values.exceptions.length === 1}
-                    color="secondary"
-                  >
-                    - Remove Last Threshold Exception
-                  </Button>
+          return (
+            <Form className="form-wrapper" id="threshold-form">
+              {selectedExceptionType == 'threshold' && (
+                <div>
+                  {values.exceptions.map((exception, index) => (
+                    <ExceptionForm key={index} index={index} />
+                  ))}
+                  <div className={styles.fieldRows}>
+                    <Button
+                      className="c-button c-button--primary"
+                      type="button"
+                      onClick={() =>
+                        setFieldValue('exceptions', [
+                          ...values.exceptions,
+                          {
+                            businessName: '',
+                            fileType: '',
+                            fieldCode: '',
+                            expiration_date: '',
+                            requested_threshold: 0,
+                            required_threshold: 0,
+                          },
+                        ])
+                      }
+                      disabled={values.exceptions.length >= 5}
+                      color="primary"
+                    >
+                      + Add Another Threshold Exception
+                    </Button>
+                    <Button
+                      className="c-button c-button--secondary"
+                      type="button"
+                      onClick={() =>
+                        values.exceptions.length > 1 &&
+                        setFieldValue(
+                          'exceptions',
+                          values.exceptions.slice(0, -1)
+                        )
+                      }
+                      disabled={values.exceptions.length === 1}
+                      color="secondary"
+                    >
+                      - Remove Last Threshold Exception
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-            {/*{selectedExceptionType === 'other' && (
+              )}
+              {/*{selectedExceptionType === 'other' && (
                 <>
                   <h4>Exception Time Period</h4>
                   <p>Provide the requested expiration date for your request.</p>
@@ -236,97 +237,108 @@ export const ExceptionFormPage: React.FC = () => {
                   </div>
                 </>
               )}*/}
-            {selectedExceptionType && (
-              <>
-                <hr />
-                <h4>Request and Justification</h4>
-                <FormGroup className="field-wrapper required">
-                  <p>
-                    Provide rationale for the exception request, outlining the
-                    reasons why the organization is unable to comply with the
-                    relevant requirements. Provide as much detail as possible
-                    regarding the exception request, indicating the specific
-                    submission requirements for which relief is being sought. If
-                    applicable, indicate how the organization plans to become
-                    compliant.**
-                  </p>
-
-                  <Field
-                    as="textarea"
-                    name="justification"
-                    id="justification"
-                    rows={5}
-                  ></Field>
-                  <ErrorMessage name="justification" component={FormFeedback} />
-
-                  <div className="help-text">2000 character limit</div>
-                </FormGroup>
-                <hr />
-                <h4>Acknowledgment of Terms</h4>
-                <p>
-                  I understand and acknowledge that the Texas Department of
-                  Insurance (TDI) may review the validity of the information
-                  submitted on this form.
-                </p>
-                <div className={styles.fieldRows}>
-                  <FormGroup className="field-wrapper required">
-                    <Label for="requestorName">Requestor Name</Label>
-                    <Field
-                      type="text"
-                      name="requestorName"
-                      id="requestorName"
-                    ></Field>
-                    <ErrorMessage
-                      name="requestorName"
-                      component={FormFeedback}
-                    />
-                  </FormGroup>
-                  <FormGroup className="field-wrapper required">
-                    <Label for="requestorEmail">Requestor E-mail</Label>
-
-                    <Field
-                      type="email"
-                      name="requestorEmail"
-                      id="requestorEmail"
-                    ></Field>
-                    <ErrorMessage
-                      name="requestorEmail"
-                      component={FormFeedback}
-                    />
-                  </FormGroup>
-                  <FormGroup className="field-wrapper required" check>
-                    <Label for="acceptTerms" check>
-                      {' '}
-                      Accept
-                    </Label>
-                    <Field
-                      type="checkbox"
-                      name="acceptTerms"
-                      id="acceptTerms"
-                      className={styles.termsCheckbox}
-                    ></Field>
-                    <ErrorMessage name="acceptTerms" component={FormFeedback} />
-                  </FormGroup>
-                </div>
-                <div>
-                  <Button type="submit" className="form-button" value="Submit">
-                    Submit
-                  </Button>
-                </div>
-                <div>
+              {selectedExceptionType && (
+                <>
                   <hr />
-                  <small>
-                    * Exceptions cannot be granted for periods longer than a
-                    year.
-                    <br />
-                    ** Exceptions cannot be granted "from any requirement in
-                    insurance code Chapter 38.
-                    <br />
-                  </small>
-                </div>
-              </>
-            )}
-          </Form>;
+                  <h4>Request and Justification</h4>
+                  <FormGroup className="field-wrapper required">
+                    <p>
+                      Provide rationale for the exception request, outlining the
+                      reasons why the organization is unable to comply with the
+                      relevant requirements. Provide as much detail as possible
+                      regarding the exception request, indicating the specific
+                      submission requirements for which relief is being sought.
+                      If applicable, indicate how the organization plans to
+                      become compliant.**
+                    </p>
+
+                    <Field
+                      as="textarea"
+                      name="justification"
+                      id="justification"
+                      rows={5}
+                    ></Field>
+                    <ErrorMessage
+                      name="justification"
+                      component={FormFeedback}
+                    />
+
+                    <div className="help-text">2000 character limit</div>
+                  </FormGroup>
+                  <hr />
+                  <h4>Acknowledgment of Terms</h4>
+                  <p>
+                    I understand and acknowledge that the Texas Department of
+                    Insurance (TDI) may review the validity of the information
+                    submitted on this form.
+                  </p>
+                  <div className={styles.fieldRows}>
+                    <FormGroup className="field-wrapper required">
+                      <Label for="requestorName">Requestor Name</Label>
+                      <Field
+                        type="text"
+                        name="requestorName"
+                        id="requestorName"
+                      ></Field>
+                      <ErrorMessage
+                        name="requestorName"
+                        component={FormFeedback}
+                      />
+                    </FormGroup>
+                    <FormGroup className="field-wrapper required">
+                      <Label for="requestorEmail">Requestor E-mail</Label>
+
+                      <Field
+                        type="email"
+                        name="requestorEmail"
+                        id="requestorEmail"
+                      ></Field>
+                      <ErrorMessage
+                        name="requestorEmail"
+                        component={FormFeedback}
+                      />
+                    </FormGroup>
+                    <FormGroup className="field-wrapper required" check>
+                      <Label for="acceptTerms" check>
+                        {' '}
+                        Accept
+                      </Label>
+                      <Field
+                        type="checkbox"
+                        name="acceptTerms"
+                        id="acceptTerms"
+                        className={styles.termsCheckbox}
+                      ></Field>
+                      <ErrorMessage
+                        name="acceptTerms"
+                        component={FormFeedback}
+                      />
+                    </FormGroup>
+                  </div>
+                  <div>
+                    <Button
+                      type="submit"
+                      className="form-button"
+                      value="Submit"
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                  <div>
+                    <hr />
+                    <small>
+                      * Exceptions cannot be granted for periods longer than a
+                      year.
+                      <br />
+                      ** Exceptions cannot be granted "from any requirement in
+                      insurance code Chapter 38.
+                      <br />
+                    </small>
+                  </div>
+                </>
+              )}
+            </Form>
+          );
         }}
       </Formik>
     </div>
