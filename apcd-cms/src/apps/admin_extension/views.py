@@ -84,7 +84,7 @@ class AdminExtensionsTable(TemplateView):
             context['extensions'].append(self._set_extension(extension))
 
             entity_name = title_case(extension[18])
-            status = title_case(extension[7])
+            status = title_case(extension[7]) if extension[7] else "None"
             outcome = title_case(extension[8])
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
@@ -104,12 +104,14 @@ class AdminExtensionsTable(TemplateView):
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
+            print(status_filter)
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             extensions_table_entries = table_filter(status_filter, extensions_table_entries, 'ext_status')
 
         context['selected_org'] = None
         if org_filter is not None and org_filter != 'All':
+            print(org_filter)
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
             extensions_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extensions_table_entries, 'org_name')
@@ -118,7 +120,8 @@ class AdminExtensionsTable(TemplateView):
         page_info = paginator(self.request, extensions_table_entries)
         context['page'] = [{'org_name': obj['org_name'], 'created': obj['created'], 'type': obj['type'], 'requestor': obj['requestor'], 'ext_outcome': obj['ext_outcome'], 'ext_status': obj['ext_status'], 'ext_id': obj['ext_id'], 'submitter_id': obj['submitter_id'], 'approved_expiration_date': obj['approved_expiration_date']} for obj in page_info['page']]
 
-        #context['page'] = list(page_info['page'].object_list.values())
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'administration:admin_extension'
         return context
 
@@ -129,7 +132,7 @@ class AdminExtensionsTable(TemplateView):
             'type': title_case(ext[5].replace('_', ' ')) if ext[5] else None,
             'requestor': title_case(ext[14]),
             'ext_outcome': title_case(ext[8]) if ext[8] else "None",
-            'ext_status': title_case(ext[7]),
+            'ext_status': title_case(ext[7]) if ext[7] else "None",
             'ext_id': ext[0],
             'submitter_id': ext[1],
             'approved_expiration_date': ext[4] if ext[4] else "None",
