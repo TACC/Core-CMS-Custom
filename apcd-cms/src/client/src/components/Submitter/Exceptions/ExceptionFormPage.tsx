@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, FieldArray, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {
   FormGroup,
@@ -80,7 +80,8 @@ export const ExceptionFormPage: React.FC = () => {
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    const url = `exception/`;
+    const url = `submissions/exception/`;
+    console.log(values.exceptions)
     try {
       const response = await fetchUtil({
         url,
@@ -103,7 +104,6 @@ export const ExceptionFormPage: React.FC = () => {
     } finally {
       setSubmitting(false);
     }
-    console.log('does handle submit get called at all');
   };
 
   const initialValues: FormValues = {
@@ -146,64 +146,73 @@ export const ExceptionFormPage: React.FC = () => {
         Please select below if you are requesting an exception for threshold
         submission requirements or for an general, other type of exception.
       </p>
+      <div className={styles.fieldRows}>
+        <FormGroup className="field-wrapper required">
+          <select
+            name="exceptionType"
+            value={selectedExceptionType}
+            onChange={(e) => {
+              setSelectedExceptionType(e.target.value);
+            }}
+          >
+            <option value="">-- Select Exception Type --</option>
+            <option value="threshold">Threshold Exception</option>
+            <option value="other">Other Exception</option>
+          </select>
+        </FormGroup>
+        {selectedExceptionType !== '' && (
+          <SectionMessage type="info">
+            Your changes will not be saved if you change the exception type.
+          </SectionMessage>
+        )}
+      </div>
       <Formik
+        key={numberOfExceptionBlocks}
         initialValues={initialValues}
-        validationSchema={validationSchema}
+
         onSubmit={handleSubmit}
       >
-        {({ values, errors, touched, setFieldValue }) => {
-          console.log('Formik Values:', values);
+        {({ values, isSubmitting, setFieldValue }) => {
+            console.log("Formik values:", values)
+          useEffect(() => {
+            if (numberOfExceptionBlocks > values.exceptions.length) {
+              const additionalBlocks = Array.from(
+                { length: numberOfExceptionBlocks - values.exceptions.length },
+                () => ({
+                  businessName: '',
+                  fileType: '',
+                  fieldCode: '',
+                  expiration_date: '',
+                  requested_threshold: 0,
+                  required_threshold: 0,
+                })
+              );
+              setFieldValue('exceptions', [
+                ...values.exceptions,
+                ...additionalBlocks,
+              ]);
+            } else if (numberOfExceptionBlocks < values.exceptions.length) {
+              setFieldValue(
+                'exceptions',
+                values.exceptions.slice(0, numberOfExceptionBlocks)
+              );
+            }
+
+          }, [numberOfExceptionBlocks, values.exceptions, setFieldValue]);
           return (
             <Form className="form-wrapper" id="threshold-form">
-              <div className={styles.fieldRows}>
-                <FormGroup className="field-wrapper required">
-                  <Input
-                    type="select"
-                    name="exceptionType"
-                    id="exceptionType"
-                    value={selectedExceptionType}
-                    onChange={(e) => {
-                      setSelectedExceptionType(e.target.value);
-                      setFieldValue(`exceptionType`, e.target.value);
-                    }}
-                  >
-                    <option value="">-- Select Exception Type --</option>
-                    <option value="threshold">Threshold Exception</option>
-                    <option value="other">Other Exception</option>
-                  </Input>
-                </FormGroup>
-                {selectedExceptionType != '' && (
-                  <SectionMessage type="info">
-                    Your changes will not be saved if you change the exception
-                    type.
-                  </SectionMessage>
-                )}
-              </div>
-              {selectedExceptionType === 'threshold' && (
-                <div className={styles.exceptionBlock}>
-                  {Array.from({ length: numberOfExceptionBlocks }).map(
-                    (_, index) => (
-                      <ExceptionForm
-                        key={index}
-                        exception={index + 1}
-                        formikProps={{
-                          errors: errors.exceptions?.[index] || {},
-                          touched: touched.exceptions?.[index] || {},
-                          setFieldValue: (field, value) =>
-                            setFieldValue(
-                              `exceptions[${index}].${field}`,
-                              value
-                            ),
-                          values: values.exceptions[index] || {},
-                        }}
-                      />
-                    )
-                  )}
+              {selectedExceptionType == 'threshold' && (
+                <div>
+                  {values.exceptions
+                    .slice(0, numberOfExceptionBlocks)
+                    .map((exception, index) => (
+                      <ExceptionForm key={index} index={index} />
+                    ))}
                   <div className={styles.fieldRows}>
                     <Button
                       className="c-button c-button--primary"
                       type="button"
-                      onClick={handleAddException}
+                      onClick={() => handleAddException()}
                       disabled={!addButtonStatus}
                       color="primary"
                     >
@@ -222,47 +231,21 @@ export const ExceptionFormPage: React.FC = () => {
                 </div>
               )}
               {/*{selectedExceptionType === 'other' && (
-              <>
-                <h4>Exception Time Period</h4>
-                <p>Provide the requested expiration date for your request.</p>
-                <div className={styles.fieldRows}>
-                  <FormGroup className="field-wrapper required">
-                    <InputGroup>
+                <>
+                  <h4>Exception Time Period</h4>
+                  <p>Provide the requested expiration date for your request.</p>
+                  <div className={styles.fieldRows}>
+                    <FormGroup className="field-wrapper required">
                       <Field
                         type="date"
                         name="expirationDateOther"
                         id="expirationDateOther"
-                      >
-                        {({ field }: { field: any }) => (
-                          <Input
-                            id="expirationDateOther"
-                            {...field}
-                            invalid={
-                              touched.expirationDateOther &&
-                              !!errors.expirationDateOther
-                            }
-                            type="date"
-                            className={styles.expirationDate}
-                            onChange={(e) => {
-                              setFieldValue(
-                                `expirationDateOther`,
-                                e.target.value
-                              );
-                            }}
-                          >
-                            {}
-                          </Input>
-                        )}
-                      </Field>
-                      <ErrorMessage
-                        name="expirationDateOther"
-                        component={FormFeedback}
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                </div>
-              </>
-            )}*/}
+                        className={styles.expirationDate}
+                      ></Field>
+                    </FormGroup>
+                  </div>
+                </>
+              )}*/}
               {selectedExceptionType && (
                 <>
                   <hr />
@@ -278,33 +261,17 @@ export const ExceptionFormPage: React.FC = () => {
                       become compliant.**
                     </p>
 
-                    <InputGroup>
-                      <Field
-                        type="text"
-                        name="justification"
-                        id="justification"
-                      >
-                        {({ field }: { field: any }) => (
-                          <Input
-                            type="textarea"
-                            id="justification"
-                            className={styles.justification}
-                            {...field}
-                            invalid={
-                              touched.justification && !!errors.justification
-                            }
-                            rows={5}
-                            onChange={(e) => {
-                              setFieldValue(`justification`, e.target.value);
-                            }}
-                          />
-                        )}
-                      </Field>
-                      <ErrorMessage
-                        name="justification"
-                        component={FormFeedback}
-                      />
-                    </InputGroup>
+                    <Field
+                      as="textarea"
+                      name="justification"
+                      id="justification"
+                      rows={5}
+                    ></Field>
+                    <ErrorMessage
+                      name="justification"
+                      component={FormFeedback}
+                    />
+
                     <div className="help-text">2000 character limit</div>
                   </FormGroup>
                   <hr />
@@ -317,97 +284,44 @@ export const ExceptionFormPage: React.FC = () => {
                   <div className={styles.fieldRows}>
                     <FormGroup className="field-wrapper required">
                       <Label for="requestorName">Requestor Name</Label>
-                      <InputGroup>
-                        <Field
-                          type="text"
-                          name="requestorName"
-                          id="requestorName"
-                        >
-                          {({ field }: { field: any }) => (
-                            <Input
-                              id="requestorName"
-                              {...field}
-                              invalid={
-                                touched.requestorName && !!errors.requestorName
-                              }
-                              onChange={(e) => {
-                                setFieldValue(`requestorName`, e.target.value);
-                              }}
-                            >
-                              {}
-                            </Input>
-                          )}
-                        </Field>
-                        <ErrorMessage
-                          name="requestorName"
-                          component={FormFeedback}
-                        />
-                      </InputGroup>
+                      <Field
+                        type="text"
+                        name="requestorName"
+                        id="requestorName"
+                      ></Field>
+                      <ErrorMessage
+                        name="requestorName"
+                        component={FormFeedback}
+                      />
                     </FormGroup>
                     <FormGroup className="field-wrapper required">
                       <Label for="requestorEmail">Requestor E-mail</Label>
-                      <InputGroup>
-                        <Field
-                          type="text"
-                          name="requestorEmail"
-                          id="requestorEmail"
-                        >
-                          {({ field }: { field: any }) => (
-                            <Input
-                              id="requestorEmail"
-                              {...field}
-                              invalid={
-                                touched.requestorEmail &&
-                                !!errors.requestorEmail
-                              }
-                              onChange={(e) => {
-                                setFieldValue(`requestorEmail`, e.target.value);
-                              }}
-                            >
-                              {}
-                            </Input>
-                          )}
-                        </Field>
-                        <ErrorMessage
-                          name="requestorEmail"
-                          component={FormFeedback}
-                        />
-                      </InputGroup>
+
+                      <Field
+                        type="email"
+                        name="requestorEmail"
+                        id="requestorEmail"
+                      ></Field>
+                      <ErrorMessage
+                        name="requestorEmail"
+                        component={FormFeedback}
+                      />
                     </FormGroup>
                     <FormGroup className="field-wrapper required" check>
                       <Label for="acceptTerms" check>
                         {' '}
                         Accept
                       </Label>
-                      <InputGroup className={styles.termsCheckbox}>
-                        <Field
-                          type="checkbox"
-                          name="acceptTerms"
-                          id="acceptTerms"
-                        >
-                          {({ field }: { field: any }) => (
-                            <Input
-                              id="acceptTerms"
-                              {...field}
-                              invalid={
-                                touched.acceptTerms && !!errors.acceptTerms
-                              }
-                              type="checkbox"
-                              checked={field.value}
-                              onChange={() =>
-                                setFieldValue('acceptTerms', !field.value)
-                              }
-                            >
-                              {}
-                            </Input>
-                          )}
-                        </Field>
-
-                        <ErrorMessage
-                          name="acceptTerms"
-                          component={FormFeedback}
-                        />
-                      </InputGroup>
+                      <Field
+                        type="checkbox"
+                        name="acceptTerms"
+                        id="acceptTerms"
+                        className={styles.termsCheckbox}
+                      ></Field>
+                      <ErrorMessage
+                        name="acceptTerms"
+                        component={FormFeedback}
+                      />
                     </FormGroup>
                   </div>
                   <div>

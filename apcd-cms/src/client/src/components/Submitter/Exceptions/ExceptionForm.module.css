@@ -31,6 +31,12 @@
   border-color: #ced4da;
   cursor: not-allowed;
 }
+.requiredThreshold,
+.thresholdRequested {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
 .termsCheckbox input {
   position: unset;
   margin-left: 0;

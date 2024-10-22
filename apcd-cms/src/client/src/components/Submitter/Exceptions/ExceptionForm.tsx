@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormikContext, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import {
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  InputGroup,
-  FormFeedback,
-} from 'reactstrap';
+import { FormGroup, Label, Input, InputGroup, FormFeedback } from 'reactstrap';
 import { cdlObject, useCDLs, cdl } from 'hooks/cdls';
 import { Entities, useEntities } from 'hooks/entities';
 import styles from './ExceptionForm.module.css';
@@ -23,25 +16,15 @@ interface Exception {
   requested_threshold: number;
   required_threshold: number;
 }
-interface ExceptionFormProps {
-  exception: number;
-  formikProps: {
-    errors: any;
-    touched: any;
-    setFieldValue: (field: string, value: any) => void;
-    values: Exception;
-  };
-}
 
-export const ExceptionForm: React.FC<ExceptionFormProps> = ({
-  exception,
-  formikProps,
-}) => {
-  const { values, errors, touched, setFieldValue } = formikProps;
-
+export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   const [selectedFileType, setSelectedFileType] = useState<string>();
   const [cdlData, setCdlData] = useState<cdlObject>();
   const [selectedCDL, setSelectedCDL] = useState<cdl>();
+  const [expirationDate, setExpirationDate] = useState<string>('');
+  const [requestedThreshold, setRequestedThreshold] = useState<number>(0);
+  index = index + 1;
+  
 
   const {
     data: submitterData,
@@ -58,8 +41,6 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
   useEffect(() => {
     if (fetchedCDLData && fetchedCDLData.cdls) {
       setCdlData(fetchedCDLData);
-    } else {
-      setCdlData(undefined);
     }
   }, [fetchedCDLData]);
 
@@ -82,50 +63,26 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
   return (
     <>
       <hr />
-      <h4>Requested Threshold Reduction {exception}</h4>
+      <h4>Requested Threshold Reduction {index}</h4>
       <FormGroup className="field-wrapper required">
-        <Label for={`exceptions[${exception}].businessName`}>
-          Business Name
-        </Label>
+        <Label for={`exceptions[${index}].businessName`}>Business Name</Label>
         {submitterData && (
           <>
-            <InputGroup>
-              <Field
-                type="select"
-                name={`exceptions[${exception}].businessName`}
-                id={`exceptions[${exception}].businessName`}
-              >
-                {({ field }: { field: any }) => (
-                  <Input
-                    id={`exceptions[${exception}].businessName`}
-                    {...field}
-                    invalid={
-                      touched.exceptions?.[exception]?.businessName &&
-                      !!errors.exceptions?.[exception]?.businessName
-                    }
-                    type="select"
-                    onChange={(e) => {
-                      console.log(`Setting businessName to: ${e.target.value}`);
-                      setFieldValue(
-                        `exceptions[${exception}].businessName`,
-                        e.target.value
-                      );
-                    }}
-                  >
-                    {submitterData?.submitters?.map((submitter: Entities) => (
-                      <option key={submitter.entity_name}>
-                        {submitter.entity_name} - Payor Code:{' '}
-                        {submitter.payor_code}
-                      </option>
-                    ))}
-                  </Input>
-                )}
-              </Field>
-              <ErrorMessage
-                name={`exceptions[${exception}].businessName`}
-                component={FormFeedback}
-              />
-            </InputGroup>
+            <Field
+              as="select"
+              name={`exceptions[${index}].businessName`}
+              id={`exceptions[${index}].businessName`}
+            >
+              {submitterData?.submitters?.map((submitter: Entities) => (
+                <option key={submitter.entity_name}>
+                  {submitter.entity_name} - Payor Code: {submitter.payor_code}
+                </option>
+              ))}
+            </Field>
+            <ErrorMessage
+              name={`exceptions[${index}].businessName`}
+              component={FormFeedback}
+            />
           </>
         )}
         {entitiesError && (
@@ -138,162 +95,101 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
         )}
       </FormGroup>
       <FormGroup className="field-wrapper required">
-        <Label for={`exceptions[${exception}].fileType`}>File Type</Label>
-        <InputGroup>
-          <Field
-            type="select"
-            name={`exceptions[${exception}].fileType`}
-            id={`exceptions[${exception}].fileType`}
-          >
-            {({ field }: { field: any }) => (
-              <Input
-                {...field}
-                type="select"
-                invalid={
-                  touched.exceptions?.[exception]?.fileType &&
-                  !!errors.exceptions?.[exception]?.fileType
-                }
-                onChange={(e) => {
-                  handleFileChange(e.target.value);
-                  setFieldValue(
-                    `exceptions[${exception}].fileType`,
-                    e.target.value
-                  );
-                }}
-              >
-                <option value="">-- Choose File Type --</option>
-                <option value="dc">Dental Claims</option>
-                <option value="mc">Medical Claims</option>
-                <option value="me">Member Eligibility</option>
-                <option value="pc">Pharmacy Claims</option>
-                <option value="pv">Provider</option>
-              </Input>
-            )}
-          </Field>
-          <ErrorMessage
-            name={`exceptions[${exception}].fileType`}
-            component={FormFeedback}
-          />
-        </InputGroup>
+        <Label for={`exceptions[${index}].fileType`}>File Type</Label>
+
+        <Field
+          as="select"
+          name={`exceptions[${index}].fileType`}
+          id={`exceptions[${index}].fileType`}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleFileChange(e.target.value);
+          }}
+          value={selectedFileType}
+        >
+          <option value="">-- Choose File Type --</option>
+          <option value="dc">Dental Claims</option>
+          <option value="mc">Medical Claims</option>
+          <option value="me">Member Eligibility</option>
+          <option value="pc">Pharmacy Claims</option>
+          <option value="pv">Provider</option>
+        </Field>
+        <ErrorMessage
+          name={`exceptions[${index}].fileType`}
+          component={FormFeedback}
+        />
       </FormGroup>
       <FormGroup className="field-wrapper required">
-        <Label for={`exceptions[${exception}].fieldCode`}>Field Code</Label>
-        <InputGroup>
-          <Field
-            type="select"
-            name={`exceptions[${exception}].fieldCode`}
-            id={`exceptions[${exception}].fieldCode`}
-          >
-            {({ field }: { field: any }) => (
-              <Input
-                {...field}
-                type="select"
-                invalid={
-                  touched.exceptions?.[exception]?.fieldCode &&
-                  !!errors.exceptions?.[exception]?.fieldCode
-                }
-                onChange={(e) => {
-                  handleCDLChange(e.target.value);
-                  setFieldValue(
-                    `exceptions[${exception}].fieldCode`,
-                    e.target.value
-                  );
-                }}
-              >
-                {cdlData ? (
-                  <>
-                    <option value="">-- Select Field Code --</option>
-                    {cdlData.cdls.map((cdl: any) => (
-                      <option
-                        key={cdl.field_list_code}
-                        id={cdl.field_list_code}
-                        value={cdl.field_list_code}
-                      >
-                        {cdl.field_list_code}
-                        {' - '}
-                        {cdl.field_list_value}
-                      </option>
-                    ))}
-                  </>
-                ) : (
-                  <option value="">-- Select a File Type Above First --</option>
-                )}
-              </Input>
-            )}
-          </Field>
-          <ErrorMessage
-            name={`exceptions[${exception}].fieldCode`}
-            component={FormFeedback}
-          />
-        </InputGroup>
+        <Label for={`exceptions[${index}].fieldCode`}>Field Code</Label>
+
+        <Field
+          as="select"
+          name={`exceptions[${index}].fieldCode`}
+          id={`exceptions[${index}].fieldCode`}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleCDLChange(e.target.value);
+          }}
+          value={selectedCDL?.field_list_code}
+        >
+          {cdlData ? (
+            <>
+              <option value="">-- Select Field Code --</option>
+              {cdlData.cdls.map((cdl: any) => (
+                <option
+                  key={cdl.field_list_code}
+                  id={cdl.field_list_code}
+                  value={cdl.field_list_code}
+                >
+                  {cdl.field_list_code}
+                  {' - '}
+                  {cdl.field_list_value}
+                </option>
+              ))}
+            </>
+          ) : (
+            <option value="">-- Select a File Type Above First --</option>
+          )}
+        </Field>
+        <ErrorMessage
+          name={`exceptions[${index}].fieldCode`}
+          component={FormFeedback}
+        />
       </FormGroup>
       <div className={styles.fieldRows}>
         <FormGroup className="field-wrapper required">
-          <Label for={`exceptions[${exception}].expiration_date`}>
+          <Label for={`exceptions[${index}].expiration_date`}>
             Expiration Date
           </Label>
-          <InputGroup>
-            <Field
-              type="date"
-              name={`exceptions[${exception}].expiration_date`}
-              id={`exceptions[${exception}].expiration_date`}
-            >
-              {({ field }: { field: any }) => (
-                <Input
-                  {...field}
-                  type="date"
-                  invalid={
-                    touched.exceptions?.[exception]?.expiration_date &&
-                    !!errors.exceptions?.[exception]?.expiration_date
-                  }
-                  onChange={(e) => {
-                    setFieldValue(
-                      `exceptions[${exception}].expiration_date`,
-                      e.target.value
-                    );
-                  }}
-                />
-              )}
-            </Field>
-            <ErrorMessage
-              name={`exceptions[${exception}].expiration_date`}
-              component={FormFeedback}
-            />
-          </InputGroup>
+          <Field
+            type="date"
+            name={`exceptions[${index}].expiration_date`}
+            id={`exceptions[${index}].expiration_date`}
+            value={expirationDate} 
+            onChange={(e : any) => setExpirationDate(e.target.value)}
+          ></Field>
+          <ErrorMessage
+            name={`exceptions[${index}].expiration_date`}
+            component={FormFeedback}
+          />
         </FormGroup>
         <FormGroup className="field-wrapper required">
-          <Label for={`exceptions[${exception}].requested_threshold`}>
+          <Label for={`exceptions[${index}].requested_threshold`}>
             Requested Threshold Percentage
           </Label>
-          <InputGroup className={styles.thresholdRequested}>
-            <Field
-              type="number"
-              name={`exceptions[${exception}].requested_threshold`}
-              id={`exceptions[${exception}].requested_threshold`}
-              min="0"
-              max={selectedCDL?.threshold_value}
-            >
-              {({ field }: { field: any }) => (
-                <Input
-                  {...field}
-                  invalid={
-                    touched.exceptions?.[exception]?.requested_threshold &&
-                    !!errors.exceptions?.[exception]?.requested_threshold
-                  }
-                  onChange={(e) => {
-                    setFieldValue(
-                      `exceptions[${exception}].requested_threshold`,
-                      e.target.value
-                    );
-                  }}
-                />
-              )}
-            </Field>
-            <ErrorMessage
-              name={`exceptions[${exception}].requested_threshold`}
-              component={FormFeedback}
-            />
-          </InputGroup>
+          <Field
+            type="number"
+            name={`exceptions[${index}].requested_threshold`}
+            id={`exceptions[${index}].requested_threshold`}
+            min="0"
+            className={styles.thresholdRequested}
+            max={selectedCDL?.threshold_value}
+            value={requestedThreshold}
+            onChange={(e : any) => setRequestedThreshold(e.target.value)} 
+          ></Field>
+          <ErrorMessage
+            name={`exceptions[${index}].requested_threshold`}
+            component={FormFeedback}
+          />
+
           {selectedCDL && (
             <div className="help-text">
               Must be less than the {selectedCDL.threshold_value} required.
@@ -301,39 +197,18 @@ export const ExceptionForm: React.FC<ExceptionFormProps> = ({
           )}
         </FormGroup>
         <FormGroup className="field-wrapper required">
-          <Label for={`exceptions[${exception}].required_threshold`}>
+          <Label for={`exceptions[${index}].required_threshold`}>
             Required Threshold Percentage
           </Label>
-
-          <InputGroup>
-            <Field
-              type="number"
-              name={`exceptions[${exception}].required_threshold`}
-              id={`exceptions[${exception}].required_threshold`}
-              min="0"
-              max="99"
-            >
-              {({ field }: { field: any }) => (
-                <Input
-                  id={`exceptions[${exception}].required_threshold`}
-                  className={styles.requiredThreshold}
-                  readOnly
-                  {...field}
-                  value={
-                    selectedCDL?.threshold_value
-                      ? selectedCDL.threshold_value
-                      : ''
-                  }
-                  onChange={(e) => {
-                    setFieldValue(
-                      `exceptions[${exception}].required_threshold`,
-                      e.target.value
-                    );
-                  }}
-                />
-              )}
-            </Field>
-          </InputGroup>
+          <Field
+            className={styles.requiredThreshold}
+            type="number"
+            name={`exceptions[${index}].required_threshold`}
+            id={`exceptions[${index}].required_threshold`}
+            min="0"
+            max="99"
+            value={selectedCDL?.threshold_value ? selectedCDL.threshold_value : 0}
+          ></Field>
         </FormGroup>
       </div>
     </>
