@@ -67,7 +67,7 @@ class SubmissionsTable(TemplateView):
                 'outcome': title_case(t['outcome'])
             } for t in (s['view_modal_content'] or [])]
 
-        context['header'] = ['Received', 'File Name', ' ', 'Outcome', 'Status', 'Last Updated', 'Actions']
+        context['header'] = ['Received', 'File Name', 'Outcome', 'Status', 'Last Updated', 'Actions']
         context['filter_options'] = ['All', 'In Process', 'Complete']
         context['sort_options'] = {'newDate': 'Newest Received', 'oldDate': 'Oldest Received'}
 

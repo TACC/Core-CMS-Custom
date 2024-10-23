@@ -67,9 +67,9 @@ export const ViewFileSubmissions: React.FC = () => {
                   <option
                     className="dropdown-text"
                     key={index}
-                    value={option.value}
+                    value={option[0]}
                   >
-                    {option.name}
+                    {option[1]}
                   </option>
                 )
               )}
@@ -92,7 +92,6 @@ export const ViewFileSubmissions: React.FC = () => {
           {data?.page.map((row: FileSubmissionRow, rowIndex: number) => (
             <tr key={rowIndex}>
               <td>{row.received_timestamp}</td>
-              <td>{row.entity_name}</td>
               <td>{row.file_name}</td>
               <td>{row.outcome}</td>
               <td>{row.status}</td>
