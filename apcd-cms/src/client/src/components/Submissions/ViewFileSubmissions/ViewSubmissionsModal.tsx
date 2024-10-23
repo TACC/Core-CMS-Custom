@@ -47,8 +47,8 @@ export const FileSubmissionLogsModal: React.FC<
                     <dl className="c-data-list--is-vert c-data-list--is-wide">
                       <dt className="c-data-list__key">Log ID</dt>
                       <dd className="c-data-list__value">{log.log_id}</dd>
-                      <dt className="c-data-list__key">Entity Organization</dt>
-                      <dd className="c-data-list__value">{log.entity_name}</dd>
+                      <dt className="c-data-list__key">Submission ID</dt>
+                      <dd className="c-data-list__value">{log.submission_id}</dd>
                       <dt className="c-data-list__key">File Type</dt>
                       <dd className="c-data-list__value">{log.file_type}</dd>
                       <dt className="c-data-list__key">Validation Suite</dt>
