@@ -1,11 +1,11 @@
-import { SubmissionLogsModalContent } from 'hooks/admin';
+import { FileSubmissionLogsModalContent } from 'hooks/submissions';
 import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import Button from 'core-components/Button';
 import styles from './Submissions.css';
 
 interface ViewSubmissionLogsModalProps {
-  submission_logs: SubmissionLogsModalContent[];
+  submission_logs: FileSubmissionLogsModalContent[];
 }
 
 export const FileSubmissionLogsModal: React.FC<
