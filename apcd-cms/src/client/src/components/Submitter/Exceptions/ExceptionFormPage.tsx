@@ -104,7 +104,7 @@ export const ExceptionFormPage: React.FC = () => {
     //expirationDateOther: null,
   };
 
-const getExceptionTitle = () => {
+  const getExceptionTitle = () => {
     switch (selectedExceptionType) {
       case 'threshold':
         return 'Threshold ';
@@ -148,13 +148,14 @@ const getExceptionTitle = () => {
           }, [isSuccess, resetForm]);
           return (
             <Form id="threshold-form">
-
-                <h4>Select Exception Type</h4>
-      <p>
-        Please select below if you are requesting an exception for threshold
-        submission requirements or for an general, other type of exception.
-      </p>              <div className={styles.fieldRows}>
-      <FormGroup className="field-wrapper required">
+              <h4>Select Exception Type</h4>
+              <p>
+                Please select below if you are requesting an exception for
+                threshold submission requirements or for an general, other type
+                of exception.
+              </p>{' '}
+              <div className={styles.fieldRows}>
+                <FormGroup className="field-wrapper required">
                   <Field
                     as="select"
                     name="exceptionType"
@@ -325,30 +326,30 @@ const getExceptionTitle = () => {
                   </div>
                   {isSuccess ? (
                     <>
-                                      <Button
-                                      type="primary"
-                                      attr="submit"
-                                      isLoading={isSubmitting}
-                                      onClick={() => setIsSuccess(false)}
-                                    >
-                                      Submit Another Exception
-                                    </Button>
-                    <div className={styles.fieldRows}>
-                      <SectionMessage type="success" canDismiss={true}>
-                        Your exception request was successfully sent.
-                      </SectionMessage>
-                    </div>
+                      <Button
+                        type="primary"
+                        attr="submit"
+                        isLoading={isSubmitting}
+                        onClick={() => setIsSuccess(false)}
+                      >
+                        Submit Another Exception
+                      </Button>
+                      <div className={styles.fieldRows}>
+                        <SectionMessage type="success" canDismiss={true}>
+                          Your exception request was successfully sent.
+                        </SectionMessage>
+                      </div>
                     </>
                   ) : (
-                  <Button
-                    type="primary"
-                    attr="submit"
-                    isLoading={isSubmitting}
-                    onClick={() => setIsSuccess(false)}
-                  >
-                    Submit
-                  </Button>
-   ) }
+                    <Button
+                      type="primary"
+                      attr="submit"
+                      isLoading={isSubmitting}
+                      onClick={() => setIsSuccess(false)}
+                    >
+                      Submit
+                    </Button>
+                  )}
                   {errorMessage && (
                     <div className={styles.fieldRows}>
                       <SectionMessage type="error">
