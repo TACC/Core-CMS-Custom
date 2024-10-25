@@ -749,7 +749,7 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, iteration, sub_data):
+def create_threshold_exception(form, exception, sub_data):
     cur = None
     conn = None
     values = ()
@@ -779,17 +779,17 @@ def create_threshold_exception(form, iteration, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            _clean_value(form['business-name_{}'.format(iteration)]),
+            _clean_value(int(exception['businessName'])),
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
-            "threshold",
-            _clean_date(form['expiration-date_{}'.format(iteration)]),
-            _clean_value(form['file_type_{}'.format(iteration)]),
-            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
-            _clean_value(form['threshold-requested_{}'.format(iteration)]),
+            _clean_value(form['requestorName']),
+            _clean_email(form['requestorEmail']),
+            _clean_value(form['exceptionType']),
+            _clean_date(exception['expiration_date']),
+            _clean_value(exception['fileType']),
+            _clean_value(exception['fieldCode']),
+            _clean_value(exception['requested_threshold']),
             _clean_value(form['justification']),
             "pending"
         )
@@ -798,6 +798,7 @@ def create_threshold_exception(form, iteration, sub_data):
         conn.commit()
 
     except Exception as error:
+        logger.debug(print("database error occured:", error))
         logger.error(error)
         return error
 
