@@ -9,18 +9,14 @@
 .expirationDate {
   min-width: 15ch;
 }
-.dateRow {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: space-around;
+.fieldRows {
+  display: flex;
   gap: 5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  min-width: 15ch;
 }
-.dateRow input {
-  width: 35px;
-  font-size: 16px;
+.fieldRows input {
+  font-size: inherit;
 }
 .loadingField {
   display: inline-flex;
@@ -34,4 +30,24 @@
   color: #6c757d;
   border-color: #ced4da;
   cursor: not-allowed;
+}
+.requiredThreshold,
+.thresholdRequested {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+.termsCheckbox input {
+  position: unset;
+  margin-left: 0;
+}
+
+.justification {
+  font-size: unset;
+}
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
 }

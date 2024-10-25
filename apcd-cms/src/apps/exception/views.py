@@ -10,42 +10,21 @@ import json
 logger = logging.getLogger(__name__)
 
 class ExceptionFormView(TemplateView):
-    template_name = "exception_submission_form.html"
-
     def post(self, request):
         if (request.user.is_authenticated) and has_apcd_group(request.user):
-
-            form = request.POST.copy()
+            form = json.loads(request.body)
+            exceptions = form['exceptions']
             errors = []
             submitters = apcd_database.get_submitter_info(request.user.username)
-            # To create counter of exception requests and corresponding fields
-            max_iterations = 1
-            for i in range(2, 6):
-                if form.get('field-threshold-exception_{}'.format(i)):
-                    max_iterations += 1
-                else:
-                    break
+            for exception in exceptions:
+                submitter = next(submitter for submitter in submitters if int(submitter[0] == int(exception['businessName'])))
+                exception_response = apcd_database.create_threshold_exception(form, exception, submitter)
+            if exception_response:
+                errors.append(exception_response)
+            if errors:
+                return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+            return JsonResponse({'status': 'success'}, status=200)
 
-            for iteration in range(max_iterations):
-                submitter = next(submitter for submitter in submitters if int(submitter[0]) == int(form['business-name_{}'.format(iteration + 1)]))
-                if _err_msg(submitter):
-                    errors.append(_err_msg(submitter))
-                except_response = apcd_database.create_threshold_exception(form, iteration + 1, submitter)
-                if _err_msg(except_response):
-                    errors.append(_err_msg(except_response))
-
-            if len(errors):
-                template = loader.get_template(
-                    "exception_submission_form/exception_submission_error.html"
-                )
-                response = HttpResponse(template.render({}, request))
-            else:
-                template = loader.get_template(
-                    "exception_submission_form/exception_form_success.html"
-                )
-                response = HttpResponse(template.render({}, request))
-
-            return response
         else:
             return HttpResponseRedirect('/')
 
@@ -54,9 +33,3 @@ class ExceptionFormView(TemplateView):
             return HttpResponseRedirect('/')
         return super(ExceptionFormView, self).dispatch(request, *args, **kwargs)
 
-def _err_msg(resp):
-    if hasattr(resp, "pgerror"):
-        return resp.pgerror
-    if isinstance(resp, Exception):
-        return str(resp)
-    return None
