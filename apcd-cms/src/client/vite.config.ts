@@ -19,26 +19,26 @@ export default defineConfig({
         }
       },
   },
-    resolve: {
-      alias: {
-        'core-components': resolve(__dirname, 'src/core-components'),
-        'hooks': resolve(__dirname, 'src/hooks'),
-        'utils': resolve(__dirname, 'src/utils'),
-      }
-    },
-
-    server: {
+  resolve: {
+    alias: {
+      'apcd-components': resolve(__dirname, 'src/components'),
+      'core-components': resolve(__dirname, 'src/core-components'),
+      'hooks': resolve(__dirname, 'src/hooks'),
+      'utils': resolve(__dirname, 'src/utils'),
+    }
+  },
+  server: {
+    port: 3000,
+    host: 'localhost',
+    hmr: {
       port: 3000,
-      host: 'localhost',
-      hmr: {
-        port: 3000,
-      },
     },
-    plugins: [
-        {...eslint({include: 'src/**/*.+(js|jsx|ts|tsx)', fix: false}), enforce: 'pre', },
-        react(),
-      ],
-    optimizeDeps: {
-        include: ['react-refresh'],
-      },
+  },
+  plugins: [
+      {...eslint({include: 'src/**/*.+(js|jsx|ts|tsx)', fix: false}), enforce: 'pre', },
+      react(),
+    ],
+  optimizeDeps: {
+      include: ['react-refresh'],
+    },
 })

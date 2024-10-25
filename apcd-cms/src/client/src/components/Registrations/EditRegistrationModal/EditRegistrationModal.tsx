@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { RegistrationRow } from 'hooks/admin';
-import styles from './ViewRegistrationModal.module.css';
+import React from 'react';
+import { Modal, ModalBody } from 'reactstrap';
+import { RegistrationRow } from 'hooks/registrations';
 
 const EditRegistrationModal: React.FC<{
   registration: RegistrationRow;
