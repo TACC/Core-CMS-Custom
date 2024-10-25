@@ -8,15 +8,6 @@ import styles from './ExceptionForm.module.css';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 
-interface Exception {
-  businessName: string;
-  fileType: string;
-  fieldCode: string;
-  expiration_date: string;
-  requested_threshold: number;
-  required_threshold: number;
-}
-
 export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   const [cdlData, setCdlData] = useState<cdlObject>();
   const [selectedCDL, setSelectedCDL] = useState<cdl>();
@@ -46,10 +37,6 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   useEffect(() => {
     if (selectedCDL) {
       setFieldValue(
-        `exceptions[${index}].requested_threshold`,
-        selectedCDL?.threshold_value || ''
-      );
-      setFieldValue(
         `exceptions[${index}].required_threshold`,
         selectedCDL?.threshold_value || ''
       );
@@ -66,7 +53,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   return (
     <>
       <hr />
-      <h4>Requested Threshold Reduction {index}</h4>
+      <h4>Requested Threshold Reduction {index + 1}</h4>
       <FormGroup className="field-wrapper required">
         <Label for={`exceptions[${index}].businessName`}>Business Name</Label>
         {submitterData && (
@@ -78,14 +65,18 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             >
               <option>-- Select a Business --</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
-                <option key={submitter.entity_name}>
+                <option
+                  value={submitter.submitter_id}
+                  key={submitter.submitter_id}
+                >
                   {submitter.entity_name} - Payor Code: {submitter.payor_code}
                 </option>
               ))}
             </Field>
             <ErrorMessage
               name={`exceptions[${index}].businessName`}
-              component={FormFeedback}
+              component="div"
+              className={styles.isInvalid}
             />
           </>
         )}
@@ -119,7 +110,8 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         </Field>
         <ErrorMessage
           name={`exceptions[${index}].fileType`}
-          component={FormFeedback}
+          component="div"
+          className={styles.isInvalid}
         />
       </FormGroup>
       <FormGroup className="field-wrapper required">
@@ -159,7 +151,8 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         </Field>
         <ErrorMessage
           name={`exceptions[${index}].fieldCode`}
-          component={FormFeedback}
+          component="div"
+          className={styles.isInvalid}
         />
       </FormGroup>
       <div className={styles.fieldRows}>
@@ -174,7 +167,8 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
           ></Field>
           <ErrorMessage
             name={`exceptions[${index}].expiration_date`}
-            component={FormFeedback}
+            component="div"
+            className={styles.isInvalid}
           />
         </FormGroup>
         <FormGroup className="field-wrapper required">
@@ -185,13 +179,13 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             type="number"
             name={`exceptions[${index}].requested_threshold`}
             id={`exceptions[${index}].requested_threshold`}
-            min="0"
             className={styles.thresholdRequested}
             max={selectedCDL?.threshold_value}
           ></Field>
           <ErrorMessage
             name={`exceptions[${index}].requested_threshold`}
-            component={FormFeedback}
+            component="div"
+            className={styles.isInvalid}
           />
 
           {selectedCDL && (

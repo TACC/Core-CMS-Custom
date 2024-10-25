@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, FieldArray, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import {
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  InputGroup,
-  FormFeedback,
-} from 'reactstrap';
+import { FormGroup, Label } from 'reactstrap';
 import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
 import { fetchUtil } from 'utils/fetchUtil';
+import Button from 'core-components/Button';
 
 const validationSchema = Yup.object().shape({
+  exceptionType: Yup.string().required('Required'),
   exceptions: Yup.array().of(
     Yup.object().shape({
-      businessName: Yup.string().required('Required'),
+      businessName: Yup.number().min(1, 'Required').required('Required'),
       fileType: Yup.string().required('Required'),
       fieldCode: Yup.string().required('Required'),
       expiration_date: Yup.date().required('Required'),
-      requested_threshold: Yup.number().required('Required'),
+      requested_threshold: Yup.number().min(1, 'Requied').required('Required'),
       required_threshold: Yup.number().required('Required'),
     })
   ),
@@ -30,13 +25,14 @@ const validationSchema = Yup.object().shape({
     .required('Required'),
   requestorName: Yup.string().required('Required'),
   requestorEmail: Yup.string().email().required('Required'),
-  acceptTerms: Yup.boolean().oneOf([true], 'You must accept the terms'),
+  acceptTerms: Yup.boolean().oneOf([true], 'Required'),
   //expirationDateOther: Yup.date().required('Required'),
 });
 
 interface FormValues {
+  exceptionType: string;
   exceptions: {
-    businessName: string;
+    businessName: number;
     fileType: string;
     fieldCode: string;
     expiration_date: string;
@@ -52,42 +48,27 @@ interface FormValues {
 
 export const ExceptionFormPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [selectedExceptionType, setSelectedExceptionType] =
     useState<string>('');
   const [numberOfExceptionBlocks, setNumberOfExceptionBlocks] =
     useState<number>(1);
-  const [removeButtonStatus, setRemoveButtonStatus] = useState<boolean>(false);
-  const [addButtonStatus, setAddButtonStatus] = useState<boolean>(true);
-
-  const handleAddException = () => {
-    if (numberOfExceptionBlocks < 5) {
-      setNumberOfExceptionBlocks((prev) => prev + 1);
-    }
-  };
-
-  const handleRemoveException = () => {
-    if (numberOfExceptionBlocks > 1) {
-      setNumberOfExceptionBlocks((prev) => prev - 1);
-    }
-  };
-
-  useEffect(() => {
-    setAddButtonStatus(numberOfExceptionBlocks < 5);
-    setRemoveButtonStatus(numberOfExceptionBlocks > 1);
-  }, [numberOfExceptionBlocks]);
 
   const handleSubmit = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    const url = `submissions/exception/`;
-    console.log(values.exceptions);
+    setErrorMessage('');
+    const url = `submissions/exception/api/`;
     try {
       const response = await fetchUtil({
         url,
         method: `POST`,
         body: values,
       });
+      if (response.status == 'success') {
+        setIsSuccess(true);
+      }
     } catch (error: any) {
       console.error('Error saving data:', error);
       console.log(url);
@@ -107,8 +88,9 @@ export const ExceptionFormPage: React.FC = () => {
   };
 
   const initialValues: FormValues = {
+    exceptionType: '',
     exceptions: Array.from({ length: numberOfExceptionBlocks }).map(() => ({
-      businessName: '',
+      businessName: 0,
       fileType: '',
       fieldCode: '',
       expiration_date: '',
@@ -146,36 +128,47 @@ export const ExceptionFormPage: React.FC = () => {
         Please select below if you are requesting an exception for threshold
         submission requirements or for an general, other type of exception.
       </p>
-      <div className={styles.fieldRows}>
-        <FormGroup className="field-wrapper required">
-          <select
-            name="exceptionType"
-            value={selectedExceptionType}
-            onChange={(e) => {
-              setSelectedExceptionType(e.target.value);
-              console.log(setSelectedExceptionType);
-            }}
-          >
-            <option value="">-- Select Exception Type --</option>
-            <option value="threshold">Threshold Exception</option>
-            <option value="other">Other Exception</option>
-          </select>
-        </FormGroup>
-        {selectedExceptionType !== '' && (
-          <SectionMessage type="info">
-            Your changes will not be saved if you change the exception type.
-          </SectionMessage>
-        )}
-      </div>
       <Formik
-        key={numberOfExceptionBlocks}
         initialValues={initialValues}
+        validateOnMount={true}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, isSubmitting, setFieldValue }) => {
-          console.log('Formik values:', values);
+        {({ values, isSubmitting, setFieldValue, resetForm }) => {
+          useEffect(() => {
+            if (isSuccess) {
+              resetForm();
+            }
+          }, [isSuccess, resetForm]);
           return (
-            <Form className="form-wrapper" id="threshold-form">
+            <Form id="threshold-form">
+              <div className={styles.fieldRows}>
+                <FormGroup className="field-wrapper required">
+                  <Field
+                    as="select"
+                    name="exceptionType"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setSelectedExceptionType(e.target.value);
+                      setFieldValue('exceptionType', e.target.value);
+                    }}
+                  >
+                    <option value="">-- Select Exception Type --</option>
+                    <option value="threshold">Threshold Exception</option>
+                    <option value="other">Other Exception</option>
+                  </Field>
+                  <ErrorMessage
+                    name="exceptionType"
+                    component="div"
+                    className={styles.isInvalid}
+                  />
+                </FormGroup>
+                {selectedExceptionType !== '' && (
+                  <SectionMessage type="info">
+                    Your changes will not be saved if you change the exception
+                    type.
+                  </SectionMessage>
+                )}
+              </div>
               {selectedExceptionType == 'threshold' && (
                 <div>
                   {values.exceptions.map((exception, index) => (
@@ -183,8 +176,7 @@ export const ExceptionFormPage: React.FC = () => {
                   ))}
                   <div className={styles.fieldRows}>
                     <Button
-                      className="c-button c-button--primary"
-                      type="button"
+                      type="primary"
                       onClick={() =>
                         setFieldValue('exceptions', [
                           ...values.exceptions,
@@ -199,13 +191,11 @@ export const ExceptionFormPage: React.FC = () => {
                         ])
                       }
                       disabled={values.exceptions.length >= 5}
-                      color="primary"
                     >
                       + Add Another Threshold Exception
                     </Button>
                     <Button
-                      className="c-button c-button--secondary"
-                      type="button"
+                      type="secondary"
                       onClick={() =>
                         values.exceptions.length > 1 &&
                         setFieldValue(
@@ -214,7 +204,6 @@ export const ExceptionFormPage: React.FC = () => {
                         )
                       }
                       disabled={values.exceptions.length === 1}
-                      color="secondary"
                     >
                       - Remove Last Threshold Exception
                     </Button>
@@ -233,6 +222,10 @@ export const ExceptionFormPage: React.FC = () => {
                         id="expirationDateOther"
                         className={styles.expirationDate}
                       ></Field>
+                      <ErrorMessage
+                      name="expirationDateOther"
+                     component="div" className={styles.isInvalid}
+                    />
                     </FormGroup>
                   </div>
                 </>
@@ -257,12 +250,12 @@ export const ExceptionFormPage: React.FC = () => {
                       name="justification"
                       id="justification"
                       rows={5}
-                    ></Field>
+                    />
                     <ErrorMessage
                       name="justification"
-                      component={FormFeedback}
+                      component="div"
+                      className={styles.isInvalid}
                     />
-
                     <div className="help-text">2000 character limit</div>
                   </FormGroup>
                   <hr />
@@ -282,20 +275,21 @@ export const ExceptionFormPage: React.FC = () => {
                       ></Field>
                       <ErrorMessage
                         name="requestorName"
-                        component={FormFeedback}
+                        component="div"
+                        className={styles.isInvalid}
                       />
                     </FormGroup>
                     <FormGroup className="field-wrapper required">
                       <Label for="requestorEmail">Requestor E-mail</Label>
-
                       <Field
                         type="email"
                         name="requestorEmail"
                         id="requestorEmail"
-                      ></Field>
+                      />
                       <ErrorMessage
                         name="requestorEmail"
-                        component={FormFeedback}
+                        component="div"
+                        className={styles.isInvalid}
                       />
                     </FormGroup>
                     <FormGroup className="field-wrapper required" check>
@@ -311,19 +305,33 @@ export const ExceptionFormPage: React.FC = () => {
                       ></Field>
                       <ErrorMessage
                         name="acceptTerms"
-                        component={FormFeedback}
+                        component="div"
+                        className={styles.isInvalid}
                       />
                     </FormGroup>
                   </div>
-                  <div>
-                    <Button
-                      type="submit"
-                      className="form-button"
-                      value="Submit"
-                    >
-                      Submit
-                    </Button>
-                  </div>
+                  <Button
+                    type="primary"
+                    attr="submit"
+                    isLoading={isSubmitting}
+                    onClick={() => setIsSuccess(false)}
+                  >
+                    Submit
+                  </Button>
+                  {isSuccess && (
+                    <div className={styles.fieldRows}>
+                      <SectionMessage type="success" canDismiss={true}>
+                        Your exception request was successfully sent.
+                      </SectionMessage>
+                    </div>
+                  )}
+                  {errorMessage && (
+                    <div className={styles.fieldRows}>
+                      <SectionMessage type="error">
+                        {errorMessage}
+                      </SectionMessage>
+                    </div>
+                  )}
                   <div>
                     <hr />
                     <small>
