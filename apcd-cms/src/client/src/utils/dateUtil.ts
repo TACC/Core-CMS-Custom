@@ -1,7 +1,7 @@
 export const formatDate = (dateString: string | number | Date): string => {
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    throw new Error('Invalid date');
+    return '';
   }
 
   return new Intl.DateTimeFormat('en-US', {
