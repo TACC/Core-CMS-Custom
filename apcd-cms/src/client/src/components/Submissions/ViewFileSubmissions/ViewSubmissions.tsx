@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useListSubmissions, FileSubmissionRow } from 'hooks/submissions';
 import { FileSubmissionLogsModal } from './ViewSubmissionsModal';
+import { formatDate } from 'utils/dateUtil';
 
 export const ViewFileSubmissions: React.FC = () => {
   const [status, setStatus] = useState<string>('');
@@ -90,7 +91,7 @@ export const ViewFileSubmissions: React.FC = () => {
         <tbody>
           {data?.page.map((row: FileSubmissionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.received_timestamp}</td>
+              <td>{formatDate(row.received_timestamp)}</td>
               <td>{row.file_name}</td>
               <td>{row.outcome}</td>
               <td>{row.status}</td>
