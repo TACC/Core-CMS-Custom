@@ -144,6 +144,11 @@ export const ExceptionFormPage: React.FC = () => {
             <Form id="threshold-form">
               <div className={styles.fieldRows}>
                 <FormGroup className="field-wrapper required">
+                <h4>Select Exception Type</h4>
+      <p>
+        Please select below if you are requesting an exception for threshold
+        submission requirements or for an general, other type of exception.
+      </p>
                   <Field
                     as="select"
                     name="exceptionType"
