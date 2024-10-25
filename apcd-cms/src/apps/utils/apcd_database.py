@@ -798,7 +798,6 @@ def create_threshold_exception(form, exception, sub_data):
         conn.commit()
 
     except Exception as error:
-        logger.debug(print("database error occured:", error))
         logger.error(error)
         return error
 
