@@ -104,9 +104,20 @@ export const ExceptionFormPage: React.FC = () => {
     //expirationDateOther: null,
   };
 
+const getExceptionTitle = () => {
+    switch (selectedExceptionType) {
+      case 'threshold':
+        return 'Threshold ';
+      case 'other':
+        return 'Other ';
+      default:
+        return '';
+    }
+  };
+
   return (
     <div className={styles.root}>
-      <h1>Exception Request</h1>
+      <h1>{getExceptionTitle()} Exception Request</h1>
       <hr />
       <p>
         This form should be completed and submitted only by entities who are
