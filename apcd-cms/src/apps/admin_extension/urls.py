@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from apps.admin_extension.views import AdminExtensionsTable
+from apps.admin_extension.views import AdminExtensionsTable, UpdateExtensionsView
 
 
 app_name = 'admin_extension'
@@ -10,4 +10,5 @@ urlpatterns = [
     path(r'list-extensions/api/?status=(?P<status>)/', AdminExtensionsTable.as_view(), name='admin_extensions_table_api'),
     path(r'list-extensions/api/?org=(?P<org>)/', AdminExtensionsTable.as_view(), name='admin_extensions_table_api'),
     path(r'list-extensions/api/?status=(?P<status>)&org=(?P<org>)/', AdminExtensionsTable.as_view(), name='admin_extensions_table_api'),
+    path(r'update-extension/<int:ext_id>/', UpdateExtensionsView.as_view(), name='update_extension'),
 ]

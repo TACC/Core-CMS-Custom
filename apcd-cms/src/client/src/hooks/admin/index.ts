@@ -67,6 +67,15 @@ export type ExtensionRow = {
   ext_id: string;
   submitter_id: string;
   approved_expiration_date: string;
+  current_expected_date: string;
+  requested_target_date: string;
+  applicable_data_period: string;
+  updated_at: string;
+  submitter_code: string;
+  payor_code: string;
+  requestor_email: string;
+  explanation_justification: string;
+  notes: string;
 };
 
 export type ExtensionResult = {

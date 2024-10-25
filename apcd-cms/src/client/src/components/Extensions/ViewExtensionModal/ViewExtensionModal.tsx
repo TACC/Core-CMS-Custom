@@ -8,23 +8,6 @@ const ViewExtensionModal: React.FC<{
   isVisible: boolean;
   onClose: () => void;
 }> = ({ extension, isVisible, onClose }) => {
-    console.log(extension);
-  const { view_modal_content } = extension;
-  console.log(view_modal_content);
-
-  const {
-    ext_id,
-    org_name,
-    created,
-    type,
-    requestor,
-    ext_outcome,
-    ext_status,
-    submitter_id,
-    approved_expiration_date,
-  } = view_modal_content;
-  console.log(view_modal_content);
-
   return (
     <Modal
       title="View Extension"
@@ -33,8 +16,8 @@ const ViewExtensionModal: React.FC<{
       size="lg"
     >
        <div className="modal-header">
-          <h4 className="modal-title">Extension Details ID {extension_id} for {entity_name}</h4>
-          <button type="button" className="close" data-dismiss="modal">
+          <h4 className="modal-title">Extension Details ID {extension.ext_id} for {extension.org_name}</h4>
+          <button type="button" className="close" onClick={onClose}>
             <span aria-hidden="true">&#xe912;</span>
           </button>
         </div>
@@ -44,33 +27,33 @@ const ViewExtensionModal: React.FC<{
                 <div className="modal-section">
                     <dl className="c-data-list--is-vert c-data-list--is-wide">
                         <dt className="c-data-list__key">Created</dt>
-                        <dd className="c-data-list__value">{created_at}</dd>
+                        <dd className="c-data-list__value">{extension.created}</dd>
                         <dt className="c-data-list__key">Entity Organization</dt>
-                        <dd className="c-data-list__value">{entity_name}</dd>
+                        <dd className="c-data-list__value">{extension.org_name}</dd>
                         <dt className="c-data-list__key">Requestor</dt>
-                        <dd className="c-data-list__value">{requestor_name}</dd>
+                        <dd className="c-data-list__value">{extension.requestor}</dd>
                         <dt className="c-data-list__key">Requestor Email</dt>
-                        <dd className="c-data-list__value">{requestor_email}</dd>
+                        <dd className="c-data-list__value">{extension.requestor_email}</dd>
                         <dt className="c-data-list__key">Extension Type</dt>
-                        <dd className="c-data-list__value">{extension_type}</dd>
+                        <dd className="c-data-list__value">{extension.type}</dd>
                         <dt className="c-data-list__key">Status</dt>
-                        <dd className="c-data-list__value">{status}</dd>
+                        <dd className="c-data-list__value">{extension.ext_status}</dd>
                         <dt className="c-data-list__key">Outcome</dt>
-                        <dd className="c-data-list__value">{outcome}</dd>
+                        <dd className="c-data-list__value">{extension.ext_outcome}</dd>
                         <dt className="c-data-list__key">Applicable Data Period</dt>
-                        <dd className="c-data-list__value">{applicable_data_period}</dd>
+                        <dd className="c-data-list__value">{extension.applicable_data_period}</dd>
                         <dt className="c-data-list__key">Current Expected Date</dt>
-                        <dd className="c-data-list__value">{current_expected_date}</dd>
+                        <dd className="c-data-list__value">{extension.current_expected_date}</dd>
                         <dt className="c-data-list__key">Requested Target Date</dt>
-                        <dd className="c-data-list__value">{requested_target_date}</dd>
+                        <dd className="c-data-list__value">{extension.requested_target_date}</dd>
                         <dt className="c-data-list__key">Approved Expiration Date</dt>
-                        <dd className="c-data-list__value">{approved_expiration_date}</dd>
+                        <dd className="c-data-list__value">{extension.approved_expiration_date}</dd>
                         <dt className="c-data-list__key">Extension Justification</dt>
-                        <dd className="c-data-list__value">{explanation_justification}</dd>
+                        <dd className="c-data-list__value">{extension.explanation_justification}</dd>
                         <dt className="c-data-list__key">Extension Notes</dt>
-                        <dd className="c-data-list__value">{notes}</dd>
+                        <dd className="c-data-list__value">{extension.notes}</dd>
                         <dt className="c-data-list__key">Last Updated</dt>
-                        <dd className="c-data-list__value">{updated_at}</dd>
+                        <dd className="c-data-list__value">{extension.updated_at}</dd>
                     </dl>
                 </div>
           </div>

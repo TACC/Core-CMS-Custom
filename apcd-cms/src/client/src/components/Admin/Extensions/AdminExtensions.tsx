@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useExtensions, ExtensionRow } from 'hooks/admin';
+import { useExtensions, ExtensionRow, ExtensionEditRow } from 'hooks/admin';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ExtensionList.module.css';
 import ViewExtensionModal from 'apcd-components/Extensions/ViewExtensionModal/ViewExtensionModal';
-//import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/EditExtensionModal';
+import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/EditExtensionModal';
 
 export const AdminExtensions: React.FC = () => {
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useExtensions(status, org, page);
-    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  //const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const [selectedExtension, setSelectedExtension] =
     useState<ExtensionRow | null>(null);
@@ -41,14 +41,13 @@ export const AdminExtensions: React.FC = () => {
   ) => {
     const actionsDropdown = event.target;
     const selectedOption = actionsDropdown.value;
-    console.log(ext_id);
     setSelectedExtension(
       data?.page.find((x) => x.ext_id === ext_id) ?? null
     );
     if (selectedOption == 'viewExtension') {
       setIsViewModalOpen(true);
-    //} else if (selectedOption == 'editRegistration') {
-     // setIsEditModalOpen(true);
+    } else if (selectedOption == 'editExtension') {
+        setIsEditModalOpen(true);
     }
     actionsDropdown.selectedIndex = 0;
   };
@@ -125,6 +124,7 @@ export const AdminExtensions: React.FC = () => {
                 >
                 <option value="">Select Action</option>
                 <option value="viewExtension">View Record</option>
+                <option value="editExtension">Edit Record</option>
               </select>
             </td>
           </tr>
@@ -143,6 +143,13 @@ export const AdminExtensions: React.FC = () => {
             extension={selectedExtension}
             isVisible={isViewModalOpen}
             onClose={() => setIsViewModalOpen(false)}
+          />
+          <EditExtensionModal
+            extension={selectedExtension}
+            statusOptions={data?.status_edit_options}
+            outcomeOptions={data?.outcome_edit_options}
+            isVisible={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
           />
         </>
       )}
