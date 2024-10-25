@@ -14,7 +14,6 @@ export const ViewFileSubmissions: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log('useEffect', status, sort, page);
     refetch();
   }, [status, sort, page]);
 
