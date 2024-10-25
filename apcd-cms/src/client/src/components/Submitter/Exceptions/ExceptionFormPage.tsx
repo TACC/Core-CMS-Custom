@@ -123,11 +123,6 @@ export const ExceptionFormPage: React.FC = () => {
         </a>
       </p>
       <hr />
-      <h4>Select Exception Type</h4>
-      <p>
-        Please select below if you are requesting an exception for threshold
-        submission requirements or for an general, other type of exception.
-      </p>
       <Formik
         initialValues={initialValues}
         validateOnMount={true}
@@ -142,13 +137,13 @@ export const ExceptionFormPage: React.FC = () => {
           }, [isSuccess, resetForm]);
           return (
             <Form id="threshold-form">
-              <div className={styles.fieldRows}>
-                <FormGroup className="field-wrapper required">
+
                 <h4>Select Exception Type</h4>
       <p>
         Please select below if you are requesting an exception for threshold
         submission requirements or for an general, other type of exception.
-      </p>
+      </p>              <div className={styles.fieldRows}>
+      <FormGroup className="field-wrapper required">
                   <Field
                     as="select"
                     name="exceptionType"
@@ -317,6 +312,23 @@ export const ExceptionFormPage: React.FC = () => {
                       />
                     </FormGroup>
                   </div>
+                  {isSuccess ? (
+                    <>
+                                      <Button
+                                      type="primary"
+                                      attr="submit"
+                                      isLoading={isSubmitting}
+                                      onClick={() => setIsSuccess(false)}
+                                    >
+                                      Submit Another Exception
+                                    </Button>
+                    <div className={styles.fieldRows}>
+                      <SectionMessage type="success" canDismiss={true}>
+                        Your exception request was successfully sent.
+                      </SectionMessage>
+                    </div>
+                    </>
+                  ) : (
                   <Button
                     type="primary"
                     attr="submit"
@@ -325,13 +337,7 @@ export const ExceptionFormPage: React.FC = () => {
                   >
                     Submit
                   </Button>
-                  {isSuccess && (
-                    <div className={styles.fieldRows}>
-                      <SectionMessage type="success" canDismiss={true}>
-                        Your exception request was successfully sent.
-                      </SectionMessage>
-                    </div>
-                  )}
+   ) }
                   {errorMessage && (
                     <div className={styles.fieldRows}>
                       <SectionMessage type="error">
