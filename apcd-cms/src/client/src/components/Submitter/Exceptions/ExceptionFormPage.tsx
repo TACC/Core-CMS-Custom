@@ -148,8 +148,10 @@ export const ExceptionFormPage: React.FC = () => {
                     as="select"
                     name="exceptionType"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setSelectedExceptionType(e.target.value);
-                      setFieldValue('exceptionType', e.target.value);
+                      const selection = e.target.value;
+                      setSelectedExceptionType(selection);
+                      resetForm();
+                      setFieldValue('exceptionType', selection);
                     }}
                   >
                     <option value="">-- Select Exception Type --</option>
