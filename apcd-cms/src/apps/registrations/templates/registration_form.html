@@ -1,42 +1,17 @@
-{% extends "standard.html" %}
+{% extends "apcd_cms/templates/standard.html" %}
 {% load static %}
 
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
 
-{% block extra_js %}
-<script type="module">
-import { setupRegistrationForm } from "{% static 'apcd-components.es.js' %}";
-setupRegistrationForm();
-</script>
-{% endblock %}
 
 <div class="container">
   {% include "nav_cms_breadcrumbs.html" %}
 
 
-  <div class="row">
-    <div class="col">
-      <h1>Request to Submit</h1>
-      <hr />
-
-      <p style="margin-bottom: 30px">
-        This form should be completed and submitted to register as a data
-        submitter. Please review the
-        <a
-          href="https://sph.uth.edu/research/centers/center-for-health-care-data/assets/tx-apcd/data-submission-guides/TXAPCD%20-%20Data%20Submission%20Guide%20(DSG).pdf"
-          target="_blank"
-          >Data Submission Guide</a
-        > for details about completing and submitting this form, paying
-        special attention to the schedule of submissions including test files,
-        historical files, and monthly files.
-      </p>
-
-      <hr />
-
       <div class="forms">
-        <div id="react-root"></div>
+        <div id="registration-form-root"></div>
         <div class="form-success" style="display: none">
           <p>Thank you for your request.</p>
         </div>
@@ -61,24 +36,4 @@ setupRegistrationForm();
   {% include "submission_form/registration_form_scripts.html" %}
 
   {# Footnotes #}
-  <div class="o-section o-section--style-light">
-    <hr />
-    <p>
-      <small
-        >¹ Third Party Administrator / Administrative Services Only (TPA/ASO)<br />
-        ² Federal Employer Identification Number (FEIN)<br />
-        ³ National Association of Insurance Commissioners (NAIC)<br />
-        ⁴ United States Dollar (USD)<br />
-      </small
-      >
-    </p>
-    <hr />
-    <p>
-      <small
-        >* Eligibility/Enrollment files are mandatory along with any combination
-        of claims files.</small
-      >
-    </p>
-  </div>
-</div>
 {% endblock %}
