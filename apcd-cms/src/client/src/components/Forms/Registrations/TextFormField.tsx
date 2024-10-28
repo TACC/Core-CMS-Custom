@@ -1,44 +1,27 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Field, ErrorMessage } from "formik";
 import {
     FormGroup,
-    FormText,
     Label,
-    Input,
-    Button,
-    Badge,
-    InputGroup,
     FormFeedback,
   } from "reactstrap";
   
-
-export const TextFormField: React.FC<{name: string; label: string; helpText?: string; touched: any; errors: any;}> = ({name, label, helpText, touched, errors}) => {
+/* Component to re-use for text input fields */
+export const TextFormField: React.FC<{name: string; label: any; helpText?: any; required?: boolean}> = ({name, label, helpText, required}) => {
     return (
-        <FormGroup>
-        <Label for={name}>{label}</Label>
-        <InputGroup>
-            <Field name={name}>
-            {({ field }: { field: any }) => (
-                <Input
-                    type="text"
-                    id={name}
-                    className='textinput'
-                    {...field}
-                    invalid={touched[name] && !!errors[name]}
-                />
-            )}
-            </Field>
+        <FormGroup className={`field-wrapper textinput ${ required ? 'required': '' }`}>
+            <Label htmlFor={name}>{label}</Label>
+            <Field name={name} as="input" id={name} className="textinput"/>
             <ErrorMessage
                 name={name}
                 component={FormFeedback}
             />
-        </InputGroup>
-        { helpText ? 
-            <FormText className='help-text'>
-                {helpText}
-            </FormText>
-            : <></>
-        }
+            { helpText ? 
+                <div className='help-text'>
+                    {helpText}
+                </div>
+                : <></>
+            }
         </FormGroup>
     )
 };
