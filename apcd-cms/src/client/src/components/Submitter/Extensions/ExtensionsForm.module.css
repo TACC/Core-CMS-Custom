@@ -10,3 +10,11 @@
 .dateInputContainer {
   display: inline-block;
 }
+
+.loadingField {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}

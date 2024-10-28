@@ -7,6 +7,8 @@ import { Entities, useEntities } from 'hooks/entities';
 import styles from './ExceptionForm.module.css';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
+import { Link, useLocation } from 'react-router-dom';
+
 
 export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   const [cdlData, setCdlData] = useState<cdlObject>();
@@ -83,9 +85,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         {entitiesError && (
           <SectionMessage type="error">
             There was an error finding your associated businesses.{' '}
-            <a href="https://txapcd.org/workbench/dashboard/tickets/create">
+            <Link to="/workbench/dashboard/tickets/create" className="wb-link">
               Please submit a ticket.
-            </a>
+            </Link>
           </SectionMessage>
         )}
       </FormGroup>
