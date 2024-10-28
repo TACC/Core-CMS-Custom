@@ -2,8 +2,14 @@ import React from 'react';
 import { Field, ErrorMessage, FieldArray } from 'formik';
 import { FormGroup, Label, Row, Col, FormFeedback } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
+import { SubmitterEntityData, Entities } from 'hooks/entities';
+import SectionMessage from 'core-components/SectionMessage';
+import { Link, useLocation } from 'react-router-dom';
 
-const ExtensionFormInfo: React.FC<{ index: number }> = ({ index }) => {
+const ExtensionFormInfo: React.FC<{
+  index: number;
+  submitterData: SubmitterEntityData | undefined;
+}> = ({ index, submitterData }) => {
   return (
     <div>
       <h4>Extension Information {index + 1}</h4>
@@ -13,21 +19,38 @@ const ExtensionFormInfo: React.FC<{ index: number }> = ({ index }) => {
         <Label htmlFor={`extensions.${index}.businessName`}>
           Business Name <span className={styles.requiredText}>(required)</span>
         </Label>
-        <Field
-          as="select"
-          name={`extensions.${index}.businessName`}
-          id={`extensions.${index}.businessName`}
-          className="form-control"
-        >
-          <option value="">Select Business Name</option>
-          <option value="Test Meritan Health">
-            Test Meritan Health - Payor Code: 10000003
-          </option>
-        </Field>
-        <ErrorMessage
-          name={`extensions.${index}.businessName`}
-          component={FormFeedback}
-        />
+        {submitterData && (
+          <>
+            <Field
+              as="select"
+              name={`extensions.${index}.businessName`}
+              id={`extensions.${index}.businessName`}
+              className="form-control"
+            >
+              <option value="">Select Business Name</option>
+              {submitterData?.submitters?.map((submitter: Entities) => (
+                <option
+                  value={submitter.submitter_id}
+                  key={submitter.submitter_id}
+                >
+                  {submitter.entity_name} - Payor Code: {submitter.payor_code}
+                </option>
+              ))}
+            </Field>
+            <ErrorMessage
+              name={`extensions.${index}.businessName`}
+              component={FormFeedback}
+            />
+          </>
+        )}
+        {!submitterData && (
+          <SectionMessage type="error">
+            There was an error finding your associated businesses.{' '}
+            <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+              Please submit a ticket.
+            </Link>
+          </SectionMessage>
+        )}
       </FormGroup>
 
       <FormGroup>

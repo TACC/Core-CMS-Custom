@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { Button, Col, FormGroup, Label, Row, FormFeedback } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
 import ExtensionFormInfo from './ExtensionFormInfo';
+import { useEntities } from 'hooks/entities';
+import LoadingSpinner from 'core-components/LoadingSpinner';
 
 const validationSchema = Yup.object().shape({
   extensions: Yup.array().of(
@@ -66,6 +68,20 @@ export const ExtensionRequestForm: React.FC = () => {
     console.log('Form values:', values);
   };
 
+  const {
+    data: submitterData,
+    isLoading: entitiesLoading,
+    isError: entitiesError,
+  } = useEntities();
+
+  if (entitiesLoading) {
+    return (
+      <div className="loadingField">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <h1>Request an Extension</h1>
@@ -92,7 +108,11 @@ export const ExtensionRequestForm: React.FC = () => {
         {({ values, isSubmitting, setFieldValue }) => (
           <Form>
             {values.extensions.map((extension, index) => (
-              <ExtensionFormInfo key={index} index={index} />
+              <ExtensionFormInfo
+                key={index}
+                index={index}
+                submitterData={submitterData}
+              />
             ))}
             <Button
               className="c-button c-button--primary"
