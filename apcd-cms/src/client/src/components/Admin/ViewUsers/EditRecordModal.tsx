@@ -13,7 +13,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { UserRow } from 'hooks/admin';
-import styles from './ViewUsers.module.scss'; // Import SCSS module
+import styles from './ViewUsers.module.scss';
+import { formatDate } from 'utils/dateUtil';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -98,8 +99,8 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     { label: 'Entity Organization', value: user.entity_name },
     { label: 'Role', value: user.role_name },
     { label: 'Status', value: user.status },
-    { label: 'Created Date', value: user.created_at },
-    { label: 'Updated Date', value: user.updated_at },
+    { label: 'Created Date', value: formatDate(user.created_at) },
+    { label: 'Updated Date', value: formatDate(user.updated_at) },
     { label: 'Notes', value: user.notes ? user.notes : 'None' },
   ];
 
