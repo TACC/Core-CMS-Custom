@@ -21,14 +21,17 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         />
 
         <FormGroup className='field-wrapper required'>
-            <Label>Number/Code</Label>
+            <Label>
+                Number/Code
+                <span style={{"color": "red"}}> (required)</span>
+            </Label>
             <FormText className='help-text'>
                 Provide all available identifiers. At least one of the following is required.
             </FormText>
-            <FormGroup className='o-grid o-grid--col-auto-count'>
+            <FormGroup className='o-grid o-grid--col-auto-count' noMargin={true}>
                 <TextFormField 
                     name={`entities.${index}.fein`}
-                    label="FEIN"
+                    label="FEIN²"
                     helpText='Enter in format 12-3456789.'
                 />
 
@@ -40,7 +43,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
 
                 <TextFormField 
                     name={`entities.${index}.naic_company_code`}
-                    label="Company Code"
+                    label="NAIC³ Company Code"
                     helpText='Enter digits only.'
                 />
             </FormGroup>
@@ -48,11 +51,19 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         </FormGroup>
 
         <h6>Type of Plan</h6>
-        <Label>Plan Types</Label>
-        <FormGroup className='checkboxselectmultiple required' id={`entities.${index}.types_of_plans`}>
+        <div className='field-wrapper required'>
+            <Label>
+                Plan Types
+                <span style={{"color": "red"}}> (required)</span>
+            </Label>
+        </div>
+        <FormGroup className='checkboxselectmultiple' id={`entities.${index}.types_of_plans`}>
             {['Commercial', 'Medicare', 'Medicaid'].map(planType => (
-                <FormGroup>
-                    <Label htmlFor={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}>
+                <FormGroup key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.wrapper`} noMargin={true}>
+                    <Label 
+                        htmlFor={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
+                        key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.label`}
+                    >
                         <Field
                             type="checkbox"
                             key={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
@@ -60,25 +71,34 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                             id={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
                         >
                         </Field>
-                        {planType}
+                        {planType}{planType == 'Medicaid' ? <small>(for state use only)</small> : <></>}
                     </Label>
                     <ErrorMessage
                         name={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
                         component={FormFeedback}
+                        key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.error`}
                     />
                 </FormGroup>
             ))}
         </FormGroup>
 
         <h6>File Submission</h6>
-        <Label>Types of Files</Label>
-        <FormText className='help-text'>
-            Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
-        </FormText>
-        <FormGroup className='checkboxselectmultiple required' id={`entities.${index}.types_of_files`}>
+        <div className='field-wrapper required'>
+            <Label>
+                Types of Files
+                <span style={{"color": "red"}}> (required)</span>
+            </Label>
+            <FormText className='help-text'>
+                Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
+            </FormText>
+        </div>
+        <FormGroup className='checkboxselectmultiple' id={`entities.${index}.types_of_files`}>
             {['Eligibility/Enrollment', 'Provider', 'Medical', 'Pharmacy', 'Dental'].map(fileType => (
-                <FormGroup>
-                    <Label htmlFor={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}`}>
+                <FormGroup key={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}.wrapper`} noMargin={true}>
+                    <Label 
+                        htmlFor={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}`}
+                        key={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}.label`}
+                    >
                     <Field
                         type="checkbox"
                         key={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}`}
@@ -90,6 +110,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                     <ErrorMessage
                         name={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}`}
                         component={FormFeedback}
+                        key={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}.error`}
                     />
                 </FormGroup>
             ))}
@@ -116,7 +137,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         />
         <TextFormField 
             name={`entities.${index}.total_claims_value`}
-            label={`Total Claims Value (USD)${<sup>4</sup>}`}
+            label="Total Claims Value (USD)⁴"
             required={true}
         />
     </div>

@@ -195,7 +195,7 @@ export const RegistrationForm: React.FC = () => {
 
                 <hr />
                 <Formik
-                    validateOnMount
+                    validateOnMount={true}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
@@ -208,8 +208,9 @@ export const RegistrationForm: React.FC = () => {
                         <FormGroup className='field-wrapper radioselect required'>
                             <Label>
                                 On behalf of:
+                                <span style={{"color": "red"}}> (required)</span>
                             </Label>
-                            <FormGroup id="on_behalf_of">
+                            <FormGroup id="on_behalf_of" noMargin={true}>
                                 <Label>
                                     <Field type="radio" key="self" name="on_behalf_of" id="on_behalf_of" className="radioselect" value="true" checked />
                                     {' '}Self
@@ -218,10 +219,10 @@ export const RegistrationForm: React.FC = () => {
                                     <Field type="radio" key ="other" name="on_behalf_of" id="on_behalf_of" className="radioselect" value="false" />
                                     {' '}Other
                                 </Label>
+                                <FormText className='help-text'>
+                                    Whether you submit on behalf of your own organization (Self) or another organization (Other)
+                                </FormText>
                             </FormGroup>
-                        <FormText className='help-text'>
-                            Whether you submit on behalf of your own organization (Self) or another organization (Other)
-                        </FormText>
                         </FormGroup>
 
                         <TextFormField 
@@ -231,8 +232,11 @@ export const RegistrationForm: React.FC = () => {
                             required={true}
                         />
 
-                        <FormGroup className='field-wrapper required'>
-                            <Label htmlFor="type">Type</Label>
+                        <FormGroup className='field-wrapper required' noMargin={true}>
+                            <Label htmlFor="type">
+                                Type
+                                <span style={{"color": "red"}}> (required)</span>
+                            </Label>
                             <Field
                                 as="select" 
                                 name="type"
@@ -271,8 +275,11 @@ export const RegistrationForm: React.FC = () => {
                             required={true}
                         />
 
-                        <FormGroup className='field-wrapper required'>
-                            <Label for="state">Type</Label>
+                        <FormGroup className='field-wrapper required' noMargin={true}>
+                            <Label for="state">
+                                State
+                                <span style={{"color": "red"}}> (required)</span>
+                            </Label>
                             <Field 
                                 as="select"
                                 name="state"

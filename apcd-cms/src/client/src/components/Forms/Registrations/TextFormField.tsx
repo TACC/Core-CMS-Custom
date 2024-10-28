@@ -9,8 +9,14 @@ import {
 /* Component to re-use for text input fields */
 export const TextFormField: React.FC<{name: string; label: any; helpText?: any; required?: boolean}> = ({name, label, helpText, required}) => {
     return (
-        <FormGroup className={`field-wrapper textinput ${ required ? 'required': '' }`}>
-            <Label htmlFor={name}>{label}</Label>
+        <FormGroup 
+            className={`field-wrapper textinput ${ required ? 'required': '' }`}
+            noMargin={true}
+        >
+            <Label htmlFor={name}>
+                {label}
+                {required ? <span style={{"color": "red"}}> (required)</span> : <></>}
+            </Label>
             <Field name={name} as="input" id={name} className="textinput"/>
             <ErrorMessage
                 name={name}
