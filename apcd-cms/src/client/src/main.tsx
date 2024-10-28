@@ -8,6 +8,7 @@ import { AdminSubmissions } from './components/Admin/Submissions';
 import { AdminExtensions } from './components/Admin/Extensions';
 import { AdminExceptions } from './components/Admin/Exceptions';
 import { SubmitterRegistrationList } from './components/Submitter/Registrations';
+import { RegistrationForm } from 'apcd-components/Forms/Registrations';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'admin-extensions-root': AdminExtensions,
   'admin-exceptions-root': AdminExceptions,
   'list-submitter-registrations-root': SubmitterRegistrationList,
+  'registration-form-root': RegistrationForm
   // Add new components with html id in the list above.
 };
 
