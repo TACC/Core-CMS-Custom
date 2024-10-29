@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
   FormGroup,
-  FormText,
   Label,
   Button,
   FormFeedback,
@@ -219,9 +218,9 @@ export const RegistrationForm: React.FC = () => {
                                     <Field type="radio" key ="other" name="on_behalf_of" id="on_behalf_of" className="radioselect" value="false" />
                                     {' '}Other
                                 </Label>
-                                <FormText className='help-text'>
+                                <div className='help-text'>
                                     Whether you submit on behalf of your own organization (Self) or another organization (Other)
-                                </FormText>
+                                </div>
                             </FormGroup>
                         </FormGroup>
 
@@ -312,10 +311,20 @@ export const RegistrationForm: React.FC = () => {
                         {values.entities.map((entity, index) => (
                             <RegistrationEntity key={index} index={index} />
                         ))}
+                        {values.entities.length === 5 &&
+                            <p className="c-message c-message--type-info c-message--scope-inline">
+                                If you need to associate more than 5 entities with your registration,
+                                <a href="/workbench/dashboard" target="_blank" rel="noreferrer">
+                                    {' '}submit a ticket{' '}
+                                </a> 
+                                with your additional entries and your registration ID (displayed after submitting this form).
+                            </p> 
+                        }
                         <Button
                             className="c-button c-button--primary"
                             type="button"
                             color="primary"
+                            disabled={values.entities.length === 5}
                             onClick={() =>
                                 setFieldValue('entities', [
                                     ...values.entities,
@@ -365,6 +374,7 @@ export const RegistrationForm: React.FC = () => {
                             className="c-button c-button--primary"
                             type="button"
                             color="primary"
+                            disabled={values.contacts.length === 5}
                             onClick={() =>
                                 setFieldValue('contacts', [
                                     ...values.contacts,

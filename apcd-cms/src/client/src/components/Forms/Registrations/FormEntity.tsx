@@ -2,7 +2,6 @@ import React from 'react';
 import { Field, ErrorMessage } from "formik";
 import {
     FormGroup,
-    FormText,
     Label,
     FormFeedback,
   } from "reactstrap";
@@ -25,9 +24,9 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                 Number/Code
                 <span style={{"color": "red"}}> (required)</span>
             </Label>
-            <FormText className='help-text'>
+            <div className='help-text'>
                 Provide all available identifiers. At least one of the following is required.
-            </FormText>
+            </div>
             <FormGroup className='o-grid o-grid--col-auto-count' noMargin={true}>
                 <TextFormField 
                     name={`entities.${index}.fein`}
@@ -88,9 +87,9 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                 Types of Files
                 <span style={{"color": "red"}}> (required)</span>
             </Label>
-            <FormText className='help-text'>
+            <div className='help-text'>
                 Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
-            </FormText>
+            </div>
         </div>
         <FormGroup className='checkboxselectmultiple' id={`entities.${index}.types_of_files`}>
             {['Eligibility/Enrollment', 'Provider', 'Medical', 'Pharmacy', 'Dental'].map(fileType => (
