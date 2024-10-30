@@ -170,8 +170,7 @@ class UpdateExtensionsView(View):
         if self._err_msg(extension_response):
             errors.append(self._err_msg(extension_response))
         if len(errors) != 0:
+            logger.error(errors)
             return JsonResponse({'message': 'Cannot edit extension'}, status=500)
-        else:
-            logger.debug(print("success"))
 
         return JsonResponse({'response': 'success'})
