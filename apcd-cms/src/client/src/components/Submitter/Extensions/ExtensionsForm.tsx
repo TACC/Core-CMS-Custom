@@ -7,6 +7,7 @@ import ExtensionFormInfo from './ExtensionFormInfo';
 import { useEntities } from 'hooks/entities';
 import { fetchUtil } from 'utils/fetchUtil';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import SectionMessage from 'core-components/SectionMessage';
 
 const validationSchema = Yup.object().shape({
   extensions: Yup.array().of(
@@ -302,6 +303,13 @@ export const ExtensionRequestForm: React.FC = () => {
                   >
                     Submit
                   </Button>
+                  {errorMessage && (
+                    <div className={styles.fieldRows}>
+                      <SectionMessage type="error">
+                        {errorMessage}
+                      </SectionMessage>
+                    </div>
+                  )}
                   <hr />
                   <small>
                     <sup>1</sup>Applicable data period - month/year in which
