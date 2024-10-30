@@ -83,6 +83,9 @@ export type ExtensionResult = {
   status_options: string[];
   org_options: string[];
   selected_status: string;
+  selected_org: string;
+  page_num: number;
+  total_pages: number;
   query_str: string;
   pagination_url_namespaces: string;
   page: ExtensionRow[];

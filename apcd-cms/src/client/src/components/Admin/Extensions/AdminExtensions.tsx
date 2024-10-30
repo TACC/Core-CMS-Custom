@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useExtensions, ExtensionRow, ExtensionEditRow } from 'hooks/admin';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import SectionMessage from 'core-components/SectionMessage';
 import Paginator from 'core-components/Paginator';
 import styles from './ExtensionList.module.css';
 import ViewExtensionModal from 'apcd-components/Extensions/ViewExtensionModal/ViewExtensionModal';
@@ -28,11 +29,17 @@ export const AdminExtensions: React.FC = () => {
   }, [status, org, page, refetch]);
 
    if (isLoading) {
-    return <div>Loading...</div>;
+    <LoadingSpinner/>
   }
 
   if (isError) {
-    return <div>Error loading data</div>;
+          <SectionMessage type="error">
+            There was an error loading the page.{''}
+            <a href="https://txapcd.org/workbench/dashboard/tickets/create">
+              Please submit a ticket.
+            </a>
+          </SectionMessage>
+        )}
   }
 
   const openAction = (
@@ -54,6 +61,9 @@ export const AdminExtensions: React.FC = () => {
 
 
   return (
+        <h1>View Extension Requests</h1>
+  <p style="margin-bottom: 30px">All submitted extension requests</p>
+  <hr />
       <div>
          <div className="filter-container">
         <div className="filter-content">
