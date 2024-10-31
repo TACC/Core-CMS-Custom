@@ -13,17 +13,30 @@ class ExceptionFormView(TemplateView):
     def post(self, request):
         if (request.user.is_authenticated) and has_apcd_group(request.user):
             form = json.loads(request.body)
-            exceptions = form['exceptions']
-            errors = []
-            submitters = apcd_database.get_submitter_info(request.user.username)
-            for exception in exceptions:
-                submitter = next(submitter for submitter in submitters if int(submitter[0] == int(exception['businessName'])))
-                exception_response = apcd_database.create_threshold_exception(form, exception, submitter)
-            if exception_response:
-                errors.append(exception_response)
-            if errors:
-                return JsonResponse({'status': 'error', 'errors': errors}, status=400)
-            return JsonResponse({'status': 'success'}, status=200)
+            exception_type = form['exceptionType']
+            if exception_type == 'threshold':
+                exceptions = form['exceptions']
+                errors = []
+                submitters = apcd_database.get_submitter_info(request.user.username)
+                for exception in exceptions:
+                    submitter = next(submitter for submitter in submitters if int(submitter[0] == int(exception['businessName'])))
+                    exception_response = apcd_database.create_threshold_exception(form, exception, submitter)
+                if exception_response:
+                    errors.append(exception_response)
+                if errors:
+                    return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+                return JsonResponse({'status': 'success'}, status=200)
+            
+            if exception_type == 'other':
+                errors = []
+                submitters = apcd_database.get_submitter_info(request.user.username)
+                submitter = next(submitter for submitter in submitters if int(submitter[0] == int(form['otherExceptionBusinessName'])))
+                other_exception_response = apcd_database.create_other_exception(form, submitter)
+                if other_exception_response:
+                    errors.append(other_exception_response)
+                if errors:
+                    return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+                return JsonResponse({'status': 'success'}, status=200)
 
         else:
             return HttpResponseRedirect('/')

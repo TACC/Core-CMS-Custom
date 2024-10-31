@@ -723,14 +723,14 @@ def create_other_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["business-name"],
+            form["otherExceptionBusinessName"],
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
+            _clean_value(form['requestorName']),
+            _clean_email(form['requestorEmail']),
             "Other",
-            _clean_date(form['expiration-date']),
+            _clean_date(form['expirationDateOther']),
             _clean_value(form['justification']),
             "Pending"
         )

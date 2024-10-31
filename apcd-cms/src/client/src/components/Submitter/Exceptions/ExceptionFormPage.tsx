@@ -6,28 +6,9 @@ import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
 import { fetchUtil } from 'utils/fetchUtil';
+import { Link } from 'react-router-dom';
+import { Entities, useEntities } from 'hooks/entities';
 import Button from 'core-components/Button';
-
-const validationSchema = Yup.object().shape({
-  exceptionType: Yup.string().required('Required'),
-  exceptions: Yup.array().of(
-    Yup.object().shape({
-      businessName: Yup.number().min(1, 'Required').required('Required'),
-      fileType: Yup.string().required('Required'),
-      fieldCode: Yup.string().required('Required'),
-      expiration_date: Yup.date().required('Required'),
-      requested_threshold: Yup.number().min(1, 'Requied').required('Required'),
-      required_threshold: Yup.number().required('Required'),
-    })
-  ),
-  justification: Yup.string()
-    .max(2000, 'Must be 2000 characters or less')
-    .required('Required'),
-  requestorName: Yup.string().required('Required'),
-  requestorEmail: Yup.string().email().required('Required'),
-  acceptTerms: Yup.boolean().oneOf([true], 'Required'),
-  //expirationDateOther: Yup.date().required('Required'),
-});
 
 interface FormValues {
   exceptionType: string;
@@ -43,16 +24,82 @@ interface FormValues {
   requestorName: string;
   requestorEmail: string;
   acceptTerms: boolean;
-  //expirationDateOther: Date | null;
+  expirationDateOther: string;
+  otherExceptionBusinessName: string;
 }
 
 export const ExceptionFormPage: React.FC = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [selectedExceptionType, setSelectedExceptionType] =
     useState<string>('');
   const [numberOfExceptionBlocks, setNumberOfExceptionBlocks] =
     useState<number>(1);
+
+  // Dynamically determines validation schema based on selectedExceptionType state
+  const baseSchema = {
+    exceptionType: Yup.string().required('Required'),
+    justification: Yup.string()
+      .max(2000, 'Must be 2000 characters or less')
+      .required('Required'),
+    requestorName: Yup.string().required('Required'),
+    requestorEmail: Yup.string().email().required('Required'),
+    acceptTerms: Yup.boolean().oneOf([true], 'Required'),
+  };
+
+  const exceptionSchema = Yup.array().of(
+    Yup.object().shape({
+      businessName: Yup.number().min(1, 'Required').required('Required'),
+      fileType: Yup.string().required('Required'),
+      fieldCode: Yup.string().required('Required'),
+      expiration_date: Yup.date().required('Required'),
+      requested_threshold: Yup.number().min(1, 'Required').required('Required'),
+      required_threshold: Yup.number().required('Required'),
+    })
+  );
+
+  const validationSchema = Yup.object().shape({
+    ...baseSchema,
+    exceptions: Yup.mixed().when('exceptionType', {
+      is: 'threshold',
+      then: (schema) => exceptionSchema,
+      otherwise: (schema) => schema.strip(),
+    }),
+    expirationDateOther: Yup.mixed().when('exceptionType', {
+      is: 'other',
+      then: (schema) => Yup.date().required('Required'),
+      otherwise: (schema) => schema.strip(),
+    }),
+    otherExceptionBusinessName: Yup.mixed().when('exceptionType', {
+      is: 'other',
+      then: () => Yup.number().min(1, 'Required').required('Required'),
+      otherwise: () => Yup.mixed().strip(),
+    }),
+  });
+  const initialValues: FormValues = {
+    exceptionType: selectedExceptionType ? selectedExceptionType : '',
+    exceptions: Array.from({ length: numberOfExceptionBlocks }).map(() => ({
+      businessName: 0,
+      fileType: '',
+      fieldCode: '',
+      expiration_date: '',
+      requested_threshold: 0,
+      required_threshold: 0,
+    })),
+    justification: '',
+    requestorName: '',
+    requestorEmail: '',
+    acceptTerms: false,
+    expirationDateOther: '',
+    otherExceptionBusinessName: '',
+  };
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  const {
+    data: submitterData,
+    isLoading: entitiesLoading,
+    isError: entitiesError,
+  } = useEntities();
 
   const handleSubmit = async (
     values: FormValues,
@@ -85,23 +132,6 @@ export const ExceptionFormPage: React.FC = () => {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const initialValues: FormValues = {
-    exceptionType: '',
-    exceptions: Array.from({ length: numberOfExceptionBlocks }).map(() => ({
-      businessName: 0,
-      fileType: '',
-      fieldCode: '',
-      expiration_date: '',
-      requested_threshold: 0,
-      required_threshold: 0,
-    })),
-    justification: '',
-    requestorName: '',
-    requestorEmail: '',
-    acceptTerms: false,
-    //expirationDateOther: null,
   };
 
   const getExceptionTitle = () => {
@@ -143,7 +173,7 @@ export const ExceptionFormPage: React.FC = () => {
         {({ values, isSubmitting, setFieldValue, resetForm }) => {
           useEffect(() => {
             if (isSuccess) {
-              resetForm();
+              resetForm({ values: { ...initialValues } });
             }
           }, [isSuccess, resetForm]);
           return (
@@ -162,8 +192,8 @@ export const ExceptionFormPage: React.FC = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       const selection = e.target.value;
                       setSelectedExceptionType(selection);
-                      resetForm();
                       setFieldValue('exceptionType', selection);
+                      setIsSuccess(false);
                     }}
                   >
                     <option value="">-- Select Exception Type --</option>
@@ -224,12 +254,61 @@ export const ExceptionFormPage: React.FC = () => {
                   </div>
                 </div>
               )}
-              {/*{selectedExceptionType === 'other' && (
+              {selectedExceptionType === 'other' && (
                 <>
-                  <h4>Exception Time Period</h4>
-                  <p>Provide the requested expiration date for your request.</p>
+                  <hr />
+                  <h4>Exception Details</h4>
+                  <div className={styles.fieldRows}>
+                    {submitterData && (
+                      <>
+                        <FormGroup className="field-wrapper required">
+                          <Label for={`otherExceptionBusinessName`}>
+                            Business Name
+                          </Label>
+                          <Field
+                            as="select"
+                            name={`otherExceptionBusinessName`}
+                            id={`otherExceptionBusinessName`}
+                          >
+                            <option>-- Select a Business --</option>
+                            {submitterData?.submitters?.map(
+                              (submitter: Entities) => (
+                                <option
+                                  value={submitter.submitter_id}
+                                  key={submitter.submitter_id}
+                                >
+                                  {submitter.entity_name} - Payor Code:{' '}
+                                  {submitter.payor_code}
+                                </option>
+                              )
+                            )}
+                          </Field>
+                          <ErrorMessage
+                            name={`otherExceptionBusinessName`}
+                            component="div"
+                            className={styles.isInvalid}
+                          />
+                        </FormGroup>
+                      </>
+                    )}
+                  </div>
+                  {entitiesError && (
+                    <SectionMessage type="error">
+                      There was an error finding your associated businesses.{' '}
+                      <Link
+                        to="/workbench/dashboard/tickets/create"
+                        className="wb-link"
+                      >
+                        Please submit a ticket.
+                      </Link>
+                    </SectionMessage>
+                  )}
+
                   <div className={styles.fieldRows}>
                     <FormGroup className="field-wrapper required">
+                      <Label for={'expirationDateOther'}>
+                        Requested Expiration Date
+                      </Label>
                       <Field
                         type="date"
                         name="expirationDateOther"
@@ -237,13 +316,14 @@ export const ExceptionFormPage: React.FC = () => {
                         className={styles.expirationDate}
                       ></Field>
                       <ErrorMessage
-                      name="expirationDateOther"
-                     component="div" className={styles.isInvalid}
-                    />
+                        name="expirationDateOther"
+                        component="div"
+                        className={styles.isInvalid}
+                      />
                     </FormGroup>
                   </div>
                 </>
-              )}*/}
+              )}
               {selectedExceptionType && (
                 <>
                   <hr />
@@ -335,7 +415,11 @@ export const ExceptionFormPage: React.FC = () => {
                         Submit Another Exception
                       </Button>
                       <div className={styles.fieldRows}>
-                        <SectionMessage type="success" canDismiss={true}>
+                        <SectionMessage
+                          type="success"
+                          canDismiss={true}
+                          onDismiss={() => setIsSuccess(false)}
+                        >
                           Your exception request was successfully sent.
                         </SectionMessage>
                       </div>
@@ -363,7 +447,7 @@ export const ExceptionFormPage: React.FC = () => {
                       * Exceptions cannot be granted for periods longer than a
                       year.
                       <br />
-                      ** Exceptions cannot be granted "from any requirement in
+                      ** Exceptions cannot be granted from any requirement in
                       insurance code Chapter 38.
                       <br />
                     </small>
