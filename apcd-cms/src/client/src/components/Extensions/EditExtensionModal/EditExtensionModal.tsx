@@ -53,6 +53,14 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [userFields, setUserFields] = useState([
+    { label: 'Applicable Data Period', value: extension?.applicable_data_period || 'None' },
+    { label: 'Approved Expiration Date', value: extension?.approved_expiration_date || 'None' },
+    { label: 'Exception Status', value: extension?.ext_status },
+    { label: 'Exception Outcome', value: extension?.ext_outcome },
+    { label: 'Exception Notes', value: extension?.notes || 'None' },
+  ]);
+
 
   if (!extension) return null;
 
@@ -91,12 +99,18 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
 
       if (onEditSuccess && response) {
         onEditSuccess(response);
+        setUserFields([
+          { label: 'Applicable Data Period', value: values.applicable_data_period || 'None' },
+          { label: 'Approved Expiration Date', value: values.approved_expiration_date || 'None' },
+          { label: 'Exception Status', value: values.ext_status },
+          { label: 'Exception Outcome', value: values.ext_outcome },
+          { label: 'Exception Notes', value: values.notes || 'None' },
+        ]);
+
       }
 
       setShowSuccessMessage(true);
     } catch (error: any) {
-      console.error('Error saving data:', error);
-      console.log(url);
       if (error.response && error.response.data) {
         // Use error message from the server response
         setErrorMessage(
@@ -126,7 +140,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
-
+/*
   const userFields = [
     {
       label: 'Applicable Data Period',
@@ -146,7 +160,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       label: 'Exception Notes',
       value: extension.notes ? extension.notes : 'None',
     },
-  ];
+  ];*/
 
   return (
     <>

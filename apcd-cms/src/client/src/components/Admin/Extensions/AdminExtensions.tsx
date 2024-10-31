@@ -80,7 +80,7 @@ console.log(data);
             <select
               id="statusFilter"
               className="status-filter"
-              defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
+              //defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
               onChange={(e) => setStatus(e.target.value)}
               value={data?.selected_status}
             >
@@ -98,7 +98,7 @@ console.log(data);
             <select
               id="organizationFilter"
               className="status-filter org-filter"
-              defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
+              //defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
               onChange={(e) => setOrg(e.target.value)}
               value={data?.selected_org}
             >
