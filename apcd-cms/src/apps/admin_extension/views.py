@@ -110,10 +110,10 @@ class AdminExtensionsTable(TemplateView):
 
     def _set_extension(self, ext):
         return {
-            'org_name': ext[18],
-            'created': ext[9],
-            'type': title_case(ext[5].replace('_', ' ')) if ext[5] else None,
-            'requestor': title_case(ext[14]),
+            'org_name': ext[18] if ext[18] else "None",
+            'created': ext[9] if ext[9] else "None",
+            'type': title_case(ext[5].replace('_', ' ')) if ext[5] else "None",
+            'requestor': title_case(ext[14]) if ext[14] else "None",
             'ext_outcome': title_case(ext[8]) if ext[8] else "None",
             'ext_status': title_case(ext[7]) if ext[7] else "None",
             'ext_id': ext[0],
@@ -122,12 +122,12 @@ class AdminExtensionsTable(TemplateView):
             'current_expected_date': ext[2] if ext[2] else "None",
             'requested_target_date': ext[3] if ext[3] else "None",
             'applicable_data_period': _get_applicable_data_period(ext[6]) if ext[6] else "None",
-            'updated_at': ext[10],
-            'submitter_code': ext[11],
-            'payor_code': ext[12],
-            'requestor_email': ext[15],
-            'explanation_justification': ext[16],
-            'notes': ext[17],
+            'updated_at': ext[10] if ext[10] else "None",
+            'submitter_code': ext[11] if ext[11] else "None",
+            'payor_code': ext[12] if ext[12] else "None",
+            'requestor_email': ext[15] if ext[15] else "None",
+            'explanation_justification': ext[16] if ext[16] else "None",
+            'notes': ext[17] if ext[17] else "None",
         }
 
 # function converts int value in the format YYYYMM to a string with abbreviated month and year
