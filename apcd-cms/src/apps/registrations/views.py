@@ -69,13 +69,13 @@ class RegistrationFormView(TemplateView):
             for entity in entities:
                 entity_resp = create_registration_entity(entity, reg_resp)
                 if entity_resp: # only returns a value if error occurs
-                    errors.append(entity_resp)
+                    errors.append(str(entity_resp))
             for contact in contacts:
                 contact_resp = create_registration_contact(contact, reg_resp)
                 if contact_resp: # only returns a value if error occurs
-                    errors.append(contact_resp)
+                    errors.append(str(contact_resp))
         else:
-            errors.append(reg_resp)
+            errors.append(str(reg_resp))
 
         # ===> Create Ticket
         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))

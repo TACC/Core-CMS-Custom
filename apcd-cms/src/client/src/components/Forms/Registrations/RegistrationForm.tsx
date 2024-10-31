@@ -15,9 +15,10 @@ import { RegistrationEntity } from './FormEntity';
 import { RegistrationContact } from './FormContact';
 import SectionMessage from 'core-components/SectionMessage';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import styles from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object().shape({
-    reg_year: Yup.string().required('Registration year is required'),
+    reg_year: Yup.string().matches(/^(202[3-9]|20[3-9][0-9]|2100)$/, { message: 'Registration year must be 2023 or later' }).required('Registration year is required'),
     business_name: Yup.string().required('Business name is required'),
     mailing_address: Yup.string().required('Mailing address is required'),
     city: Yup.string().required('City is required'),
@@ -46,7 +47,7 @@ const validationSchema = Yup.object().shape({
             .required('Total Claims Value is required')
             .test(
               "maxDigitsAfterDecimal",
-              "number field must have 2 digits after decimal or less",
+              "USD amount can only have two digits after decimal",
               (number) => Number.isInteger(number * (10 ** 2))
             )
         })
@@ -80,16 +81,16 @@ const validationSchema = Yup.object().shape({
             contact_type: Yup.string().required('Company role is required'),
             contact_name: Yup.string().required('Contact name is required'),
             contact_phone: Yup.string().required('Phone number is required')
-              .matches(/^(\+0?1\s)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}$/),
+              .matches(/^(\+0?1\s)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}$/, { message: 'Phone number is not properly formatted' }),
             contact_email: Yup.string().email('Invalid email').required('Email is required')
         })
       )
 });
 
 export interface FormValues {
-    on_behalf_of: boolean;
+    on_behalf_of: string;
     reg_year: string;
-    type?: undefined;
+    type: string;
     business_name: string;
     mailing_address: string;
     city: string;
@@ -122,8 +123,9 @@ export interface FormValues {
 };
   
 const initialValues: FormValues = {
-    on_behalf_of: true,
+    on_behalf_of: "true",
     reg_year: '',
+    type: "carrier",
     business_name: '',
     mailing_address: '',
     city: '',
@@ -266,7 +268,7 @@ export const RegistrationForm: React.FC = () => {
                                 <FormGroup className='field-wrapper radioselect required'>
                                     <Label>
                                         On behalf of:
-                                        <span style={{"color": "red"}}> (required)</span>
+                                        <span className={styles.isRequired}> (required)</span>
                                     </Label>
                                     <FormGroup id="on_behalf_of" noMargin={true}>
                                         <Label>
@@ -293,7 +295,7 @@ export const RegistrationForm: React.FC = () => {
                                 <FormGroup className='field-wrapper required' noMargin={true}>
                                     <Label htmlFor="type">
                                         Type
-                                        <span style={{"color": "red"}}> (required)</span>
+                                        <span className={styles.isRequired}> (required)</span>
                                     </Label>
                                     <Field
                                         as="select" 
@@ -311,7 +313,8 @@ export const RegistrationForm: React.FC = () => {
                                     </Field>
                                     <ErrorMessage
                                         name="type"
-                                        component={FormFeedback}
+                                        component="div"
+                                        className={styles.isInvalid}
                                     />
                                 </FormGroup>
 
@@ -336,7 +339,7 @@ export const RegistrationForm: React.FC = () => {
                                 <FormGroup className='field-wrapper required' noMargin={true}>
                                     <Label for="state">
                                         State
-                                        <span style={{"color": "red"}}> (required)</span>
+                                        <span className={styles.isRequired}> (required)</span>
                                     </Label>
                                     <Field 
                                         as="select"
@@ -350,7 +353,8 @@ export const RegistrationForm: React.FC = () => {
                                     </Field>
                                     <ErrorMessage
                                         name="type"
-                                        component={FormFeedback}
+                                        component="div"
+                                        className={styles.isInvalid}
                                     />
                                 </FormGroup>
 

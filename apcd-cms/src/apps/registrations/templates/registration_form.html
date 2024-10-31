@@ -12,28 +12,7 @@
 
       <div class="forms">
         <div id="registration-form-root"></div>
-        <div class="form-success" style="display: none">
-          <p>Thank you for your request.</p>
-        </div>
       </div>
-
-  {# Hidden links for future pages #}
-  {# TODO: Allow this template to render CMS admin-entered markup #}
-    <aside class="row" hidden>
-      <div class="col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-        <p style="margin-top: 30px"><a href="/forms/register">Register</a></p>
-
-        <p><a href="/forms/exception">Exception Request</a></p>
-
-        <p><a href="/forms/extension">Extension Request</a></p>
-
-        <p><a href="/workbench/dashboard">Dashboard</a></p>
-      </div>
-    </aside>
-
-  {# Scripts #}
-  {# WARNING: Many are cruft that created this now-static markup, but not all #}{# TODO: FP-1888: Clean out the cruft #}
-  {% include "submission_form/registration_form_scripts.html" %}
 
   {# Footnotes #}
 {% endblock %}

@@ -6,6 +6,7 @@ import {
     FormFeedback,
   } from "reactstrap";
 import { TextFormField } from './TextFormField';
+import styles from './RegistrationForm.module.css';
 
 export const RegistrationContact: React.FC<{index: number}> = ({ index }) => {
 
@@ -70,7 +71,8 @@ export const RegistrationContact: React.FC<{index: number}> = ({ index }) => {
                 </Label>
                 <ErrorMessage
                     name={`contacts.${index}.contact_notifications`}
-                    component={FormFeedback}
+                    component="div"
+                    className={styles.isInvalid}
                 />
             </FormGroup>
         </div>

@@ -214,7 +214,7 @@ def create_registration(form, renewal=False):
         RETURNING registration_id"""
         values = (
             datetime.now(),
-            True if form['on-behalf-of'] == 'true' else False,
+            True if form['on_behalf_of'] == 'true' else False,
             'Received',
             form['type'],
             _clean_value(form['business_name']),

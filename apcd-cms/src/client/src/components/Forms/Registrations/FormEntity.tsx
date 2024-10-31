@@ -6,6 +6,7 @@ import {
     FormFeedback,
   } from "reactstrap";
 import { TextFormField } from './TextFormField';
+import styles from './RegistrationForm.module.css';
   
 
 export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
@@ -22,7 +23,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         <FormGroup className='field-wrapper required'>
             <Label>
                 Number/Code
-                <span style={{"color": "red"}}> (required)</span>
+                <span className={styles.isRequired}> (required)</span>
             </Label>
             <div className='help-text'>
                 Provide all available identifiers. At least one of the following is required.
@@ -53,7 +54,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         <div className='field-wrapper required'>
             <Label>
                 Plan Types
-                <span style={{"color": "red"}}> (required)</span>
+                <span className={styles.isRequired}> (required)</span>
             </Label>
         </div>
         <FormGroup className='checkboxselectmultiple' id={`entities.${index}.types_of_plans`}>
@@ -74,7 +75,8 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                     </Label>
                     <ErrorMessage
                         name={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-                        component={FormFeedback}
+                        component="div"
+                        className={styles.isInvalid}
                         key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.error`}
                     />
                 </FormGroup>
@@ -85,7 +87,7 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
         <div className='field-wrapper required'>
             <Label>
                 Types of Files
-                <span style={{"color": "red"}}> (required)</span>
+                <span className={styles.isRequired}> (required)</span>
             </Label>
             <div className='help-text'>
                 Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
@@ -108,7 +110,8 @@ export const RegistrationEntity: React.FC<{index: number}> = ({ index }) => {
                     </Field>{fileType}</Label>
                     <ErrorMessage
                         name={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}`}
-                        component={FormFeedback}
+                        component="div"
+                        className={styles.isInvalid}
                         key={`entities.${index}.types_of_files_${fileType.toLowerCase().replace('/','_')}.error`}
                     />
                 </FormGroup>
