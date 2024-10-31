@@ -7,12 +7,7 @@ import { ViewUsers } from './components/Admin/ViewUsers';
 import { AdminSubmissions } from './components/Admin/Submissions';
 import { AdminExtensions } from './components/Admin/Extensions';
 import { AdminExceptions } from './components/Admin/Exceptions';
-import { SubmitterRegistrationList } from './components/Submitter/Registrations';
-import { RegistrationForm } from 'apcd-components/Forms/Registrations';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ExceptionFormPage } from './components/Submitter/Exceptions';
-import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
-import { ViewFileSubmissions } from './components/Submissions/ViewFileSubmissions';
 
 const queryClient = new QueryClient();
 
@@ -37,11 +32,6 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'list-admin-submissions': AdminSubmissions,
   'admin-extensions-root': AdminExtensions,
   'admin-exceptions-root': AdminExceptions,
-  'list-submitter-registrations-root': SubmitterRegistrationList,
-  'registration-form-root': RegistrationForm,
-  'exception-submission-root': ExceptionFormPage,
-  'extension-submission-root': ExtensionRequestForm,
-  'list-submissions-root': ViewFileSubmissions,
   // Add new components with html id in the list above.
 };
 
