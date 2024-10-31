@@ -1,4 +1,4 @@
-from apps.utils import apcd_database
+from apps.utils.apcd_database import create_registration, create_registration_entity, create_registration_contact
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.registrations_data_formatting import _set_registration
 from apps.submitter_renewals_listing.views import get_submitter_code
@@ -46,7 +46,9 @@ class RegistrationFormView(TemplateView):
 
 
     def post(self, request):
-        form = request.POST.copy()
+        form = json.loads(request.body)
+        entities = form['entities']
+        contacts = form['contacts']
         old_reg_id = None
         renewal = False
         if 'reg_id' in form:
@@ -62,17 +64,18 @@ class RegistrationFormView(TemplateView):
         else:
             return HttpResponseRedirect('/')
 
-        reg_resp = apcd_database.create_registration(form, renewal=renewal)
+        reg_resp = create_registration(form, renewal=renewal)
         if not _err_msg(reg_resp) and type(reg_resp) == int:
-            for iteration in range(1,6):
-                contact_resp = apcd_database.create_registration_contact(form, reg_resp, iteration, old_reg_id=old_reg_id)
-                entity_resp = apcd_database.create_registration_entity(form, reg_resp, iteration, old_reg_id=old_reg_id)
-                if _err_msg(contact_resp):
-                    errors.append(_err_msg(contact_resp))
-                if _err_msg(entity_resp):
-                    errors.append(_err_msg(entity_resp))
+            for entity in entities:
+                entity_resp = create_registration_entity(entity, reg_resp)
+                if entity_resp: # only returns a value if error occurs
+                    errors.append(entity_resp)
+            for contact in contacts:
+                contact_resp = create_registration_contact(contact, reg_resp)
+                if contact_resp: # only returns a value if error occurs
+                    errors.append(contact_resp)
         else:
-            errors.append(_err_msg(reg_resp))
+            errors.append(reg_resp)
 
         # ===> Create Ticket
         tracker = rt.Rt(RT_HOST, RT_UN, RT_PW, http_auth=HTTPBasicAuth(RT_UN, RT_PW))
@@ -90,12 +93,10 @@ class RegistrationFormView(TemplateView):
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            template = loader.get_template('submission_form/submission_error.html')
-            response = HttpResponse(template.render({}, request))
+            response = JsonResponse({'status': 'error', 'errors': errors}, status=400)
         else:
             context = {'reg_id': reg_resp}
-            template = loader.get_template('submission_form/submission_success.html')
-            response = HttpResponse(template.render(context, request))
+            response = JsonResponse({'status': 'success', 'reg_id': reg_resp}, status=200)
 
         tracker.create_ticket(
             Queue=RT_QUEUE,
