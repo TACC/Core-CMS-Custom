@@ -1,5 +1,8 @@
-.requiredText {
-  color: red;
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
 }
 
 .dateInputField {
@@ -17,4 +20,21 @@
   align-items: center;
   height: 100%;
   width: 100%;
+}
+.termsCheckbox input {
+  position: unset;
+  margin-left: 0;
+  margin-right: 2px;
+}
+.fieldRows {
+  display: flex;
+  gap: 5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.fieldRows input {
+  font-size: inherit;
+}
+.justification {
+  font-size: unset;
 }

@@ -961,41 +961,25 @@ def get_all_submissions_and_logs():
         if conn is not None:
             conn.close()
 
-def create_extension(form, iteration, sub_data):
+def create_extension(form, extension, sub_data):
     cur = None
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            values = (
-                _clean_value(form['business-name_{}'.format(iteration)]),
-                _clean_date(form['requested-target-date_{}'.format(iteration)]),
-                _clean_value(form['extension-type_{}'.format(iteration)]),
-                int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
-                _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
-                "pending",
-                _clean_value(sub_data[1]),
-                _clean_value(sub_data[2]),
-                _clean_value(sub_data[3]),
-                _clean_value(form["requestor-name"]),
-                _clean_email(form["requestor-email"]),
-                _clean_value(form["justification"])
-                )
-        else:
-            values = (
-            _clean_value(form['business-name_{}'.format(iteration)]),
-            _clean_date(form['requested-target-date_{}'.format(iteration)]),
-            _clean_value(form['extension-type_{}'.format(iteration)]),
-            int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
-            _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
+        values = (
+            _clean_value(extension['businessName']),
+            _clean_value(extension['requestedTargetDate']),
+            _clean_value(extension['extensionType']),
+            _clean_value(extension['applicableDataPeriod'].replace("-", "")),
+            _clean_value(extension['currentExpectedDate']),
             "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
-            _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            _clean_value(form["requestorName"]),
+            _clean_email(form["requestorEmail"]),
             _clean_value(form["justification"])
-            )
+        )
 
         operation = """INSERT INTO extensions(
             submitter_id,
@@ -1022,10 +1006,10 @@ def create_extension(form, iteration, sub_data):
         )
         cur = conn.cursor()
         cur.execute(operation, values)
-        conn.commit()         
+        conn.commit()
                 
     except Exception as error:
-        logger.error(error)
+        logger.error('DB error related to extension request creation: %s', error)
         return error
 
     finally:

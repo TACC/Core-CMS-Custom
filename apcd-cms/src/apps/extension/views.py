@@ -5,6 +5,7 @@ from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
 from datetime import datetime
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -46,30 +47,19 @@ class ExtensionFormView(TemplateView):
         Handle form submission and return JSON response for success/failure
         """
         if request.user.is_authenticated and has_apcd_group(request.user):
-            form = request.POST.copy()
+            form = json.loads(request.body)
+            extensions = form['extensions']
             errors = []
-            submitters = request.session.get('submitters')
-
-            max_iterations = 1
-            for i in range(2, 6):
-                # Check if subsequent fields are present to determine the number of iterations
-                if form.get(f'requested-target-date_{i}'):
-                    max_iterations += 1
-                else:
-                    break
-
-            # Process the form for each submitter
-            for iteration in range(max_iterations):
-                submitter = next(
-                    submitter for submitter in submitters 
-                    if int(submitter[0]) == int(form[f'business-name_{iteration + 1}'])
-                )
-                exten_resp = apcd_database.create_extension(form, iteration + 1, submitter)
+            submitters = apcd_database.get_submitter_info(request.user.username)
+            for extension in extensions:
+                submitter = next(submitter for submitter in submitters if int(submitter[0] == int(extension['businessName'])))
+                exten_resp = apcd_database.create_extension(form, extension, submitter)
                 if self._err_msg(exten_resp):
                     errors.append(self._err_msg(exten_resp))
 
             # Return success or error as JSON
             if errors:
+                logger.error("Extension request failed. Errors: %s", errors)
                 return JsonResponse({'status': 'error', 'errors': errors}, status=400)
             else:
                 return JsonResponse({'status': 'success'}, status=200)
@@ -78,7 +68,7 @@ class ExtensionFormView(TemplateView):
 
     def _set_submitter(self, sub):
         """
-        Helper function to structure the submitter info
+        Helper function to structure the submitter info 
         """
         return {
             "submitter_id": sub[0],
