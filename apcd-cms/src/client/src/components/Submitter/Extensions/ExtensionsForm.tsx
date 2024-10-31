@@ -172,6 +172,7 @@ export const ExtensionRequestForm: React.FC = () => {
                         },
                       ])
                     }
+                     disabled={values.extensions.length >= 5}
                   >
                     + Add Another Extension Request
                   </Button>{' '}
