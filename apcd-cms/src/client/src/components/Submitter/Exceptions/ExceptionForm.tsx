@@ -159,7 +159,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
       <div className={styles.fieldRows}>
         <FormGroup className="field-wrapper required">
           <Label for={`exceptions[${index}].expiration_date`}>
-            Expiration Date
+            Expiration Date* 
           </Label>
           <Field
             type="date"
