@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useFormikContext, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label, Input, InputGroup, FormFeedback } from 'reactstrap';
+import { FormGroup, Label } from 'reactstrap';
 import { cdlObject, useCDLs, cdl } from 'hooks/cdls';
 import { Entities, useEntities } from 'hooks/entities';
 import styles from './ExceptionForm.module.css';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
-import { Link, useLocation } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
   const [cdlData, setCdlData] = useState<cdlObject>();
@@ -160,7 +159,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
       <div className={styles.fieldRows}>
         <FormGroup className="field-wrapper required">
           <Label for={`exceptions[${index}].expiration_date`}>
-            Expiration Date
+            Expiration Date* 
           </Label>
           <Field
             type="date"
