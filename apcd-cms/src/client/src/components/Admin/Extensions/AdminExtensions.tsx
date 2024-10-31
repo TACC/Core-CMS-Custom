@@ -18,6 +18,8 @@ export const AdminExtensions: React.FC = () => {
     const [selectedExtension, setSelectedExtension] =
     useState<ExtensionRow | null>(null);
 
+console.log(data);
+
   const clearSelections = () => {
     setStatus('');
     setOrg('');
@@ -39,7 +41,6 @@ export const AdminExtensions: React.FC = () => {
               Please submit a ticket.
             </a>
           </SectionMessage>
-        )}
   }
 
   const openAction = (
@@ -61,10 +62,10 @@ export const AdminExtensions: React.FC = () => {
 
 
   return (
-        <h1>View Extension Requests</h1>
-  <p style="margin-bottom: 30px">All submitted extension requests</p>
-  <hr />
       <div>
+              <h1>View Extension Requests</h1>
+  <p >All submitted extension requests</p>
+  <hr />
          <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
@@ -77,6 +78,7 @@ export const AdminExtensions: React.FC = () => {
               className="status-filter"
               defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
               onChange={(e) => setStatus(e.target.value)}
+              value={data?.selected_status}
             >
               {data?.status_options.map((status, index) => (
                 <option className="dropdown-text" key={index} value={status}>
@@ -94,6 +96,7 @@ export const AdminExtensions: React.FC = () => {
               className="status-filter org-filter"
               defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
               onChange={(e) => setOrg(e.target.value)}
+              value={data?.selected_org}
             >
               {data?.org_options.map((org, index) => (
                 <option className="dropdown-text" key={index} value={org}>

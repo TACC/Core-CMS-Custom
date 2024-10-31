@@ -82,21 +82,17 @@ class AdminExtensionsTable(TemplateView):
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
-        context['selected_status'] = None
+        context['selected_status'] = 'All'
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             extensions_table_entries = table_filter(status_filter, extensions_table_entries, 'ext_status')
-        if status_filter is None:
-            status_filter = 'All'
 
-        context['selected_org'] = None
+        context['selected_org'] = 'All'
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
             extensions_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extensions_table_entries, 'org_name')
-        if org_filter is None:
-            org_filter = 'All'
 
         context['query_str'] = queryStr
         page_info = paginator(self.request, extensions_table_entries)
