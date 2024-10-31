@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useExceptions, ExceptionRow } from 'hooks/admin';
+import { formatDate } from 'utils/dateUtil';
 
 export const AdminExceptions: React.FC = () => {
   const [status, setStatus] = useState('All');
@@ -99,7 +100,7 @@ export const AdminExceptions: React.FC = () => {
         <tbody>
           {data?.page.map((row: ExceptionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.created_at}</td>
+              <td>{formatDate(row.created_at)}</td>
               <td>{row.entity_name}</td>
               <td>{row.requestor_name}</td>
               <td>{row.requestor_type}</td>
