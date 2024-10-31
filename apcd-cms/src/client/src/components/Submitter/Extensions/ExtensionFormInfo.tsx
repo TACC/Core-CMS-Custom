@@ -1,23 +1,24 @@
 import React from 'react';
-import { Field, ErrorMessage, FieldArray } from 'formik';
-import { FormGroup, Label, Row, Col, FormFeedback } from 'reactstrap';
+import { Field, ErrorMessage } from 'formik';
+import { FormGroup, Label } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
 import { SubmitterEntityData, Entities } from 'hooks/entities';
 import SectionMessage from 'core-components/SectionMessage';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ExtensionFormInfo: React.FC<{
   index: number;
   submitterData: SubmitterEntityData | undefined;
 }> = ({ index, submitterData }) => {
   return (
-    <div>
+    <>
+      <hr />
       <h4>Extension Information {index + 1}</h4>
       <p>This extension is on behalf of the following organization:</p>
 
-      <FormGroup>
+      <FormGroup className="field-wrapper required">
         <Label htmlFor={`extensions.${index}.businessName`}>
-          Business Name <span className={styles.requiredText}>(required)</span>
+          Business Name
         </Label>
         {submitterData && (
           <>
@@ -25,7 +26,6 @@ const ExtensionFormInfo: React.FC<{
               as="select"
               name={`extensions.${index}.businessName`}
               id={`extensions.${index}.businessName`}
-              className="form-control"
             >
               <option value="">Select Business Name</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
@@ -39,7 +39,8 @@ const ExtensionFormInfo: React.FC<{
             </Field>
             <ErrorMessage
               name={`extensions.${index}.businessName`}
-              component={FormFeedback}
+              component="div"
+              className={styles.isInvalid}
             />
           </>
         )}
@@ -53,15 +54,14 @@ const ExtensionFormInfo: React.FC<{
         )}
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup className="field-wrapper required">
         <Label htmlFor={`extensions.${index}.extensionType`}>
-          Extension Type <span className={styles.requiredText}>(required)</span>
+          Extension Type
         </Label>
         <Field
           as="select"
           name={`extensions.${index}.extensionType`}
           id={`extensions.${index}.extensionType`}
-          className="form-control"
         >
           <option value="">Select Extension Type</option>
           <option value="regular">Regularly Scheduled Submission</option>
@@ -72,81 +72,72 @@ const ExtensionFormInfo: React.FC<{
         </Field>
         <ErrorMessage
           name={`extensions.${index}.extensionType`}
-          component={FormFeedback}
+          component="div"
+          className={styles.isInvalid}
         />
       </FormGroup>
 
       <h6>Submission Dates</h6>
-      <Row>
-        <Col md={4}>
-          <FormGroup>
-            <Label htmlFor={`extensions.${index}.applicableDataPeriod`}>
-              Applicable Data Period <sup>1</sup>
-              <span className={styles.requiredText}> (required)</span>
-            </Label>
-            <Field
-              as="select"
-              name={`extensions.${index}.applicableDataPeriod`}
-              id={`extensions.${index}.applicableDataPeriod`}
-              className="form-control"
-            >
-              <option value="">-- Select period --</option>
-              <option value="2024-01">January 2024</option>
-              <option value="2024-02">February 2024</option>
-            </Field>
-            <small className="form-text text-muted">Enter month and year</small>
-            <ErrorMessage
-              name={`extensions.${index}.applicableDataPeriod`}
-              component={FormFeedback}
-            />
-          </FormGroup>
-        </Col>
-
-        <Col md={4}>
-          <FormGroup
-            className={`position-relative ${styles.dateInputContainer}`}
+      <div className={styles.fieldRows}>
+        <FormGroup className="field-wrapper required">
+          <Label htmlFor={`extensions.${index}.applicableDataPeriod`}>
+            Applicable Data Period <sup>1</sup>
+          </Label>
+          <Field
+            as="select"
+            name={`extensions.${index}.applicableDataPeriod`}
+            id={`extensions.${index}.applicableDataPeriod`}
           >
-            <Label htmlFor={`extensions.${index}.requestedTargetDate`}>
-              Requested Target Date <sup>2</sup>
-              <span className={styles.requiredText}> (required)</span>
-            </Label>
-            <Field
-              type="date"
-              name={`extensions.${index}.requestedTargetDate`}
-              id={`requestedTargetDate_${index}`}
-              className={`form-control ${styles.dateInputField}`}
-            />
-            <ErrorMessage
-              name={`extensions.${index}.requestedTargetDate`}
-              component={FormFeedback}
-            />
-          </FormGroup>
-        </Col>
+            <option value="">-- Select period --</option>
+            <option value="2024-01">January 2024</option>
+            <option value="2024-02">February 2024</option>
+          </Field>
+          <div className="help-text">Enter month and year</div>
+          <ErrorMessage
+            name={`extensions.${index}.applicableDataPeriod`}
+            component="div"
+            className={styles.isInvalid}
+          />
+        </FormGroup>
 
-        <Col md={4}>
-          <FormGroup
-            className={`position-relative ${styles.dateInputContainer}`}
-          >
-            <Label htmlFor={`extensions.${index}.currentExpectedDate`}>
-              Current Expected Date <sup>3</sup>
-              <span className={styles.requiredText}> (required)</span>
-            </Label>
-            <Field
-              type="date"
-              name={`extensions.${index}.currentExpectedDate`}
-              id={`extensions.${index}.currentExpectedDate`}
-              className="form-control"
-            />
-            <ErrorMessage
-              name={`extensions.${index}.currentExpectedDate`}
-              component={FormFeedback}
-            />
-          </FormGroup>
-        </Col>
-      </Row>
+        <FormGroup
+          className={`position-relative field-wrapper required ${styles.dateInputContainer}`}
+        >
+          <Label htmlFor={`extensions.${index}.requestedTargetDate`}>
+            Requested Target Date <sup>2</sup>
+          </Label>
+          <Field
+            type="date"
+            name={`extensions.${index}.requestedTargetDate`}
+            id={`requestedTargetDate_${index}`}
+            className={`${styles.dateInputField}`}
+          />
+          <ErrorMessage
+            name={`extensions.${index}.requestedTargetDate`}
+            component="div"
+            className={styles.isInvalid}
+          />
+        </FormGroup>
 
-      <hr />
-    </div>
+        <FormGroup
+          className={`position-relative field-wrapper required ${styles.dateInputContainer} `}
+        >
+          <Label htmlFor={`extensions.${index}.currentExpectedDate`}>
+            Current Expected Date <sup>3</sup>
+          </Label>
+          <Field
+            type="date"
+            name={`extensions.${index}.currentExpectedDate`}
+            id={`extensions.${index}.currentExpectedDate`}
+          />
+          <ErrorMessage
+            name={`extensions.${index}.currentExpectedDate`}
+            component="div"
+            className={styles.isInvalid}
+          />
+        </FormGroup>
+      </div>
+    </>
   );
 };
 
