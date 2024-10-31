@@ -17,3 +17,16 @@
 .s-header .nav-link {
     top: unset;
 }
+
+/* To accomodate dark logo */
+/*
+:root {
+  --header-text-color: var(--global-color-primary--x-dark);
+  --header-bkgd-color: var(--global-color-primary--x-light);
+  --header-minor-border-color: var(--global-color-primary--normal);
+  --header-major-border-color: var(--global-color-primary--normal);
+  --header-search-brdr-color: #D8D8D8;
+  --header-search-bkgd-color: var(--global-color-primary--xx-light);
+  --menu-toggle-icon: invert(100%);
+}
+*/
