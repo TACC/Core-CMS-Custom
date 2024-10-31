@@ -1,5 +1,8 @@
-.requiredText {
-  color: red;
+.isInvalid {
+  width: 100%; /* To match error message styles from*/
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
 }
 
 .dateInputField {
