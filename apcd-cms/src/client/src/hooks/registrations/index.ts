@@ -1,11 +1,11 @@
-import { fullRegistrationResult } from 'hooks/admin';
-
 export type RegFormData = {
-    registration_data: fullRegistrationResult;
+    registration_data: RegistrationRow;
     renew: boolean;
 }
 
-export { useFormData } from './useForm';export type StringMap = {
+export { useFormData } from './useForm';
+
+export type StringMap = {
   [key: string]: string;
 };
 

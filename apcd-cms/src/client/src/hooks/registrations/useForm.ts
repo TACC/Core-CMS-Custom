@@ -3,10 +3,10 @@ import { fetchUtil } from 'utils/fetchUtil';
 import { RegFormData } from '.';
 
 const getRegFormData = async (params: any) => {
-    const url = 'register/request-to-submit/api';
+    const url = 'register/request-to-submit/api/';
     const response = await fetchUtil({
         url,
-        params,
+        params
     });
     return response.response;
 };
