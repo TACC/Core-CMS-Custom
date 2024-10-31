@@ -53,7 +53,9 @@ class ViewUsersTable(TemplateView):
     def get_options(self, request):
         try:
             status_options = ['All', 'Active', 'Inactive']
-            org_options = ['All', 'TEST Meritan Health', 'UTHealth - SPH CHCD: APCD', 'None', 'Not Applicable']
+            user_content = get_users()
+            user_list = sorted(list(set(user[4] if user[4] else 'None' for user in user_content)))
+            org_options = ['All'] + user_list
             return JsonResponse({
                 'status_options': status_options,
                 'org_options': org_options
@@ -106,7 +108,7 @@ class ViewUsersTable(TemplateView):
                 'user_id': usr[1],
                 'user_email': usr[2],
                 'user_name': usr[3],
-                'entity_name': usr[4] if usr[4] else "Not Applicable",
+                'entity_name': usr[4] if usr[4] else 'None',
                 'created_at': usr[5],
                 'updated_at': usr[6],
                 'notes': usr[7],
@@ -129,8 +131,6 @@ class ViewUsersTable(TemplateView):
         context = {
             'header': ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More'],
             'page': [],
-            'status_options': ['All', 'Active', 'Inactive'],
-            'org_options': ['All', 'TEST Meritan Health', 'UTHealth - SPH CHCD: APCD', 'None', 'Not Applicable'],
             'selected_status': 'All',
             'query_str': '',
             'pagination_url_namespaces': 'administration:view_users'

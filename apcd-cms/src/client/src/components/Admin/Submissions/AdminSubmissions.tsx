@@ -3,6 +3,7 @@ import { useSubmissions, SubmissionRow } from 'hooks/admin';
 import { ViewSubmissionLogsModal } from './ViewSubmissionLogsModal';
 import Paginator from 'core-components/Paginator';
 import styles from './AdminSubmissions.module.css';
+import { formatDate } from 'utils/dateUtil';
 
 export const AdminSubmissions: React.FC = () => {
   const [status, setStatus] = useState<string>('');
@@ -88,7 +89,7 @@ export const AdminSubmissions: React.FC = () => {
         <tbody>
           {data?.page.map((row: SubmissionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{row.received_timestamp}</td>
+              <td>{formatDate(row.received_timestamp)}</td>
               <td>{row.entity_name}</td>
               <td>{row.file_name}</td>
               <td>{row.outcome}</td>

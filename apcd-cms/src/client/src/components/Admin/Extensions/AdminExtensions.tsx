@@ -6,6 +6,8 @@ import Paginator from 'core-components/Paginator';
 import styles from './ExtensionList.module.css';
 import ViewExtensionModal from 'apcd-components/Extensions/ViewExtensionModal/ViewExtensionModal';
 import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/EditExtensionModal';
+import { formatDate } from 'utils/dateUtil';
+
 
 export const AdminExtensions: React.FC = () => {
   const [status, setStatus] = useState('All');
@@ -118,13 +120,13 @@ export const AdminExtensions: React.FC = () => {
       <tbody>
         {data?.page.map((row: ExtensionRow, rowIndex: number) => (
           <tr key={rowIndex}>
-            <td>{row.created}</td>
+            <td>{formatDate(row.created)}</td>
             <td>{row.org_name}</td>
             <td>{row.requestor}</td>
             <td>{row.type}</td>
             <td>{row.ext_outcome}</td>
             <td>{row.ext_status}</td>
-            <td>{row.approved_expiration_date}</td>
+            <td>{formatDate(row.approved_expiration_date)}</td>
             <td className="modal-cell">
                 <select
                   id={`actionsDropdown_${row.ext_id}`}
