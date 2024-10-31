@@ -33,16 +33,18 @@ console.log(data);
   }, [status, org, page, refetch]);
 
    if (isLoading) {
-    <LoadingSpinner/>
+    return <LoadingSpinner/>;
   }
 
   if (isError) {
+      return (
           <SectionMessage type="error">
             There was an error loading the page.{''}
             <a href="https://txapcd.org/workbench/dashboard/tickets/create">
               Please submit a ticket.
             </a>
           </SectionMessage>
+          );
   }
 
   const openAction = (
