@@ -79,25 +79,55 @@ export type ExtensionResult = {
   page: ExtensionRow[];
 };
 
+export type ExceptionModalContent = {
+  created_at: string;
+  entity_name: string;
+  requestor_name: string;
+  requestor_email: string;
+  request_type: string;
+  status: string;
+  outcome: string;
+  data_file_name: string;
+  field_number: string;
+  required_threshold: string;
+  requested_threshold: string;
+  approved_threshold: string;
+  requested_expiration_date: string;
+  approved_expiration_date: string;
+  explanation_justification: string;
+  notes: string;
+  updated_at: string;
+  exception_id: string;
+};
+
 export type ExceptionRow = {
   created_at: string;
   entity_name: string;
   requestor_name: string;
-  requestor_type: string;
+  request_type: string;
+  requested_threshold: string;
   outcome: string;
   status: string;
+  approved_threshold: string;
+  approved_expiration_date: string;
+  notes: string;
   exception_id: string;
+  view_modal_content: ExceptionModalContent;
 };
 
 export type ExceptionResult = {
   header: string[];
   status_options: string[];
+  status_modal_options: string[];
+  outcome_modal_options: string[];
   org_options: string[];
   selected_status: string;
   selected_org: string;
   query_str: string;
   pagination_url_namespaces: string;
   page: ExceptionRow[];
+  page_num: number;
+  total_pages: number;
 };
 
 export {
