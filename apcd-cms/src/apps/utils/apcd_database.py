@@ -1283,7 +1283,7 @@ def update_exception(form):
         # to set column names for query to the correct DB name
         columns = {
             'approved_threshold': 'approved_threshold',
-            'approved': 'approved_expiration_date',
+            'approved_expiration_date': 'approved_expiration_date',
             'status': 'status',
             'outcome': 'outcome',
         }
