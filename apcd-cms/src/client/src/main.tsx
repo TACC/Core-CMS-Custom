@@ -10,6 +10,7 @@ import { AdminExceptions } from './components/Admin/Exceptions';
 import { ViewExceptionModal } from './components/Admin/ViewExceptionModal';
 import { EditExceptionModal } from './components/Admin/EditExceptionModal';
 import { SubmitterRegistrationList } from './components/Submitter/Registrations';
+import { RegistrationForm } from 'apcd-components/Forms/Registrations';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ExceptionFormPage } from './components/Submitter/Exceptions';
 import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
@@ -41,6 +42,7 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'view-exception-modal-root': ViewExceptionModal,
   'edit-exception-modal-root': EditExceptionModal,
   'list-submitter-registrations-root': SubmitterRegistrationList,
+  'registration-form-root': RegistrationForm,
   'exception-submission-root': ExceptionFormPage,
   'extension-submission-root': ExtensionRequestForm,
   'list-submissions-root': ViewFileSubmissions,

@@ -1,3 +1,10 @@
+export type RegFormData = {
+    registration_data: RegistrationRow;
+    renew: boolean;
+}
+
+export { useRegFormData } from './useForm';
+
 export type StringMap = {
   [key: string]: string;
 };

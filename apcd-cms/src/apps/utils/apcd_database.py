@@ -214,11 +214,11 @@ def create_registration(form, renewal=False):
         RETURNING registration_id"""
         values = (
             datetime.now(),
-            True if form['on-behalf-of'] == 'true' else False,
+            True if form['on_behalf_of'] == 'true' else False,
             'Received',
             form['type'],
-            _clean_value(form['business-name']),
-            _clean_value(form['mailing-address']),
+            _clean_value(form['business_name']),
+            _clean_value(form['mailing_address']),
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
@@ -337,31 +337,31 @@ def get_registration_entities(reg_id=None, submitter_code=None):
             conn.close()
 
 
-def create_registration_entity(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
+def create_registration_entity(entity, reg_id, from_update_reg=None):#, old_reg_id=None):
     cur = None
     conn = None
     values = ()
     try:
-        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
-            return
-        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
+        #if not _acceptable_entity(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
+        #    return
+        #str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
         values = (
             reg_id,
-            float(form['total_claims_value_{}'.format(str_end)]),
-            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-            form['license_number_{}'.format(str_end)] if len(form['license_number_{}'.format(str_end)]) else None,
-            form['naic_company_code_{}'.format(str_end)] if len(form['naic_company_code_{}'.format(str_end)]) else None,
-            _set_int(form['total_covered_lives_{}'.format(str_end)]),
-            _clean_value(form['entity_name_{}'.format(str_end)]),
-            _clean_value(form['fein_{}'.format(str_end)]),
-            True if 'types_of_plans_commercial_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicare_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicaid_{}'.format(str_end) in form else False,
+            float(entity['total_claims_value']),
+            _set_int(entity['claims_encounters_volume']),
+            entity['license_number'] if len(entity['license_number']) else None,
+            entity['naic_company_code'] if len(entity['naic_company_code']) else None,
+            _set_int(entity['total_covered_lives']),
+            _clean_value(entity['entity_name']),
+            _clean_value(entity['fein']),
+            True if 'types_of_plans_commercial' in entity else False,
+            True if 'types_of_plans_medicare' in entity else False,
+            True if 'types_of_plans_medicaid' in entity else False,
             True,
-            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+            True if 'types_of_files_provider' in entity else False,
+            True if 'types_of_files_medical' in entity else False,
+            True if 'types_of_files_pharmacy' in entity else False,
+            True if 'types_of_files_dental' in entity else False
         )
 
         operation = """INSERT INTO registration_entities(
@@ -548,33 +548,23 @@ def get_registration_contacts(reg_id=None, submitter_code=None):
             conn.close()
 
 
-def create_registration_contact(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
+def create_registration_contact(contact, reg_id, from_update_reg=None):
     cur = None
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_contact(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
-            values = (
-                reg_id,
-                True if 'contact_notifications_{}'.format(str_end) in form else False,
-                _clean_value(form['contact_type_{}'.format(str_end)]),
-                _clean_value(form['contact_name_{}'.format(str_end)]),
-                re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
-                _clean_email(form['contact_email_{}'.format(str_end)])
-            )
-        else:
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else (f"_{iteration}_{old_reg_id}" if old_reg_id else "")
-            values = (
-                reg_id,
-                True if f'contact_notifications{str_end}' in form else False,
-                _clean_value(form[f'contact_type{str_end}']),
-                _clean_value(form[f'contact_name{str_end}']),
-                re.sub("[^0-9]", "", form[f'contact_phone{str_end}']),
-                _clean_email(form[f'contact_email{str_end}'])
-            )
+        #if iteration > 1:
+            #if not _acceptable_contact(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
+            #    return
+            #str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
+        values = (
+            reg_id,
+            True if 'contact_notifications' in contact else False,
+            _clean_value(contact['contact_type']),
+            _clean_value(contact['contact_name']),
+            re.sub("[^0-9]", "", contact['contact_phone']),
+            _clean_email(contact['contact_email'])
+        )
 
         operation = """INSERT INTO registration_contacts(
             registration_id,

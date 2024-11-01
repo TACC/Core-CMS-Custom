@@ -1,0 +1,18 @@
+{% extends "apcd_cms/templates/standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'registrations/css/submission_form.css' %}">
+
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+
+      <div class="forms">
+        <div id="registration-form-root"></div>
+      </div>
+
+  {# Footnotes #}
+{% endblock %}
