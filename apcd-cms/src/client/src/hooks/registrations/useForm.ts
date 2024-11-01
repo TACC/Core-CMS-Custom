@@ -11,7 +11,7 @@ const getRegFormData = async (params: any) => {
     return response.response;
 };
 
-export const useFormData = (
+export const useRegFormData = (
     params: any
 ): UseQueryResult<RegFormData> => {
     const query = useQuery(['reg_form', params], () =>

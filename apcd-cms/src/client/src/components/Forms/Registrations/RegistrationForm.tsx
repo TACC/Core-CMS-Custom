@@ -7,7 +7,7 @@ import {
   Button,
   FormFeedback,
 } from "reactstrap";
-import { useFormData } from 'hooks/registrations';
+import { useRegFormData } from 'hooks/registrations';
 import { fetchUtil } from 'utils/fetchUtil';
 import USStates from './USStates.fixture';
 import { TextFormField } from './TextFormField';
@@ -39,11 +39,11 @@ const validationSchema = Yup.object().shape({
           types_of_files_medical: Yup.boolean(),
           types_of_files_pharmacy: Yup.boolean(),
           types_of_files_dental: Yup.boolean(),
-          total_covered_lives: Yup.number().positive()
+          total_covered_lives: Yup.number().typeError("Must be an integer").positive()
             .required('Total covered lives is required'),
-          claims_encounters_volume: Yup.number().positive()
+          claims_encounters_volume: Yup.number().typeError("Must be an integer").positive()
             .required('Claims and Encounters volume is required'),
-          total_claims_value: Yup.number().positive()
+          total_claims_value: Yup.number().typeError("Must be a number").positive()
             .required('Total Claims Value is required')
             .test(
               "maxDigitsAfterDecimal",
@@ -162,7 +162,7 @@ const initialValues: FormValues = {
 
 
 export const RegistrationForm: React.FC = () => {
-    const { data, isLoading, isError } = useFormData({});
+    const { data, isLoading, isError } = useRegFormData({});
     const [errorMessage, setErrorMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [regId, setRegId] = useState(null);

@@ -3,7 +3,7 @@ export type RegFormData = {
     renew: boolean;
 }
 
-export { useFormData } from './useForm';
+export { useRegFormData } from './useForm';
 
 export type StringMap = {
   [key: string]: string;
