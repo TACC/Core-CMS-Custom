@@ -5,6 +5,7 @@ import Paginator from 'core-components/Paginator';
 import ViewExceptionModal from '../ViewExceptionModal/ViewExceptionModal';
 import EditExceptionModal from '../EditExceptionModal/EditExceptionModal';
 import styles from './AdminExceptions.module.css';
+import { formatDate } from 'utils/dateUtil';
 
 export const AdminExceptions: React.FC = () => {
   const [status, setStatus] = useState('All');
@@ -119,7 +120,7 @@ export const AdminExceptions: React.FC = () => {
         <tbody>
           {data?.page.map((row: ExceptionRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              <td>{new Date(row.created_at).toLocaleString()}</td>
+              <td>{formatDate(row.created_at)}</td>
               <td>{row.entity_name}</td>
               <td>{row.requestor_name}</td>
               <td>{row.request_type}</td>

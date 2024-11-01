@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { UserRow } from 'hooks/admin';
-import styles from './ViewUsers.module.scss'; // Import SCSS module
+import styles from './ViewUsers.module.scss';
+import { formatDate } from 'utils/dateUtil';
 
 interface UserDetailsModalProps {
   isOpen: boolean;
@@ -53,10 +54,10 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           <strong>Status:</strong> {user.status}
         </p>
         <p>
-          <strong>Created Date:</strong> {user.created_at}
+          <strong>Created Date:</strong> {formatDate(user.created_at)}
         </p>
         <p>
-          <strong>Updated Date:</strong> {user.updated_at}
+          <strong>Updated Date:</strong> {formatDate(user.updated_at)}
         </p>
         <p>
           <strong>Notes:</strong> {user.notes ? user.notes : 'None'}

@@ -10,8 +10,7 @@ const getEntities = async () => {
   return response.response;
 };
 
-export const useEntities = (
-): UseQueryResult<SubmitterEntityData> => {
+export const useEntities = (): UseQueryResult<SubmitterEntityData> => {
   const query = useQuery(['entities'], () =>
     getEntities()
   ) as UseQueryResult<SubmitterEntityData>;
