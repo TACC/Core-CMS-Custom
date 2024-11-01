@@ -1049,6 +1049,7 @@ def update_extension(form):
         
         for field, column_name in columns.items():
             value = form.get(field)
+            print(value)
             if value not in (None, ""):
                 # to make sure applicable data period field is an int to insert to DB
                 if column_name == 'applicable_data_period':

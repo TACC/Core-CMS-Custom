@@ -52,7 +52,16 @@ const getExtensions = async (params: any) => {
   return response.response;
 };
 
-export const useExtensions = (params: any): UseQueryResult<ExtensionResult> => {
+export const useExtensions = (
+    status?: string,
+  org?: string,
+  page?: number
+  ): UseQueryResult<ExtensionResult> => {
+        const params: { status?: string; org?: string; page?: number } = {
+    status,
+    org,
+    page,
+  };
   const query = useQuery(['extensions', params], () =>
     getExtensions(params)
   ) as UseQueryResult<ExtensionResult>;
