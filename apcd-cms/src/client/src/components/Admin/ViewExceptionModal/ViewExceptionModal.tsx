@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from 'reactstrap';
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Row,
+  Col,
+} from 'reactstrap';
 import { ExceptionModalContent, ExceptionRow } from 'hooks/admin';
 import styles from './ViewExceptionModal.module.css';
 
@@ -41,22 +48,16 @@ export const ViewExceptionModal: React.FC<{
           <h4>Details</h4>
           <div className="modal-section">
             <Row>
-              <Col md={{size: 4, offset: 1}}>Created</Col>
-              <Col md={7}>
-                  {new Date(created_at).toLocaleString()}
-              </Col>
+              <Col md={{ size: 4, offset: 1 }}>Created</Col>
+              <Col md={7}>{new Date(created_at).toLocaleString()}</Col>
             </Row>
             <Row>
-              <Col md={{size: 4, offset: 1}}>Entity Organization</Col>
-              <Col md={7}>
-              {entity_name}
-              </Col>
+              <Col md={{ size: 4, offset: 1 }}>Entity Organization</Col>
+              <Col md={7}>{entity_name}</Col>
             </Row>
             <Row>
-              <Col md={{size: 4, offset: 1}}>Requestor</Col>
-              <Col md={7}>
-              {requestor_name}
-              </Col>
+              <Col md={{ size: 4, offset: 1 }}>Requestor</Col>
+              <Col md={7}>{requestor_name}</Col>
             </Row>
             <dd>
               <dl className={styles.verticalDataList}>
@@ -79,7 +80,9 @@ export const ViewExceptionModal: React.FC<{
             <dd>
               <dl className={styles.verticalDataList}>
                 <dt className="c-data-list__key">Outcome</dt>
-                <dd className={styles.verticalDataValue}>{outcome || 'None'}</dd>
+                <dd className={styles.verticalDataValue}>
+                  {outcome || 'None'}
+                </dd>
               </dl>
             </dd>
             <dd>
@@ -97,7 +100,9 @@ export const ViewExceptionModal: React.FC<{
             <dd>
               <dl className={styles.verticalDataList}>
                 <dt className="c-data-list__key">Required Threshold</dt>
-                <dd className={styles.verticalDataValue}>{required_threshold || 'None'}</dd>
+                <dd className={styles.verticalDataValue}>
+                  {required_threshold || 'None'}
+                </dd>
               </dl>
             </dd>
             <dd>
@@ -111,7 +116,9 @@ export const ViewExceptionModal: React.FC<{
             <dd>
               <dl className={styles.verticalDataList}>
                 <dt className="c-data-list__key">Approved Threshold</dt>
-                <dd className={styles.verticalDataValue}>{approved_threshold || 'Nome'}</dd>
+                <dd className={styles.verticalDataValue}>
+                  {approved_threshold || 'Nome'}
+                </dd>
               </dl>
             </dd>
             <dd>

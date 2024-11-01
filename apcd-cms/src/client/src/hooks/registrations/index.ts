@@ -1,7 +1,7 @@
 export type RegFormData = {
-    registration_data: RegistrationRow;
-    renew: boolean;
-}
+  registration_data: RegistrationRow;
+  renew: boolean;
+};
 
 export { useRegFormData } from './useForm';
 
