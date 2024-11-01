@@ -249,7 +249,7 @@ export const RegistrationForm: React.FC = () => {
                             <>
                                 <div style={{ marginTop: '16px', marginBottom: '16px' }}>
                                     Your submission was successful.
-                                    Your registration ID is: <b>{{ regId }}</b>.
+                                    Your registration ID is: <b>{ regId }</b>.
                                 </div>
                                 <Button 
                                     type="button"
