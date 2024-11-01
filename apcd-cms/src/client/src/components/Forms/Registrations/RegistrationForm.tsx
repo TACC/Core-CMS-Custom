@@ -202,9 +202,11 @@ export const RegistrationForm: React.FC = () => {
     };
 
     if (isLoading) {
+    return (
         <div className="loadingField">
             <LoadingSpinner />
         </div>
+        )
     }
     
     if (isError) {
