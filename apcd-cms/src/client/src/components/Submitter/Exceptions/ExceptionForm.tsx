@@ -42,7 +42,16 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         selectedCDL?.threshold_value || ''
       );
     }
-  }, [selectedCDL, setFieldValue, index]);
+    if (!selectedFileType || selectedFileType === '') {
+      setCdlData(undefined);
+      setSelectedCDL(undefined);
+      setFieldValue(`exceptions[${index}].fieldCode`, '');
+      setFieldValue(`exceptions[${index}].required_threshold`, '');
+      setFieldValue(`exceptions[${index}].requested_threshold`, '');
+    } else if (fetchedCDLData && fetchedCDLData.cdls) {
+      setCdlData(fetchedCDLData);
+    }
+  }, [fetchedCDLData, selectedFileType, setFieldValue, index]);
 
   if (entitiesLoading)
     return (
@@ -64,7 +73,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
               name={`exceptions[${index}].businessName`}
               id={`exceptions[${index}].businessName`}
             >
-              <option>-- Select a Business --</option>
+              <option>Select a Business Name</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
                 <option
                   value={submitter.submitter_id}
@@ -102,7 +111,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             setFieldValue(`exceptions[${index}].fieldCode`, '');
           }}
         >
-          <option value="">-- Choose File Type --</option>
+          <option value="">Select a File Type</option>
           <option value="dc">Dental Claims</option>
           <option value="mc">Medical Claims</option>
           <option value="me">Member Eligibility</option>
@@ -133,7 +142,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         >
           {cdlData ? (
             <>
-              <option value="">-- Select Field Code --</option>
+              <option value="">Select Field Code</option>
               {cdlData.cdls.map((cdl: any) => (
                 <option
                   key={cdl.field_list_code}
@@ -147,7 +156,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
               ))}
             </>
           ) : (
-            <option value="">-- Select a File Type Above First --</option>
+            <option value="">Select a File Type Above First</option>
           )}
         </Field>
         <ErrorMessage
