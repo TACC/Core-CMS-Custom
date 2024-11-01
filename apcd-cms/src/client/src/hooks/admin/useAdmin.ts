@@ -53,11 +53,11 @@ const getExtensions = async (params: any) => {
 };
 
 export const useExtensions = (
-    status?: string,
+  status?: string,
   org?: string,
   page?: number
-  ): UseQueryResult<ExtensionResult> => {
-        const params: { status?: string; org?: string; page?: number } = {
+): UseQueryResult<ExtensionResult> => {
+  const params: { status?: string; org?: string; page?: number } = {
     status,
     org,
     page,

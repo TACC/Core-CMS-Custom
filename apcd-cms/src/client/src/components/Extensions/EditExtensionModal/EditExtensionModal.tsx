@@ -54,13 +54,18 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [userFields, setUserFields] = useState([
-    { label: 'Applicable Data Period', value: extension?.applicable_data_period || 'None' },
-    { label: 'Approved Expiration Date', value: extension?.approved_expiration_date || 'None' },
+    {
+      label: 'Applicable Data Period',
+      value: extension?.applicable_data_period || 'None',
+    },
+    {
+      label: 'Approved Expiration Date',
+      value: extension?.approved_expiration_date || 'None',
+    },
     { label: 'Exception Status', value: extension?.ext_status },
     { label: 'Exception Outcome', value: extension?.ext_outcome },
     { label: 'Exception Notes', value: extension?.notes || 'None' },
   ]);
-
 
   if (!extension) return null;
 
@@ -100,13 +105,18 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       if (onEditSuccess && response) {
         onEditSuccess(response);
         setUserFields([
-          { label: 'Applicable Data Period', value: values.applicable_data_period || 'None' },
-          { label: 'Approved Expiration Date', value: values.approved_expiration_date || 'None' },
+          {
+            label: 'Applicable Data Period',
+            value: values.applicable_data_period || 'None',
+          },
+          {
+            label: 'Approved Expiration Date',
+            value: values.approved_expiration_date || 'None',
+          },
           { label: 'Exception Status', value: values.ext_status },
           { label: 'Exception Outcome', value: values.ext_outcome },
           { label: 'Exception Notes', value: values.notes || 'None' },
         ]);
-
       }
 
       setShowSuccessMessage(true);
@@ -140,7 +150,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
-/*
+  /*
   const userFields = [
     {
       label: 'Applicable Data Period',
@@ -172,8 +182,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       >
         <div className={`modal-header ${styles.modalHeader}`}>
           <Label className={styles.customModalTitle}>
-            Edit Extension ID {extension.ext_id} for{' '}
-            {extension.org_name}
+            Edit Extension ID {extension.ext_id} for {extension.org_name}
           </Label>
           <button
             type="button"
@@ -191,40 +200,40 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
           <FormikProvider value={formik}>
             <form onSubmit={formik.handleSubmit}>
               <Row>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label
-                        for="applicable_data_period"
-                        className={styles.customLabel}
-                      >
-                        <strong>Applicable Data Period</strong>
-                      </Label>
-                      <Field
-                        type="text"
-                        name="applicable_data_period"
-                        id="applicable_data_period"
-                        value={
-                          formik.values.applicable_data_period
-                            ? formik.values.applicable_data_period
-                            : ''
-                        }
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
-                      />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        Current: {extension.applicable_data_period}
-                      </small>
-                      <ErrorMessage
-                        name="applicable_data_period"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
-                  </Col>
+                <Col md={6}>
+                  <FormGroup>
+                    <Label
+                      for="applicable_data_period"
+                      className={styles.customLabel}
+                    >
+                      <strong>Applicable Data Period</strong>
+                    </Label>
+                    <Field
+                      type="text"
+                      name="applicable_data_period"
+                      id="applicable_data_period"
+                      value={
+                        formik.values.applicable_data_period
+                          ? formik.values.applicable_data_period
+                          : ''
+                      }
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={`form-control ${styles.viewRecord}`}
+                    />
+                    <small
+                      className="form-text text-muted"
+                      style={{ fontStyle: 'italic' }}
+                    >
+                      Current: {extension.applicable_data_period}
+                    </small>
+                    <ErrorMessage
+                      name="applicable_data_period"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </FormGroup>
+                </Col>
                 <Col md={6}>
                   <FormGroup>
                     <Label
