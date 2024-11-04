@@ -65,8 +65,12 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
       <hr />
       <h4>Requested Threshold Reduction {index + 1}</h4>
       <FormGroup className="field-wrapper required">
-        <Label for={`exceptions[${index}].businessName`}>Business Name       
-          <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge></Label>
+        <Label for={`exceptions[${index}].businessName`}>
+          Business Name
+          <Badge color="badge badge-danger" className={styles.requiredBadge}>
+            Required
+          </Badge>
+        </Label>
         {submitterData && (
           <>
             <Field
@@ -103,7 +107,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
       <FormGroup className="field-wrapper required">
         <Label for={`exceptions[${index}].fileType`}>
           File Type
-          <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+          <Badge color="badge badge-danger" className={styles.requiredBadge}>
+            Required
+          </Badge>
         </Label>
 
         <Field
@@ -131,7 +137,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
       <FormGroup className="field-wrapper required">
         <Label for={`exceptions[${index}].fieldCode`}>
           Field Code
-          <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+          <Badge color="badge badge-danger" className={styles.requiredBadge}>
+            Required
+          </Badge>
         </Label>
 
         <Field
@@ -176,7 +184,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         <FormGroup className="field-wrapper required">
           <Label for={`exceptions[${index}].expiration_date`}>
             Expiration Date*
-            <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+            <Badge color="badge badge-danger" className={styles.requiredBadge}>
+              Required
+            </Badge>
           </Label>
           <Field
             type="date"
@@ -192,7 +202,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         <FormGroup className="field-wrapper required">
           <Label for={`exceptions[${index}].requested_threshold`}>
             Requested Threshold Percentage
-            <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+            <Badge color="badge badge-danger" className={styles.requiredBadge}>
+              Required
+            </Badge>
           </Label>
           <Field
             type="number"
@@ -207,18 +219,17 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
             className={styles.isInvalid}
           />
 
-          {selectedCDL && (
-            selectedCDL.threshold_value != 0 ? (
-            
-            <div className="help-text">
-              Must be less than the {selectedCDL.threshold_value} required.
-            </div>
+          {selectedCDL &&
+            (selectedCDL.threshold_value != 0 ? (
+              <div className="help-text">
+                Must be less than the {selectedCDL.threshold_value} required.
+              </div>
             ) : (
-            <div className="help-text">
-              This field code does not require an exception submission.<br/> Please choose another.
-            </div>
-            )
-          )}
+              <div className="help-text">
+                This field code does not require an exception submission.
+                <br /> Please choose another.
+              </div>
+            ))}
         </FormGroup>
         <FormGroup className="field-wrapper required">
           <Label for={`exceptions[${index}].required_threshold`}>
