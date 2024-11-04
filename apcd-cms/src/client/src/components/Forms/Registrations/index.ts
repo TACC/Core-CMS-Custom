@@ -1,4 +1,2 @@
 // index.ts
-import { RegistrationForm } from './RegistrationForm';
-
-export { RegistrationForm };
+export * from './RegistrationForm';

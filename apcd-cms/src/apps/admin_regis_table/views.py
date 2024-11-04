@@ -4,10 +4,11 @@ from django.template import loader
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, update_registration, update_registration_contact, update_registration_entity
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
-from apps.utils.registrations_data_formatting import _set_registration
+from apps.utils.registrations_data_formatting import _set_registration, _set_registration_for_listing
 from apps.components.paginator.paginator import paginator
 import logging
 from datetime import date as datetimeDate
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -15,53 +16,61 @@ logger = logging.getLogger(__name__)
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
 
-    def post(self, request):
+    def _get_first_registration_entry(self, reg_id):
+        registrations = get_registrations(reg_id=reg_id)
+        if len(registrations) > 0:
+            return registrations[0]
+        else:
+            raise Exception(f'Registration not found {reg_id}')
 
-        form = request.POST.copy()
-        reg_id = int(form['reg_id'])
+    def post(self, request, reg_id):
+        form = json.loads(request.body)
+        reg_entities = form['entities']
+        reg_contacts = form['contacts']
 
-        reg_data = get_registrations(reg_id)[0]
-        reg_entities = get_registration_entities(reg_id)
-        reg_contacts = get_registration_contacts(reg_id)
-        
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
             if isinstance(resp, Exception):
                 return str(resp)
             return None
-                
-        def _edit_registration(form, reg_entities=reg_entities, reg_contacts=reg_contacts):
-            errors = []
-            reg_resp = update_registration(form, reg_id)
-            if not _err_msg(reg_resp) and type(reg_resp) == int:
-                for iteration in range(1, 6):
-                    contact_resp = update_registration_contact(form, reg_id, iteration, len(reg_contacts))
-                    entity_resp = update_registration_entity(form, reg_id, iteration, len(reg_entities))
-                    if _err_msg(contact_resp):
-                        errors.append(_err_msg(contact_resp))
-                    if _err_msg(entity_resp):
-                        errors.append(_err_msg(entity_resp))
-                if len(errors) != 0:
-                    template = loader.get_template('edit_registration_error.html')
-                template = loader.get_template('edit_registration_success.html')
-            else:
-                errors.append(_err_msg(reg_resp))
-                template = loader.get_template('edit_registration_error.html')
-            return template
 
-        if 'edit-registration-form' in form:
-            template = _edit_registration(form)
-        return HttpResponse(template.render({}, request))
+        reg_resp = update_registration(form, reg_id)
+        errors = []
+        if not _err_msg(reg_resp):
+            for entity in reg_entities:
+                entity_resp = update_registration_entity(entity, reg_resp)
+                if _err_msg(entity_resp):
+                    errors.append(str(entity_resp))
+            for contact in reg_contacts:
+                contact_resp = update_registration_contact(contact, reg_resp)
+                if _err_msg(contact_resp):
+                    errors.append(str(contact_resp))
+        else:
+            errors.append(str(reg_resp))
+
+        if len(errors):
+            description = "Error(s):\n"
+            for err_msg in errors:
+                description += "{}\n".format(err_msg)
+            response = JsonResponse({'status': 'error', 'errors': description}, status=400)
+        else:
+            response = JsonResponse({'status': 'success', 'reg_id': reg_id}, status=200)
+        
+        return response
 
     def get(self, request, *args, **kwargs):
         try:
-            registrations_content = get_registrations()
-            registrations_entities = get_registration_entities()
-            registrations_contacts = get_registration_contacts()   
-
-            context = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
-            return JsonResponse({'response': context})
+            if request.GET.get('reg_id'):
+                reg_id = int(request.GET.get('reg_id'))
+                registration = self._get_first_registration_entry(reg_id)
+                registrations_entities = get_registration_entities(reg_id=reg_id)
+                registrations_contacts = get_registration_contacts(reg_id=reg_id)
+                return JsonResponse({'response': _set_registration(registration, registrations_entities, registrations_contacts)})
+            else:
+                registrations_content = get_registrations()
+                context = self.get_registration_list_json(registrations_content, *args, **kwargs)
+                return JsonResponse({'response': context})
         except Exception as e:
             logger.error("An error occurred: %s", str(e))
             return JsonResponse({
@@ -74,7 +83,7 @@ class RegistrationsTable(TemplateView):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_registration_list_json(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
+    def get_registration_list_json(self, registrations_content, *args, **kwargs):
         context = {}
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
@@ -94,9 +103,7 @@ class RegistrationsTable(TemplateView):
 
         registration_table_entries = []
         for registration in registrations_content:
-            associated_entities = [ent for ent in registrations_entities if ent[1] == registration[0]]
-            associated_contacts = [cont for cont in registrations_contacts if cont[1] == registration[0]]
-            registration_table_entries.append(_set_registration(registration, associated_entities, associated_contacts))
+            registration_table_entries.append(_set_registration_for_listing(registration))
             org_name = registration[5]
             if org_name not in context['org_options']:
                 context['org_options'].append(org_name)
@@ -119,8 +126,19 @@ class RegistrationsTable(TemplateView):
 
         context['query_str'] = queryStr
         page_info = paginator(self.request, registration_table_entries)
-        context['page'] = [{'biz_name': obj['biz_name'], 'year': obj['year'], 'type': obj['type'], 'location': obj['location'], 'reg_status': obj['reg_status'], 'reg_id': obj['reg_id'], 'view_modal_content': obj['view_modal_content']} for obj in page_info['page']]
+        context['page'] = [
+            {
+                'biz_name': obj['biz_name'],
+                'year': obj['year'],
+                'type': obj['type'],
+                'location': obj['location'],
+                'reg_status': obj['reg_status'],
+                'reg_id': obj['reg_id'],
+            }
+            for obj in page_info['page']
+        ]
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context
+

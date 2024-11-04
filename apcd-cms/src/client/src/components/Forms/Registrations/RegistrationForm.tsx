@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FormGroup, Label, Button, FormFeedback } from 'reactstrap';
-import { useRegFormData } from 'hooks/registrations';
+import { useSearchParams } from 'react-router-dom';
+import {
+  RegistrationFormValues,
+  transformToRegistrationFormValues,
+  useRegFormData,
+  usePostRegistration,
+} from 'hooks/registrations';
 import { fetchUtil } from 'utils/fetchUtil';
 import USStates from './USStates.fixture';
 import { TextFormField } from './TextFormField';
@@ -112,42 +118,7 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-export interface FormValues {
-  on_behalf_of: string;
-  reg_year: string;
-  type: string;
-  business_name: string;
-  mailing_address: string;
-  city: string;
-  state?: undefined;
-  zip_code: string;
-  entities: {
-    entity_name: string;
-    fein: string;
-    license_number: string;
-    naic_company_code: string;
-    types_of_plans_commerical: boolean;
-    types_of_plans_medicare: boolean;
-    types_of_plans_medicaid: boolean;
-    types_of_files_eligibility_enrollment: boolean;
-    types_of_files_provider: boolean;
-    types_of_files_medical: boolean;
-    types_of_files_pharmacy: boolean;
-    types_of_files_dental: boolean;
-    total_covered_lives: any;
-    claims_encounters_volume: any;
-    total_claims_value: any;
-  }[];
-  contacts: {
-    contact_type: string;
-    contact_name: string;
-    contact_phone: string;
-    contact_email: string;
-    contact_notifications: boolean;
-  }[];
-}
-
-const initialValues: FormValues = {
+const initialValues: RegistrationFormValues = {
   on_behalf_of: 'true',
   reg_year: '',
   type: 'carrier',
@@ -155,6 +126,7 @@ const initialValues: FormValues = {
   mailing_address: '',
   city: '',
   zip_code: '',
+  reg_id: -1,
   entities: [
     {
       entity_name: '',
@@ -172,6 +144,7 @@ const initialValues: FormValues = {
       total_covered_lives: '',
       claims_encounters_volume: '',
       total_claims_value: '',
+      entity_id: -1,
     },
   ],
   contacts: [
@@ -181,48 +154,39 @@ const initialValues: FormValues = {
       contact_phone: '',
       contact_email: '',
       contact_notifications: false,
+      contact_id: -1,
     },
   ],
 };
 
-export const RegistrationForm: React.FC = () => {
-  const { data, isLoading, isError } = useRegFormData({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [regId, setRegId] = useState(null);
+export const RegistrationForm: React.FC<{
+  isEdit?: boolean;
+  inputValues?: RegistrationFormValues;
+  isModal?: boolean;
+  onSuccessCallback?: () => void;
+}> = ({
+  isEdit = false,
+  inputValues,
+  isModal = false,
+  onSuccessCallback = () => {},
+}) => {
+  const [searchParams] = useSearchParams();
+  const { data, isLoading, isError } = useRegFormData(
+    searchParams.get('reg_id')
+  );
+  const {
+    mutate: submitForm,
+    isLoading: registrationSubmissionPending,
+    isSuccess,
+    data: registrationResponse,
+    error: registrationError,
+  } = usePostRegistration();
 
-  const handleSubmit = async (
-    values: FormValues,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-  ) => {
-    setErrorMessage('');
-    const url = `register/request-to-submit/api/`;
-    try {
-      const response = await fetchUtil({
-        url,
-        method: `POST`,
-        body: values,
-      });
-      if (response.status == 'success') {
-        setIsSuccess(true);
-        setRegId(response.reg_id);
-      }
-    } catch (error: any) {
-      console.error('Error saving data:', error);
-      console.log(url);
-      if (error.response && error.response.data) {
-        setErrorMessage(
-          error.response.data.message ||
-            'An error occurred while saving the data. Please try again.'
-        );
-      } else {
-        setErrorMessage(
-          'An error occurred while saving the data. Please try again.'
-        );
-      }
-    } finally {
-      setSubmitting(false);
-    }
+  const handleSubmit = async (values: RegistrationFormValues) => {
+    const url = isEdit
+      ? `administration/request-to-submit/api/${inputValues?.reg_id ?? -1}/`
+      : `register/request-to-submit/api/`;
+    submitForm({ url, body: values });
   };
 
   if (isLoading) {
@@ -240,33 +204,43 @@ export const RegistrationForm: React.FC = () => {
   return (
     <div className="row">
       <div className="col">
-        <h1>Request to Submit</h1>
-        <hr />
+        {!isModal ? (
+          <>
+            <h1>Request to Submit</h1>
+            <hr />
 
-        <p style={{ marginBottom: '30px' }}>
-          This form should be completed and submitted to register as a data
-          submitter. Please review the
-          <a
-            href="https://sph.uth.edu/research/centers/center-for-health-care-data/assets/tx-apcd/data-submission-guides/TXAPCD%20-%20Data%20Submission%20Guide%20(DSG).pdf"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {' '}
-            Data Submission Guide{' '}
-          </a>
-          for details about completing and submitting this form, paying special
-          attention to the schedule of submissions including test files,
-          historical files, and monthly files.
-        </p>
+            <p style={{ marginBottom: '30px' }}>
+              This form should be completed and submitted to register as a data
+              submitter. Please review the
+              <a
+                href="https://sph.uth.edu/research/centers/center-for-health-care-data/assets/tx-apcd/data-submission-guides/TXAPCD%20-%20Data%20Submission%20Guide%20(DSG).pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {' '}
+                Data Submission Guide{' '}
+              </a>
+              for details about completing and submitting this form, paying
+              special attention to the schedule of submissions including test
+              files, historical files, and monthly files.
+            </p>
 
-        <hr />
+            <hr />
+          </>
+        ) : (
+          ''
+        )}
         <Formik
           validateOnMount={true}
-          initialValues={initialValues}
+          initialValues={
+            data
+              ? transformToRegistrationFormValues(data)
+              : inputValues ?? initialValues
+          }
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, isSubmitting, setFieldValue, resetForm }) => (
+          {({ values, setFieldValue, resetForm }) => (
             useEffect(() => {
               if (isSuccess) {
                 resetForm();
@@ -275,17 +249,28 @@ export const RegistrationForm: React.FC = () => {
             isSuccess ? (
               <>
                 <div style={{ marginTop: '16px', marginBottom: '16px' }}>
-                  Your submission was successful. Your registration ID is:{' '}
-                  <b>{regId}</b>.
+                  Your {isEdit ? 'update' : 'submission'} was successful. Your
+                  registration ID is: <b>{registrationResponse?.reg_id}</b>.
                 </div>
-                <Button
-                  type="button"
-                  className="c-button c-button--primary"
-                  disabled={isSubmitting}
-                  href="/workbench/dashboard"
-                >
-                  Go to Dashboard
-                </Button>
+                {isModal ? (
+                  <Button
+                    type="button"
+                    className="c-button c-button--primary"
+                    disabled={registrationSubmissionPending}
+                    onClick={onSuccessCallback}
+                  >
+                    Close
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    className="c-button c-button--primary"
+                    disabled={registrationSubmissionPending}
+                    href="/workbench/dashboard"
+                  >
+                    Go to Dashboard
+                  </Button>
+                )}
               </>
             ) : (
               <Form>
@@ -503,14 +488,17 @@ export const RegistrationForm: React.FC = () => {
                     type="submit"
                     color="primary"
                     className="form-button"
-                    disabled={isSubmitting}
+                    disabled={registrationSubmissionPending}
                   >
                     Submit
                   </Button>
                 </div>
-                {errorMessage && (
+                {registrationError && (
                   <div>
-                    <SectionMessage type="error">{errorMessage}</SectionMessage>
+                    <SectionMessage type="error">
+                      {registrationError.message ??
+                        'An error occurred while saving the data. Please try again.'}
+                    </SectionMessage>
                   </div>
                 )}
               </Form>
