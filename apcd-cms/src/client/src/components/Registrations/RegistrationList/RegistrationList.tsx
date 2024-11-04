@@ -8,7 +8,7 @@ import styles from './RegistrationList.module.css';
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
-  isAdmin: boolean;
+  isAdmin?: boolean;
 }> = ({ useDataHook, isAdmin = false }) => {
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
