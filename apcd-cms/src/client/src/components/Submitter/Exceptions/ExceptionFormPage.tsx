@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label } from 'reactstrap';
+import { FormGroup, Label, Badge } from 'reactstrap';
 import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
@@ -9,6 +9,7 @@ import { fetchUtil } from 'utils/fetchUtil';
 import { Link } from 'react-router-dom';
 import { Entities, useEntities } from 'hooks/entities';
 import Button from 'core-components/Button';
+import LoadingSpinner from 'core-components/LoadingSpinner';
 
 interface FormValues {
   exceptionType: string;
@@ -31,28 +32,36 @@ interface FormValues {
 export const ExceptionFormPage: React.FC = () => {
   const [selectedExceptionType, setSelectedExceptionType] =
     useState<string>('');
-  const [numberOfExceptionBlocks, setNumberOfExceptionBlocks] =
+  const [numberOfExceptionBlocks] =
     useState<number>(1);
 
   // Dynamically determines validation schema based on selectedExceptionType state
   const baseSchema = {
-    exceptionType: Yup.string().required('Required'),
+    exceptionType: Yup.string().required(''),
     justification: Yup.string()
       .max(2000, 'Must be 2000 characters or less')
-      .required('Required'),
-    requestorName: Yup.string().required('Required'),
-    requestorEmail: Yup.string().email().required('Required'),
-    acceptTerms: Yup.boolean().oneOf([true], 'Required'),
+      .required('Justification is required'),
+    requestorName: Yup.string().required('Requestor name is required'),
+    requestorEmail: Yup.string().email('Invalid email').required('Requestor email is required'),
+    acceptTerms: Yup.boolean().oneOf([true], 'You must accept the terms'),
   };
 
   const exceptionSchema = Yup.array().of(
     Yup.object().shape({
-      businessName: Yup.number().min(1, 'Required').required('Required'),
-      fileType: Yup.string().required('Required'),
-      fieldCode: Yup.string().required('Required'),
-      expiration_date: Yup.date().required('Required'),
-      requested_threshold: Yup.number().min(1, 'Required').required('Required'),
-      required_threshold: Yup.number().required('Required'),
+      // Allows users to pick from human readable business names, but passes submitter id to
+      // database query which is what the table looks for to match exception with submitter
+      businessName: Yup.number()
+        .transform((val,original) => original == "" || isNaN(original) ? undefined : val)
+        .typeError("Business name is required")
+        .required("Business name is required"),
+      fileType: Yup.string().required('File type is required'),
+      fieldCode: Yup.string().required('Field code is required'),
+      expiration_date: Yup.date().required('Expiration date is required'),
+      requested_threshold: Yup.number()
+        .required('Requested threshold is required'),
+      required_threshold: Yup.number()
+        .min(1, 'This field code does not require an exception submission.')
+        .required('Required'),
     })
   );
 
@@ -134,6 +143,14 @@ export const ExceptionFormPage: React.FC = () => {
     }
   };
 
+  if (entitiesLoading)  {
+    return (
+      <div className={styles.loadingField}>
+        <LoadingSpinner/>
+      </div>
+    )
+  }
+
   const getExceptionTitle = () => {
     switch (selectedExceptionType) {
       case 'threshold':
@@ -207,10 +224,10 @@ export const ExceptionFormPage: React.FC = () => {
                   />
                 </FormGroup>
                 {selectedExceptionType !== '' && (
-                  <SectionMessage type="info">
-                    Your changes will not be saved if you change the exception
+                  <div>
+                    <b>Note:</b>{' '}Your changes will not be saved if you change the exception
                     type.
-                  </SectionMessage>
+                    </div>
                 )}
               </div>
               {selectedExceptionType == 'threshold' && (
@@ -261,9 +278,10 @@ export const ExceptionFormPage: React.FC = () => {
                   <div className={styles.fieldRows}>
                     {submitterData && (
                       <>
-                        <FormGroup className="field-wrapper required">
+                        <FormGroup className="field-wrapper ">
                           <Label for={`otherExceptionBusinessName`}>
                             Business Name
+                            <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
                           </Label>
                           <Field
                             as="select"
@@ -303,11 +321,11 @@ export const ExceptionFormPage: React.FC = () => {
                       </Link>
                     </SectionMessage>
                   )}
-
                   <div className={styles.fieldRows}>
                     <FormGroup className="field-wrapper required">
                       <Label for={'expirationDateOther'}>
                         Requested Expiration Date
+                        <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
                       </Label>
                       <Field
                         type="date"
@@ -328,8 +346,8 @@ export const ExceptionFormPage: React.FC = () => {
                 <>
                   <hr />
                   <h4>Request and Justification</h4>
-                  <FormGroup className="field-wrapper required">
-                    <p>
+                  <FormGroup className="field-wrapper">
+                    <Label>
                       Provide rationale for the exception request, outlining the
                       reasons why the organization is unable to comply with the
                       relevant requirements. Provide as much detail as possible
@@ -337,7 +355,8 @@ export const ExceptionFormPage: React.FC = () => {
                       submission requirements for which relief is being sought.
                       If applicable, indicate how the organization plans to
                       become compliant.**
-                    </p>
+                      <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+                    </Label>
 
                     <Field
                       as="textarea"
@@ -354,14 +373,17 @@ export const ExceptionFormPage: React.FC = () => {
                   </FormGroup>
                   <hr />
                   <h4>Acknowledgment of Terms</h4>
-                  <p>
+                  <Label className='form-wrapper'>
                     I understand and acknowledge that the Texas Department of
                     Insurance (TDI) may review the validity of the information
                     submitted on this form.
-                  </p>
+                  </Label>
                   <div className={styles.fieldRows}>
                     <FormGroup className="field-wrapper required">
-                      <Label for="requestorName">Requestor Name</Label>
+                      <Label for="requestorName">
+                        Requestor Name
+                        <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
+                      </Label>
                       <Field
                         type="text"
                         name="requestorName"
@@ -374,7 +396,10 @@ export const ExceptionFormPage: React.FC = () => {
                       />
                     </FormGroup>
                     <FormGroup className="field-wrapper required">
-                      <Label for="requestorEmail">Requestor E-mail</Label>
+                      <Label for="requestorEmail">
+                        Requestor E-mail
+                        <Badge color="badge badge-danger">Required</Badge>
+                      </Label>
                       <Field
                         type="email"
                         name="requestorEmail"
@@ -390,6 +415,7 @@ export const ExceptionFormPage: React.FC = () => {
                       <Label for="acceptTerms" check>
                         {' '}
                         Accept
+                        <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
                       </Label>
                       <Field
                         type="checkbox"
