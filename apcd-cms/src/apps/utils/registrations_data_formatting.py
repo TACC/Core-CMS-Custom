@@ -79,7 +79,7 @@ def _set_registration(reg, reg_ent, reg_cont):
         'city': reg[7],
         'state': reg[8],
         'address': reg[6],
-        'zip': reg[9],
+        'zip': reg[9].strip(),
         'for_self': reg[2],
         'year': reg[10],
         'entities': [_set_entities(ent) for ent in reg_ent],
