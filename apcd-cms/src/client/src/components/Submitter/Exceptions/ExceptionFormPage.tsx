@@ -398,7 +398,7 @@ export const ExceptionFormPage: React.FC = () => {
                     <FormGroup className="field-wrapper required">
                       <Label for="requestorEmail">
                         Requestor E-mail
-                        <Badge color="badge badge-danger">Required</Badge>
+                        <Badge color="badge badge-danger" className={styles.requiredBadge}>Required</Badge>
                       </Label>
                       <Field
                         type="email"
