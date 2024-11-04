@@ -298,7 +298,7 @@ export const ExceptionFormPage: React.FC = () => {
                   <div className={styles.fieldRows}>
                     {submitterData && (
                       <>
-                        <FormGroup className="field-wrapper ">
+                        <FormGroup className="field-wrapper required">
                           <Label for={`otherExceptionBusinessName`}>
                             Business Name
                             <Badge
