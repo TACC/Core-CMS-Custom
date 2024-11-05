@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { RegistrationResult } from '.';
+import { RegistrationResult, RegistrationContent } from '.';
 
 const getAdminRegistrations = async (params: any) => {
   const url = `/administration/list-registration-requests/api/`;
@@ -18,7 +18,7 @@ export const useAdminRegistrations = (
     org,
     page,
   };
-  const query = useQuery(['registrations', params], () =>
+  const query = useQuery(['admin-registrations', params], () =>
     getAdminRegistrations(params)
   ) as UseQueryResult<RegistrationResult>;
 
@@ -41,9 +41,21 @@ export const useSubmitterRegistrations = (
     org,
     page,
   };
-  const query = useQuery(['registrations', params], () =>
+  const query = useQuery(['submitter-registrations', params], () =>
     getSubmitterRegistrations(params)
   ) as UseQueryResult<RegistrationResult>;
 
+  return { ...query };
+};
+
+export const useAdminRegistration = (
+  reg_id: number
+): UseQueryResult<RegistrationContent> => {
+  const params: { reg_id: number } = {
+    reg_id,
+  };
+  const query = useQuery(['admin-registration', params], () =>
+    getAdminRegistrations(params)
+  ) as UseQueryResult<RegistrationContent>;
   return { ...query };
 };
