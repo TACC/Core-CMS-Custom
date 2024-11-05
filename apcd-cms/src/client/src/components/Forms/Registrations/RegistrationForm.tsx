@@ -304,11 +304,11 @@ export const RegistrationForm: React.FC<{
                       />{' '}
                       Other
                     </Label>
-                    <div className="help-text">
+                  </FormGroup>
+                  <div className="help-text">
                       Whether you submit on behalf of your own organization
                       (Self) or another organization (Other)
-                    </div>
-                  </FormGroup>
+                  </div>
                 </FormGroup>
                 <TextFormField
                   name="reg_year"
