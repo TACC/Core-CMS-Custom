@@ -1,103 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { UserRow, UserResult } from 'hooks/admin';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
 import ViewRecordModal from './ViewRecordModal';
 import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
-import styles from './ViewUsers.module.scss'; // Import SCSS module
+import styles from './ViewUsers.module.scss';
+import Button from 'core-components/Button';
 
 export const ViewUsers: React.FC = () => {
-  const [statusOptions, setStatusOptions] = useState<string[]>([]);
-  const [filterOptions, setFilterOptions] = useState<string[]>([]);
+  const header = [
+    'User ID',
+    'Name',
+    'Entity Organization',
+    'Role',
+    'Status',
+    'User Number',
+    'Actions',
+  ];
+  const {
+    data: filterData,
+    isLoading: isFilterLoading,
+    isError: isFilterError,
+  } = useUserFilters();
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
-  const [userData, setUserData] = useState<UserResult | null>(null);
-  const [isLoading, setLoading] = useState(true);
-  const [isError, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    refetch,
+  } = useUsers(status, org, page);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
   const [dropdownValue, setDropdownValue] = useState<string>('');
-  const [page, setPage] = useState(1);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchOptionsAndData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch dropdown options
-        const optionsResponse = await axios.get(
-          '/administration/view-users/api/options'
-        );
-        setStatusOptions(optionsResponse.data.status_options || []);
-        setFilterOptions(optionsResponse.data.org_options || []);
-
-        const queryParams = new URLSearchParams(location.search);
-        const statusParam = queryParams.get('status') || 'All';
-        const orgParam = queryParams.get('org') || 'All';
-
-        // Fetch initial user data
-        await fetchData(statusParam, orgParam, page);
-
-        // Update state with URL params
-        setStatus(statusParam);
-        setOrg(orgParam);
-      } catch (err) {
-        setError('Error fetching data');
-        console.error('Error fetching data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOptionsAndData();
-  }, [location.search, page]);
-
-  const fetchData = async (
-    statusFilter: string,
-    orgFilter: string,
-    page: number = 1
-  ) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch filtered user data with pagination
-      const userResponse = await axios.get('/administration/view-users/api/', {
-        params: { status: statusFilter, org: orgFilter, page: page },
-      });
-      setUserData(userResponse.data.response);
-    } catch (err) {
-      setError('Error fetching filtered data');
-      console.error('Error fetching filtered data:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateURL = (newStatus: string, newOrg: string) => {
-    const queryParams = new URLSearchParams();
-    if (newStatus !== 'All') queryParams.set('status', newStatus);
-    if (newOrg !== 'All') queryParams.set('org', newOrg);
-    navigate({ search: queryParams.toString() });
-  };
-
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newStatus = event.target.value;
-    setStatus(newStatus);
-    updateURL(newStatus, org);
-  };
-
-  const handleOrgChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newOrg = event.target.value;
-    setOrg(newOrg);
-    updateURL(status, newOrg);
+  const clearSelections = () => {
+    setStatus('All');
+    setOrg('All');
+    setPage(1);
   };
 
   const handleActionChange = (
@@ -124,7 +66,7 @@ export const ViewUsers: React.FC = () => {
 
   const handleEditSuccess = (updatedUser: UserRow) => {
     // Refresh user data after editing is successful
-    fetchData(status, org, page);
+    refetch();
     setEditModalOpen(false);
   };
 
@@ -134,7 +76,7 @@ export const ViewUsers: React.FC = () => {
     setSelectedUser(null);
   };
 
-  if (isLoading) {
+  if (isFilterLoading || isLoading) {
     return (
       <div className="loading-placeholder">
         <LoadingSpinner />
@@ -142,7 +84,7 @@ export const ViewUsers: React.FC = () => {
     );
   }
 
-  if (isError) {
+  if (isFilterError || isError) {
     return <div>Error loading data</div>;
   }
 
@@ -154,62 +96,51 @@ export const ViewUsers: React.FC = () => {
       <hr />
       <div className="filter-container">
         <div className="filter-content">
-          <span>
-            <b>Filter by Status: </b>
-          </span>
-          <select
-            id="statusFilter"
-            className="status-filter"
-            value={status}
-            onChange={handleStatusChange}
-          >
-            {statusOptions.length > 0 ? (
-              statusOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))
-            ) : (
-              <option>Loading...</option>
-            )}
-          </select>
-          <span>
-            <b>Filter by Organization: </b>
-          </span>
-          <select
-            id="organizationFilter"
-            className="status-filter"
-            value={org}
-            onChange={handleOrgChange}
-          >
-            {filterOptions.length > 0 ? (
-              filterOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))
-            ) : (
-              <option>Loading...</option>
-            )}
-          </select>
-          {(status !== 'All' || org !== 'All') && (
-            <button
-              onClick={() => {
-                setStatus('All');
-                setOrg('All');
-                fetchData('All', 'All');
-              }}
+          {/* Filter */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span>
+              <b>Filter by Status: </b>
+            </span>
+            <select
+              id="statusFilter"
+              className="status-filter"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              Clear Options
-            </button>
-          )}
+              {filterData?.status_options.map((status, index) => (
+                <option className="dropdown-text" key={index} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+
+            {/* Filter by Organization */}
+            <span>
+              <b>Filter by Organization: </b>
+            </span>
+            <select
+              id="organizationFilter"
+              className="status-filter org-filter"
+              value={org}
+              onChange={(e) => setOrg(e.target.value)}
+            >
+              {filterData?.org_options.map((org, index) => (
+                <option className="dropdown-text" key={index} value={org}>
+                  {org}
+                </option>
+              ))}
+            </select>
+            {userData?.selected_status || userData?.selected_org ? (
+              <Button onClick={clearSelections}>Clear Options</Button>
+            ) : null}
+          </div>
         </div>
       </div>
       <div>
         <table id="viewUserTable" className="view-user-table">
           <thead>
             <tr>
-              {userData?.header.map((columnName: string, index: number) => (
+              {header.map((columnName: string, index: number) => (
                 <th key={index}>{columnName}</th>
               ))}
             </tr>

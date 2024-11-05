@@ -27,7 +27,7 @@ class ViewUsersTable(TemplateView):
         status = request.GET.get('status', 'All')
         org = request.GET.get('org', 'All')
         page_number = int(request.GET.get('page', 1))
-        items_per_page = int(request.GET.get('limit', 50)) 
+        items_per_page = int(request.GET.get('limit', 50))
 
         try:
             user_content = get_users()
@@ -36,7 +36,7 @@ class ViewUsersTable(TemplateView):
             paginator = Paginator(filtered_users, items_per_page)
             page_info = paginator.get_page(page_number)
 
-            context = self.get_view_users_json(list(page_info))
+            context = self.get_view_users_json(list(page_info), selected_status=status, selected_org=org)
             context['page_num'] = page_info.number
             context['total_pages'] = paginator.num_pages
 
@@ -127,12 +127,11 @@ class ViewUsersTable(TemplateView):
 
         return user_list
     
-    def get_view_users_json(self, user_content):
+    def get_view_users_json(self, user_content, selected_status='All', selected_org='All'):
         context = {
-            'header': ['User ID', 'Name', 'Entity Organization', 'Role', 'Status', 'User Number', 'See More'],
             'page': [],
-            'selected_status': 'All',
-            'query_str': '',
+            'selected_status': selected_status,
+            'selected_org': selected_org,
             'pagination_url_namespaces': 'administration:view_users'
         }
 

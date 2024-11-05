@@ -2,6 +2,11 @@
     table-layout: inherit;
 }
 
+.status-filter.org-filter {
+    width: max-content;
+    padding-right: 20px;
+}
+
 /* SEE: https://css-tricks.com/responsive-data-tables/ */
 @media (max-width: 767px) {
     /* To label the cells */
