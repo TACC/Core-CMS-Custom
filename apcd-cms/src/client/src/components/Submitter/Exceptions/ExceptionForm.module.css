@@ -29,7 +29,6 @@
   background-color: #e9ecef;
   color: #6c757d;
   border-color: #ced4da;
-  cursor: not-allowed;
 }
 .requiredThreshold,
 .thresholdRequested {
@@ -50,4 +49,8 @@
   margin-top: 0.25rem;
   font-size: 80%;
   color: #dc3545;
+}
+/* To match CEP styles of required fields */
+.requiredBadge {
+  margin-left: 10px;
 }
