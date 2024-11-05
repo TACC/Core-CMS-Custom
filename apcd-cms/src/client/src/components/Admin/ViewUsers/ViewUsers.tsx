@@ -120,7 +120,7 @@ export const ViewUsers: React.FC = () => {
             </span>
             <select
               id="organizationFilter"
-              className="org-filter"
+              className="status-filter org-filter"
               value={org}
               onChange={(e) => setOrg(e.target.value)}
             >
