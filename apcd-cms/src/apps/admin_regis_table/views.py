@@ -1,10 +1,22 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.template import loader
-from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_registration_entities, update_registration, update_registration_contact, update_registration_entity
+from apps.utils.apcd_database import (
+    delete_registration_entity,
+    delete_registration_contact,
+    get_registrations,
+    get_registration_contacts,
+    get_registration_entities,
+    update_registration,
+    update_registration_contact,
+    update_registration_entity,
+)
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
-from apps.utils.registrations_data_formatting import _set_registration, _set_registration_for_listing
+from apps.utils.registrations_data_formatting import (
+    _set_registration,
+    _set_registration_for_listing,
+)
 from apps.components.paginator.paginator import paginator
 import logging
 from datetime import date as datetimeDate
@@ -28,6 +40,18 @@ class RegistrationsTable(TemplateView):
         reg_entities = form['entities']
         reg_contacts = form['contacts']
 
+        # Find the associated contacts and entities that were deleted.
+        updated_entity_ids = {reg['entity_id'] for reg in reg_entities if 'entity_id' in reg and reg['entity_id'] >= 0}
+        updated_contact_ids = {con['contact_id'] for con in reg_contacts if 'contact_id' in con and con['contact_id'] >= 0}
+        # Retrieve existing IDs
+        for reg in get_registration_entities(reg_id):
+            logger.error(reg)
+        existing_entity_ids = {reg[3] for reg in get_registration_entities(reg_id)}
+        existing_contact_ids = {contact[0] for contact in get_registration_contacts(reg_id)}
+        # Find the deleted ones.
+        entity_ids_to_delete = existing_entity_ids - updated_entity_ids
+        contact_ids_to_delete = existing_contact_ids - updated_contact_ids
+        
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
@@ -38,6 +62,16 @@ class RegistrationsTable(TemplateView):
         reg_resp = update_registration(form, reg_id)
         errors = []
         if not _err_msg(reg_resp):
+            for id in entity_ids_to_delete:
+                delete_resp = delete_registration_entity(reg_id, id)
+                if _err_msg(delete_resp):
+                    errors.append(str(delete_resp))
+            
+            for id in contact_ids_to_delete:
+                delete_resp = delete_registration_contact(reg_id, id)
+                if _err_msg(delete_resp):
+                    errors.append(str(delete_resp))
+
             for entity in reg_entities:
                 entity_resp = update_registration_entity(entity, reg_resp)
                 if _err_msg(entity_resp):
@@ -141,4 +175,3 @@ class RegistrationsTable(TemplateView):
         context['total_pages'] = page_info['page'].paginator.num_pages
         context['pagination_url_namespaces'] = 'administration:admin_regis_table'
         return context
-

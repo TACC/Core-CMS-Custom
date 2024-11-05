@@ -411,7 +411,9 @@ def update_registration_entity(entity, reg_id):
     conn = None
     values = ()
     try:
-        if entity['entity_id'] < 0:
+        # if entity_id is not there or is less than 0, then 
+        # it is a new entity.
+        if 'entity_id' not in entity or entity['entity_id'] < 0:
             return create_registration_entity(entity, reg_id)
         values = (
             float(entity['total_claims_value']),
@@ -598,7 +600,9 @@ def update_registration_contact(contact, reg_id):
     conn = None
     values = ()
     try:
-        if contact['contact_id'] < 0:
+        # if contact_id is not there or is less than 0, then 
+        # it is a new contact.
+        if 'contact_id' not in contact or contact['contact_id'] < 0:
             return create_registration_contact(contact, reg_id)
 
         values = (
