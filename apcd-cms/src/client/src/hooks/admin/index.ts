@@ -11,12 +11,14 @@ export type UserRow = {
   notes: string;
 };
 
-export type UserResult = {
-  header: string[];
+export type FilterOptions = {
   status_options: string[];
   org_options: string[];
+};
+
+export type UserResult = {
   selected_status: string;
-  query_str: string;
+  selected_org: string;
   pagination_url_namespaces: string;
   page: UserRow[];
   page_num: number;
@@ -147,4 +149,5 @@ export {
   useSubmissions,
   useUsers,
   useExceptions,
+  useUserFilters,
 } from './useAdmin';
