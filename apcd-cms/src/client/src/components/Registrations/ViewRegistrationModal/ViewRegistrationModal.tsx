@@ -1,14 +1,18 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
-import { RegistrationRow } from 'hooks/registrations';
+import { RegistrationContent, useAdminRegistration } from 'hooks/registrations';
 import styles from './ViewRegistrationModal.module.css';
 
 const ViewRegistrationModal: React.FC<{
-  registration: RegistrationRow;
+  reg_id: number;
   isVisible: boolean;
   onClose: () => void;
-}> = ({ registration, isVisible, onClose }) => {
-  const { view_modal_content } = registration;
+}> = ({ reg_id, isVisible, onClose }) => {
+  const { data, isLoading, error } = useAdminRegistration(reg_id);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>No data Found.</div>;
 
   const {
     for_self,
@@ -21,7 +25,7 @@ const ViewRegistrationModal: React.FC<{
     zip,
     entities,
     contacts,
-  } = view_modal_content;
+  } = data;
 
   return (
     <Modal

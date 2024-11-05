@@ -3,15 +3,15 @@ export type RegFormData = {
   renew: boolean;
 };
 
-export { useRegFormData } from './useForm';
+export { useRegFormData, usePostRegistration } from './useForm';
 
 export type StringMap = {
-  [key: string]: string;
+  [key: string]: boolean;
 };
 
 export type RegistrationEntity = {
   claim_val: string;
-  ent_id: string;
+  ent_id: number;
   claim_and_enc_vol: string;
   license: string | null | undefined;
   naic: string | null | undefined;
@@ -23,7 +23,7 @@ export type RegistrationEntity = {
 };
 
 export type RegistrationContact = {
-  cont_id: string;
+  cont_id: number;
   notif: string;
   role: string;
   name: string;
@@ -31,7 +31,8 @@ export type RegistrationContact = {
   email: string;
 };
 
-export type RegistrationModalContent = {
+export type RegistrationContent = {
+  reg_id: number;
   biz_name: string;
   type: string | null | undefined;
   city: string;
@@ -52,8 +53,7 @@ export type RegistrationRow = {
   type: string;
   location: string;
   reg_status: string;
-  reg_id: string;
-  view_modal_content: RegistrationModalContent;
+  reg_id: number;
 };
 
 export type RegistrationResult = {
@@ -69,7 +69,89 @@ export type RegistrationResult = {
   total_pages: number;
 };
 
+export type RegistrationFormValues = {
+  on_behalf_of: string;
+  reg_year: string;
+  type: string;
+  business_name: string;
+  mailing_address: string;
+  city: string;
+  state?: string | undefined;
+  zip_code: string;
+  reg_id?: number;
+  entities: {
+    entity_name: string;
+    fein: string;
+    license_number: string;
+    naic_company_code: string;
+    types_of_plans_commerical: boolean;
+    types_of_plans_medicare: boolean;
+    types_of_plans_medicaid: boolean;
+    types_of_files_eligibility_enrollment: boolean;
+    types_of_files_provider: boolean;
+    types_of_files_medical: boolean;
+    types_of_files_pharmacy: boolean;
+    types_of_files_dental: boolean;
+    total_covered_lives: any;
+    claims_encounters_volume: any;
+    total_claims_value: any;
+    entity_id?: number;
+  }[];
+  contacts: {
+    contact_type: string;
+    contact_name: string;
+    contact_phone: string;
+    contact_email: string;
+    contact_notifications: boolean;
+    contact_id?: number;
+  }[];
+};
+
+export function transformToRegistrationFormValues(
+  registration: RegistrationContent
+): RegistrationFormValues {
+  return {
+    on_behalf_of: registration.for_self ?? '',
+    reg_year: registration.year.toString(),
+    type: registration.type ?? '',
+    business_name: registration.biz_name,
+    mailing_address: registration.address,
+    city: registration.city,
+    state: registration.state as string,
+    zip_code: registration.zip.toString(),
+    reg_id: registration.reg_id,
+    entities: registration.entities.map((entity) => ({
+      entity_name: entity.ent_name,
+      fein: entity.fein ?? '',
+      license_number: entity.license ?? '',
+      naic_company_code: entity.naic ?? '',
+      types_of_plans_commerical: entity.plans_type['Commercial'],
+      types_of_plans_medicare: entity.plans_type['Medicare'],
+      types_of_plans_medicaid: entity.plans_type['Medicaid'],
+      types_of_files_eligibility_enrollment:
+        entity.files_type['Eligibility/Enrollment'],
+      types_of_files_provider: entity.files_type['Provider'],
+      types_of_files_medical: entity.files_type['Medical'],
+      types_of_files_pharmacy: entity.files_type['Pharmacy'],
+      types_of_files_dental: entity.files_type['Dental'],
+      total_covered_lives: entity.no_covered,
+      claims_encounters_volume: entity.claim_and_enc_vol,
+      total_claims_value: entity.claim_val,
+      entity_id: entity.ent_id,
+    })),
+    contacts: registration.contacts.map((contact) => ({
+      contact_type: contact.role,
+      contact_name: contact.name,
+      contact_phone: contact.phone,
+      contact_email: contact.email,
+      contact_notifications: contact.notif ? true : false,
+      contact_id: contact.cont_id,
+    })),
+  };
+}
+
 export {
   useAdminRegistrations,
   useSubmitterRegistrations,
+  useAdminRegistration,
 } from './useRegistrations';
