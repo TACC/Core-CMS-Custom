@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
+from datetime import datetime
 import logging
 import json
 
@@ -23,23 +24,41 @@ class EntitiesView(TemplateView):
             return HttpResponseRedirect('/')
         return super(EntitiesView, self).dispatch(request, *args, **kwargs)
 
-    
     def get_submitter_info_json(self, submitters):
         context = {}
 
-        def _set_submitter(sub):
+        def _get_applicable_data_period(value):
+            try:
+                return datetime.strptime(str(value), '%Y%m').strftime('%Y-%m')
+            except Exception:
+                return None
+
+        def _set_submitter(sub, data_periods):
             return {
                 "submitter_id": sub[0],
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "entity_name": title_case(sub[4])
+                "entity_name": title_case(sub[4]),
+                "data_periods": data_periods
             }
 
         context["submitters"] = []
 
         for submitter in submitters:
-            context["submitters"].append(_set_submitter(submitter))
+            data_periods = []
+            submitter_id = submitter[0]
+            applicable_data_periods = apcd_database.get_applicable_data_periods(submitter[0])
+            for data_period_tuple in applicable_data_periods:
+                for data_period in data_period_tuple:
+                    data_period = _get_applicable_data_period(data_period)
+                    expected_dates = apcd_database.get_current_exp_date(submitter_id=submitter_id, applicable_data_period=data_period.replace('-', ''))
+                    data_periods.append({
+                        'data_period': data_period,
+                        'expected_date': expected_dates[0][0] if expected_dates else ''
+                    })
+            data_periods = sorted(data_periods, key=lambda x: x['data_period'], reverse=True)
+            context["submitters"].append(_set_submitter(submitter, data_periods))
 
         return context
 
