@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label } from 'reactstrap';
+import { FormGroup } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
 import ExtensionFormInfo from './ExtensionFormInfo';
 import { useEntities } from 'hooks/entities';
@@ -9,11 +9,17 @@ import { fetchUtil } from 'utils/fetchUtil';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Button from 'core-components/Button';
+import { FormLabel } from 'apcd-components/Components/FormLabel/FormLabel';
 
 const validationSchema = Yup.object().shape({
   extensions: Yup.array().of(
     Yup.object().shape({
-      businessName: Yup.string().required('Business Name is required'),
+      businessName: Yup.number()
+        .transform((val, original) =>
+          original == '' || isNaN(original) ? undefined : val
+        )
+        .typeError('Business name is required')
+        .required('Business name is required'),
       extensionType: Yup.string().required('Extension Type is required'),
       applicableDataPeriod: Yup.string().required(
         'Applicable Data Period is required'
@@ -201,6 +207,11 @@ export const ExtensionRequestForm: React.FC = () => {
                     compliant.**
                   </p>
                   <FormGroup className="field-wrapper required">
+                    <FormLabel
+                      labelFor={'justification'}
+                      label={''}
+                      isRequired={true}
+                    />
                     <Field
                       as="textarea"
                       name="justification"
@@ -224,7 +235,11 @@ export const ExtensionRequestForm: React.FC = () => {
                   </p>
                   <div className={styles.fieldRows}>
                     <FormGroup className="field-wrapper required">
-                      <Label htmlFor="requestorName">Requestor Name</Label>
+                      <FormLabel
+                        labelFor={'requestorName'}
+                        label={'Requestor Name'}
+                        isRequired={true}
+                      />
                       <Field
                         type="text"
                         name="requestorName"
@@ -238,7 +253,11 @@ export const ExtensionRequestForm: React.FC = () => {
                       />
                     </FormGroup>
                     <FormGroup className="field-wrapper required">
-                      <Label htmlFor="requestorEmail">Requestor Email</Label>
+                      <FormLabel
+                        labelFor={'requestorEmail'}
+                        label={'Requestor Email'}
+                        isRequired={true}
+                      />
                       <Field
                         type="email"
                         name="requestorEmail"
@@ -251,21 +270,28 @@ export const ExtensionRequestForm: React.FC = () => {
                         className={styles.isInvalid}
                       />
                     </FormGroup>
-                    <FormGroup className="field-wrapper required" check>
-                      <Label for="acceptTerms" check>
-                        {' '}
-                        Accept
-                      </Label>
+                  </div>
+                  <div className={styles.fieldRows}>
+                    <FormGroup check inline>
                       <Field
                         name="acceptTerms"
                         type="checkbox"
                         className={styles.termsCheckbox}
                       />
-                      <ErrorMessage
-                        name="acceptTerms"
-                        component="div"
-                        className={styles.isInvalid}
+                      <FormLabel
+                        labelFor={'acceptTerms'}
+                        label={'Accept'}
+                        isRequired={true}
+                        check
+                        style={{ marginLeft: '4px' }}
                       />
+                      <div style={{ paddingLeft: '4px' }}>
+                        <ErrorMessage
+                          name="acceptTerms"
+                          component="div"
+                          className={styles.isInvalid}
+                        />
+                      </div>
                     </FormGroup>
                   </div>
                   {isSuccess ? (
@@ -279,7 +305,11 @@ export const ExtensionRequestForm: React.FC = () => {
                         Submit Another Extension
                       </Button>
                       <div className={styles.fieldRows}>
-                        <SectionMessage type="success" canDismiss={true}>
+                        <SectionMessage
+                          type="success"
+                          canDismiss={true}
+                          onDismiss={() => setIsSuccess(false)}
+                        >
                           Your extension request was successfully sent.
                         </SectionMessage>
                       </div>
