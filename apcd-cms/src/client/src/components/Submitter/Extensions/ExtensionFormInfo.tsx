@@ -1,15 +1,44 @@
-import React from 'react';
-import { Field, ErrorMessage } from 'formik';
-import { FormGroup, Label } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { useFormikContext, Field, ErrorMessage } from 'formik';
+import { FormGroup } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
-import { SubmitterEntityData, Entities } from 'hooks/entities';
+import {
+  SubmitterEntityData,
+  Entities,
+  ApplicableDataPeriod,
+} from 'hooks/entities';
 import SectionMessage from 'core-components/SectionMessage';
 import { Link } from 'react-router-dom';
+import { FormLabel } from 'apcd-components/Components/FormLabel/FormLabel';
+
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() + 1);
+const oneYearFromToday = maxDate.toISOString().split('T')[0];
 
 const ExtensionFormInfo: React.FC<{
   index: number;
   submitterData: SubmitterEntityData | undefined;
 }> = ({ index, submitterData }) => {
+  const [selectedEntity, setSelectedEntity] = useState<string>();
+  const [dataPeriods, setDataPeriods] = useState<ApplicableDataPeriod[]>([]);
+  const { setFieldValue, values } = useFormikContext<any>();
+
+  useEffect(() => {
+    if (selectedEntity) {
+      const entityId = parseInt(selectedEntity, 10);
+      setFieldValue(`extensions[${index}].currentExpectedDate`, '');
+      setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
+      setDataPeriods(
+        submitterData?.submitters.find((s) => s.submitter_id === entityId)
+          ?.data_periods ?? []
+      );
+    } else {
+      setFieldValue(`extensions[${index}].currentExpectedDate`, '');
+      setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
+      setDataPeriods([]);
+    }
+  }, [selectedEntity, index]);
+
   return (
     <>
       <hr />
@@ -17,15 +46,24 @@ const ExtensionFormInfo: React.FC<{
       <p>This extension is on behalf of the following organization:</p>
 
       <FormGroup className="field-wrapper required">
-        <Label htmlFor={`extensions.${index}.businessName`}>
-          Business Name
-        </Label>
+        <FormLabel
+          labelFor={`extensions.${index}.businessName`}
+          label={'Business Name'}
+          isRequired={true}
+        />
         {submitterData && (
           <>
             <Field
               as="select"
               name={`extensions.${index}.businessName`}
               id={`extensions.${index}.businessName`}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSelectedEntity(e.target.value);
+                setFieldValue(
+                  `extensions[${index}].businessName`,
+                  e.target.value
+                );
+              }}
             >
               <option value="">Select Business Name</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
@@ -55,9 +93,11 @@ const ExtensionFormInfo: React.FC<{
       </FormGroup>
 
       <FormGroup className="field-wrapper required">
-        <Label htmlFor={`extensions.${index}.extensionType`}>
-          Extension Type
-        </Label>
+        <FormLabel
+          labelFor={`extensions.${index}.extensionType`}
+          label={'Extension Type'}
+          isRequired={true}
+        />
         <Field
           as="select"
           name={`extensions.${index}.extensionType`}
@@ -80,17 +120,33 @@ const ExtensionFormInfo: React.FC<{
       <h6>Submission Dates</h6>
       <div className={styles.fieldRows}>
         <FormGroup className="field-wrapper required">
-          <Label htmlFor={`extensions.${index}.applicableDataPeriod`}>
+          <FormLabel
+            labelFor={`extensions.${index}.applicableDataPeriod`}
+            label={''}
+            isRequired={true}
+          >
             Applicable Data Period <sup>1</sup>
-          </Label>
+          </FormLabel>
           <Field
             as="select"
             name={`extensions.${index}.applicableDataPeriod`}
             id={`extensions.${index}.applicableDataPeriod`}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setFieldValue(
+                `extensions[${index}].applicableDataPeriod`,
+                e.target.value
+              );
+              setFieldValue(
+                `extensions[${index}].currentExpectedDate`,
+                dataPeriods.find((p) => p.data_period === e.target.value)
+                  ?.expected_date
+              );
+            }}
           >
             <option value="">-- Select period --</option>
-            <option value="2024-01">January 2024</option>
-            <option value="2024-02">February 2024</option>
+            {dataPeriods.map((item) => (
+              <option value={item.data_period}>{item.data_period}</option>
+            ))}
           </Field>
           <div className="help-text">Enter month and year</div>
           <ErrorMessage
@@ -103,14 +159,19 @@ const ExtensionFormInfo: React.FC<{
         <FormGroup
           className={`position-relative field-wrapper required ${styles.dateInputContainer}`}
         >
-          <Label htmlFor={`extensions.${index}.requestedTargetDate`}>
+          <FormLabel
+            labelFor={`extensions.${index}.requestedTargetDate`}
+            label={''}
+            isRequired={true}
+          >
             Requested Target Date <sup>2</sup>
-          </Label>
+          </FormLabel>
           <Field
             type="date"
             name={`extensions.${index}.requestedTargetDate`}
             id={`requestedTargetDate_${index}`}
             className={`${styles.dateInputField}`}
+            max={oneYearFromToday}
           />
           <ErrorMessage
             name={`extensions.${index}.requestedTargetDate`}
@@ -122,9 +183,13 @@ const ExtensionFormInfo: React.FC<{
         <FormGroup
           className={`position-relative field-wrapper required ${styles.dateInputContainer} `}
         >
-          <Label htmlFor={`extensions.${index}.currentExpectedDate`}>
+          <FormLabel
+            labelFor={`extensions.${index}.currentExpectedDate`}
+            label={''}
+            isRequired={true}
+          >
             Current Expected Date <sup>3</sup>
-          </Label>
+          </FormLabel>
           <Field
             type="date"
             name={`extensions.${index}.currentExpectedDate`}
