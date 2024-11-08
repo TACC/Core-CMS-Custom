@@ -2,11 +2,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { AdminRegistrations } from './components/Admin/Registrations';
-import { ViewUsers } from './components/Admin/ViewUsers';
-import { AdminSubmissions } from './components/Admin/Submissions';
-import { AdminExtensions } from './components/Admin/Extensions';
-import { AdminExceptions } from './components/Admin/Exceptions';
+import { AdminRegistrations } from 'apcd-components/Admin/Registrations';
+import { ViewUsers } from 'apcd-components/Admin/ViewUsers';
+import { AdminSubmissions } from 'apcd-components/Admin/Submissions';
+import { AdminExtensions } from 'apcd-components/Admin/Extensions';
+import { AdminExceptions } from 'apcd-components/Admin/Exceptions';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
