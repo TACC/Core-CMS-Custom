@@ -137,7 +137,7 @@ export const ViewUsers: React.FC = () => {
         </div>
       </div>
       <div>
-        <table id="viewUserTable" className="view-user-table">
+        <table id="viewUserTable" className="users-table">
           <thead>
             <tr>
               {header.map((columnName: string, index: number) => (
