@@ -23,8 +23,6 @@ export const AdminExtensions: React.FC = () => {
   const [selectedExtension, setSelectedExtension] =
     useState<ExtensionRow | null>(null);
 
-  console.log(data);
-
   const clearSelections = () => {
     setStatus('');
     setOrg('');
@@ -66,9 +64,9 @@ export const AdminExtensions: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>View Extension Requests</h1>
-      <p>All submitted extension requests</p>
+      <p style={{ marginBottom: '30px' }}>All submitted extension requests</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
