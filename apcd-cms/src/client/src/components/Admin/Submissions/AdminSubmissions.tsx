@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   useSubmissions,
   SubmissionRow,
@@ -30,6 +30,7 @@ export const AdminSubmissions: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useSubmissionFilters();
+  
   const [status, setStatus] = useState<string>('All');
   const [sort, setSort] = useState<string>('Newest Received');
   const [page, setPage] = useState<number>(1);
@@ -39,7 +40,7 @@ export const AdminSubmissions: React.FC = () => {
 
   const [selectedSubmissionLog, setSelectedSubmissionLog] =
     useState<SubmissionLogsModalContent[] >([]);
-  console.log(selectedSubmissionLog);
+
   const closeModal = () => {
     setViewModalOpen(false);
     setSelectedSubmission(null);
@@ -91,10 +92,10 @@ export const AdminSubmissions: React.FC = () => {
           <select
             id="statusFilter"
             className="status-filter"
-            value={status === '' ? filterData?.status_options[0] : status}
-            onChange={(e) => setStatus(e.target.value)}
+            value={status}
+            onChange={(e) => { setStatus(e.target.value)}}
           >
-            {filterData?.status_options?.map((option: string, index: number) => (
+            {filterData?.status_options?.map((option: any, index: number) => (
               <option className="dropdown-text" key={index} value={option}>
                 {option}
               </option>
@@ -145,10 +146,6 @@ export const AdminSubmissions: React.FC = () => {
               <Button
                 type="link"
                 onClick={() => {
-                  console.log("Full row data:", row); 
-                  console.log("view_modal_content:", row?.view_modal_content); // Add this
-                  console.log("Full row data:", row); 
-                  console.log("view_modal_content:", row?.view_modal_content); // Add this
                   setSelectedSubmission(row);
                   setSelectedSubmissionLog(row?.view_modal_content);
                   setViewModalOpen(true);

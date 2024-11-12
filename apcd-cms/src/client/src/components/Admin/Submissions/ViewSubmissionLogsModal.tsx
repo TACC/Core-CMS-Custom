@@ -1,8 +1,9 @@
+import React from 'react';
 import { SubmissionLogsModalContent } from 'hooks/admin';
-import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import Button from 'core-components/Button';
-import styles from './Submissions.css';
+import { formatDate } from 'utils/dateUtil';
+import { titleCase } from 'utils/stringUtil';
+
 
 interface ViewSubmissionLogsModalProps {
   submission_logs: SubmissionLogsModalContent[];
@@ -13,7 +14,6 @@ interface ViewSubmissionLogsModalProps {
 export const ViewSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
 > = ({ submission_logs, isOpen, parentToggle }) => {
-  console.log(submission_logs, "THIS IS IN THE MODAL");
   const closeBtn = (
     <button className="close" onClick={parentToggle} type="button">
       &times;
@@ -42,15 +42,15 @@ export const ViewSubmissionLogsModal: React.FC<
                       <dt className="c-data-list__key">Log ID</dt>
                       <dd className="c-data-list__value">{log.log_id}</dd>
                       <dt className="c-data-list__key">Entity Organization</dt>
-                      <dd className="c-data-list__value">{log.entity_name}</dd>
+                      <dd className="c-data-list__value">{titleCase(log.entity_name)}</dd>
                       <dt className="c-data-list__key">File Type</dt>
-                      <dd className="c-data-list__value">{log.file_type}</dd>
+                      <dd className="c-data-list__value">{titleCase(log.file_type)}</dd>
                       <dt className="c-data-list__key">Validation Suite</dt>
                       <dd className="c-data-list__value">
-                        {log.validation_suite}
+                        {titleCase(log.validation_suite)}
                       </dd>
                       <dt className="c-data-list__key">Outcome</dt>
-                      <dd className="c-data-list__value">{log.outcome}</dd>
+                      <dd className="c-data-list__value">{titleCase(log.outcome)}</dd>
                     </dl>
                     <hr />
                   </div>

@@ -16,8 +16,6 @@ export type FileSubmissionRow = {
 
 export type FileSubmissionResult = {
   header: string[];
-  filter_options: string[];
-  sort_options: { name: string; value: string }[];
   selected_status: string;
   selected_sort: string;
   query_str: string;
@@ -35,4 +33,4 @@ export type FileSubmissionLogsModalContent = {
   outcome: string;
 };
 
-export { useListSubmissions } from './useSubmissions';
+export { useListSubmissions, useSubmissionFilters } from './useSubmissions';
