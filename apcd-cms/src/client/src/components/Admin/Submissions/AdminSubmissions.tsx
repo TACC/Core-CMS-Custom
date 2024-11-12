@@ -73,7 +73,7 @@ export const AdminSubmissions: React.FC = () => {
 
   const clearSelections = () => {
     setStatus('All');
-    setSort('Newest Recieved');
+    setSort('Newest Received');
     setPage(1);
   };
 
