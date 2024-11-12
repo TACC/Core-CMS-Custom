@@ -73,7 +73,6 @@ export const AdminExtensions: React.FC = () => {
       <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span>
               <b>Filter by Status: </b>
             </span>
@@ -111,7 +110,6 @@ export const AdminExtensions: React.FC = () => {
             {data?.selected_status || data?.selected_org ? (
               <button onClick={clearSelections}>Clear Options</button>
             ) : null}
-          </div>
         </div>
       </div>
       <table id="extensionTable" className="extension-table">

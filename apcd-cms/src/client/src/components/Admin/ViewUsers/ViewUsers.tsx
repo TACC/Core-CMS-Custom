@@ -89,7 +89,7 @@ export const ViewUsers: React.FC = () => {
   }
 
   return (
-    <div className="container">
+    <div>
       <h1>View Users</h1>
       <hr />
       <p style={{ marginBottom: '30px' }}>View submitted users.</p>
@@ -97,7 +97,6 @@ export const ViewUsers: React.FC = () => {
       <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span>
               <b>Filter by Status: </b>
             </span>
@@ -120,7 +119,7 @@ export const ViewUsers: React.FC = () => {
             </span>
             <select
               id="organizationFilter"
-              className="status-filter org-filter"
+              className="org-filter"
               value={org}
               onChange={(e) => setOrg(e.target.value)}
             >
@@ -133,7 +132,6 @@ export const ViewUsers: React.FC = () => {
             {status !== 'All' || org !== 'All' ? (
               <Button onClick={clearSelections}>Clear Options</Button>
             ) : null}
-          </div>
         </div>
       </div>
       <div>

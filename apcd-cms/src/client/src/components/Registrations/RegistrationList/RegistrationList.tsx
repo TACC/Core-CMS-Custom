@@ -82,7 +82,6 @@ export const RegistrationList: React.FC<{
       <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span>
               <b>Filter by Status: </b>
             </span>
@@ -117,7 +116,6 @@ export const RegistrationList: React.FC<{
             {data?.selected_status || data?.selected_org ? (
               <Button onClick={clearSelections}>Clear Options</Button>
             ) : null}
-          </div>
         </div>
       </div>
       <table id="registrationTable" className="registration-table">
