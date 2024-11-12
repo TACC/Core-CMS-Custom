@@ -108,15 +108,11 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     <>
       <Modal isOpen={isOpen} toggle={toggle} className={styles.customModal}>
         <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>
+          <h4 className="modal-title">
             Edit User ID: {user.user_id} for {user.user_name}
-          </Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={toggle}
-          >
-            <span aria-hidden="true">&times;</span>
+          </h4>
+          <button className="close" onClick={toggle} type="button">
+            &times;
           </button>
         </div>
         <ModalBody>

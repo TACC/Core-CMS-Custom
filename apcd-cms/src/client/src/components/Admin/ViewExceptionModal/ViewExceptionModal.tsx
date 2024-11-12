@@ -39,8 +39,8 @@ export const ViewExceptionModal: React.FC<{
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
       <div className="modal-header">
         <h4 className="modal-title text-capitalize">Exception Details</h4>
-        <button type="button" className="close" onClick={onClose}>
-          <span aria-hidden="true">&#xe912;</span>
+        <button className="close" onClick={onClose} type="button">
+          &times;
         </button>
       </div>
       <ModalBody className="modal-body">

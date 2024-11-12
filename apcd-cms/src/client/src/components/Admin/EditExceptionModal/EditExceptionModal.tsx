@@ -155,16 +155,12 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         onClosed={handleClose}
       >
         <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>
+          <h4 className="modal-title">
             Edit Exception ID {exception.exception_id} for{' '}
             {exception.entity_name}
-          </Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={onClose}
-          >
-            <span aria-hidden="true">&times;</span>
+          </h4>
+          <button className="close" onClick={onClose} type="button">
+            &times;
           </button>
         </div>
         <ModalBody>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Row, Col, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, Row, Col, ModalBody } from 'reactstrap';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';
 import { formatDate } from 'utils/dateUtil';
@@ -23,12 +23,8 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
         <h4 className="modal-title">
           Details for User: {user.user_name} ({user.user_id})
         </h4>
-        <button
-          type="button"
-          className={`close ${styles.customCloseButton}`}
-          onClick={toggle}
-        >
-          <span aria-hidden="true">&#xe912;</span>
+        <button className="close" onClick={toggle} type="button">
+          &times;
         </button>
       </div>
 

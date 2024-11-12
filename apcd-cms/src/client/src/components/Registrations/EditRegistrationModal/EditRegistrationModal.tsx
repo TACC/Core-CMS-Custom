@@ -30,8 +30,8 @@ const EditRegistrationModal: React.FC<{
     >
       <div className="modal-header">
         <h4 className="modal-title text-capitalize">Edit Registration</h4>
-        <button type="button" className="close" onClick={onClose}>
-          <span aria-hidden="true">&#xe912;</span>
+        <button className="close" onClick={onClose} type="button">
+          &times;
         </button>
       </div>
       <ModalBody className="modal-body">
