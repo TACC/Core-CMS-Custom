@@ -73,6 +73,7 @@ const validationSchema = Yup.object().shape({
         if (!value.fein && !value.license_number && !value.naic_company_code) {
           return this.createError({
             message: 'Please fill in at least one Number/Code.',
+            path: this.path + '.fein',
           });
         }
         return true;
@@ -85,6 +86,7 @@ const validationSchema = Yup.object().shape({
         ) {
           return this.createError({
             message: 'Please select at least one plan type.',
+            path: this.path + ".types_of_plans_hidden"
           });
         }
         return true;
@@ -97,6 +99,7 @@ const validationSchema = Yup.object().shape({
         ) {
           return this.createError({
             message: 'Please select at least one claims file type (see above).',
+            path: this.path + ".types_of_files_hidden"
           });
         }
         return true;
@@ -133,14 +136,16 @@ const initialValues: RegistrationFormValues = {
       fein: '',
       license_number: '',
       naic_company_code: '',
-      types_of_plans_commerical: false,
+      types_of_plans_commercial: false,
       types_of_plans_medicare: false,
       types_of_plans_medicaid: false,
+      types_of_plans_hidden: false,
       types_of_files_eligibility_enrollment: true,
       types_of_files_provider: false,
       types_of_files_medical: false,
       types_of_files_pharmacy: false,
       types_of_files_dental: false,
+      types_of_files_hidden: false,
       total_covered_lives: '',
       claims_encounters_volume: '',
       total_claims_value: '',
@@ -158,6 +163,23 @@ const initialValues: RegistrationFormValues = {
     },
   ],
 };
+
+const initialTouched = {
+    on_behalf_of: true,
+    type: true,
+    entities: [
+      {
+        types_of_plans_commercial: true,
+        types_of_plans_medicare: true,
+        types_of_plans_medicaid: true,
+        types_of_files_eligibility_enrollment: true,
+        types_of_files_provider: true,
+        types_of_files_medical: true,
+        types_of_files_pharmacy: true,
+        types_of_files_dental: true,
+      }
+    ]
+}
 
 export const RegistrationForm: React.FC<{
   isEdit?: boolean;
@@ -237,6 +259,7 @@ export const RegistrationForm: React.FC<{
               ? transformToRegistrationFormValues(data)
               : inputValues ?? initialValues
           }
+          initialTouched={initialTouched}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -417,14 +440,16 @@ export const RegistrationForm: React.FC<{
                         fein: '',
                         license_number: '',
                         naic_company_code: '',
-                        types_of_plans_commerical: false,
+                        types_of_plans_commercial: false,
                         types_of_plans_medicare: false,
                         types_of_plans_medicaid: false,
+                        types_of_plans_hidden: false,
                         types_of_files_eligibility_enrollment: true,
                         types_of_files_provider: false,
                         types_of_files_medical: false,
                         types_of_files_pharmacy: false,
                         types_of_files_dental: false,
+                        types_of_files_hidden: false,
                         total_covered_lives: '',
                         claims_encounters_volume: '',
                         total_claims_value: '',
