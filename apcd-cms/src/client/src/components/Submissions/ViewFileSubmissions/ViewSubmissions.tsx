@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useListSubmissions, FileSubmissionRow } from 'hooks/submissions';
+import LoadingSpinner from 'core-components/LoadingSpinner';
+import SectionMessage from 'core-components/SectionMessage';
+import Paginator from 'core-components/Paginator';
+import styles from './ViewSubmissions.module.css';
+import { Link } from 'react-router-dom';
 import { FileSubmissionLogsModal } from './ViewSubmissionsModal';
 import { formatDate } from 'utils/dateUtil';
 
 export const ViewFileSubmissions: React.FC = () => {
-  const [status, setStatus] = useState<string>('');
-  const [sort, setSort] = useState<string>('');
+  const [status, setStatus] = useState<string>('All');
+  const [sort, setSort] = useState<string>('All');
   const [page, setPage] = useState<number>(1);
 
   const { data, isLoading, isError, refetch } = useListSubmissions(
@@ -19,16 +24,23 @@ export const ViewFileSubmissions: React.FC = () => {
   }, [status, sort, page]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
-    return <div>Error loading data</div>;
+    return (
+      <SectionMessage type="error">
+        There was an error loading the page.{''}
+        <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+          Please submit a ticket.
+        </Link>
+      </SectionMessage>
+    );
   }
 
   const clearSelections = () => {
-    setStatus('');
-    setSort('');
+    setStatus('All');
+    setSort('All');
     setPage(1);
   };
 
@@ -80,7 +92,7 @@ export const ViewFileSubmissions: React.FC = () => {
           </div>
         </div>
       </div>
-      <table id="submissionTable" className="submission-table">
+      <table id="submissionTable" className={styles.submissionTable}>
         <thead>
           <tr>
             {data?.header.map((columnName: string, index: number) => (
@@ -105,6 +117,13 @@ export const ViewFileSubmissions: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <div className={styles.paginatorContainer}>
+        <Paginator
+          pages={data?.total_pages ?? 0}
+          current={data?.page_num ?? 0}
+          callback={setPage}
+        />
+      </div>
     </div>
   );
 };

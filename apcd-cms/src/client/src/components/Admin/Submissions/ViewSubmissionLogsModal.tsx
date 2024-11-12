@@ -5,44 +5,38 @@ import Button from 'core-components/Button';
 import styles from './Submissions.css';
 
 interface ViewSubmissionLogsModalProps {
-  submission_logs: SubmissionLogsModalContent[];
+  submission_logs: SubmissionLogsModalContent | null;
+  isOpen: boolean;
+  parentToggle: () => void;
 }
 
 export const ViewSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
-> = ({ submission_logs }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
-
+> = ({ submission_logs, isOpen, parentToggle }) => {
+  console.log(submission_logs);
   const closeBtn = (
-    <button className="close" onClick={toggle} type="button">
+    <button className="close" onClick={parentToggle} type="button">
       &times;
     </button>
   );
 
   return (
     <>
-      <Button type="link" onClick={() => toggle()}>
-        View Logs
-      </Button>
       <Modal
         isOpen={isOpen}
-        toggle={toggle}
+        toggle={parentToggle}
         size="lg"
         className="modal-dialog-centered"
       >
-        <ModalHeader toggle={toggle} close={closeBtn}>
-          <h5>View Logs</h5>
+        <ModalHeader toggle={parentToggle} close={closeBtn}>
+          View Logs
         </ModalHeader>
         <ModalBody>
           <div>
             <dl>
               <h4>Logs</h4>
-              {submission_logs.length > 0 ? (
-                submission_logs.map((log, index) => (
+              {submission_logs ? (
+                submission_logs.map((log: any, index: number) => (
                   <div className="modal-section" key={index}>
                     <dl className="c-data-list--is-vert c-data-list--is-wide">
                       <dt className="c-data-list__key">Log ID</dt>
