@@ -5,7 +5,7 @@ import Button from 'core-components/Button';
 import styles from './Submissions.css';
 
 interface ViewSubmissionLogsModalProps {
-  submission_logs: SubmissionLogsModalContent | null;
+  submission_logs: SubmissionLogsModalContent[];
   isOpen: boolean;
   parentToggle: () => void;
 }
@@ -13,7 +13,7 @@ interface ViewSubmissionLogsModalProps {
 export const ViewSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
 > = ({ submission_logs, isOpen, parentToggle }) => {
-  console.log(submission_logs);
+  console.log(submission_logs, "THIS IS IN THE MODAL");
   const closeBtn = (
     <button className="close" onClick={parentToggle} type="button">
       &times;
@@ -35,7 +35,7 @@ export const ViewSubmissionLogsModal: React.FC<
           <div>
             <dl>
               <h4>Logs</h4>
-              {submission_logs ? (
+              {submission_logs.length > 0 ? (
                 submission_logs.map((log: any, index: number) => (
                   <div className="modal-section" key={index}>
                     <dl className="c-data-list--is-vert c-data-list--is-wide">

@@ -38,7 +38,7 @@ export const AdminSubmissions: React.FC = () => {
     useState<SubmissionRow | null>(null);
 
   const [selectedSubmissionLog, setSelectedSubmissionLog] =
-    useState<SubmissionLogsModalContent[] | null>(null);
+    useState<SubmissionLogsModalContent[] >([]);
   console.log(selectedSubmissionLog);
   const closeModal = () => {
     setViewModalOpen(false);
@@ -119,7 +119,7 @@ export const AdminSubmissions: React.FC = () => {
               </option>
             ))}
           </select>
-          {submissionData?.selected_status || submissionData?.selected_sort ? (
+          {status !== 'All' || sort !== 'Newest Received' ? (
             <button onClick={clearSelections}>Clear Options</button>
           ) : null}
         </div>
@@ -142,16 +142,20 @@ export const AdminSubmissions: React.FC = () => {
               <td>{titleCase(row.status)}</td>
               <td>{formatDate(row.updated_at)}</td>
               <td>
-                <Button
-                  type="link"
-                  onClick={() => {
-                    setSelectedSubmission(row); // Set selected submission here
-                    setSelectedSubmissionLog(row?.view_modal_content); // Set the logs (assuming logs are part of row data)
-                    setViewModalOpen(true);
-                  }}
-                >
-                  View Logs
-                </Button>
+              <Button
+                type="link"
+                onClick={() => {
+                  console.log("Full row data:", row); 
+                  console.log("view_modal_content:", row?.view_modal_content); // Add this
+                  console.log("Full row data:", row); 
+                  console.log("view_modal_content:", row?.view_modal_content); // Add this
+                  setSelectedSubmission(row);
+                  setSelectedSubmissionLog(row?.view_modal_content);
+                  setViewModalOpen(true);
+                }}
+              >
+                View Logs
+              </Button>
               </td>
             </tr>
           ))}
