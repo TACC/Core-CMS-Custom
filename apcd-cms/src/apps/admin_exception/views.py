@@ -51,9 +51,6 @@ class AdminExceptionsTable(TemplateView):
         return super(AdminExceptionsTable, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
-
-        # context = super(AdminExceptionsTable, self).get_context_data(*args, **kwargs)
-
         exception_content = get_all_exceptions()
 
         context = self.get_exception_list_json(exception_content, *args, **kwargs)
@@ -65,8 +62,8 @@ class AdminExceptionsTable(TemplateView):
         context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
-        context['outcome_modal_options'] = ['None']
-        context['status_modal_options'] = ['None']
+        context['outcome_modal_options'] = ['None', 'Granted', 'Denied', 'Withdrawn']
+        context['status_modal_options'] = ['None', 'Complete', 'Pending']
         context['exceptions'] = []
         context['action_options'] = ['Select Action', 'View Record', 'Edit Record']
 
@@ -153,13 +150,7 @@ class AdminExceptionsTable(TemplateView):
                 if status != None:
                     context['status_options'].append(status)
                     # to make sure All is first in the dropdown filter options after sorting alphabetically
-                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))    
-            if status not in context['status_modal_options']:
-                context['status_modal_options'].append(status)
-                context['status_modal_options'] = sorted(context['status_modal_options'], key=lambda x: (x is not None, x))
-            if outcome not in context['outcome_modal_options']:
-                context['outcome_modal_options'].append(outcome)
-                context['outcome_modal_options'] = sorted(context['outcome_modal_options'], key=lambda x: (x is not None, x))
+                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'Pending', x))
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
