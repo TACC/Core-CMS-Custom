@@ -57,7 +57,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
   const dateFormat: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   };
 
   if (!exception) return null;
@@ -93,66 +93,66 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     explanation_justification,
     updated_at,
   } = exception.view_modal_content;
-  const [currentException, setCurrentException] = useState(
-    [
-      {
-        label: 'Created',
-        value: created_at
-          ? formatDate(created_at)
-          : 'None',
-      },
-      {
-        label: 'Entity Organization',
-        value: entity_name,
-      },
-      {
-        label: 'Requestor',
-        value: requestor_name,
-      },
-      {
-        label: 'Requestor Email',
-        value: requestor_email,
-      },
-      {
-        label: 'Exception Type',
-        value: request_type,
-      },
-      {
-        label: 'Status',
-        value: status,
-      },
-      {
-        label: 'Outcome',
-        value: outcome ? outcome : 'None',
-      },
-      {
-        label: 'File Type',
-        value: data_file_name ? data_file_name : 'None',
-      },
-      {
-        label: 'Field Number',
-        value: field_number ? field_number : 'None',
-      },
-      {
-        label: 'Required Threshold',
-        value: required_threshold ? required_threshold : 'None',
-      },
-      {
-        label: 'Requested Expiration Date',
-        value: requested_expiration_date && 
-              new Date(requested_expiration_date).toLocaleDateString(undefined, dateFormat) || 'None',
-      },
-      {
-        label: 'Explanation Justification',
-        value: explanation_justification || 'None',
-      },
-      {
-        label: 'Last Updated',
-        value: updated_at
-          ? formatDate(updated_at)
-          : 'None',
-      },]
-  );
+  const [currentException, setCurrentException] = useState([
+    {
+      label: 'Created',
+      value: created_at ? formatDate(created_at) : 'None',
+    },
+    {
+      label: 'Entity Organization',
+      value: entity_name,
+    },
+    {
+      label: 'Requestor',
+      value: requestor_name,
+    },
+    {
+      label: 'Requestor Email',
+      value: requestor_email,
+    },
+    {
+      label: 'Exception Type',
+      value: request_type,
+    },
+    {
+      label: 'Status',
+      value: status,
+    },
+    {
+      label: 'Outcome',
+      value: outcome ? outcome : 'None',
+    },
+    {
+      label: 'File Type',
+      value: data_file_name ? data_file_name : 'None',
+    },
+    {
+      label: 'Field Number',
+      value: field_number ? field_number : 'None',
+    },
+    {
+      label: 'Required Threshold',
+      value: required_threshold ? required_threshold : 'None',
+    },
+    {
+      label: 'Requested Expiration Date',
+      value:
+        (requested_expiration_date &&
+          new Date(requested_expiration_date).toLocaleDateString(
+            undefined,
+            dateFormat
+          )) ||
+        'None',
+    },
+    {
+      label: 'Explanation Justification',
+      value: explanation_justification || 'None',
+    },
+    {
+      label: 'Last Updated',
+      value: updated_at ? formatDate(updated_at) : 'None',
+    },
+  ]);
 
   const onSubmit = async (
     values: FormValues,
@@ -167,24 +167,26 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         method: 'PUT',
         body: values,
       });
-      setCurrentException(currentException.map((field, index) => {
-        if (field.label === 'Status') {
-          return {
-            label: field.label,
-            value: values.status,
+      setCurrentException(
+        currentException.map((field, index) => {
+          if (field.label === 'Status') {
+            return {
+              label: field.label,
+              value: values.status,
+            };
           }
-        } 
-        if (field.label === 'Outcome') {
-          return {
-            label: field.label,
-            value: values.outcome,
+          if (field.label === 'Outcome') {
+            return {
+              label: field.label,
+              value: values.outcome,
+            };
           }
-        }
           return field;
-      }));
+        })
+      );
       if (response) {
         setShowSuccessMessage(true);
-        
+
         if (onEditSuccess) onEditSuccess(response);
       }
     } catch (error: any) {
@@ -413,15 +415,23 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
               </Row>
               <br />
-              <Alert color="success" isOpen={showSuccessMessage} toggle={dismissMessages}>
+              <Alert
+                color="success"
+                isOpen={showSuccessMessage}
+                toggle={dismissMessages}
+              >
                 Success: The exception data has been successfully updated.
               </Alert>
-              <Alert color="danger" isOpen={showErrorMessage} toggle={dismissMessages}>
+              <Alert
+                color="danger"
+                isOpen={showErrorMessage}
+                toggle={dismissMessages}
+              >
                 Error: {errorMessage}
               </Alert>
               <Button
                 type="primary"
-                attr='submit'
+                attr="submit"
                 disabled={formik.isSubmitting}
               >
                 Submit
@@ -433,12 +443,8 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
           <div>
             {currentException.map((field, index) => (
               <Row key={index}>
-                <Col md={{size: 4, offset: 1}}>
-                  {field.label}:
-                </Col>
-                <Col md={7}>
-                  {field.value}
-                </Col>
+                <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
+                <Col md={7}>{field.value}</Col>
               </Row>
             ))}
           </div>

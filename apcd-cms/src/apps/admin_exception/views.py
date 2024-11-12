@@ -17,34 +17,6 @@ logger = logging.getLogger(__name__)
 
 class AdminExceptionsTable(TemplateView):
 
-    template_name = 'list_admin_exception.html'
-    def post(self, request):
-
-        form = request.POST.copy()
-
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-
-        def _edit_exception(form):
-            errors = []
-            exception_response = update_exception(form)
-            if _err_msg(exception_response):
-                errors.append(_err_msg(exception_response))
-            if len(errors) != 0:
-                logger.debug(print(errors))
-                template = loader.get_template('edit_exception_error.html')
-            else:
-                logger.debug(print("success"))
-                template = loader.get_template('edit_exception_success.html')
-            return template
-
-        template = _edit_exception(form)
-        return HttpResponse(template.render({}, request))
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user): 
             return HttpResponseRedirect('/')
