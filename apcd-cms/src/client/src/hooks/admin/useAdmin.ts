@@ -5,6 +5,7 @@ import {
   UserResult,
   SubmissionResult,
   ExceptionResult,
+  FilterOptions,
 } from '.';
 
 const getUsers = async (params: any) => {
@@ -13,8 +14,37 @@ const getUsers = async (params: any) => {
   return response.response;
 };
 
-export const useUsers = (params: any): UseQueryResult<UserResult> => {
-  return useQuery(['view_users', params], () => getUsers(params));
+export const useUsers = (
+  status?: string,
+  org?: string,
+  page?: number
+): UseQueryResult<UserResult> => {
+  const params: { status?: string; org?: string; page?: number } = {
+    status,
+    org,
+    page,
+  };
+  const query = useQuery(['users', params], () =>
+    getUsers(params)
+  ) as UseQueryResult<UserResult>;
+
+  return { ...query };
+};
+
+const getUsersFilters = async () => {
+  const url = `/administration/view-users/api/options`;
+  const response = await fetchUtil({ url });
+  return response;
+};
+
+export const useUserFilters = (): UseQueryResult<FilterOptions> => {
+  const query = useQuery(['userfilters'], () => getUsersFilters(), {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  }) as UseQueryResult<FilterOptions>;
+
+  return { ...query };
 };
 
 const getSubmissions = async (params: any) => {
@@ -52,7 +82,16 @@ const getExtensions = async (params: any) => {
   return response.response;
 };
 
-export const useExtensions = (params: any): UseQueryResult<ExtensionResult> => {
+export const useExtensions = (
+  status?: string,
+  org?: string,
+  page?: number
+): UseQueryResult<ExtensionResult> => {
+  const params: { status?: string; org?: string; page?: number } = {
+    status,
+    org,
+    page,
+  };
   const query = useQuery(['extensions', params], () =>
     getExtensions(params)
   ) as UseQueryResult<ExtensionResult>;

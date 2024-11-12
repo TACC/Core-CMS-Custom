@@ -9,4 +9,5 @@ urlpatterns = [
     path(r'list-registration-requests/api/?status=(?P<status>)/', SubmittersTable.as_view(), name='submitter_regis_table_api'),
     path(r'list-registration-requests/api/?org=(?P<org>)/', SubmittersTable.as_view(), name='submitter_regis_table_api'),
     path(r'list-registration-requests/api/?status=(?P<status>)&org=(?P<org>)/', SubmittersTable.as_view(), name='submitter_regis_table_api'),
+    path(r'list-registration-requests/api/?reg_id=(?P<reg_id>)/', SubmittersTable.as_view(), name='submitter_regis_table_api'),
 ]

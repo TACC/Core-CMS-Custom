@@ -4,6 +4,7 @@ from apps.utils.apcd_database import get_registrations, get_registration_contact
 from apps.utils.apcd_groups import has_groups
 from django.views.generic.base import TemplateView
 from apps.admin_regis_table.views import RegistrationsTable
+from apps.utils.registrations_data_formatting import _set_registration
 import logging
 import json
 
@@ -13,6 +14,13 @@ logger = logging.getLogger(__name__)
 class SubmittersTable(RegistrationsTable):
     template_name = 'list_submitter_registrations.html'
 
+    def _get_first_registration_entry(self, submitter_code, reg_id):
+        registrations = get_registrations(submitter_code=submitter_code, reg_id=reg_id)
+        if len(registrations) > 0:
+            return registrations[0]
+        else:
+            raise Exception(f'Registration not found {reg_id}')
+
     def get(self, request, *args, **kwargs):
         try:
             response = get_submitter_code(request.user)
@@ -20,13 +28,20 @@ class SubmittersTable(RegistrationsTable):
             registrations_content = []
             registrations_entities = []
             registrations_contacts = []
-            registration_list = get_registrations(submitter_code=submitter_code)
-            for registration in registration_list:
-                registrations_content.append(registration)
-            response_json = self.get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args,**kwargs)
-            return JsonResponse({'response': response_json})
+            if request.GET.get('reg_id'):
+                reg_id = int(request.GET.get('reg_id'))
+                registration = self._get_first_registration_entry(submitter_code=submitter_code, reg_id=reg_id)
+                registrations_entities = get_registration_entities(reg_id=reg_id)
+                registrations_contacts = get_registration_contacts(reg_id=reg_id)
+                return JsonResponse({'response': _set_registration(registration, registrations_entities, registrations_contacts)})
+            else:
+                registration_list = get_registrations(submitter_code=submitter_code)
+                for registration in registration_list:
+                    registrations_content.append(registration)
+                response_json = self.get_registration_list_json(registrations_content, *args, **kwargs)
+                return JsonResponse({'response': response_json})
         except Exception as e:
-            logger.error("An error occurred: %s", str(e))
+            logger.error("An error occurred in submitter registration GET request: %s", str(e))
             return JsonResponse({
                 'status': 'error',
                 'message': 'Internal server error',
@@ -37,19 +52,9 @@ class SubmittersTable(RegistrationsTable):
             return HttpResponseRedirect('/')
         return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
-    def get_registration_list_json(self, registrations_content, registrations_entities, registrations_contacts, *args, **kwargs):
-        registrations_entities = []
-        registrations_contacts = []
+    def get_registration_list_json(self, registrations_content, *args, **kwargs):
         try:
-            for registration in registrations_content:
-                reg_id = registration[0]
-                contacts = get_registration_contacts(reg_id=reg_id)
-                entity = get_registration_entities(reg_id=reg_id)
-                for c in contacts:
-                    registrations_contacts.append(c)
-                for e in entity:                 
-                    registrations_entities.append(e) 
-            reg_data = super().get_registration_list_json(registrations_content, registrations_entities, registrations_contacts, *args, **kwargs)
+            reg_data = super().get_registration_list_json(registrations_content, *args, **kwargs)
             reg_data['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
             reg_data['pagination_url_namespaces'] = 'register:submitter_regis_table'
             return reg_data

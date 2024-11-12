@@ -5,10 +5,12 @@ import Paginator from 'core-components/Paginator';
 import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistrationModal/ViewRegistrationModal';
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
+import Button from 'core-components/Button';
 
-export const RegistrationList: React.FC<{ useDataHook: any }> = ({
-  useDataHook,
-}) => {
+export const RegistrationList: React.FC<{
+  useDataHook: any;
+  isAdmin?: boolean;
+}> = ({ useDataHook, isAdmin = false }) => {
   const [status, setStatus] = useState('All');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
@@ -53,7 +55,7 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
 
   const openAction = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    reg_id: string
+    reg_id: number
   ) => {
     const actionsDropdown = event.target;
     const selectedOption = actionsDropdown.value;
@@ -64,6 +66,13 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
       setIsViewModalOpen(true);
     } else if (selectedOption == 'editRegistration') {
       setIsEditModalOpen(true);
+    } else if (selectedOption == 'renewRegistration') {
+      var xhr, url;
+      url = `/register/request-to-submit/?reg_id=${reg_id}`;
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.send();
+      window.location.href = url;
     }
     actionsDropdown.selectedIndex = 0;
   };
@@ -80,7 +89,7 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
             <select
               id="statusFilter"
               className="status-filter"
-              defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
+              value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
               {data?.status_options.map((status, index) => (
@@ -90,14 +99,13 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
               ))}
             </select>
 
-            {/* Filter by Organization */}
             <span>
               <b>Filter by Organization: </b>
             </span>
             <select
               id="organizationFilter"
               className="status-filter org-filter"
-              defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
+              value={org}
               onChange={(e) => setOrg(e.target.value)}
             >
               {data?.org_options.map((org, index) => (
@@ -107,7 +115,7 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
               ))}
             </select>
             {data?.selected_status || data?.selected_org ? (
-              <button onClick={clearSelections}>Clear Options</button>
+              <Button onClick={clearSelections}>Clear Options</Button>
             ) : null}
           </div>
         </div>
@@ -137,7 +145,13 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
                 >
                   <option value="">Select Action</option>
                   <option value="viewRegistration">View Record</option>
-                  <option value="editRegistration">Edit Record</option>
+                  {isAdmin ? (
+                    <option value="editRegistration">Edit Record</option>
+                  ) : (
+                    <option value="renewRegistration">
+                      Renew Registration
+                    </option>
+                  )}
                 </select>
               </td>
             </tr>
@@ -154,12 +168,12 @@ export const RegistrationList: React.FC<{ useDataHook: any }> = ({
       {selectedRegistration && (
         <>
           <ViewRegistrationModal
-            registration={selectedRegistration}
+            reg_id={selectedRegistration.reg_id}
             isVisible={isViewModalOpen}
             onClose={() => setIsViewModalOpen(false)}
           />
           <EditRegistrationModal
-            registration={selectedRegistration}
+            reg_id={selectedRegistration.reg_id}
             isVisible={isEditModalOpen}
             onClose={() => setIsEditModalOpen(false)}
           />
