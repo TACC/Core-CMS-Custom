@@ -96,27 +96,6 @@ class AdminExceptionsTable(TemplateView):
                     'entity_name': exception[21],
                     'updated_at': exception[7],
                 }
-                'data_file_name': exception[22],
-                'view_modal_content': {
-                    'exception_id': exception[0],
-                    'created_at':  exception[6],
-                    'requestor_name': exception[2],
-                    'requestor_email': exception[11],
-                    'request_type': title_case(exception[3]) if exception[3] else None,
-                    'status': title_case(exception[19]) if exception[3] else None,
-                    'outcome': title_case(exception[5]) if exception[3] else None,
-                    'data_file_name': exception[22],
-                    'field_number': exception[13],
-                    'required_threshold': exception[14],
-                    'requested_threshold': exception[15],
-                    'approved_threshold': exception[17],
-                    'requested_expiration_date': exception[16],
-                    'approved_expiration_date': exception[18],
-                    'explanation_justification': exception[4],
-                    'notes': exception[20],
-                    'entity_name': exception[21],
-                    'updated_at': exception[7],
-                }
             }
         def getDate(row):
             date = row[6]
