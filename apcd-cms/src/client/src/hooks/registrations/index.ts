@@ -84,14 +84,16 @@ export type RegistrationFormValues = {
     fein: string;
     license_number: string;
     naic_company_code: string;
-    types_of_plans_commerical: boolean;
+    types_of_plans_commercial: boolean;
     types_of_plans_medicare: boolean;
     types_of_plans_medicaid: boolean;
+    types_of_plans_hidden?: boolean;
     types_of_files_eligibility_enrollment: boolean;
     types_of_files_provider: boolean;
     types_of_files_medical: boolean;
     types_of_files_pharmacy: boolean;
     types_of_files_dental: boolean;
+    types_of_files_hidden?: boolean;
     total_covered_lives: any;
     claims_encounters_volume: any;
     total_claims_value: any;
@@ -125,7 +127,7 @@ export function transformToRegistrationFormValues(
       fein: entity.fein ?? '',
       license_number: entity.license ?? '',
       naic_company_code: entity.naic ?? '',
-      types_of_plans_commerical: entity.plans_type['Commercial'],
+      types_of_plans_commercial: entity.plans_type['Commercial'],
       types_of_plans_medicare: entity.plans_type['Medicare'],
       types_of_plans_medicaid: entity.plans_type['Medicaid'],
       types_of_files_eligibility_enrollment:

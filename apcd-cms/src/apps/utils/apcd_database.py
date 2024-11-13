@@ -354,14 +354,14 @@ def create_registration_entity(entity, reg_id, from_update_reg=None):#, old_reg_
             _set_int(entity['total_covered_lives']),
             _clean_value(entity['entity_name']),
             _clean_value(entity['fein']),
-            True if 'types_of_plans_commercial' in entity else False,
-            True if 'types_of_plans_medicare' in entity else False,
-            True if 'types_of_plans_medicaid' in entity else False,
+            entity['types_of_plans_commercial'],
+            entity['types_of_plans_medicare'],
+            entity['types_of_plans_medicaid'],
             True,
-            True if 'types_of_files_provider' in entity else False,
-            True if 'types_of_files_medical' in entity else False,
-            True if 'types_of_files_pharmacy' in entity else False,
-            True if 'types_of_files_dental' in entity else False
+            entity['types_of_files_provider'],
+            entity['types_of_files_medical'],
+            entity['types_of_files_pharmacy'],
+            entity['types_of_files_dental']
         )
 
         operation = """INSERT INTO registration_entities(
@@ -423,13 +423,13 @@ def update_registration_entity(entity, reg_id):
             _set_int(entity['total_covered_lives']),
             _clean_value(entity['entity_name']),
             _clean_value(entity['fein']),
-            True if 'types_of_plans_commercial' in entity else False,
-            True if 'types_of_plans_medicare' in entity else False,
-            True if 'types_of_plans_medicaid' in entity else False,
-            True if 'types_of_files_provider' in entity else False,
-            True if 'types_of_files_medical' in entity else False,
-            True if 'types_of_files_pharmacy' in entity else False,
-            True if 'types_of_files_dental' in entity else False,
+            entity['types_of_plans_commercial'],
+            entity['types_of_plans_medicare'],
+            entity['types_of_plans_medicaid'],
+            entity['types_of_files_provider'],
+            entity['types_of_files_medical'],
+            entity['types_of_files_pharmacy'],
+            entity['types_of_files_dental'],
             reg_id,
             entity['entity_id']
         )
@@ -556,7 +556,7 @@ def create_registration_contact(contact, reg_id, from_update_reg=None):
             #str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
         values = (
             reg_id,
-            True if 'contact_notifications' in contact else False,
+            contact['contact_notifications'],
             _clean_value(contact['contact_type']),
             _clean_value(contact['contact_name']),
             re.sub("[^0-9]", "", contact['contact_phone']),
@@ -606,7 +606,7 @@ def update_registration_contact(contact, reg_id):
             return create_registration_contact(contact, reg_id)
 
         values = (
-            True if 'contact_notifications' in contact else False,
+            contact['contact_notifications'],
             _clean_value(contact['contact_type']),
             _clean_value(contact['contact_name']),
             re.sub("[^0-9]", "", contact['contact_phone']),
