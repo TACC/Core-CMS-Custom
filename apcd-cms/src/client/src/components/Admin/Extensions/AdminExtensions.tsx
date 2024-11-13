@@ -71,45 +71,43 @@ export const AdminExtensions: React.FC = () => {
       <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>
-              <b>Filter by Status: </b>
-            </span>
-            <select
-              id="statusFilter"
-              className="status-filter"
-              //defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
-              onChange={(e) => setStatus(e.target.value)}
-              value={data?.selected_status}
-            >
-              {data?.status_options.map((status, index) => (
-                <option className="dropdown-text" key={index} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+          <span>
+            <b>Filter by Status: </b>
+          </span>
+          <select
+            id="statusFilter"
+            className="status-filter"
+            //defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
+            onChange={(e) => setStatus(e.target.value)}
+            value={data?.selected_status}
+          >
+            {data?.status_options.map((status, index) => (
+              <option className="dropdown-text" key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
 
-            {/* Filter by Organization */}
-            <span>
-              <b>Filter by Organization: </b>
-            </span>
-            <select
-              id="organizationFilter"
-              className="status-filter org-filter"
-              //defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
-              onChange={(e) => setOrg(e.target.value)}
-              value={data?.selected_org}
-            >
-              {data?.org_options.map((org, index) => (
-                <option className="dropdown-text" key={index} value={org}>
-                  {org}
-                </option>
-              ))}
-            </select>
-            {data?.selected_status || data?.selected_org ? (
-              <button onClick={clearSelections}>Clear Options</button>
-            ) : null}
-          </div>
+          {/* Filter by Organization */}
+          <span>
+            <b>Filter by Organization: </b>
+          </span>
+          <select
+            id="organizationFilter"
+            className="status-filter org-filter"
+            //defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
+            onChange={(e) => setOrg(e.target.value)}
+            value={data?.selected_org}
+          >
+            {data?.org_options.map((org, index) => (
+              <option className="dropdown-text" key={index} value={org}>
+                {org}
+              </option>
+            ))}
+          </select>
+          {data?.selected_status || data?.selected_org ? (
+            <button onClick={clearSelections}>Clear Options</button>
+          ) : null}
         </div>
       </div>
       <table id="extensionTable" className="extension-table">
