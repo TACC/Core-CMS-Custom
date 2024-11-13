@@ -3,7 +3,6 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
-  Button,
   Label,
   FormGroup,
   Row,
@@ -11,9 +10,7 @@ import {
   Alert,
 } from 'reactstrap';
 import {
-  Formik,
   Field,
-  Form,
   ErrorMessage,
   useFormik,
   FormikHelpers,
@@ -22,7 +19,9 @@ import {
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { ExceptionRow } from 'hooks/admin';
+import { formatDate } from 'utils/dateUtil';
 import styles from './EditExceptionModal.module.css';
+import Button from 'core-components/Button';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -53,6 +52,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const dateFormat: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
 
   if (!exception) return null;
 
@@ -72,6 +76,81 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     return { initialValues, validationSchema };
   };
   const { initialValues, validationSchema } = useFormFields();
+  let {
+    created_at,
+    entity_name,
+    requestor_name,
+    requestor_email,
+    request_type,
+    status,
+    outcome,
+    data_file_name,
+    field_number,
+    required_threshold,
+    requested_expiration_date,
+    explanation_justification,
+    updated_at,
+  } = exception.view_modal_content;
+  const [currentException, setCurrentException] = useState([
+    {
+      label: 'Created',
+      value: created_at ? formatDate(created_at) : 'None',
+    },
+    {
+      label: 'Entity Organization',
+      value: entity_name,
+    },
+    {
+      label: 'Requestor',
+      value: requestor_name,
+    },
+    {
+      label: 'Requestor Email',
+      value: requestor_email,
+    },
+    {
+      label: 'Exception Type',
+      value: request_type,
+    },
+    {
+      label: 'Status',
+      value: status,
+    },
+    {
+      label: 'Outcome',
+      value: outcome ? outcome : 'None',
+    },
+    {
+      label: 'File Type',
+      value: data_file_name ? data_file_name : 'None',
+    },
+    {
+      label: 'Field Number',
+      value: field_number ? field_number : 'None',
+    },
+    {
+      label: 'Required Threshold',
+      value: required_threshold ? required_threshold : 'None',
+    },
+    {
+      label: 'Requested Expiration Date',
+      value:
+        (requested_expiration_date &&
+          new Date(requested_expiration_date).toLocaleDateString(
+            undefined,
+            dateFormat
+          )) ||
+        'None',
+    },
+    {
+      label: 'Explanation Justification',
+      value: explanation_justification || 'None',
+    },
+    {
+      label: 'Last Updated',
+      value: updated_at ? formatDate(updated_at) : 'None',
+    },
+  ]);
 
   const onSubmit = async (
     values: FormValues,
@@ -86,12 +165,28 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         method: 'PUT',
         body: values,
       });
+      setCurrentException(
+        currentException.map((field, index) => {
+          if (field.label === 'Status') {
+            return {
+              label: field.label,
+              value: values.status,
+            };
+          }
+          if (field.label === 'Outcome') {
+            return {
+              label: field.label,
+              value: values.outcome,
+            };
+          }
+          return field;
+        })
+      );
+      if (response) {
+        setShowSuccessMessage(true);
 
-      if (onEditSuccess && response) {
-        onEditSuccess(response);
+        if (onEditSuccess) onEditSuccess(response);
       }
-
-      setShowSuccessMessage(true);
     } catch (error: any) {
       console.error('Error saving data:', error);
       console.log(url);
@@ -120,67 +215,38 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     enableReinitialize: true,
   });
 
-  const handleClose = () => {
+  const dismissMessages = () => {
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
-
-  const userFields = [
-    {
-      label: 'Approved Threshold',
-      value: exception.approved_threshold
-        ? exception.approved_threshold
-        : 'None',
-    },
-    {
-      label: 'Approved Expiration Date',
-      value: exception.approved_expiration_date
-        ? exception.approved_expiration_date
-        : 'None',
-    },
-    { label: 'Exception Status', value: exception.status },
-    { label: 'Exception Outcome', value: exception.outcome },
-    {
-      label: 'Exception Notes',
-      value: exception.notes ? exception.notes : 'None',
-    },
-  ];
 
   return (
     <>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        className={styles.customModal}
-        onClosed={handleClose}
+        className="modal-dialog modal-lg"
+        onClosed={dismissMessages}
       >
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>
+        <div className="modal-header">
+          <h4 className="modal-title text-capitalize">
             Edit Exception ID {exception.exception_id} for{' '}
             {exception.entity_name}
-          </Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={onClose}
-          >
-            <span aria-hidden="true">&times;</span>
+          </h4>
+          <button type="button" className="close" onClick={onClose}>
+            <span aria-hidden="true">&#xe912;</span>
           </button>
         </div>
         <ModalBody>
-          <Alert color="success" isOpen={showSuccessMessage}>
-            Success: The exception data has been successfully updated.
-          </Alert>
-          <div className={styles.greyRectangle}>Edit Selected Exception</div>
+          <h4 className="modal-header">Edit Selected Exception</h4>
           <FormikProvider value={formik}>
             <form onSubmit={formik.handleSubmit}>
               <Row>
                 {exception.request_type == 'Threshold' && (
-                  <Col md={6}>
+                  <Col md={4}>
                     <FormGroup>
                       <Label
                         for="approved_threshold"
-                        className={styles.customLabel}
                       >
                         <strong>Approved Threshold</strong>
                       </Label>
@@ -195,7 +261,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         }
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
+                        className={`form-control`}
                       />
                       <small
                         className="form-text text-muted"
@@ -211,11 +277,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     </FormGroup>
                   </Col>
                 )}
-                <Col md={6}>
+                <Col md={4}>
                   <FormGroup>
                     <Label
                       for="approved_expiration_date"
-                      className={styles.customLabel}
                     >
                       <strong>Approved Expiration Date</strong>
                     </Label>
@@ -230,7 +295,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       }
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"
@@ -250,9 +315,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={6}>
+                <Col md={4}>
                   <FormGroup>
-                    <Label for="status" className={styles.customLabel}>
+                    <Label for="status">
                       <strong>Exception Status</strong>
                     </Label>
                     <Field
@@ -261,7 +326,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="status"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                       value={formik.values.status}
                     >
                       {statusOptions?.map(
@@ -284,9 +349,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={6}>
+                <Col md={4}>
                   <FormGroup>
-                    <Label for="outcome" className={styles.customLabel}>
+                    <Label for="outcome">
                       <strong>Exception Outcome</strong>
                     </Label>
                     <Field
@@ -295,7 +360,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="outcome"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                       value={formik.values.outcome}
                     >
                       {outcomeOptions?.map((val, index) => (
@@ -315,9 +380,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={6}>
+                <Col md={8}>
                   <FormGroup>
-                    <Label for="notes" className={styles.customLabel}>
+                    <Label for="notes">
                       <strong>Notes</strong>
                     </Label>
                     <Field
@@ -325,10 +390,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       name="notes"
                       id="notes"
                       rows="5"
+                      cols="40"
                       maxLength="2000" // Set the maxLength attribute
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"
@@ -345,29 +411,36 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
               </Row>
               <br />
-              <Alert color="danger" isOpen={showErrorMessage}>
+              <Alert
+                color="success"
+                isOpen={showSuccessMessage}
+                toggle={dismissMessages}
+              >
+                Success: The exception data has been successfully updated.
+              </Alert>
+              <Alert
+                color="danger"
+                isOpen={showErrorMessage}
+                toggle={dismissMessages}
+              >
                 Error: {errorMessage}
               </Alert>
               <Button
-                type="submit"
-                color="primary"
+                type="primary"
+                attr="submit"
                 disabled={formik.isSubmitting}
-                className={styles.customSubmitButton}
               >
                 Submit
               </Button>
             </form>
           </FormikProvider>
           <hr />
-          <div className={styles.viewRecord}>
-            {userFields.map((field, index) => (
+          <h4 className="modal-header">Current Exception Information</h4>
+          <div>
+            {currentException.map((field, index) => (
               <Row key={index}>
-                <Col md={6}>
-                  <p>{field.label}:</p>
-                </Col>
-                <Col md={6}>
-                  <p>{field.value}</p>
-                </Col>
+                <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
+                <Col md={7}>{field.value}</Col>
               </Row>
             ))}
           </div>

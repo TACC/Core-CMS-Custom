@@ -130,14 +130,14 @@ export const ViewUsers: React.FC = () => {
                 </option>
               ))}
             </select>
-            {userData?.selected_status || userData?.selected_org ? (
+            {status !== 'All' || org !== 'All' ? (
               <Button onClick={clearSelections}>Clear Options</Button>
             ) : null}
           </div>
         </div>
       </div>
       <div>
-        <table id="viewUserTable" className="view-user-table">
+        <table id="viewUserTable" className="users-table">
           <thead>
             <tr>
               {header.map((columnName: string, index: number) => (

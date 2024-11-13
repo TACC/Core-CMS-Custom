@@ -38,7 +38,7 @@ def get_users():
         LEFT JOIN submitter_users ON users.user_id = submitter_users.user_id
         AND users.user_number = submitter_users.user_number
         LEFT JOIN submitters on submitter_users.submitter_id = submitters.submitter_id
-        ORDER BY submitters.entity_name ASC;
+        ORDER BY submitters.entity_name, users.user_id ASC;
         """
         cur = conn.cursor()
         cur.execute(query)

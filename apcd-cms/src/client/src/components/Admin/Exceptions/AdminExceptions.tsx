@@ -8,7 +8,7 @@ import styles from './AdminExceptions.module.css';
 import { formatDate } from 'utils/dateUtil';
 
 export const AdminExceptions: React.FC = () => {
-  const [status, setStatus] = useState('All');
+  const [status, setStatus] = useState('Pending');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useExceptions(
@@ -28,8 +28,8 @@ export const AdminExceptions: React.FC = () => {
   }, [status, org, page, refetch]);
 
   const clearSelections = () => {
-    setStatus('');
-    setOrg('');
+    setStatus('Pending');
+    setOrg('All');
     setPage(1);
   };
 
@@ -76,8 +76,7 @@ export const AdminExceptions: React.FC = () => {
             </span>
             <select
               id="statusFilter"
-              className="status-filter"
-              defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
+              value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
               {data?.status_options.map((status, index) => (
@@ -93,8 +92,7 @@ export const AdminExceptions: React.FC = () => {
             </span>
             <select
               id="organizationFilter"
-              className="status-filter org-filter"
-              defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
+              value={org}
               onChange={(e) => setOrg(e.target.value)}
             >
               {data?.org_options.map((org, index) => (
@@ -103,7 +101,7 @@ export const AdminExceptions: React.FC = () => {
                 </option>
               ))}
             </select>
-            {data?.selected_status || data?.selected_org ? (
+            {status !== 'Pending' || org !== 'All' ? (
               <button onClick={clearSelections}>Clear Options</button>
             ) : null}
           </div>

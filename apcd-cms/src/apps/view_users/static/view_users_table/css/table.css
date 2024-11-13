@@ -11,11 +11,11 @@
 @media (max-width: 767px) {
     /* To label the cells */
     /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
-    .users-table td:nth-of-type(1):before { content: "User Name"; }
-    .users-table td:nth-of-type(2):before { content: "Role"; }
-    .users-table td:nth-of-type(3):before { content: "Organization"; }
-    .users-table td:nth-of-type(4):before { content: "Email"; }
-    .users-table td:nth-of-type(5):before { content: "Created"; }
-    .users-table td:nth-of-type(6):before { content: "Updated"; }
-    .users-table td:nth-of-type(7):before { content: "Notes"; }
+    .users-table td:nth-of-type(1):before { content: "User Id"; }
+    .users-table td:nth-of-type(2):before { content: "Name"; }
+    .users-table td:nth-of-type(3):before { content: "Entity Organization'"; }
+    .users-table td:nth-of-type(4):before { content: "Role"; }
+    .users-table td:nth-of-type(5):before { content: "Status"; }
+    .users-table td:nth-of-type(6):before { content: "User Number"; }
+    .users-table td:nth-of-type(7):before { content: "Actions"; }
 }
