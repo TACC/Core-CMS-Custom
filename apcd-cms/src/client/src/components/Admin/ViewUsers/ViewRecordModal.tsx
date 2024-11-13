@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Row, Col, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, Row, Col, ModalBody } from 'reactstrap';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';
 import { formatDate } from 'utils/dateUtil';
@@ -16,21 +16,16 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   user,
 }) => {
   if (!user) return null;
-
+  const closeBtn = (
+    <button className="close" onClick={toggle} type="button">
+      &times;
+    </button>
+  );
   return (
     <Modal isOpen={isOpen} toggle={toggle} className={styles.customModal}>
-      <div className={`modal-header ${styles.modalHeader}`}>
-        <h4 className="modal-title">
-          Details for User: {user.user_name} ({user.user_id})
-        </h4>
-        <button
-          type="button"
-          className={`close ${styles.customCloseButton}`}
-          onClick={toggle}
-        >
-          <span aria-hidden="true">&#xe912;</span>
-        </button>
-      </div>
+      <ModalHeader close={closeBtn}>
+        Details for User: {user.user_name} ({user.user_id})
+      </ModalHeader>
 
       <ModalBody className="modal-content">
         <div className={styles.userListing}>
