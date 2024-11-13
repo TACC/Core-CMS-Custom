@@ -8,3 +8,9 @@
 .isRequired {
   color: red;
 }
+
+.contactsAndEntitiesButtons {
+  background-color: var(--global-color-accent--normal);
+  border-color: var(--global-color-accent--normal);
+  color: var(--global-color-primary--xx-light);
+}

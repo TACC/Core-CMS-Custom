@@ -76,7 +76,7 @@ export type RegistrationFormValues = {
   business_name: string;
   mailing_address: string;
   city: string;
-  state?: string | undefined;
+  state: string;
   zip_code: string;
   reg_id?: number;
   entities: {

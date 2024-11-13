@@ -7,14 +7,14 @@ import styles from './RegistrationForm.module.css';
 export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5>Entity {index + 1}</h5>
+      <h5><b>ENTITY {index + 1}</b></h5>
       <TextFormField
         name={`entities.${index}.entity_name`}
         label="Name"
         required={true}
       />
 
-      <FormGroup className="field-wrapper required">
+      <div className="field-wrapper required">
         <Label>
           Number/Code
           <span className={styles.isRequired}> (required)</span>
@@ -23,25 +23,25 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
           Provide all available identifiers. At least one of the following is
           required.
         </div>
-        <FormGroup className="o-grid o-grid--col-auto-count" noMargin={true}>
-          <TextFormField
-            name={`entities.${index}.fein`}
-            label="FEIN²"
-            helpText="Enter in format 12-3456789."
-          />
+      </div>
+      <FormGroup className="o-grid o-grid--col-auto-count" noMargin={true}>
+        <TextFormField
+          name={`entities.${index}.fein`}
+          label="FEIN²"
+          helpText="Enter in format 12-3456789."
+        />
 
-          <TextFormField
-            name={`entities.${index}.license_number`}
-            label="License Number"
-            helpText="Enter digits only."
-          />
+        <TextFormField
+          name={`entities.${index}.license_number`}
+          label="License Number"
+          helpText="Enter digits only."
+        />
 
-          <TextFormField
-            name={`entities.${index}.naic_company_code`}
-            label="NAIC³ Company Code"
-            helpText="Enter digits only."
-          />
-        </FormGroup>
+        <TextFormField
+          name={`entities.${index}.naic_company_code`}
+          label="NAIC³ Company Code"
+          helpText="Enter digits only."
+        />
       </FormGroup>
 
       <h6>Type of Plan</h6>

@@ -7,7 +7,7 @@ import styles from './RegistrationForm.module.css';
 export const RegistrationContact: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5>Contact {index + 1}</h5>
+      <h5><b>CONTACT {index + 1}</b></h5>
 
       <TextFormField
         name={`contacts.${index}.contact_type`}

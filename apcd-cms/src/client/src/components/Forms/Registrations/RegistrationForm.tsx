@@ -128,6 +128,7 @@ const initialValues: RegistrationFormValues = {
   business_name: '',
   mailing_address: '',
   city: '',
+  state: 'AL',
   zip_code: '',
   reg_id: -1,
   entities: [
@@ -167,6 +168,7 @@ const initialValues: RegistrationFormValues = {
 const initialTouched = {
     on_behalf_of: true,
     type: true,
+    state: true,
     entities: [
       {
         types_of_plans_commercial: true,
@@ -427,87 +429,91 @@ export const RegistrationForm: React.FC<{
                     (displayed after submitting this form).
                   </p>
                 )}
-                <Button
-                  className="c-button c-button--primary"
-                  type="button"
-                  color="primary"
-                  disabled={values.entities.length === 5}
-                  onClick={() =>
-                    setFieldValue('entities', [
-                      ...values.entities,
-                      {
-                        entity_name: '',
-                        fein: '',
-                        license_number: '',
-                        naic_company_code: '',
-                        types_of_plans_commercial: false,
-                        types_of_plans_medicare: false,
-                        types_of_plans_medicaid: false,
-                        types_of_plans_hidden: false,
-                        types_of_files_eligibility_enrollment: true,
-                        types_of_files_provider: false,
-                        types_of_files_medical: false,
-                        types_of_files_pharmacy: false,
-                        types_of_files_dental: false,
-                        types_of_files_hidden: false,
-                        total_covered_lives: '',
-                        claims_encounters_volume: '',
-                        total_claims_value: '',
-                      },
-                    ])
-                  }
-                >
-                  + Add Another Entity
-                </Button>{' '}
-                <Button
-                  className="c-button c-button--secondary"
-                  type="button"
-                  onClick={() =>
-                    values.entities.length > 1 &&
-                    setFieldValue('entities', values.entities.slice(0, -1))
-                  }
-                  color="secondary"
-                  disabled={values.entities.length === 1}
-                >
-                  - Remove Last Entity
-                </Button>
+                <div className='button-wrapper'>
+                  <Button
+                    className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
+                    type="button"
+                    color="primary"
+                    disabled={values.entities.length === 5}
+                    onClick={() =>
+                      setFieldValue('entities', [
+                        ...values.entities,
+                        {
+                          entity_name: '',
+                          fein: '',
+                          license_number: '',
+                          naic_company_code: '',
+                          types_of_plans_commercial: false,
+                          types_of_plans_medicare: false,
+                          types_of_plans_medicaid: false,
+                          types_of_plans_hidden: false,
+                          types_of_files_eligibility_enrollment: true,
+                          types_of_files_provider: false,
+                          types_of_files_medical: false,
+                          types_of_files_pharmacy: false,
+                          types_of_files_dental: false,
+                          types_of_files_hidden: false,
+                          total_covered_lives: '',
+                          claims_encounters_volume: '',
+                          total_claims_value: '',
+                        },
+                      ])
+                    }
+                  >
+                    + Add Another Entity
+                  </Button>{' '}
+                  <Button
+                    className="c-button c-button--secondary"
+                    type="button"
+                    onClick={() =>
+                      values.entities.length > 1 &&
+                      setFieldValue('entities', values.entities.slice(0, -1))
+                    }
+                    color="secondary"
+                    disabled={values.entities.length === 1}
+                  >
+                    - Remove Last Entity
+                  </Button>
+                </div>
                 <hr />
                 <h4>Contact Information</h4>
                 {values.contacts.map((contact, index) => (
                   <RegistrationContact key={index} index={index} />
                 ))}
-                <Button
-                  className="c-button c-button--primary"
-                  type="button"
-                  color="primary"
-                  disabled={values.contacts.length === 5}
-                  onClick={() =>
-                    setFieldValue('contacts', [
-                      ...values.contacts,
-                      {
-                        contact_type: '',
-                        contact_name: '',
-                        contact_phone: '',
-                        contact_email: '',
-                        contact_notifications: false,
-                      },
-                    ])
-                  }
-                >
-                  + Add Another Contact
-                </Button>{' '}
-                <Button
-                  className="c-button c-button--secondary"
-                  type="button"
-                  onClick={() =>
-                    values.contacts.length > 1 &&
-                    setFieldValue('contacts', values.contacts.slice(0, -1))
-                  }
-                  color="secondary"
-                  disabled={values.contacts.length === 1}
-                >
-                  - Remove Last Contact
-                </Button>
+                <div className='button-wrapper'>
+                  <Button
+                    className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
+                    type="button"
+                    color="primary"
+                    disabled={values.contacts.length === 5}
+                    onClick={() =>
+                      setFieldValue('contacts', [
+                        ...values.contacts,
+                        {
+                          contact_type: '',
+                          contact_name: '',
+                          contact_phone: '',
+                          contact_email: '',
+                          contact_notifications: false,
+                        },
+                      ])
+                    }
+                  >
+                    + Add Another Contact
+                  </Button>{' '}
+                  <Button
+                    className="c-button c-button--secondary"
+                    type="button"
+                    onClick={() =>
+                      values.contacts.length > 1 &&
+                      setFieldValue('contacts', values.contacts.slice(0, -1))
+                    }
+                    color="secondary"
+                    disabled={values.contacts.length === 1}
+                  >
+                    - Remove Last Contact
+                  </Button>
+                </div>
                 <div className="button-wrapper submit">
                   <Button
                     type="submit"
