@@ -105,7 +105,6 @@ export const AdminExceptions: React.FC = () => {
           {data?.selected_status || data?.selected_org ? (
             <button onClick={clearSelections}>Clear Options</button>
           ) : null}
-
         </div>
       </div>
       <table id="exceptionTable" className="exception-table">
