@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   ModalBody,
-  ModalFooter,
+  ModalHeader,
   Button,
   Label,
   FormGroup,
@@ -11,9 +11,7 @@ import {
   Alert,
 } from 'reactstrap';
 import {
-  Formik,
   Field,
-  Form,
   ErrorMessage,
   useFormik,
   FormikHelpers,
@@ -146,6 +144,12 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     },
   ];
 
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
+
   return (
     <>
       <Modal
@@ -154,15 +158,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         className={styles.customModal}
         onClosed={handleClose}
       >
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <h4 className="modal-title">
-            Edit Exception ID {exception.exception_id} for{' '}
-            {exception.entity_name}
-          </h4>
-          <button className="close" onClick={onClose} type="button">
-            &times;
-          </button>
-        </div>
+        <ModalHeader close={closeBtn}>
+          Edit Exception ID {exception.exception_id} for {exception.entity_name}
+        </ModalHeader>
         <ModalBody>
           <Alert color="success" isOpen={showSuccessMessage}>
             Success: The exception data has been successfully updated.

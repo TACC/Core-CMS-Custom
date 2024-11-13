@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Modal,
   ModalBody,
-  ModalFooter,
+  ModalHeader,
   Button,
   Label,
   FormGroup,
@@ -104,17 +104,18 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     { label: 'Notes', value: user.notes ? user.notes : 'None' },
   ];
 
+  const closeBtn = (
+    <button className="close" onClick={toggle} type="button">
+      &times;
+    </button>
+  );
+
   return (
     <>
       <Modal isOpen={isOpen} toggle={toggle} className={styles.customModal}>
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <h4 className="modal-title">
-            Edit User ID: {user.user_id} for {user.user_name}
-          </h4>
-          <button className="close" onClick={toggle} type="button">
-            &times;
-          </button>
-        </div>
+        <ModalHeader close={closeBtn}>
+          Edit User ID: {user.user_id} for {user.user_name}
+        </ModalHeader>
         <ModalBody>
           <div className={styles.greyRectangle}>Edit Selected User</div>
           <Formik

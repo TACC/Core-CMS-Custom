@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { ExtensionRow } from 'hooks/admin';
 import styles from './ViewExtensionModal.module.css';
 
@@ -8,16 +8,17 @@ const ViewExtensionModal: React.FC<{
   isVisible: boolean;
   onClose: () => void;
 }> = ({ extension, isVisible, onClose }) => {
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
   return (
     <Modal title="View Extension" isOpen={isVisible} toggle={onClose} size="lg">
-      <div className="modal-header">
-        <h4 className="modal-title">
-          Extension Details ID {extension.ext_id} for {extension.org_name}
-        </h4>
-        <button type="button" className="close" onClick={onClose}>
-          <span aria-hidden="true">&#xe912;</span>
-        </button>
-      </div>
+      <ModalHeader close={closeBtn}>
+        Extension Details ID {extension.ext_id} for {extension.org_name}
+      </ModalHeader>
+
       <ModalBody className="modal-body">
         <div>
           <h4>Details</h4>

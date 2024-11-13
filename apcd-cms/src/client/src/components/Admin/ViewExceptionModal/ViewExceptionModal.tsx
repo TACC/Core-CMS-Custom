@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Row,
-  Col,
-} from 'reactstrap';
+import React from 'react';
+import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { ExceptionModalContent, ExceptionRow } from 'hooks/admin';
 import styles from './ViewExceptionModal.module.css';
 
@@ -15,6 +8,12 @@ export const ViewExceptionModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ exception, isOpen, onClose }) => {
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
+
   const {
     created_at,
     entity_name,
@@ -37,12 +36,7 @@ export const ViewExceptionModal: React.FC<{
 
   return (
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
-      <div className="modal-header">
-        <h4 className="modal-title text-capitalize">Exception Details</h4>
-        <button className="close" onClick={onClose} type="button">
-          &times;
-        </button>
-      </div>
+      <ModalHeader close={closeBtn}>Exception Detail</ModalHeader>
       <ModalBody className="modal-body">
         <div>
           <h4>Details</h4>

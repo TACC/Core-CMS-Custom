@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
-import { RegistrationContent, useAdminRegistration } from 'hooks/registrations';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { useAdminRegistration } from 'hooks/registrations';
 import styles from './ViewRegistrationModal.module.css';
 
 const ViewRegistrationModal: React.FC<{
@@ -27,6 +27,12 @@ const ViewRegistrationModal: React.FC<{
     contacts,
   } = data;
 
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
+
   return (
     <Modal
       title="View Registration"
@@ -34,12 +40,8 @@ const ViewRegistrationModal: React.FC<{
       toggle={onClose}
       size="lg"
     >
-      <div className="modal-header">
-        <h4 className="modal-title text-capitalize">View Registration</h4>
-        <button className="close" onClick={onClose} type="button">
-          &times;
-        </button>
-      </div>
+      <ModalHeader close={closeBtn}>View Registration</ModalHeader>
+
       <ModalBody className="modal-body">
         <div>
           <h4>Organization</h4>
