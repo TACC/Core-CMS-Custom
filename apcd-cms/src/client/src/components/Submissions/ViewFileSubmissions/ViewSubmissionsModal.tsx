@@ -34,7 +34,6 @@ export const FileSubmissionLogsModal: React.FC<
         <ModalBody>
           <div>
             <dl>
-              <h4>Logs</h4>
               {submission_logs.length > 0 ? (
                 submission_logs.map((log, index) => (
                   <div className="modal-section" key={index}>
