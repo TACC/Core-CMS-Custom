@@ -10,40 +10,14 @@ from apps.components.paginator.paginator import paginator
 from datetime import date as datetimeDate
 from dateutil import parser
 from django.views import View
+from django.views import View
 import logging
+import json
 import json
 
 logger = logging.getLogger(__name__)
 
 class AdminExceptionsTable(TemplateView):
-
-    template_name = 'list_admin_exception.html'
-    def post(self, request):
-
-        form = request.POST.copy()
-
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-
-        def _edit_exception(form):
-            errors = []
-            exception_response = update_exception(form)
-            if _err_msg(exception_response):
-                errors.append(_err_msg(exception_response))
-            if len(errors) != 0:
-                logger.debug(print(errors))
-                template = loader.get_template('edit_exception_error.html')
-            else:
-                logger.debug(print("success"))
-                template = loader.get_template('edit_exception_success.html')
-            return template
-
-        template = _edit_exception(form)
-        return HttpResponse(template.render({}, request))
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user): 
@@ -51,9 +25,6 @@ class AdminExceptionsTable(TemplateView):
         return super(AdminExceptionsTable, self).dispatch(request, *args, **kwargs)
 
     def get(self, *args, **kwargs):
-
-        # context = super(AdminExceptionsTable, self).get_context_data(*args, **kwargs)
-
         exception_content = get_all_exceptions()
 
         context = self.get_exception_list_json(exception_content, *args, **kwargs)
@@ -65,8 +36,8 @@ class AdminExceptionsTable(TemplateView):
         context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
-        context['outcome_modal_options'] = ['None']
-        context['status_modal_options'] = ['None']
+        context['outcome_modal_options'] = ['None', 'Granted', 'Denied', 'Withdrawn']
+        context['status_modal_options'] = ['None', 'Complete', 'Pending']
         context['exceptions'] = []
         context['action_options'] = ['Select Action', 'View Record', 'Edit Record']
 
@@ -86,6 +57,7 @@ class AdminExceptionsTable(TemplateView):
                 'request_type': title_case(exception[3]) if exception[3] else None, # to make sure if val doesn't exist, utils don't break page
                 'explanation_justification': exception[4],
                 'outcome': title_case(exception[5]) if exception[5] else 'None',
+                'outcome': title_case(exception[5]) if exception[5] else 'None',
                 'created_at': exception[6],
                 'updated_at': exception[7],
                 'submitter_code': exception[8],
@@ -99,6 +71,7 @@ class AdminExceptionsTable(TemplateView):
                 'requested_expiration_date': exception[16],
                 'approved_threshold': exception[17],
                 'approved_expiration_date': exception[18],
+                'status': title_case(exception[19]) if exception[19] else 'None',
                 'status': title_case(exception[19]) if exception[19] else 'None',
                 'notes': exception[20],
                 'entity_name': exception[21],
@@ -134,6 +107,9 @@ class AdminExceptionsTable(TemplateView):
         limit = 50
         offset = limit * (page_num - 1)
 
+        limit = 50
+        offset = limit * (page_num - 1)
+
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
@@ -141,6 +117,8 @@ class AdminExceptionsTable(TemplateView):
             # to be able to access any exception in a template using exceptions var in the future
             context['exceptions'].append(_set_exception(exception))
             entity_name = title_case(exception[21])
+            status = title_case(exception[19]) if exception[19] else 'None'
+            outcome = title_case(exception[5]) if exception[5] else 'None'
             status = title_case(exception[19]) if exception[19] else 'None'
             outcome = title_case(exception[5]) if exception[5] else 'None'
             if entity_name not in context['org_options']:
@@ -153,13 +131,7 @@ class AdminExceptionsTable(TemplateView):
                 if status != None:
                     context['status_options'].append(status)
                     # to make sure All is first in the dropdown filter options after sorting alphabetically
-                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'All', x))    
-            if status not in context['status_modal_options']:
-                context['status_modal_options'].append(status)
-                context['status_modal_options'] = sorted(context['status_modal_options'], key=lambda x: (x is not None, x))
-            if outcome not in context['outcome_modal_options']:
-                context['outcome_modal_options'].append(outcome)
-                context['outcome_modal_options'] = sorted(context['outcome_modal_options'], key=lambda x: (x is not None, x))
+                    context['status_options'] = sorted(context['status_options'], key=lambda x: (x != 'Pending', x))
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
@@ -181,7 +153,19 @@ class AdminExceptionsTable(TemplateView):
                             'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
                             'requested_threshold': obj['requested_threshold'],} 
                             for obj in page_info['page']]
+        page_info = paginator(self.request, exception_table_entries, limit)
+        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
+                            'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
+                            'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
+                            'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
+                            'requested_threshold': obj['requested_threshold'],} 
+                            for obj in page_info['page']]
         context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
+
+        context['page_num'] = page_num
+        context['total_pages'] = page_info['page'].paginator.num_pages
+
+        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
 
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
@@ -190,6 +174,31 @@ class AdminExceptionsTable(TemplateView):
 
         return context
 
+class UpdateExceptionView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+    def _err_msg(self, resp):
+        if hasattr(resp, 'pgerror'):
+            return resp.pgerror
+        if isinstance(resp, Exception):
+            return str(resp)
+        return None
+
+    def put(self, request, exception_id):
+        data = json.loads(request.body)
+        errors = []
+        exception_response = update_exception(data)
+        if self._err_msg(exception_response):
+            errors.append(self._err_msg(exception_response))
+        if len(errors) != 0:
+            logger.debug(print(errors))
+            return JsonResponse({'message': 'Cannot edit exception'}, status=500)
+
+        return JsonResponse({'message': 'Exception updated successfully'})
 class UpdateExceptionView(View):
 
     def dispatch(self, request, *args, **kwargs):

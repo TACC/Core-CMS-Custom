@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { ExceptionModalContent, ExceptionRow } from 'hooks/admin';
+import { formatDate } from 'utils/dateUtil';
 import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
@@ -33,6 +34,11 @@ export const ViewExceptionModal: React.FC<{
     notes,
     updated_at,
   } = exception.view_modal_content;
+  const dateFormat: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
 
   return (
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
@@ -43,7 +49,9 @@ export const ViewExceptionModal: React.FC<{
           <div className="modal-section">
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
-              <Col md={7}>{new Date(created_at).toLocaleString()}</Col>
+              <Col md={7}>
+                {(created_at && formatDate(created_at)) || 'None'}
+              </Col>
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Entity Organization</Col>
@@ -53,106 +61,78 @@ export const ViewExceptionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Requestor</Col>
               <Col md={7}>{requestor_name}</Col>
             </Row>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Requestor Email</dt>
-                <dd className={styles.verticalDataValue}>{requestor_email}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Exception Type</dt>
-                <dd className={styles.verticalDataValue}>{request_type}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Status</dt>
-                <dd className={styles.verticalDataValue}>{status}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Outcome</dt>
-                <dd className={styles.verticalDataValue}>
-                  {outcome || 'None'}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">File Type</dt>
-                <dd className={styles.verticalDataValue}>{data_file_name}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Field Number</dt>
-                <dd className={styles.verticalDataValue}>{field_number}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Required Threshold</dt>
-                <dd className={styles.verticalDataValue}>
-                  {required_threshold || 'None'}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Requested Threshold</dt>
-                <dd className={styles.verticalDataValue}>
-                  {requested_threshold}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Approved Threshold</dt>
-                <dd className={styles.verticalDataValue}>
-                  {approved_threshold || 'Nome'}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Requested Expiration Date</dt>
-                <dd className={styles.verticalDataValue}>
-                  {requested_expiration_date}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Approved Expiration Date</dt>
-                <dd className={styles.verticalDataValue}>
-                  {approved_expiration_date || 'None'}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Explanation Justification</dt>
-                <dd className={styles.verticalDataValue}>
-                  {explanation_justification}
-                </dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Exception Notes</dt>
-                <dd className={styles.verticalDataValue}>{notes || 'None'}</dd>
-              </dl>
-            </dd>
-            <dd>
-              <dl className={styles.verticalDataList}>
-                <dt className="c-data-list__key">Last Updated</dt>
-                <dd className={styles.verticalDataValue}>
-                  {new Date(updated_at).toLocaleString()}
-                </dd>
-              </dl>
-            </dd>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requestor Email</Col>
+              <Col md={7}>{requestor_email}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Exception Type</Col>
+              <Col md={7}>{request_type}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Status</Col>
+              <Col md={7}>{status}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Outcome</Col>
+              <Col md={7}>{outcome || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>File Type</Col>
+              <Col md={7}>{data_file_name || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Field Number</Col>
+              <Col md={7}>{field_number || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Required Threshold</Col>
+              <Col md={7}>{required_threshold || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requested Threshold</Col>
+              <Col md={7}>{requested_threshold || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Approved Threshold</Col>
+              <Col md={7}>{approved_threshold || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requested Expiration Date</Col>
+              <Col md={7}>
+                {(requested_expiration_date &&
+                  new Date(requested_expiration_date).toLocaleDateString(
+                    undefined,
+                    dateFormat
+                  )) ||
+                  'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Approved Expiration Date</Col>
+              <Col md={7}>
+                {(approved_expiration_date &&
+                  new Date(approved_expiration_date).toLocaleDateString(
+                    undefined,
+                    dateFormat
+                  )) ||
+                  'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Explanation Justification</Col>
+              <Col md={7}>{explanation_justification || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Exception Notes</Col>
+              <Col md={7}>{notes || 'None'}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
+              <Col md={7}>
+                {(updated_at && formatDate(updated_at)) || 'None'}
+              </Col>
+            </Row>
             <hr />
           </div>
         </div>
