@@ -24,8 +24,8 @@ export const TextFormField: React.FC<{
         )}
       </Label>
       <Field name={name} as="input" id={name} className="textinput" />
-      <ErrorMessage name={name} component="div" className={styles.isInvalid} />
       {helpText ? <div className="help-text">{helpText}</div> : <></>}
+      <ErrorMessage name={name} component="div" className={styles.isInvalid} />
     </FormGroup>
   );
 };

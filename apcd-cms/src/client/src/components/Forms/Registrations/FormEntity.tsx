@@ -85,6 +85,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
             />
           </FormGroup>
         ))}
+        <ErrorMessage name={`entities.${index}.types_of_plans_hidden`} component="div" className={styles.isInvalid} />
       </FormGroup>
 
       <h6>File Submission</h6>
@@ -150,6 +151,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
             />
           </FormGroup>
         ))}
+        <ErrorMessage name={`entities.${index}.types_of_files_hidden`} component="div" className={styles.isInvalid} />
       </FormGroup>
 
       <h6>
