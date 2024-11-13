@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   ModalBody,
-  ModalFooter,
+  ModalHeader,
   Button,
   Label,
   FormGroup,
@@ -171,6 +171,11 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       value: extension.notes ? extension.notes : 'None',
     },
   ];*/
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
 
   return (
     <>
@@ -180,18 +185,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         className={styles.customModal}
         onClosed={handleClose}
       >
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>
-            Edit Extension ID {extension.ext_id} for {extension.org_name}
-          </Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={onClose}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+        <ModalHeader close={closeBtn}>
+          Edit Extension ID {extension.ext_id} for {extension.org_name}
+        </ModalHeader>
         <ModalBody>
           <Alert color="success" isOpen={showSuccessMessage}>
             Success: The extension data has been successfully updated.
