@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import {
   transformToRegistrationFormValues,
   RegistrationFormValues,
@@ -21,6 +21,12 @@ const EditRegistrationModal: React.FC<{
   const form_values: RegistrationFormValues =
     transformToRegistrationFormValues(data);
 
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
+
   return (
     <Modal
       title="Edit Registration"
@@ -28,12 +34,7 @@ const EditRegistrationModal: React.FC<{
       toggle={onClose}
       size="lg"
     >
-      <div className="modal-header">
-        <h4 className="modal-title text-capitalize">Edit Registration</h4>
-        <button type="button" className="close" onClick={onClose}>
-          <span aria-hidden="true">&#xe912;</span>
-        </button>
-      </div>
+      <ModalHeader close={closeBtn}>Edit Registration</ModalHeader>
       <ModalBody className="modal-body">
         <RegistrationForm
           isEdit={true}
