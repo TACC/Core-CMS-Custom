@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
 import { FileSubmissionResult } from '.';
-import { FilterOptions } from 'hooks/admin' //May want to refactor where this hook lives
+import { FilterOptions } from 'hooks/admin'; //May want to refactor where this hook lives
 
 const getSubmissionFilters = async () => {
   const url = 'submissions/list-submissions/api/options';

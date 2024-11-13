@@ -12,8 +12,6 @@ interface ViewSubmissionLogsModalProps {
 export const FileSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
 > = ({ submission_logs, isOpen, parentToggle }) => {
-
-
   const closeBtn = (
     <button className="close" onClick={parentToggle} type="button">
       &times;
@@ -51,7 +49,9 @@ export const FileSubmissionLogsModal: React.FC<
                         {titleCase(log.validation_suite)}
                       </dd>
                       <dt className="c-data-list__key">Outcome</dt>
-                      <dd className="c-data-list__value">{titleCase(log.outcome)}</dd>
+                      <dd className="c-data-list__value">
+                        {titleCase(log.outcome)}
+                      </dd>
                     </dl>
                     <hr />
                   </div>

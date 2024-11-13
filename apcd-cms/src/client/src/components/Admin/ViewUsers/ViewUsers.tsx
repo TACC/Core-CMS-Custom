@@ -97,41 +97,41 @@ export const ViewUsers: React.FC = () => {
       <div className="filter-container">
         <div className="filter-content">
           {/* Filter */}
-            <span>
-              <b>Filter by Status: </b>
-            </span>
-            <select
-              id="statusFilter"
-              className="status-filter"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              {filterData?.status_options.map((status, index) => (
-                <option className="dropdown-text" key={index} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+          <span>
+            <b>Filter by Status: </b>
+          </span>
+          <select
+            id="statusFilter"
+            className="status-filter"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            {filterData?.status_options.map((status, index) => (
+              <option className="dropdown-text" key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
 
-            {/* Filter by Organization */}
-            <span>
-              <b>Filter by Organization: </b>
-            </span>
-            <select
-              id="organizationFilter"
-              className="org-filter"
-              value={org}
-              onChange={(e) => setOrg(e.target.value)}
-            >
-              {filterData?.org_options.map((org, index) => (
-                <option className="dropdown-text" key={index} value={org}>
-                  {org}
-                </option>
-              ))}
-            </select>
-            {status !== 'All' || org !== 'All' ? (
-              <Button onClick={clearSelections}>Clear Options</Button>
-            ) : null}
+          {/* Filter by Organization */}
+          <span>
+            <b>Filter by Organization: </b>
+          </span>
+          <select
+            id="organizationFilter"
+            className="org-filter"
+            value={org}
+            onChange={(e) => setOrg(e.target.value)}
+          >
+            {filterData?.org_options.map((org, index) => (
+              <option className="dropdown-text" key={index} value={org}>
+                {org}
+              </option>
+            ))}
+          </select>
+          {status !== 'All' || org !== 'All' ? (
+            <Button onClick={clearSelections}>Clear Options</Button>
+          ) : null}
         </div>
       </div>
       <div>

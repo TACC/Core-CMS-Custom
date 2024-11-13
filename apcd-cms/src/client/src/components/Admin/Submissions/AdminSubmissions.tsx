@@ -30,7 +30,7 @@ export const AdminSubmissions: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useSubmissionFilters();
-  
+
   const [status, setStatus] = useState<string>('All');
   const [sort, setSort] = useState<string>('Newest Received');
   const [page, setPage] = useState<number>(1);
@@ -38,8 +38,9 @@ export const AdminSubmissions: React.FC = () => {
   const [selectedSubmission, setSelectedSubmission] =
     useState<SubmissionRow | null>(null);
 
-  const [selectedSubmissionLog, setSelectedSubmissionLog] =
-    useState<SubmissionLogsModalContent[] >([]);
+  const [selectedSubmissionLog, setSelectedSubmissionLog] = useState<
+    SubmissionLogsModalContent[]
+  >([]);
 
   const closeModal = () => {
     setViewModalOpen(false);
@@ -93,7 +94,9 @@ export const AdminSubmissions: React.FC = () => {
             id="statusFilter"
             className="status-filter"
             value={status}
-            onChange={(e) => { setStatus(e.target.value)}}
+            onChange={(e) => {
+              setStatus(e.target.value);
+            }}
           >
             {filterData?.status_options?.map((option: any, index: number) => (
               <option className="dropdown-text" key={index} value={option}>
@@ -111,11 +114,7 @@ export const AdminSubmissions: React.FC = () => {
             onChange={(e) => setSort(e.target.value)}
           >
             {filterData?.sort_options.map((option: any, index: number) => (
-              <option
-                className="dropdown-text"
-                key={index}
-                value={option.name}
-              >
+              <option className="dropdown-text" key={index} value={option.name}>
                 {option.name}
               </option>
             ))}
@@ -143,16 +142,16 @@ export const AdminSubmissions: React.FC = () => {
               <td>{titleCase(row.status)}</td>
               <td>{formatDate(row.updated_at)}</td>
               <td>
-              <Button
-                type="link"
-                onClick={() => {
-                  setSelectedSubmission(row);
-                  setSelectedSubmissionLog(row?.view_modal_content);
-                  setViewModalOpen(true);
-                }}
-              >
-                View Logs
-              </Button>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    setSelectedSubmission(row);
+                    setSelectedSubmissionLog(row?.view_modal_content);
+                    setViewModalOpen(true);
+                  }}
+                >
+                  View Logs
+                </Button>
               </td>
             </tr>
           ))}

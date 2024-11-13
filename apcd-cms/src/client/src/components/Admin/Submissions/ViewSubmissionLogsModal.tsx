@@ -4,7 +4,6 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { formatDate } from 'utils/dateUtil';
 import { titleCase } from 'utils/stringUtil';
 
-
 interface ViewSubmissionLogsModalProps {
   submission_logs: SubmissionLogsModalContent[];
   isOpen: boolean;
@@ -41,15 +40,21 @@ export const ViewSubmissionLogsModal: React.FC<
                       <dt className="c-data-list__key">Log ID</dt>
                       <dd className="c-data-list__value">{log.log_id}</dd>
                       <dt className="c-data-list__key">Entity Organization</dt>
-                      <dd className="c-data-list__value">{titleCase(log.entity_name)}</dd>
+                      <dd className="c-data-list__value">
+                        {titleCase(log.entity_name)}
+                      </dd>
                       <dt className="c-data-list__key">File Type</dt>
-                      <dd className="c-data-list__value">{titleCase(log.file_type)}</dd>
+                      <dd className="c-data-list__value">
+                        {titleCase(log.file_type)}
+                      </dd>
                       <dt className="c-data-list__key">Validation Suite</dt>
                       <dd className="c-data-list__value">
                         {titleCase(log.validation_suite)}
                       </dd>
                       <dt className="c-data-list__key">Outcome</dt>
-                      <dd className="c-data-list__value">{titleCase(log.outcome)}</dd>
+                      <dd className="c-data-list__value">
+                        {titleCase(log.outcome)}
+                      </dd>
                     </dl>
                     <hr />
                   </div>
