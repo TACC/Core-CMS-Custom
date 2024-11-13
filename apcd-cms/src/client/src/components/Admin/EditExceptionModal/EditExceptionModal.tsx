@@ -249,7 +249,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     <FormGroup>
                       <Label
                         for="approved_threshold"
-                        className={styles.customLabel}
                       >
                         <strong>Approved Threshold</strong>
                       </Label>
@@ -264,7 +263,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         }
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
+                        className={`form-control`}
                       />
                       <small
                         className="form-text text-muted"
@@ -284,7 +283,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                   <FormGroup>
                     <Label
                       for="approved_expiration_date"
-                      className={styles.customLabel}
                     >
                       <strong>Approved Expiration Date</strong>
                     </Label>
@@ -299,7 +297,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       }
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"
@@ -321,7 +319,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
                 <Col md={4}>
                   <FormGroup>
-                    <Label for="status" className={styles.customLabel}>
+                    <Label for="status">
                       <strong>Exception Status</strong>
                     </Label>
                     <Field
@@ -330,7 +328,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="status"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                       value={formik.values.status}
                     >
                       {statusOptions?.map(
@@ -355,7 +353,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
                 <Col md={4}>
                   <FormGroup>
-                    <Label for="outcome" className={styles.customLabel}>
+                    <Label for="outcome">
                       <strong>Exception Outcome</strong>
                     </Label>
                     <Field
@@ -364,7 +362,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="outcome"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                       value={formik.values.outcome}
                     >
                       {outcomeOptions?.map((val, index) => (
@@ -386,7 +384,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
                 <Col md={8}>
                   <FormGroup>
-                    <Label for="notes" className={styles.customLabel}>
+                    <Label for="notes">
                       <strong>Notes</strong>
                     </Label>
                     <Field
@@ -398,7 +396,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       maxLength="2000" // Set the maxLength attribute
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control ${styles.viewRecord}`}
+                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"

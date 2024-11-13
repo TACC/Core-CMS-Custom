@@ -76,7 +76,6 @@ export const AdminExceptions: React.FC = () => {
             </span>
             <select
               id="statusFilter"
-              className="status-filter"
               value={status}
               defaultValue={status} // Use defaultValue to set the initial selected value
               onChange={(e) => setStatus(e.target.value)}
@@ -94,7 +93,6 @@ export const AdminExceptions: React.FC = () => {
             </span>
             <select
               id="organizationFilter"
-              className="status-filter org-filter"
               value={org}
               defaultValue={org} // Use defaultValue to set the initial selected value
               onChange={(e) => setOrg(e.target.value)}
