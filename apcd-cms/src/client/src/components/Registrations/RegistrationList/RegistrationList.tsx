@@ -127,33 +127,41 @@ export const RegistrationList: React.FC<{
           </tr>
         </thead>
         <tbody>
-          {data?.page.map((row: RegistrationRow, rowIndex: number) => (
-            <tr key={rowIndex}>
-              <td>{row.biz_name}</td>
-              <td>{row.year ? row.year : 'None'}</td>
-              <td>{row.type}</td>
-              <td>{row.location}</td>
-              <td>{row.reg_status ? row.reg_status : 'None'}</td>
-              <td>
-                <select
-                  id={`actionsDropdown_${row.reg_id}`}
-                  defaultValue=""
-                  className="status-filter"
-                  onChange={(e) => openAction(e, row.reg_id)}
-                >
-                  <option value="">Select Action</option>
-                  <option value="viewRegistration">View Record</option>
-                  {isAdmin ? (
-                    <option value="editRegistration">Edit Record</option>
-                  ) : (
-                    <option value="renewRegistration">
-                      Renew Registration
-                    </option>
-                  )}
-                </select>
+          {data?.page && data.page.length > 0 ? (
+            data?.page.map((row: RegistrationRow, rowIndex: number) => (
+              <tr key={rowIndex}>
+                <td>{row.biz_name}</td>
+                <td>{row.year ? row.year : 'None'}</td>
+                <td>{row.type}</td>
+                <td>{row.location}</td>
+                <td>{row.reg_status ? row.reg_status : 'None'}</td>
+                <td>
+                  <select
+                    id={`actionsDropdown_${row.reg_id}`}
+                    defaultValue=""
+                    className="status-filter"
+                    onChange={(e) => openAction(e, row.reg_id)}
+                  >
+                    <option value="">Select Action</option>
+                    <option value="viewRegistration">View Record</option>
+                    {isAdmin ? (
+                      <option value="editRegistration">Edit Record</option>
+                    ) : (
+                      <option value="renewRegistration">
+                        Renew Registration
+                      </option>
+                    )}
+                  </select>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} style={{ textAlign: 'center' }}>
+                No Data available
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <div className={styles.paginatorContainer}>
