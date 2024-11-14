@@ -14,6 +14,7 @@ export type UserRow = {
 export type FilterOptions = {
   status_options: string[];
   org_options: string[];
+  sort_options: string[];
 };
 
 export type UserResult = {
@@ -39,9 +40,6 @@ export type SubmissionRow = {
 
 export type SubmissionResult = {
   header: string[];
-  status_options: string[];
-  filter_options: string[];
-  sort_options: { name: string; value: string }[];
   selected_status: string;
   selected_sort: string;
   query_str: string;
@@ -150,4 +148,5 @@ export {
   useUsers,
   useExceptions,
   useUserFilters,
+  useSubmissionFilters,
 } from './useAdmin';

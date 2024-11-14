@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Modal,
   ModalBody,
-  ModalFooter,
+  ModalHeader,
   Label,
   FormGroup,
   Row,
@@ -219,6 +219,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
 
   return (
     <>
@@ -228,15 +233,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         className="modal-dialog modal-lg"
         onClosed={dismissMessages}
       >
-        <div className="modal-header">
-          <h4 className="modal-title text-capitalize">
-            Edit Exception ID {exception.exception_id} for{' '}
-            {exception.entity_name}
-          </h4>
-          <button type="button" className="close" onClick={onClose}>
-            <span aria-hidden="true">&#xe912;</span>
-          </button>
-        </div>
+        <ModalHeader close={closeBtn}>
+          Edit Exception ID {exception.exception_id} for {exception.entity_name}
+        </ModalHeader>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Exception</h4>
           <FormikProvider value={formik}>
@@ -245,9 +244,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 {exception.request_type == 'Threshold' && (
                   <Col md={4}>
                     <FormGroup>
-                      <Label
-                        for="approved_threshold"
-                      >
+                      <Label for="approved_threshold">
                         <strong>Approved Threshold</strong>
                       </Label>
                       <Field
@@ -279,9 +276,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 )}
                 <Col md={4}>
                   <FormGroup>
-                    <Label
-                      for="approved_expiration_date"
-                    >
+                    <Label for="approved_expiration_date">
                       <strong>Approved Expiration Date</strong>
                     </Label>
                     <Field
