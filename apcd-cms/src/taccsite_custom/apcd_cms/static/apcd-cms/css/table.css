@@ -107,9 +107,13 @@ table {
 .filter-container {
     margin-bottom: 30px;
     width: auto;
+
 }
 .filter-content {
     float: right;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 /* To reveal floated child (.filter-content) on narrow screen i.e. "clearfix" */
 /* SEE: https://www.google.com/search?q=clearfix */
