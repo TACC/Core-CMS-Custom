@@ -4,6 +4,7 @@
     "paths": {
       "apcd-components/*":["src/components/*"],
       "core-components/*": ["src/core-components/*"],
+      "core-wrappers/*": ["src/core-wrappers/*"],
       "hooks/*": ["src/hooks/*"],
       "utils/*": ["src/utils/*"],
     },

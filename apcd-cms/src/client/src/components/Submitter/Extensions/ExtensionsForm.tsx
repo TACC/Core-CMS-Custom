@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
 import ExtensionFormInfo from './ExtensionFormInfo';
 import { useEntities } from 'hooks/entities';
@@ -9,7 +8,7 @@ import { fetchUtil } from 'utils/fetchUtil';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Button from 'core-components/Button';
-import { FormLabel } from 'apcd-components/Components/FormLabel/FormLabel';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 const validationSchema = Yup.object().shape({
   extensions: Yup.array().of(
@@ -206,12 +205,12 @@ export const ExtensionRequestForm: React.FC = () => {
                     applicable, indicate how the organization plans to become
                     compliant.**
                   </p>
-                  <FormGroup className="field-wrapper required">
-                    <FormLabel
-                      labelFor={'justification'}
-                      label={''}
-                      isRequired={true}
-                    />
+                  <FieldWrapper
+                    name="justification"
+                    label=""
+                    required={true}
+                    description="2000 character limit"
+                  >
                     <Field
                       as="textarea"
                       name="justification"
@@ -219,13 +218,7 @@ export const ExtensionRequestForm: React.FC = () => {
                       rows="5"
                       maxLength="2000"
                     />
-                    <ErrorMessage
-                      name="justification"
-                      component="div"
-                      className={styles.isInvalid}
-                    />
-                    <div className="help-text">2000 character limit</div>
-                  </FormGroup>
+                  </FieldWrapper>
                   <hr />
                   <h4>Acknowledgment of Terms</h4>
                   <p>
@@ -234,65 +227,44 @@ export const ExtensionRequestForm: React.FC = () => {
                     submitted on this form.
                   </p>
                   <div className={styles.fieldRows}>
-                    <FormGroup className="field-wrapper required">
-                      <FormLabel
-                        labelFor={'requestorName'}
-                        label={'Requestor Name'}
-                        isRequired={true}
-                      />
+                    <FieldWrapper
+                      name="requestorName"
+                      label="Requestor Name"
+                      required={true}
+                    >
                       <Field
                         type="text"
                         name="requestorName"
                         id="requestorName"
                         className={`form-control`}
                       />
-                      <ErrorMessage
-                        name="requestorName"
-                        component="div"
-                        className={styles.isInvalid}
-                      />
-                    </FormGroup>
-                    <FormGroup className="field-wrapper required">
-                      <FormLabel
-                        labelFor={'requestorEmail'}
-                        label={'Requestor Email'}
-                        isRequired={true}
-                      />
+                    </FieldWrapper>
+                    <FieldWrapper
+                      name="requestorEmail"
+                      label="Requestor E-mail"
+                      required={true}
+                    >
                       <Field
                         type="email"
                         name="requestorEmail"
                         id="requestorEmail"
                         className={`form-control`}
                       />
-                      <ErrorMessage
-                        name="requestorEmail"
-                        component="div"
-                        className={styles.isInvalid}
-                      />
-                    </FormGroup>
+                    </FieldWrapper>
                   </div>
                   <div className={styles.fieldRows}>
-                    <FormGroup check inline>
+                    <FieldWrapper
+                      name="acceptTerms"
+                      label="Accept"
+                      required={true}
+                    >
                       <Field
-                        name="acceptTerms"
                         type="checkbox"
-                        className={styles.termsCheckbox}
+                        name="acceptTerms"
+                        id="acceptTerms"
+                        className={`form-control`}
                       />
-                      <FormLabel
-                        labelFor={'acceptTerms'}
-                        label={'Accept'}
-                        isRequired={true}
-                        check
-                        style={{ marginLeft: '4px' }}
-                      />
-                      <div style={{ paddingLeft: '4px' }}>
-                        <ErrorMessage
-                          name="acceptTerms"
-                          component="div"
-                          className={styles.isInvalid}
-                        />
-                      </div>
-                    </FormGroup>
+                    </FieldWrapper>
                   </div>
                   {isSuccess ? (
                     <>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label, Badge } from 'reactstrap';
+import { Label } from 'reactstrap';
 import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { Entities, useEntities } from 'hooks/entities';
 import Button from 'core-components/Button';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 interface FormValues {
   exceptionType: string;
@@ -222,7 +223,7 @@ export const ExceptionFormPage: React.FC = () => {
                 of exception.
               </p>{' '}
               <div className={styles.fieldRows}>
-                <FormGroup className="field-wrapper required">
+                <FieldWrapper name="exceptionType" label="">
                   <Field
                     as="select"
                     name="exceptionType"
@@ -237,14 +238,9 @@ export const ExceptionFormPage: React.FC = () => {
                     <option value="threshold">Threshold Exception</option>
                     <option value="other">Other Exception</option>
                   </Field>
-                  <ErrorMessage
-                    name="exceptionType"
-                    component="div"
-                    className={styles.isInvalid}
-                  />
-                </FormGroup>
+                </FieldWrapper>
                 {selectedExceptionType !== '' && (
-                  <div>
+                  <div style={{ paddingTop: '10px' }}>
                     <b>Note:</b> Your changes will not be saved if you change
                     the exception type.
                   </div>
@@ -298,16 +294,11 @@ export const ExceptionFormPage: React.FC = () => {
                   <div className={styles.fieldRows}>
                     {submitterData && (
                       <>
-                        <FormGroup className="field-wrapper required">
-                          <Label for={`otherExceptionBusinessName`}>
-                            Business Name
-                            <Badge
-                              color="badge badge-danger"
-                              className={styles.requiredBadge}
-                            >
-                              Required
-                            </Badge>
-                          </Label>
+                        <FieldWrapper
+                          name="otherExceptionBusinessName"
+                          label="Business Name"
+                          required={true}
+                        >
                           <Field
                             as="select"
                             name={`otherExceptionBusinessName`}
@@ -326,12 +317,7 @@ export const ExceptionFormPage: React.FC = () => {
                               )
                             )}
                           </Field>
-                          <ErrorMessage
-                            name={`otherExceptionBusinessName`}
-                            component="div"
-                            className={styles.isInvalid}
-                          />
-                        </FormGroup>
+                        </FieldWrapper>
                       </>
                     )}
                   </div>
@@ -347,28 +333,18 @@ export const ExceptionFormPage: React.FC = () => {
                     </SectionMessage>
                   )}
                   <div className={styles.fieldRows}>
-                    <FormGroup className="field-wrapper required">
-                      <Label for={'expirationDateOther'}>
-                        Requested Expiration Date
-                        <Badge
-                          color="badge badge-danger"
-                          className={styles.requiredBadge}
-                        >
-                          Required
-                        </Badge>
-                      </Label>
+                    <FieldWrapper
+                      name="expirationDateOther"
+                      label="Requested Expiration Date"
+                      required={true}
+                    >
                       <Field
                         type="date"
                         name="expirationDateOther"
                         id="expirationDateOther"
                         className={styles.expirationDate}
                       ></Field>
-                      <ErrorMessage
-                        name="expirationDateOther"
-                        component="div"
-                        className={styles.isInvalid}
-                      />
-                    </FormGroup>
+                    </FieldWrapper>
                   </div>
                 </>
               )}
@@ -376,36 +352,25 @@ export const ExceptionFormPage: React.FC = () => {
                 <>
                   <hr />
                   <h4>Request and Justification</h4>
-                  <FormGroup className="field-wrapper">
-                    <Label>
-                      Provide rationale for the exception request, outlining the
+                  <FieldWrapper
+                    name="justification"
+                    label="Provide rationale for the exception request, outlining the
                       reasons why the organization is unable to comply with the
                       relevant requirements. Provide as much detail as possible
                       regarding the exception request, indicating the specific
                       submission requirements for which relief is being sought.
                       If applicable, indicate how the organization plans to
-                      become compliant.**
-                      <Badge
-                        color="badge badge-danger"
-                        className={styles.requiredBadge}
-                      >
-                        Required
-                      </Badge>
-                    </Label>
-
+                      become compliant.**"
+                    required={true}
+                    description="2000 character limit"
+                  >
                     <Field
                       as="textarea"
                       name="justification"
                       id="justification"
                       rows={5}
                     />
-                    <ErrorMessage
-                      name="justification"
-                      component="div"
-                      className={styles.isInvalid}
-                    />
-                    <div className="help-text">2000 character limit</div>
-                  </FormGroup>
+                  </FieldWrapper>
                   <hr />
                   <h4>Acknowledgment of Terms</h4>
                   <Label className="form-wrapper">
@@ -414,71 +379,41 @@ export const ExceptionFormPage: React.FC = () => {
                     submitted on this form.
                   </Label>
                   <div className={styles.fieldRows}>
-                    <FormGroup className="field-wrapper required">
-                      <Label for="requestorName">
-                        Requestor Name
-                        <Badge
-                          color="badge badge-danger"
-                          className={styles.requiredBadge}
-                        >
-                          Required
-                        </Badge>
-                      </Label>
+                    <FieldWrapper
+                      name="requestorName"
+                      label="Requestor Name"
+                      required={true}
+                    >
                       <Field
                         type="text"
                         name="requestorName"
                         id="requestorName"
                       ></Field>
-                      <ErrorMessage
-                        name="requestorName"
-                        component="div"
-                        className={styles.isInvalid}
-                      />
-                    </FormGroup>
-                    <FormGroup className="field-wrapper required">
-                      <Label for="requestorEmail">
-                        Requestor E-mail
-                        <Badge
-                          color="badge badge-danger"
-                          className={styles.requiredBadge}
-                        >
-                          Required
-                        </Badge>
-                      </Label>
+                    </FieldWrapper>
+                    <FieldWrapper
+                      name="requestorEmail"
+                      label="Requestor E-mail"
+                      required={true}
+                    >
                       <Field
                         type="email"
                         name="requestorEmail"
                         id="requestorEmail"
                       />
-                      <ErrorMessage
-                        name="requestorEmail"
-                        component="div"
-                        className={styles.isInvalid}
-                      />
-                    </FormGroup>
-                    <FormGroup className="field-wrapper required" check>
-                      <Label for="acceptTerms" check>
-                        {' '}
-                        Accept
-                        <Badge
-                          color="badge badge-danger"
-                          className={styles.requiredBadge}
-                        >
-                          Required
-                        </Badge>
-                      </Label>
+                    </FieldWrapper>
+                    <FieldWrapper
+                      name="acceptTerms"
+                      label="Accept"
+                      required={true}
+                      description=""
+                    >
                       <Field
                         type="checkbox"
                         name="acceptTerms"
                         id="acceptTerms"
-                        className={styles.termsCheckbox}
-                      ></Field>
-                      <ErrorMessage
-                        name="acceptTerms"
-                        component="div"
-                        className={styles.isInvalid}
+                        className={`form-control`}
                       />
-                    </FormGroup>
+                    </FieldWrapper>
                   </div>
                   {isSuccess ? (
                     <>

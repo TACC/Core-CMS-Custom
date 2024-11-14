@@ -3,6 +3,7 @@ import { Field, ErrorMessage } from 'formik';
 import { FormGroup, Label, FormFeedback } from 'reactstrap';
 import { TextFormField } from './TextFormField';
 import styles from './RegistrationForm.module.css';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik/FieldWrapperFormik';
 
 export const RegistrationContact: React.FC<{ index: number }> = ({ index }) => {
   return (

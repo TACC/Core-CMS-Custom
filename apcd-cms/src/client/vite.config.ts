@@ -22,6 +22,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'apcd-components': resolve(__dirname, 'src/components'),
+      'core-wrappers': resolve(__dirname, 'src/core-wrappers'),
       'core-components': resolve(__dirname, 'src/core-components'),
       'hooks': resolve(__dirname, 'src/hooks'),
       'utils': resolve(__dirname, 'src/utils'),

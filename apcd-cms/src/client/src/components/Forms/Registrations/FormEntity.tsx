@@ -3,6 +3,7 @@ import { Field, ErrorMessage } from 'formik';
 import { FormGroup, Label, FormFeedback } from 'reactstrap';
 import { TextFormField } from './TextFormField';
 import styles from './RegistrationForm.module.css';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
   return (
@@ -14,22 +15,19 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         required={true}
       />
 
-      <div className="field-wrapper required">
-        <Label>
-          Number/Code
-          <span className={styles.isRequired}> (required)</span>
-        </Label>
-        <div className="help-text">
-          Provide all available identifiers. At least one of the following is
-          required.
-        </div>
-      </div>
-      <FormGroup className="o-grid o-grid--col-auto-count" noMargin={true}>
-        <TextFormField
-          name={`entities.${index}.fein`}
-          label="FEIN²"
-          helpText="Enter in format 12-3456789."
-        />
+      <FieldWrapper
+        name={`entities.${index}.number_code`}
+        label="Number/Code"
+        required={true}
+        description="Provide all available identifiers. At least one of the following is required."
+      >
+        <div id={`entities-${index}.number_code`} style={{ display: 'none' }} />
+        <FormGroup className="o-grid o-grid--col-auto-count" noMargin={true}>
+          <TextFormField
+            name={`entities.${index}.fein`}
+            label="FEIN²"
+            helpText="Enter in format 12-3456789."
+          />
 
         <TextFormField
           name={`entities.${index}.license_number`}
@@ -37,130 +35,106 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
           helpText="Enter digits only."
         />
 
-        <TextFormField
-          name={`entities.${index}.naic_company_code`}
-          label="NAIC³ Company Code"
-          helpText="Enter digits only."
-        />
-      </FormGroup>
+          <TextFormField
+            name={`entities.${index}.naic_company_code`}
+            label="NAIC³ Company Code"
+            helpText="Enter digits only."
+          />
+        </FormGroup>
+      </FieldWrapper>
 
       <h6 className={styles.boldedHeader}>Type of Plan</h6>
-      <div className="field-wrapper required">
-        <Label>
-          Plan Types
-          <span className={styles.isRequired}> (required)</span>
-        </Label>
-      </div>
-      <FormGroup
-        className="checkboxselectmultiple"
-        id={`entities.${index}.types_of_plans`}
+      <FieldWrapper
+        name={`entities.${index}.types_of_plans_hidden`}
+        label="Plan Types"
+        required={true}
       >
-        {['Commercial', 'Medicare', 'Medicaid'].map((planType) => (
-          <FormGroup
-            key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.wrapper`}
-            noMargin={true}
-          >
-            <Label
-              htmlFor={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-              key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.label`}
-            >
-              <Field
-                type="checkbox"
-                key={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-                name={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-                id={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-              ></Field>
-              {planType}
-              {planType == 'Medicaid' ? (
-                <small>(for state use only)</small>
-              ) : (
-                <></>
-              )}
-            </Label>
-            <ErrorMessage
-              name={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
-              component="div"
-              className={styles.isInvalid}
-              key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.error`}
-            />
-          </FormGroup>
-        ))}
-        <ErrorMessage
-          name={`entities.${index}.types_of_plans_hidden`}
-          component="div"
-          className={styles.isInvalid}
+        <div
+          id={`entities.${index}.types_of_plans_hidden`}
+          style={{ display: 'none' }}
         />
-      </FormGroup>
+        <FormGroup
+          className="checkboxselectmultiple"
+          id={`entities.${index}.types_of_plans`}
+        >
+          {['Commercial', 'Medicare', 'Medicaid'].map((planType) => (
+            <FormGroup
+              key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.wrapper`}
+              noMargin={true}
+            >
+              <Label
+                htmlFor={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
+                key={`entities.${index}.types_of_plans_${planType.toLowerCase()}.label`}
+              >
+                <Field
+                  type="checkbox"
+                  key={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
+                  name={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
+                  id={`entities.${index}.types_of_plans_${planType.toLowerCase()}`}
+                ></Field>
+                {planType}
+                {planType == 'Medicaid' ? (
+                  <small>(for state use only)</small>
+                ) : (
+                  <></>
+                )}
+              </Label>
+            </FormGroup>
+          ))}
+        </FormGroup>
+      </FieldWrapper>
 
       <h6 className={styles.boldedHeader}>File Submission</h6>
-      <div className="field-wrapper required">
-        <Label>
-          Types of Files
-          <span className={styles.isRequired}> (required)</span>
-        </Label>
-        <div className="help-text">
-          Eligibility/Enrollment files are mandatory. At least one claims file
-          type (Medical, Pharmacy, and Dental) must be selected.
-        </div>
-      </div>
-      <FormGroup
-        className="checkboxselectmultiple"
-        id={`entities.${index}.types_of_files`}
+      <FieldWrapper
+        name={`entities.${index}.types_of_files_hidden`}
+        label="Types of Files"
+        required={true}
+        description="Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected."
       >
-        {[
-          'Eligibility/Enrollment',
-          'Provider',
-          'Medical',
-          'Pharmacy',
-          'Dental',
-        ].map((fileType) => (
-          <FormGroup
-            key={`entities.${index}.types_of_files_${fileType
-              .toLowerCase()
-              .replace('/', '_')}.wrapper`}
-            noMargin={true}
-          >
-            <Label
-              htmlFor={`entities.${index}.types_of_files_${fileType
-                .toLowerCase()
-                .replace('/', '_')}`}
+        <FormGroup
+          className="checkboxselectmultiple"
+          id={`entities.${index}.types_of_files`}
+        >
+          {[
+            'Eligibility/Enrollment',
+            'Provider',
+            'Medical',
+            'Pharmacy',
+            'Dental',
+          ].map((fileType) => (
+            <FormGroup
               key={`entities.${index}.types_of_files_${fileType
                 .toLowerCase()
-                .replace('/', '_')}.label`}
+                .replace('/', '_')}.wrapper`}
+              noMargin={true}
             >
-              <Field
-                type="checkbox"
+              <Label
+                htmlFor={`entities.${index}.types_of_files_${fileType
+                  .toLowerCase()
+                  .replace('/', '_')}`}
                 key={`entities.${index}.types_of_files_${fileType
                   .toLowerCase()
-                  .replace('/', '_')}`}
-                name={`entities.${index}.types_of_files_${fileType
-                  .toLowerCase()
-                  .replace('/', '_')}`}
-                id={`entities.${index}.types_of_files_${fileType
-                  .toLowerCase()
-                  .replace('/', '_')}`}
-                disabled={fileType == 'Eligibility/Enrollment' ? true : false}
-              ></Field>
-              {fileType}
-            </Label>
-            <ErrorMessage
-              name={`entities.${index}.types_of_files_${fileType
-                .toLowerCase()
-                .replace('/', '_')}`}
-              component="div"
-              className={styles.isInvalid}
-              key={`entities.${index}.types_of_files_${fileType
-                .toLowerCase()
-                .replace('/', '_')}.error`}
-            />
-          </FormGroup>
-        ))}
-        <ErrorMessage
-          name={`entities.${index}.types_of_files_hidden`}
-          component="div"
-          className={styles.isInvalid}
-        />
-      </FormGroup>
+                  .replace('/', '_')}.label`}
+              >
+                <Field
+                  type="checkbox"
+                  key={`entities.${index}.types_of_files_${fileType
+                    .toLowerCase()
+                    .replace('/', '_')}`}
+                  name={`entities.${index}.types_of_files_${fileType
+                    .toLowerCase()
+                    .replace('/', '_')}`}
+                  id={`entities.${index}.types_of_files_${fileType
+                    .toLowerCase()
+                    .replace('/', '_')}`}
+                  disabled={fileType == 'Eligibility/Enrollment' ? true : false}
+                ></Field>
+                {fileType}
+              </Label>
+            </FormGroup>
+          ))}
+        </FormGroup>
+      </FieldWrapper>
 
       <h6 className={styles.boldedHeader}>
         Coverage Estimates
