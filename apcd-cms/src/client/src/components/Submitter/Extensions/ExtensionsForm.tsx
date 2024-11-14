@@ -231,7 +231,6 @@ export const ExtensionRequestForm: React.FC = () => {
                       name="requestorName"
                       label="Requestor Name"
                       required={true}
-                      description=""
                     >
                       <Field
                         type="text"
@@ -242,9 +241,8 @@ export const ExtensionRequestForm: React.FC = () => {
                     </FieldWrapper>
                     <FieldWrapper
                       name="requestorEmail"
-                      label="Requestor Email"
+                      label="Requestor E-mail"
                       required={true}
-                      description=""
                     >
                       <Field
                         type="email"
@@ -259,7 +257,6 @@ export const ExtensionRequestForm: React.FC = () => {
                       name="acceptTerms"
                       label="Accept"
                       required={true}
-                      description=""
                     >
                       <Field
                         type="checkbox"
