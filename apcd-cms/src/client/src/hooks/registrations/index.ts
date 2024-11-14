@@ -112,10 +112,17 @@ export type RegistrationFormValues = {
 export function transformToRegistrationFormValues(
   registration: RegistrationContent
 ): RegistrationFormValues {
+
+  const typeValueMap:Record<string, string> = { // to set database value for field rather than display value
+    'Insurance Carrier': 'carrier',
+    'Plan Administrator¹ (TPA/ASO)': 'tpa_aso',
+    'Pharmacy Benefit Manager (PBM)': 'pbm'
+  }
+  
   return {
-    on_behalf_of: registration.for_self ?? '',
+    on_behalf_of: registration.for_self?.toString() ?? '',
     reg_year: registration.year.toString(),
-    type: registration.type ?? '',
+    type: registration.type ? typeValueMap[registration.type] : '',
     business_name: registration.biz_name,
     mailing_address: registration.address,
     city: registration.city,
