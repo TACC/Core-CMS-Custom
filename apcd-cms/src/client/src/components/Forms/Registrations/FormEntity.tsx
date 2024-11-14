@@ -7,7 +7,7 @@ import styles from './RegistrationForm.module.css';
 export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5><b>ENTITY {index + 1}</b></h5>
+      <h5 className={styles.boldedHeader}>ENTITY {index + 1}</h5>
       <TextFormField
         name={`entities.${index}.entity_name`}
         label="Name"
@@ -44,7 +44,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         />
       </FormGroup>
 
-      <h6>Type of Plan</h6>
+      <h6 className={styles.boldedHeader}>Type of Plan</h6>
       <div className="field-wrapper required">
         <Label>
           Plan Types
@@ -88,7 +88,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         <ErrorMessage name={`entities.${index}.types_of_plans_hidden`} component="div" className={styles.isInvalid} />
       </FormGroup>
 
-      <h6>File Submission</h6>
+      <h6 className={styles.boldedHeader}>File Submission</h6>
       <div className="field-wrapper required">
         <Label>
           Types of Files
@@ -154,7 +154,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         <ErrorMessage name={`entities.${index}.types_of_files_hidden`} component="div" className={styles.isInvalid} />
       </FormGroup>
 
-      <h6>
+      <h6 className={styles.boldedHeader}>
         Coverage Estimates
         <small>
           {' '}

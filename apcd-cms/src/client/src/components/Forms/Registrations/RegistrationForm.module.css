@@ -14,3 +14,7 @@
   border-color: var(--global-color-accent--normal);
   color: var(--global-color-primary--xx-light);
 }
+
+.boldedHeader {
+  font-weight: bold;
+}
