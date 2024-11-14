@@ -18,3 +18,7 @@
 .boldedHeader {
   font-weight: bold;
 }
+
+.spacedHeader {
+  margin-top: 2rem;
+}
