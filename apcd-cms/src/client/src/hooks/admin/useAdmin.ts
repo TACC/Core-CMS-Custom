@@ -47,6 +47,22 @@ export const useUserFilters = (): UseQueryResult<FilterOptions> => {
   return { ...query };
 };
 
+const getSubmissionFilters = async () => {
+  const url = 'administration/list-submissions/api/options';
+  const response = await fetchUtil({ url });
+  return response;
+};
+
+export const useSubmissionFilters = (): UseQueryResult<FilterOptions> => {
+  const query = useQuery(['submissionFilters'], () => getSubmissionFilters(), {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  }) as UseQueryResult<FilterOptions>;
+
+  return { ...query };
+};
+
 const getSubmissions = async (params: any) => {
   const url = `administration/list-submissions/api/`;
   const response = await fetchUtil({

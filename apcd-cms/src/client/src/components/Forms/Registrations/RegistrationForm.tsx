@@ -86,7 +86,7 @@ const validationSchema = Yup.object().shape({
         ) {
           return this.createError({
             message: 'Please select at least one plan type.',
-            path: this.path + ".types_of_plans_hidden"
+            path: this.path + '.types_of_plans_hidden',
           });
         }
         return true;
@@ -99,7 +99,7 @@ const validationSchema = Yup.object().shape({
         ) {
           return this.createError({
             message: 'Please select at least one claims file type (see above).',
-            path: this.path + ".types_of_files_hidden"
+            path: this.path + '.types_of_files_hidden',
           });
         }
         return true;
@@ -331,8 +331,8 @@ export const RegistrationForm: React.FC<{
                     </Label>
                   </FormGroup>
                   <div className="help-text">
-                      Whether you submit on behalf of your own organization
-                      (Self) or another organization (Other)
+                    Whether you submit on behalf of your own organization (Self)
+                    or another organization (Other)
                   </div>
                 </FormGroup>
                 <TextFormField
