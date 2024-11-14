@@ -1,0 +1,14 @@
+.required .badge {
+  color: white;
+  font-weight: var(--medium);
+
+  margin-left: 0.5em;
+  vertical-align: top;
+}
+
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}

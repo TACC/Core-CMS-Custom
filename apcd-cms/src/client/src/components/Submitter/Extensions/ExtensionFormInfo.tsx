@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useFormikContext, Field, ErrorMessage } from 'formik';
-import { FormGroup } from 'reactstrap';
 import styles from './ExtensionsForm.module.css';
 import {
   SubmitterEntityData,
@@ -9,7 +8,7 @@ import {
 } from 'hooks/entities';
 import SectionMessage from 'core-components/SectionMessage';
 import { Link } from 'react-router-dom';
-import { FormLabel } from 'apcd-components/Components/FormLabel/FormLabel';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 const maxDate = new Date();
 maxDate.setFullYear(maxDate.getFullYear() + 1);
@@ -45,12 +44,11 @@ const ExtensionFormInfo: React.FC<{
       <h4>Extension Information {index + 1}</h4>
       <p>This extension is on behalf of the following organization:</p>
 
-      <FormGroup className="field-wrapper required">
-        <FormLabel
-          labelFor={`extensions.${index}.businessName`}
-          label={'Business Name'}
-          isRequired={true}
-        />
+      <FieldWrapper
+        name={`extensions.${index}.businessName`}
+        label="Business Name"
+        required={true}
+      >
         {submitterData && (
           <>
             <Field
@@ -75,13 +73,9 @@ const ExtensionFormInfo: React.FC<{
                 </option>
               ))}
             </Field>
-            <ErrorMessage
-              name={`extensions.${index}.businessName`}
-              component="div"
-              className={styles.isInvalid}
-            />
           </>
         )}
+
         {!submitterData && (
           <SectionMessage type="error">
             There was an error finding your associated businesses.{' '}
@@ -90,14 +84,13 @@ const ExtensionFormInfo: React.FC<{
             </Link>
           </SectionMessage>
         )}
-      </FormGroup>
+      </FieldWrapper>
 
-      <FormGroup className="field-wrapper required">
-        <FormLabel
-          labelFor={`extensions.${index}.extensionType`}
-          label={'Extension Type'}
-          isRequired={true}
-        />
+      <FieldWrapper
+        name={`extensions.${index}.extensionType`}
+        label="Extension Type"
+        required={true}
+      >
         <Field
           as="select"
           name={`extensions.${index}.extensionType`}
@@ -110,23 +103,20 @@ const ExtensionFormInfo: React.FC<{
             Small Carrier (Fewer Than 10,000 Lives Covered)
           </option>
         </Field>
-        <ErrorMessage
-          name={`extensions.${index}.extensionType`}
-          component="div"
-          className={styles.isInvalid}
-        />
-      </FormGroup>
+      </FieldWrapper>
 
       <h6>Submission Dates</h6>
       <div className={styles.fieldRows}>
-        <FormGroup className="field-wrapper required">
-          <FormLabel
-            labelFor={`extensions.${index}.applicableDataPeriod`}
-            label={''}
-            isRequired={true}
-          >
-            Applicable Data Period <sup>1</sup>
-          </FormLabel>
+        <FieldWrapper
+          name={`extensions.${index}.applicableDataPeriod`}
+          label={
+            <>
+              Applicable Data Period <sup>1</sup>
+            </>
+          }
+          required={true}
+          description="Enter month and year"
+        >
           <Field
             as="select"
             name={`extensions.${index}.applicableDataPeriod`}
@@ -148,24 +138,18 @@ const ExtensionFormInfo: React.FC<{
               <option value={item.data_period}>{item.data_period}</option>
             ))}
           </Field>
-          <div className="help-text">Enter month and year</div>
-          <ErrorMessage
-            name={`extensions.${index}.applicableDataPeriod`}
-            component="div"
-            className={styles.isInvalid}
-          />
-        </FormGroup>
+        </FieldWrapper>
 
-        <FormGroup
-          className={`position-relative field-wrapper required ${styles.dateInputContainer}`}
+        <FieldWrapper
+          name={`extensions.${index}.requestedTargetDate`}
+          label={
+            <>
+              Requested Target Date <sup>2</sup>
+            </>
+          }
+          required={true}
+          className={`position-relative ${styles.dateInputContainer}`}
         >
-          <FormLabel
-            labelFor={`extensions.${index}.requestedTargetDate`}
-            label={''}
-            isRequired={true}
-          >
-            Requested Target Date <sup>2</sup>
-          </FormLabel>
           <Field
             type="date"
             name={`extensions.${index}.requestedTargetDate`}
@@ -173,34 +157,24 @@ const ExtensionFormInfo: React.FC<{
             className={`${styles.dateInputField}`}
             max={oneYearFromToday}
           />
-          <ErrorMessage
-            name={`extensions.${index}.requestedTargetDate`}
-            component="div"
-            className={styles.isInvalid}
-          />
-        </FormGroup>
+        </FieldWrapper>
 
-        <FormGroup
-          className={`position-relative field-wrapper required ${styles.dateInputContainer} `}
+        <FieldWrapper
+          name={`extensions.${index}.currentExpectedDate`}
+          label={
+            <>
+              Current Expected Date <sup>3</sup>
+            </>
+          }
+          required={true}
+          className={`position-relative ${styles.dateInputContainer} `}
         >
-          <FormLabel
-            labelFor={`extensions.${index}.currentExpectedDate`}
-            label={''}
-            isRequired={true}
-          >
-            Current Expected Date <sup>3</sup>
-          </FormLabel>
           <Field
             type="date"
             name={`extensions.${index}.currentExpectedDate`}
             id={`extensions.${index}.currentExpectedDate`}
           />
-          <ErrorMessage
-            name={`extensions.${index}.currentExpectedDate`}
-            component="div"
-            className={styles.isInvalid}
-          />
-        </FormGroup>
+        </FieldWrapper>
       </div>
     </>
   );

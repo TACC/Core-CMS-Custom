@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FormGroup, Label, Button, FormFeedback } from 'reactstrap';
@@ -9,13 +9,13 @@ import {
   useRegFormData,
   usePostRegistration,
 } from 'hooks/registrations';
-import { fetchUtil } from 'utils/fetchUtil';
 import USStates from './USStates.fixture';
 import { TextFormField } from './TextFormField';
 import { RegistrationEntity } from './FormEntity';
 import { RegistrationContact } from './FormContact';
 import SectionMessage from 'core-components/SectionMessage';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import styles from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object().shape({
@@ -298,28 +298,27 @@ export const RegistrationForm: React.FC<{
             ) : (
               <Form>
                 <h4>Organization</h4>
-                <FormGroup className="field-wrapper radioselect required">
-                  <Label>
-                    On behalf of:
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper
+                  name="on_behalf_of"
+                  label="On behalf of:"
+                  required={true}
+                  className="radioselect"
+                  description="Whether you submit on behalf of your own organization (Self) or another organization (Other)"
+                >
                   <FormGroup id="on_behalf_of" noMargin={true}>
                     <Label>
                       <Field
                         type="radio"
-                        key="self"
                         name="on_behalf_of"
                         id="on_behalf_of"
                         className="radioselect"
                         value="true"
-                        checked
                       />{' '}
                       Self
                     </Label>
                     <Label>
                       <Field
                         type="radio"
-                        key="other"
                         name="on_behalf_of"
                         id="on_behalf_of"
                         className="radioselect"
@@ -328,22 +327,14 @@ export const RegistrationForm: React.FC<{
                       Other
                     </Label>
                   </FormGroup>
-                  <div className="help-text">
-                    Whether you submit on behalf of your own organization (Self)
-                    or another organization (Other)
-                  </div>
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="reg_year"
                   label="Registration Year"
                   helpText="Enter the registration year. Must be 2023 or later."
                   required={true}
                 />
-                <FormGroup className="field-wrapper required" noMargin={true}>
-                  <Label htmlFor="type">
-                    Type
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper name="type" label="Type" required={true}>
                   <Field
                     as="select"
                     name="type"
@@ -356,12 +347,7 @@ export const RegistrationForm: React.FC<{
                     </option>
                     <option value="pbm">Pharmacy Benefit Manager (PBM)</option>
                   </Field>
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className={styles.isInvalid}
-                  />
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="business_name"
                   label="Business Name"
@@ -373,16 +359,12 @@ export const RegistrationForm: React.FC<{
                   required={true}
                 />
                 <TextFormField name="city" label="City" required={true} />
-                <FormGroup className="field-wrapper required" noMargin={true}>
-                  <Label for="state">
-                    State
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper name="state" label="State" required={true}>
                   <Field
                     as="select"
                     name="state"
                     id="state"
-                    className="choicefield required"
+                    className="choicefield"
                   >
                     {USStates.map((USState) => (
                       <option key={USState.value} value={USState.value}>
@@ -390,12 +372,7 @@ export const RegistrationForm: React.FC<{
                       </option>
                     ))}
                   </Field>
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className={styles.isInvalid}
-                  />
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="zip_code"
                   label="ZIP Code"
