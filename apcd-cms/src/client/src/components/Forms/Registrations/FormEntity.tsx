@@ -8,7 +8,7 @@ import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5>Entity {index + 1}</h5>
+      <h5 className={`${styles.boldedHeader} ${styles.spacedHeader}`}>ENTITY {index + 1}</h5>
       <TextFormField
         name={`entities.${index}.entity_name`}
         label="Name"
@@ -29,11 +29,11 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
             helpText="Enter in format 12-3456789."
           />
 
-          <TextFormField
-            name={`entities.${index}.license_number`}
-            label="License Number"
-            helpText="Enter digits only."
-          />
+        <TextFormField
+          name={`entities.${index}.license_number`}
+          label="License Number"
+          helpText="Enter digits only."
+        />
 
           <TextFormField
             name={`entities.${index}.naic_company_code`}
@@ -43,7 +43,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         </FormGroup>
       </FieldWrapper>
 
-      <h6>Type of Plan</h6>
+      <h6 className={styles.boldedHeader}>Type of Plan</h6>
       <FieldWrapper
         name={`entities.${index}.types_of_plans_hidden`}
         label="Plan Types"
@@ -84,7 +84,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         </FormGroup>
       </FieldWrapper>
 
-      <h6>File Submission</h6>
+      <h6 className={styles.boldedHeader}>File Submission</h6>
       <FieldWrapper
         name={`entities.${index}.types_of_files_hidden`}
         label="Types of Files"
@@ -136,7 +136,7 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
         </FormGroup>
       </FieldWrapper>
 
-      <h6>
+      <h6 className={styles.boldedHeader}>
         Coverage Estimates
         <small>
           {' '}
