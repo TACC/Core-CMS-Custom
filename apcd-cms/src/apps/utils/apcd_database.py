@@ -1023,10 +1023,10 @@ def update_extension(form):
         set_values = []
         # to set column names for query to the correct DB name
         columns = {
-            'applicable-data-period': 'applicable_data_period',
+            'applicable_data_period': 'applicable_data_period',
             'status': 'status',
             'outcome': 'outcome',
-            'approved-expiration-date': 'approved_expiration_date'
+            'approved_expiration_date': 'approved_expiration_date'
         }
         # To make sure fields are not blank. 
         # If they aren't, add column to update set operation
