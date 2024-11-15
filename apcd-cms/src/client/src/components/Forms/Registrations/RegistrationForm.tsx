@@ -258,7 +258,7 @@ export const RegistrationForm: React.FC<{
           validateOnMount={true}
           initialValues={
             data
-              ? transformToRegistrationFormValues(data)
+              ? transformToRegistrationFormValues(data['registration_data'], data['renew'])
               : inputValues ?? initialValues
           }
           initialTouched={initialTouched}
