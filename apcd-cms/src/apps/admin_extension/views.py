@@ -164,7 +164,6 @@ class UpdateExtensionsView(View):
 
         errors = []
         extension_response = update_extension(updated_data)
-        print(extension_response)
         if self._err_msg(extension_response):
             errors.append(self._err_msg(extension_response))
         if len(errors) != 0:
