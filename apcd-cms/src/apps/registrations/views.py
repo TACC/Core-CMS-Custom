@@ -25,7 +25,7 @@ class RegistrationFormView(TemplateView):
     def get(self, request):
         formatted_reg_data = []
         renew = False
-        reg_id = request.GET.get('reg_id', None)
+        reg_id = request.GET.get('reg_id', None).rstrip('/')  # reg_id coming from renew has trailing slash appended, need to remove to pass correct request through
         if reg_id and (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
             try:
                 response = get_submitter_code(request.user)
