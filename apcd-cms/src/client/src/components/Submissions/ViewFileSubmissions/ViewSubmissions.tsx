@@ -73,7 +73,7 @@ export const ViewFileSubmissions: React.FC = () => {
 
   const clearSelections = () => {
     setStatus('All');
-    setSort('All');
+    setSort('Newest Received');
     setPage(1);
   };
 
