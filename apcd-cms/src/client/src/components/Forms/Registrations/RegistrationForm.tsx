@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FormGroup, Label, Button, FormFeedback } from 'reactstrap';
@@ -9,13 +9,13 @@ import {
   useRegFormData,
   usePostRegistration,
 } from 'hooks/registrations';
-import { fetchUtil } from 'utils/fetchUtil';
 import USStates from './USStates.fixture';
 import { TextFormField } from './TextFormField';
 import { RegistrationEntity } from './FormEntity';
 import { RegistrationContact } from './FormContact';
 import SectionMessage from 'core-components/SectionMessage';
 import LoadingSpinner from 'core-components/LoadingSpinner';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import styles from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object().shape({
@@ -128,6 +128,7 @@ const initialValues: RegistrationFormValues = {
   business_name: '',
   mailing_address: '',
   city: '',
+  state: 'AL',
   zip_code: '',
   reg_id: -1,
   entities: [
@@ -165,21 +166,22 @@ const initialValues: RegistrationFormValues = {
 };
 
 const initialTouched = {
-  on_behalf_of: true,
-  type: true,
-  entities: [
-    {
-      types_of_plans_commercial: true,
-      types_of_plans_medicare: true,
-      types_of_plans_medicaid: true,
-      types_of_files_eligibility_enrollment: true,
-      types_of_files_provider: true,
-      types_of_files_medical: true,
-      types_of_files_pharmacy: true,
-      types_of_files_dental: true,
-    },
-  ],
-};
+    on_behalf_of: true,
+    type: true,
+    state: true,
+    entities: [
+      {
+        types_of_plans_commercial: true,
+        types_of_plans_medicare: true,
+        types_of_plans_medicaid: true,
+        types_of_files_eligibility_enrollment: true,
+        types_of_files_provider: true,
+        types_of_files_medical: true,
+        types_of_files_pharmacy: true,
+        types_of_files_dental: true,
+      }
+    ]
+}
 
 export const RegistrationForm: React.FC<{
   isEdit?: boolean;
@@ -256,7 +258,7 @@ export const RegistrationForm: React.FC<{
           validateOnMount={true}
           initialValues={
             data
-              ? transformToRegistrationFormValues(data)
+              ? transformToRegistrationFormValues(data['registration_data'], data['renew'])
               : inputValues ?? initialValues
           }
           initialTouched={initialTouched}
@@ -298,28 +300,27 @@ export const RegistrationForm: React.FC<{
             ) : (
               <Form>
                 <h4>Organization</h4>
-                <FormGroup className="field-wrapper radioselect required">
-                  <Label>
-                    On behalf of:
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper
+                  name="on_behalf_of"
+                  label="On behalf of:"
+                  required={true}
+                  className="radioselect"
+                  description="Whether you submit on behalf of your own organization (Self) or another organization (Other)"
+                >
                   <FormGroup id="on_behalf_of" noMargin={true}>
                     <Label>
                       <Field
                         type="radio"
-                        key="self"
                         name="on_behalf_of"
                         id="on_behalf_of"
                         className="radioselect"
                         value="true"
-                        checked
                       />{' '}
                       Self
                     </Label>
                     <Label>
                       <Field
                         type="radio"
-                        key="other"
                         name="on_behalf_of"
                         id="on_behalf_of"
                         className="radioselect"
@@ -328,22 +329,14 @@ export const RegistrationForm: React.FC<{
                       Other
                     </Label>
                   </FormGroup>
-                  <div className="help-text">
-                    Whether you submit on behalf of your own organization (Self)
-                    or another organization (Other)
-                  </div>
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="reg_year"
                   label="Registration Year"
                   helpText="Enter the registration year. Must be 2023 or later."
                   required={true}
                 />
-                <FormGroup className="field-wrapper required" noMargin={true}>
-                  <Label htmlFor="type">
-                    Type
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper name="type" label="Type" required={true}>
                   <Field
                     as="select"
                     name="type"
@@ -356,12 +349,7 @@ export const RegistrationForm: React.FC<{
                     </option>
                     <option value="pbm">Pharmacy Benefit Manager (PBM)</option>
                   </Field>
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className={styles.isInvalid}
-                  />
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="business_name"
                   label="Business Name"
@@ -373,16 +361,12 @@ export const RegistrationForm: React.FC<{
                   required={true}
                 />
                 <TextFormField name="city" label="City" required={true} />
-                <FormGroup className="field-wrapper required" noMargin={true}>
-                  <Label for="state">
-                    State
-                    <span className={styles.isRequired}> (required)</span>
-                  </Label>
+                <FieldWrapper name="state" label="State" required={true}>
                   <Field
                     as="select"
                     name="state"
                     id="state"
-                    className="choicefield required"
+                    className="choicefield"
                   >
                     {USStates.map((USState) => (
                       <option key={USState.value} value={USState.value}>
@@ -390,12 +374,7 @@ export const RegistrationForm: React.FC<{
                       </option>
                     ))}
                   </Field>
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className={styles.isInvalid}
-                  />
-                </FormGroup>
+                </FieldWrapper>
                 <TextFormField
                   name="zip_code"
                   label="ZIP Code"
@@ -427,87 +406,91 @@ export const RegistrationForm: React.FC<{
                     (displayed after submitting this form).
                   </p>
                 )}
-                <Button
-                  className="c-button c-button--primary"
-                  type="button"
-                  color="primary"
-                  disabled={values.entities.length === 5}
-                  onClick={() =>
-                    setFieldValue('entities', [
-                      ...values.entities,
-                      {
-                        entity_name: '',
-                        fein: '',
-                        license_number: '',
-                        naic_company_code: '',
-                        types_of_plans_commercial: false,
-                        types_of_plans_medicare: false,
-                        types_of_plans_medicaid: false,
-                        types_of_plans_hidden: false,
-                        types_of_files_eligibility_enrollment: true,
-                        types_of_files_provider: false,
-                        types_of_files_medical: false,
-                        types_of_files_pharmacy: false,
-                        types_of_files_dental: false,
-                        types_of_files_hidden: false,
-                        total_covered_lives: '',
-                        claims_encounters_volume: '',
-                        total_claims_value: '',
-                      },
-                    ])
-                  }
-                >
-                  + Add Another Entity
-                </Button>{' '}
-                <Button
-                  className="c-button c-button--secondary"
-                  type="button"
-                  onClick={() =>
-                    values.entities.length > 1 &&
-                    setFieldValue('entities', values.entities.slice(0, -1))
-                  }
-                  color="secondary"
-                  disabled={values.entities.length === 1}
-                >
-                  - Remove Last Entity
-                </Button>
+                <div className='button-wrapper'>
+                  <Button
+                    className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
+                    type="button"
+                    color="primary"
+                    disabled={values.entities.length === 5}
+                    onClick={() =>
+                      setFieldValue('entities', [
+                        ...values.entities,
+                        {
+                          entity_name: '',
+                          fein: '',
+                          license_number: '',
+                          naic_company_code: '',
+                          types_of_plans_commercial: false,
+                          types_of_plans_medicare: false,
+                          types_of_plans_medicaid: false,
+                          types_of_plans_hidden: false,
+                          types_of_files_eligibility_enrollment: true,
+                          types_of_files_provider: false,
+                          types_of_files_medical: false,
+                          types_of_files_pharmacy: false,
+                          types_of_files_dental: false,
+                          types_of_files_hidden: false,
+                          total_covered_lives: '',
+                          claims_encounters_volume: '',
+                          total_claims_value: '',
+                        },
+                      ])
+                    }
+                  >
+                    + Add Another Entity
+                  </Button>{' '}
+                  <Button
+                    className="c-button c-button--secondary"
+                    type="button"
+                    onClick={() =>
+                      values.entities.length > 1 &&
+                      setFieldValue('entities', values.entities.slice(0, -1))
+                    }
+                    color="secondary"
+                    disabled={values.entities.length === 1}
+                  >
+                    - Remove Last Entity
+                  </Button>
+                </div>
                 <hr />
                 <h4>Contact Information</h4>
                 {values.contacts.map((contact, index) => (
                   <RegistrationContact key={index} index={index} />
                 ))}
-                <Button
-                  className="c-button c-button--primary"
-                  type="button"
-                  color="primary"
-                  disabled={values.contacts.length === 5}
-                  onClick={() =>
-                    setFieldValue('contacts', [
-                      ...values.contacts,
-                      {
-                        contact_type: '',
-                        contact_name: '',
-                        contact_phone: '',
-                        contact_email: '',
-                        contact_notifications: false,
-                      },
-                    ])
-                  }
-                >
-                  + Add Another Contact
-                </Button>{' '}
-                <Button
-                  className="c-button c-button--secondary"
-                  type="button"
-                  onClick={() =>
-                    values.contacts.length > 1 &&
-                    setFieldValue('contacts', values.contacts.slice(0, -1))
-                  }
-                  color="secondary"
-                  disabled={values.contacts.length === 1}
-                >
-                  - Remove Last Contact
-                </Button>
+                <div className='button-wrapper'>
+                  <Button
+                    className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
+                    type="button"
+                    color="primary"
+                    disabled={values.contacts.length === 5}
+                    onClick={() =>
+                      setFieldValue('contacts', [
+                        ...values.contacts,
+                        {
+                          contact_type: '',
+                          contact_name: '',
+                          contact_phone: '',
+                          contact_email: '',
+                          contact_notifications: false,
+                        },
+                      ])
+                    }
+                  >
+                    + Add Another Contact
+                  </Button>{' '}
+                  <Button
+                    className="c-button c-button--secondary"
+                    type="button"
+                    onClick={() =>
+                      values.contacts.length > 1 &&
+                      setFieldValue('contacts', values.contacts.slice(0, -1))
+                    }
+                    color="secondary"
+                    disabled={values.contacts.length === 1}
+                  >
+                    - Remove Last Contact
+                  </Button>
+                </div>
                 <div className="button-wrapper submit">
                   <Button
                     type="submit"

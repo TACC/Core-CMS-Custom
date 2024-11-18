@@ -1,4 +1,4 @@
-from apps.utils.apcd_database import create_registration, create_registration_entity, create_registration_contact
+from apps.utils.apcd_database import create_registration, create_registration_entity, create_registration_contact, get_registrations, get_registration_entities, get_registration_contacts
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.registrations_data_formatting import _set_registration
 from apps.submitter_renewals_listing.views import get_submitter_code
@@ -25,15 +25,15 @@ class RegistrationFormView(TemplateView):
     def get(self, request):
         formatted_reg_data = []
         renew = False
-        reg_id = request.GET.get('reg_id', None)
+        reg_id = request.GET.get('reg_id', None).rstrip('/')  # reg_id coming from renew has trailing slash appended, need to remove to pass correct request through
         if reg_id and (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
             try:
                 response = get_submitter_code(request.user)
                 submitter_code = json.loads(response.content)['submitter_code']
-                submitter_registrations = apcd_database.get_registrations(submitter_code=submitter_code)
+                submitter_registrations = get_registrations(submitter_code=submitter_code)
                 registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
-                registration_entities = apcd_database.get_registration_entities(reg_id=reg_id)
-                registration_contacts = apcd_database.get_registration_contacts(reg_id=reg_id)
+                registration_entities = get_registration_entities(reg_id=reg_id)
+                registration_contacts = get_registration_contacts(reg_id=reg_id)
                 renew = True
                 formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
             except Exception as exception:

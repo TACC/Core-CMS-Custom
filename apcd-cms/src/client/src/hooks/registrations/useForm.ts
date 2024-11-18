@@ -17,10 +17,10 @@ const getRegFormData = async (reg_id: string | null) => {
 
 export const useRegFormData = (
   reg_id: string | null
-): UseQueryResult<RegistrationContent> => {
+): UseQueryResult<RegFormData> => {
   const query = useQuery(['reg_form', reg_id], () => getRegFormData(reg_id), {
     enabled: !!reg_id,
-  }) as UseQueryResult<RegistrationContent>;
+  }) as UseQueryResult<RegFormData>;
 
   return { ...query };
 };

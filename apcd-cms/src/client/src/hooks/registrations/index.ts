@@ -1,5 +1,5 @@
 export type RegFormData = {
-  registration_data: RegistrationRow;
+  registration_data: RegistrationContent;
   renew: boolean;
 };
 
@@ -76,7 +76,7 @@ export type RegistrationFormValues = {
   business_name: string;
   mailing_address: string;
   city: string;
-  state?: string | undefined;
+  state: string;
   zip_code: string;
   reg_id?: number;
   entities: {
@@ -110,12 +110,18 @@ export type RegistrationFormValues = {
 };
 
 export function transformToRegistrationFormValues(
-  registration: RegistrationContent
+  registration: RegistrationContent, renew?: boolean | undefined
 ): RegistrationFormValues {
+
+  const typeValueMap:Record<string, string> = { // to set database value for field rather than display value
+    'Insurance Carrier': 'carrier',
+    'Plan Administrator¹ (TPA/ASO)': 'tpa_aso',
+    'Pharmacy Benefit Manager (PBM)': 'pbm'
+  }
   return {
-    on_behalf_of: registration.for_self ?? '',
-    reg_year: registration.year.toString(),
-    type: registration.type ?? '',
+    on_behalf_of: registration.for_self?.toString() ?? '',
+    reg_year: (registration.year + (renew ? 1 : 0)).toString(),
+    type: registration.type ? typeValueMap[registration.type] : '',
     business_name: registration.biz_name,
     mailing_address: registration.address,
     city: registration.city,

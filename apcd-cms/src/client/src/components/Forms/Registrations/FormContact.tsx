@@ -3,11 +3,12 @@ import { Field, ErrorMessage } from 'formik';
 import { FormGroup, Label, FormFeedback } from 'reactstrap';
 import { TextFormField } from './TextFormField';
 import styles from './RegistrationForm.module.css';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik/FieldWrapperFormik';
 
 export const RegistrationContact: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5>Contact {index + 1}</h5>
+      <h5 className={`${styles.boldedHeader} ${styles.spacedHeader}`}>CONTACT {index + 1}</h5>
 
       <TextFormField
         name={`contacts.${index}.contact_type`}

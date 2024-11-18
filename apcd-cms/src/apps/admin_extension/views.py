@@ -158,7 +158,7 @@ class UpdateExtensionsView(View):
         updated_data['extension_id'] = ext_id
         updated_data['status'] = data['ext_status']
         updated_data['outcome'] = data['ext_outcome']
-        updated_data['approved-expiration-date'] = data['approved_expiration_date']
+        updated_data['approved_expiration_date'] = data['approved_expiration_date']
         updated_data['applicable_data_period'] = data['applicable_data_period']
         updated_data['notes'] = data['notes']
 
