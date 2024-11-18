@@ -63,6 +63,8 @@ class AdminSubmissionsTable(TemplateView):
         def getDate(submission):
             date = submission['received_timestamp']
             return parser.parse(date) if date is not None else parser.parse('1-1-3005')
+        
+        ## Initial API response sort
         submission_list = sorted(
             submission_content,
             key=lambda row: getDate(row),
@@ -71,8 +73,14 @@ class AdminSubmissionsTable(TemplateView):
         if status != 'All':
             submission_list = [submission for submission in submission_content 
                             if submission['status'].lower() == status.lower()]
-
+        ## Sorts filtered list 
+        submission_list = sorted(
+            submission_list,
+            key=lambda row: getDate(row),
+            reverse=(sort == 'Newest Received')
+        )
         return submission_list
+    
     def get_view_submissions_json(self, submission_content, selected_status='All', selected_sort='Newest Received'):
         context = {
             'page': [],
