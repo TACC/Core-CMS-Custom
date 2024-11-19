@@ -21,6 +21,7 @@ import * as Yup from 'yup';
 import { ExceptionRow } from 'hooks/admin';
 import { formatDate } from 'utils/dateUtil';
 import styles from './EditExceptionModal.module.css';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
 
 interface EditRecordModalProps {
@@ -244,12 +245,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
               <Row>
                 {exception.request_type == 'Threshold' && (
                   <Col md={3}>
-                    <FormGroup>
-                      <Label
-                        for="approved_threshold"
+                    <FieldWrapper
+                      name="approved_threshold"
+                      label="Approved Threshold"
+                      required={false}
                       >
-                        <strong>Approved Threshold</strong>
-                      </Label>
                       <Field
                         type="text"
                         name="approved_threshold"
@@ -262,27 +262,21 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        Requested: {exception.requested_threshold}%
-                      </small>
-                      <ErrorMessage
-                        name="approved_threshold"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                        <small
+                          className="form-text text-muted"
+                          style={{ fontStyle: 'italic' }}
+                        >
+                          Requested: {exception.requested_threshold}%
+                        </small>
+                    </FieldWrapper>
                   </Col>
                 )}
                 <Col md={3}>
-                  <FormGroup>
-                    <Label
-                      for="approved_expiration_date"
+                  <FieldWrapper
+                    name="approved_expiration_date"
+                    label="Approved Expiration Date"
+                    required={false}
                     >
-                      <strong>Approved Expiration Date</strong>
-                    </Label>
                     <Field
                       type="date"
                       name="approved_expiration_date"
@@ -306,18 +300,14 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                           ).toLocaleDateString()
                         : 'None'}
                     </small>
-                    <ErrorMessage
-                      name="approved_expiration_date"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </FormGroup>
+                  </FieldWrapper>
                 </Col>
                 <Col md={3}>
-                  <FormGroup>
-                    <Label for="status">
-                      <strong>Exception Status</strong>
-                    </Label>
+                  <FieldWrapper
+                    name="status"
+                    label="Exception Status"
+                    required={false}
+                    >
                     <Field
                       as="select"
                       name="status"
@@ -339,18 +329,14 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                           )
                       )}
                     </Field>
-                    <ErrorMessage
-                      name="status"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </FormGroup>
+                  </FieldWrapper>
                 </Col>
                 <Col md={3}>
-                  <FormGroup>
-                    <Label for="outcome">
-                      <strong>Exception Outcome</strong>
-                    </Label>
+                  <FieldWrapper
+                    name="outcome"
+                    label="Exception Outcome"
+                    required={false}
+                    >
                     <Field
                       as="select"
                       name="outcome"
@@ -369,18 +355,14 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         </option>
                       ))}
                     </Field>
-                    <ErrorMessage
-                      name="outcome"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </FormGroup>
+                  </FieldWrapper>
                 </Col>
                 <Col md={6}>
-                  <FormGroup>
-                    <Label for="notes">
-                      <strong>Notes</strong>
-                    </Label>
+                <FieldWrapper
+                    name="notes"
+                    label="Notes"
+                    required={false}
+                    >
                     <Field
                       as="textarea"
                       name="notes"
@@ -397,12 +379,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     >
                       2000 character limit
                     </small>
-                    <ErrorMessage
-                      name="notes"
-                      component="div"
-                      className="text-danger"
-                    />
-                  </FormGroup>
+                  </FieldWrapper>
                 </Col>
               </Row>
               <br />
