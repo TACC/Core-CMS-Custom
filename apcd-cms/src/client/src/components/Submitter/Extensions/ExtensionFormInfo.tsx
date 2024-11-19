@@ -171,6 +171,8 @@ const ExtensionFormInfo: React.FC<{
         >
           <Field
             type="date"
+            readOnly
+            className={`position-relative ${styles.currentExpectedDate}`}
             name={`extensions.${index}.currentExpectedDate`}
             id={`extensions.${index}.currentExpectedDate`}
           />
