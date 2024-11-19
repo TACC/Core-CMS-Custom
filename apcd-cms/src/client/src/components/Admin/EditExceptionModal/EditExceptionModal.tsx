@@ -221,6 +221,12 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     setShowErrorMessage(false);
   };
 
+  const closeBtn = (
+    <button className="close" onClick={onClose} type="button">
+      &times;
+    </button>
+  );
+
   return (
     <>
       <Modal
@@ -229,15 +235,9 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         className="modal-dialog modal-lg"
         onClosed={dismissMessages}
       >
-        <div className="modal-header">
-          <h4 className="modal-title text-capitalize">
-            Edit Exception ID {exception.exception_id} for{' '}
-            {exception.entity_name}
-          </h4>
-          <button type="button" className="close" onClick={onClose}>
-            <span aria-hidden="true">&#xe912;</span>
-          </button>
-        </div>
+        <ModalHeader close={closeBtn}>
+          Edit Exception ID {exception.exception_id} for {exception.entity_name}
+        </ModalHeader>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Exception</h4>
           <FormikProvider value={formik}>
