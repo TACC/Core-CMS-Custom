@@ -30,7 +30,6 @@ class SubmissionsTable(TemplateView):
         items_per_page = int(request.GET.get('limit', 50))
         try: 
             submission_content = get_user_submissions_and_logs(request.user.username)
-            logger.debug(print(submission_content))
             filtered_submissions = self.filtered_submissions(submission_content, status, sort)
 
             paginator = Paginator(filtered_submissions, items_per_page)
@@ -45,7 +44,7 @@ class SubmissionsTable(TemplateView):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(self.get_view_submissions_json(get_user_submissions_and_logs(request.user.username)))
+        context.update(self.get_view_submissions_json(get_user_submissions_and_logs(self.request.user.username)))
         return context
     
     def get_options(self, request):
@@ -66,18 +65,17 @@ class SubmissionsTable(TemplateView):
         def getDate(submission):
             date = submission['received_timestamp']
             return parser.parse(date) if date is not None else parser.parse('1-1-3005')
-
-        submission_list = sorted(
+        
+        if status != 'All':
+            submission_content = [submission for submission in submission_content 
+                            if submission['status'].lower() == status.lower()]
+             
+        submission_content= sorted(
             submission_content,
             key=lambda row: getDate(row),
             reverse=(sort == 'Newest Received')
         )
-
-        if status != 'All':
-            submission_list = [submission for submission in submission_content 
-                            if submission['status'].lower() == status.lower()]
-
-        return submission_list
+        return submission_content
     
     def get_view_submissions_json(self, submission_content, selected_status='All', selected_sort='Newest Received'):
         context = {

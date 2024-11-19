@@ -9,7 +9,7 @@ import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/Ed
 import { formatDate } from 'utils/dateUtil';
 
 export const AdminExtensions: React.FC = () => {
-  const [status, setStatus] = useState('All');
+  const [status, setStatus] = useState('Pending');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useExtensions(
@@ -23,10 +23,8 @@ export const AdminExtensions: React.FC = () => {
   const [selectedExtension, setSelectedExtension] =
     useState<ExtensionRow | null>(null);
 
-  console.log(data);
-
   const clearSelections = () => {
-    setStatus('');
+    setStatus('Pending');
     setOrg('');
     setPage(1);
   };
@@ -66,9 +64,9 @@ export const AdminExtensions: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>View Extension Requests</h1>
-      <p>All submitted extension requests</p>
+      <p style={{ marginBottom: '30px' }}>All submitted extension requests</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
@@ -107,7 +105,7 @@ export const AdminExtensions: React.FC = () => {
               </option>
             ))}
           </select>
-          {data?.selected_status || data?.selected_org ? (
+          {data?.selected_status !== "Pending" || data?.selected_org ? (
             <button onClick={clearSelections}>Clear Options</button>
           ) : null}
         </div>

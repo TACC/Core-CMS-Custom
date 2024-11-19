@@ -83,13 +83,13 @@ class AdminExtensionsTable(TemplateView):
         status_filter = self.request.GET.get('status')
         org_filter = self.request.GET.get('org')
 
-        context['selected_status'] = 'All'
+        context['selected_status'] = ''
         if status_filter is not None and status_filter != 'All':
             context['selected_status'] = status_filter
             queryStr += f'&status={status_filter}'
             extensions_table_entries = table_filter(status_filter, extensions_table_entries, 'ext_status')
 
-        context['selected_org'] = 'All'
+        context['selected_org'] = ''
         if org_filter is not None and org_filter != 'All':
             context['selected_org'] = org_filter
             queryStr += f'&org={org_filter}'
@@ -164,7 +164,6 @@ class UpdateExtensionsView(View):
 
         errors = []
         extension_response = update_extension(updated_data)
-        print(extension_response)
         if self._err_msg(extension_response):
             errors.append(self._err_msg(extension_response))
         if len(errors) != 0:
