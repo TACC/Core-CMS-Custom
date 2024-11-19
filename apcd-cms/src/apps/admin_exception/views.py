@@ -119,8 +119,6 @@ class AdminExceptionsTable(TemplateView):
             entity_name = title_case(exception[21])
             status = title_case(exception[19]) if exception[19] else 'None'
             outcome = title_case(exception[5]) if exception[5] else 'None'
-            status = title_case(exception[19]) if exception[19] else 'None'
-            outcome = title_case(exception[5]) if exception[5] else 'None'
             if entity_name not in context['org_options']:
                 context['org_options'].append(entity_name)
                 # to make sure All is first in the dropdown filter options after sorting alphabetically

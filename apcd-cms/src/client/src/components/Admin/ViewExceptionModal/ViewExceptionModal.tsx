@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { ExceptionModalContent, ExceptionRow } from 'hooks/admin';
-import { formatDate } from 'utils/dateUtil';
+import { formatModalDate } from 'utils/dateUtil';
 import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
@@ -50,7 +50,7 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
               <Col md={7}>
-                {(created_at && formatDate(created_at)) || 'None'}
+                {(created_at && formatModalDate(created_at)) || 'None'}
               </Col>
             </Row>
             <Row>
@@ -130,7 +130,7 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
               <Col md={7}>
-                {(updated_at && formatDate(updated_at)) || 'None'}
+                {(updated_at && formatModalDate(updated_at)) || 'None'}
               </Col>
             </Row>
             <hr />

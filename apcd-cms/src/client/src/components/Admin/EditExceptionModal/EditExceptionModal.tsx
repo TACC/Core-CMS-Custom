@@ -219,11 +219,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
-  const closeBtn = (
-    <button className="close" onClick={onClose} type="button">
-      &times;
-    </button>
-  );
 
   return (
     <>
@@ -233,18 +228,26 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         className="modal-dialog modal-lg"
         onClosed={dismissMessages}
       >
-        <ModalHeader close={closeBtn}>
-          Edit Exception ID {exception.exception_id} for {exception.entity_name}
-        </ModalHeader>
+        <div className="modal-header">
+          <h4 className="modal-title text-capitalize">
+            Edit Exception ID {exception.exception_id} for{' '}
+            {exception.entity_name}
+          </h4>
+          <button type="button" className="close" onClick={onClose}>
+            <span aria-hidden="true">&#xe912;</span>
+          </button>
+        </div>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Exception</h4>
           <FormikProvider value={formik}>
             <form onSubmit={formik.handleSubmit}>
               <Row>
                 {exception.request_type == 'Threshold' && (
-                  <Col md={4}>
+                  <Col md={3}>
                     <FormGroup>
-                      <Label for="approved_threshold">
+                      <Label
+                        for="approved_threshold"
+                      >
                         <strong>Approved Threshold</strong>
                       </Label>
                       <Field
@@ -258,7 +261,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         }
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control`}
                       />
                       <small
                         className="form-text text-muted"
@@ -274,9 +276,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     </FormGroup>
                   </Col>
                 )}
-                <Col md={4}>
+                <Col md={3}>
                   <FormGroup>
-                    <Label for="approved_expiration_date">
+                    <Label
+                      for="approved_expiration_date"
+                    >
                       <strong>Approved Expiration Date</strong>
                     </Label>
                     <Field
@@ -290,7 +294,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       }
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"
@@ -310,7 +313,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                   <FormGroup>
                     <Label for="status">
                       <strong>Exception Status</strong>
@@ -321,7 +324,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="status"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control`}
                       value={formik.values.status}
                     >
                       {statusOptions?.map(
@@ -344,7 +346,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                   <FormGroup>
                     <Label for="outcome">
                       <strong>Exception Outcome</strong>
@@ -355,7 +357,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       id="outcome"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control`}
                       value={formik.values.outcome}
                     >
                       {outcomeOptions?.map((val, index) => (
@@ -375,7 +376,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                <Col md={8}>
+                <Col md={6}>
                   <FormGroup>
                     <Label for="notes">
                       <strong>Notes</strong>
@@ -389,7 +390,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       maxLength="2000" // Set the maxLength attribute
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className={`form-control`}
                     />
                     <small
                       className="form-text text-muted"
