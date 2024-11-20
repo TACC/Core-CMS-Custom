@@ -115,8 +115,6 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       });
 
       if (onEditSuccess && response) {
-          console.log('success, setting field');
-          console.log(convertApiValueToPeriodLabel(values.applicable_data_period));
         onEditSuccess(response);
         setUserFields([
           {

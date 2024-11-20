@@ -64,8 +64,6 @@ export const convertPeriodLabelToApiValue = (period: string): string | null => {
 };
 
 export const convertApiValueToPeriodLabel = (period: string): string | null => {
-  // Return as-is if already in expected format
-  //if (/^\d{4}-(0[1-9]|1[0-2])$/.test(period)) {
   if (/^([A-Za-z]{3})\.?\s(\d{4})$/.test(period)) {
     return period;
   }
@@ -86,7 +84,6 @@ export const convertApiValueToPeriodLabel = (period: string): string | null => {
   };
 
   const match = period.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
-  //const match = period.match(/^([A-Za-z]{3})\.?\s(\d{4})$/);
   if (!match) {
     console.log(`Invalid period format: ${period}`);
     return period;
