@@ -11,7 +11,7 @@ import SectionMessage from 'core-components/SectionMessage';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmissions.module.css';
 import { Link } from 'react-router-dom';
-import { FileSubmissionLogsModal } from './ViewSubmissionsModal';
+import { ViewSubmissionLogsModal } from './ViewSubmissionsModal';
 import { formatDate } from 'utils/dateUtil';
 import { titleCase } from 'utils/stringUtil';
 
@@ -161,7 +161,7 @@ export const ViewFileSubmissions: React.FC = () => {
         />
       </div>
       {selectedSubmission && viewModalOpen && (
-        <FileSubmissionLogsModal
+        <ViewSubmissionLogsModal
           isOpen={viewModalOpen}
           parentToggle={closeModal}
           submission_logs={selectedSubmissionLog}

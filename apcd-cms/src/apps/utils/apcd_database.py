@@ -856,6 +856,7 @@ def get_user_submissions_and_logs(user):
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
                         'submission_id', submission_logs.submission_id,
+                        'entity_name', submitters.entity_name,
                         'file_type', submission_logs.file_type,
                         'validation_suite', submission_logs.validation_suite,
                         'outcome', submission_logs.outcome,
@@ -917,6 +918,7 @@ def get_all_submissions_and_logs():
                             ELSE json_agg(json_build_object(
                                 'log_id', submission_logs.log_id,
                                 'submission_id', submission_logs.submission_id,
+                                'entity_name', submitters.entity_name,
                                 'file_type', submission_logs.file_type,
                                 'validation_suite', submission_logs.validation_suite,
                                 'outcome', submission_logs.outcome,

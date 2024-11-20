@@ -1,12 +1,8 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import {
-  ExtensionResult,
-  UserResult,
-  SubmissionResult,
-  ExceptionResult,
-  FilterOptions,
-} from '.';
+import { ExtensionResult, UserResult, ExceptionResult, FilterOptions } from '.';
+
+import { FileSubmissionResult } from 'hooks/submissions';
 
 const getUsers = async (params: any) => {
   const url = `/administration/view-users/api/`;
@@ -76,7 +72,7 @@ export const useSubmissions = (
   status?: string,
   sort?: string,
   page?: number
-): UseQueryResult<SubmissionResult> => {
+): UseQueryResult<FileSubmissionResult> => {
   const params: { status?: string; sort?: string; page?: number } = {
     status,
     sort,
@@ -84,7 +80,7 @@ export const useSubmissions = (
   };
   const query = useQuery(['submissions', params], () =>
     getSubmissions(params)
-  ) as UseQueryResult<SubmissionResult>;
+  ) as UseQueryResult<FileSubmissionResult>;
 
   return { ...query };
 };

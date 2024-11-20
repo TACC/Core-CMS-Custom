@@ -9,7 +9,7 @@ interface ViewSubmissionLogsModalProps {
   parentToggle: () => void;
 }
 
-export const FileSubmissionLogsModal: React.FC<
+export const ViewSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
 > = ({ submission_logs, isOpen, parentToggle }) => {
   const closeBtn = (
@@ -33,17 +33,19 @@ export const FileSubmissionLogsModal: React.FC<
           <div>
             <dl>
               {submission_logs.length > 0 ? (
-                submission_logs.map((log, index) => (
+                submission_logs.map((log: any, index: number) => (
                   <div className="modal-section" key={index}>
                     <dl className="c-data-list--is-vert c-data-list--is-wide">
                       <dt className="c-data-list__key">Log ID</dt>
                       <dd className="c-data-list__value">{log.log_id}</dd>
-                      <dt className="c-data-list__key">Submission ID</dt>
+                      <dt className="c-data-list__key">Entity Organization</dt>
                       <dd className="c-data-list__value">
-                        {log.submission_id}
+                        {titleCase(log.entity_name)}
                       </dd>
                       <dt className="c-data-list__key">File Type</dt>
-                      <dd className="c-data-list__value">{log.file_type}</dd>
+                      <dd className="c-data-list__value">
+                        {titleCase(log.file_type)}
+                      </dd>
                       <dt className="c-data-list__key">Validation Suite</dt>
                       <dd className="c-data-list__value">
                         {titleCase(log.validation_suite)}
