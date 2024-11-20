@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
 from apps.utils.apcd_database import get_user_submissions_and_logs
 from apps.utils.apcd_groups import has_apcd_group
-from apps.utils.utils import title_case, table_filter
+from apps.utils.utils import title_case
 from django.core.paginator import Paginator
 import logging
 from dateutil import parser
@@ -34,7 +34,7 @@ class SubmissionsTable(TemplateView):
 
             paginator = Paginator(filtered_submissions, items_per_page)
             page_info = paginator.get_page(page_number)
-            context= self.get_view_submissions_json(list(page_info), selected_status=status, selected_sort=sort)
+            context = self.get_view_submissions_json(list(page_info), selected_status=status, selected_sort=sort)
             context['page_num'] = page_info.number
             context['total_pages'] = paginator.num_pages
             return JsonResponse({'response': context})
@@ -70,7 +70,7 @@ class SubmissionsTable(TemplateView):
             submission_content = [submission for submission in submission_content 
                             if submission['status'].lower() == status.lower()]
              
-        submission_content= sorted(
+        submission_content = sorted(
             submission_content,
             key=lambda row: getDate(row),
             reverse=(sort == 'Newest Received')
@@ -89,6 +89,7 @@ class SubmissionsTable(TemplateView):
             return {
             'submission_id': submission['submission_id'],
             'submitter_id': submission['submitter_id'],
+            'entity_name': submission['entity_name'],
             'file_name': submission['file_name'],
             'status': submission['status'],
             'outcome': title_case(submission['outcome']) if submission['outcome'] else None,

@@ -18,6 +18,7 @@ import { titleCase } from 'utils/stringUtil';
 export const ViewFileSubmissions: React.FC = () => {
   const header = [
     'Received',
+    'Entity Organization',
     'File Name',
     'Outcome',
     'Status',
@@ -117,7 +118,7 @@ export const ViewFileSubmissions: React.FC = () => {
           ) : null}
         </div>
       </div>
-      <table id="submissionTable" className={styles.submissionTable}>
+      <table id="submissionTable" className="submission-table">
         <thead>
           <tr>
             {header.map((columnName: string, index: number) => (
@@ -130,6 +131,7 @@ export const ViewFileSubmissions: React.FC = () => {
             (row: FileSubmissionRow, rowIndex: number) => (
               <tr key={rowIndex}>
                 <td>{formatDate(row.received_timestamp)}</td>
+                <td>{titleCase(row.entity_name)}</td>
                 <td>{titleCase(row.file_name)}</td>
                 <td>{titleCase(row.outcome)}</td>
                 <td>{titleCase(row.status)}</td>
