@@ -135,7 +135,7 @@ const ExtensionFormInfo: React.FC<{
           >
             <option value="">-- Select period --</option>
             {dataPeriods.map((item) => (
-              <option value={item.data_period}>{item.data_period}</option>
+              <option value={item.data_period} key={item.data_period}>{item.data_period}</option>
             ))}
           </Field>
         </FieldWrapper>
@@ -166,11 +166,13 @@ const ExtensionFormInfo: React.FC<{
               Current Expected Date <sup>3</sup>
             </>
           }
-          required={true}
+          required={false}
           className={`position-relative ${styles.dateInputContainer} `}
         >
           <Field
             type="date"
+            readOnly
+            className={`position-relative ${styles.currentExpectedDate}`}
             name={`extensions.${index}.currentExpectedDate`}
             id={`extensions.${index}.currentExpectedDate`}
           />

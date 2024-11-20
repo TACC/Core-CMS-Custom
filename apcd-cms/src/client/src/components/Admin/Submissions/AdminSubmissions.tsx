@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useSubmissions, useSubmissionFilters } from 'hooks/admin';
 import {
-  useSubmissions,
-  SubmissionRow,
-  useSubmissionFilters,
-  SubmissionLogsModalContent,
-} from 'hooks/admin';
-import { ViewSubmissionLogsModal } from './ViewSubmissionLogsModal';
+  FileSubmissionRow,
+  FileSubmissionLogsModalContent,
+} from 'hooks/submissions';
+import { ViewSubmissionLogsModal } from 'apcd-components/Submissions/ViewFileSubmissions';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Button from 'core-components/Button';
@@ -36,10 +35,10 @@ export const AdminSubmissions: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] =
-    useState<SubmissionRow | null>(null);
+    useState<FileSubmissionRow | null>(null);
 
   const [selectedSubmissionLog, setSelectedSubmissionLog] = useState<
-    SubmissionLogsModalContent[]
+    FileSubmissionLogsModalContent[]
   >([]);
 
   const closeModal = () => {
@@ -124,7 +123,7 @@ export const AdminSubmissions: React.FC = () => {
           ) : null}
         </div>
       </div>
-      <table id="submissionTable" className={styles.submissionTable}>
+      <table id="submissionTable" className="submission-table">
         <thead>
           <tr>
             {header.map((columnName: string, index: number) => (
@@ -133,28 +132,30 @@ export const AdminSubmissions: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {submissionData?.page.map((row: SubmissionRow, rowIndex: number) => (
-            <tr key={rowIndex}>
-              <td>{formatDate(row.received_timestamp)}</td>
-              <td>{titleCase(row.entity_name)}</td>
-              <td>{row.file_name}</td>
-              <td>{titleCase(row.outcome)}</td>
-              <td>{titleCase(row.status)}</td>
-              <td>{formatDate(row.updated_at)}</td>
-              <td>
-                <Button
-                  type="link"
-                  onClick={() => {
-                    setSelectedSubmission(row);
-                    setSelectedSubmissionLog(row?.view_modal_content);
-                    setViewModalOpen(true);
-                  }}
-                >
-                  View Logs
-                </Button>
-              </td>
-            </tr>
-          ))}
+          {submissionData?.page.map(
+            (row: FileSubmissionRow, rowIndex: number) => (
+              <tr key={rowIndex}>
+                <td>{formatDate(row.received_timestamp)}</td>
+                <td>{titleCase(row.entity_name)}</td>
+                <td>{row.file_name}</td>
+                <td>{titleCase(row.outcome)}</td>
+                <td>{titleCase(row.status)}</td>
+                <td>{formatDate(row.updated_at)}</td>
+                <td>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      setSelectedSubmission(row);
+                      setSelectedSubmissionLog(row?.view_modal_content);
+                      setViewModalOpen(true);
+                    }}
+                  >
+                    View Logs
+                  </Button>
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
       <div className={styles.paginatorContainer}>
