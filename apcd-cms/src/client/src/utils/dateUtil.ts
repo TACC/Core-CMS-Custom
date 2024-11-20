@@ -62,3 +62,43 @@ export const convertPeriodLabelToApiValue = (period: string): string | null => {
 
   return `${year}-${numericMonth}`;
 };
+
+export const convertApiValueToPeriodLabel = (period: string): string | null => {
+  // Return as-is if already in expected format
+  //if (/^\d{4}-(0[1-9]|1[0-2])$/.test(period)) {
+  if (/^([A-Za-z]{3})\.?\s(\d{4})$/.test(period)) {
+    return period;
+  }
+
+  const monthMap: Record<string, string> = {
+    '01': 'Jan',
+    '02': 'Feb',
+    '03': 'Mar',
+    '04': 'Apr',
+    '05': 'May',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Aug',
+    '09': 'Sep',
+    '10': 'Oct',
+    '11': 'Nov',
+    '12': 'Dec',
+  };
+
+  const match = period.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
+  //const match = period.match(/^([A-Za-z]{3})\.?\s(\d{4})$/);
+  if (!match) {
+    console.log(`Invalid period format: ${period}`);
+    return period;
+  }
+
+  const [_, year, month] = match;
+  const stringMonth = monthMap[month];
+
+  if (!stringMonth) {
+    console.log(`Invalid month: ${month} in ${period}`);
+    return period;
+  }
+
+  return `${stringMonth} ${year}`;
+};

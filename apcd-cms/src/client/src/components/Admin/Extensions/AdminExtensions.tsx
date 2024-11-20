@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useExtensions, ExtensionRow, ExtensionEditRow } from 'hooks/admin';
+import { useExtensions, ExtensionRow } from 'hooks/admin';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Paginator from 'core-components/Paginator';

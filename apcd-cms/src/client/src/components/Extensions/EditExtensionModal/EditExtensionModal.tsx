@@ -24,7 +24,7 @@ import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
 import { useEntities } from 'hooks/entities';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
-import { convertPeriodLabelToApiValue } from 'utils/dateUtil';
+import { convertPeriodLabelToApiValue, convertApiValueToPeriodLabel } from 'utils/dateUtil';
 import styles from './EditExtensionModal.module.css';
 
 interface EditExtensionModalProps {
@@ -115,11 +115,13 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       });
 
       if (onEditSuccess && response) {
+          console.log('success, setting field');
+          console.log(convertApiValueToPeriodLabel(values.applicable_data_period));
         onEditSuccess(response);
         setUserFields([
           {
             label: 'Applicable Data Period',
-            value: values.applicable_data_period || 'None',
+            value: convertApiValueToPeriodLabel(values.applicable_data_period) || 'None',
           },
           {
             label: 'Approved Expiration Date',
