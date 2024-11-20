@@ -3,7 +3,6 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Button,
   Label,
   FormGroup,
   Row,
@@ -26,6 +25,8 @@ import { useEntities } from 'hooks/entities';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
 import { convertPeriodLabelToApiValue, convertApiValueToPeriodLabel } from 'utils/dateUtil';
 import styles from './EditExtensionModal.module.css';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
+import Button from 'core-components/Button';
 
 interface EditExtensionModalProps {
   isVisible: boolean;
@@ -174,17 +175,13 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       <Modal
         isOpen={isVisible}
         onClose={onClose}
-        className={styles.customModal}
-        onClosed={handleClose}
+        className="modal-dialog modal-lg"
       >
         <ModalHeader close={closeBtn}>
           Edit Extension ID {extension.ext_id} for {extension.org_name}
         </ModalHeader>
         <ModalBody>
-          <Alert color="success" isOpen={showSuccessMessage}>
-            Success: The extension data has been successfully updated.
-          </Alert>
-          <div className={styles.greyRectangle}>Edit Selected Extension</div>
+          <h4 className="modal-header">Edit Selected Exception</h4>
           <QueryWrapper
             isLoading={entitiesLoading}
             error={entitiesError as Error}
@@ -192,14 +189,12 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
             <FormikProvider value={formik}>
               <form onSubmit={formik.handleSubmit}>
                 <Row>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label
-                        for="applicable_data_period"
-                        className={styles.customLabel}
-                      >
-                        <strong>Applicable Data Period</strong>
-                      </Label>
+                  <Col md={3}>
+                      <FieldWrapper
+                          name="applicable_data_period"
+                          label="Applicable Data Period"
+                          required={false}
+                        >
                       <Field
                         as="select"
                         name="applicable_data_period"
@@ -209,7 +204,6 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         )}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
                       >
                         {submitterData?.submitters
                           .find(
@@ -225,27 +219,17 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                             </option>
                           ))}
                       </Field>
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        Current: {extension.applicable_data_period}
-                      </small>
-                      <ErrorMessage
-                        name="applicable_data_period"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                      <div
+                        className="help-text">
+                                Current:{' '}{(extension.applicable_data_period)}
+                      </div>
+                      </FieldWrapper>
                   </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label
-                        for="approved_expiration_date"
-                        className={styles.customLabel}
-                      >
-                        <strong>Approved Expiration Date</strong>
-                      </Label>
+                  <Col md={3}>
+                    <FieldWrapper
+                      name="approved_expiration_date"
+                      label="Approved Expiration Date"
+                      required={false}>
                       <Field
                         type="date"
                         name="approved_expiration_date"
@@ -257,11 +241,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         }
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
                       />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
+                      <div
+                        className="help-text"
                       >
                         Current:{' '}
                         {extension.approved_expiration_date
@@ -269,26 +251,19 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                               extension.approved_expiration_date
                             ).toLocaleDateString()
                           : 'None'}
-                      </small>
-                      <ErrorMessage
-                        name="approved_expiration_date"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                      </div>
+                      </FieldWrapper>
                   </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for="ext_status" className={styles.customLabel}>
-                        <strong>Extension Status</strong>
-                      </Label>
+                  <Col md={3}>
+                    <FieldWrapper name = "ext_status"
+                    label="Exception Status"
+                    required={false}>
                       <Field
                         as="select"
                         name="ext_status"
                         id="ext_status"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
                         value={formik.values.ext_status}
                       >
                         {statusOptions?.map(
@@ -304,25 +279,17 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                             )
                         )}
                       </Field>
-                      <ErrorMessage
-                        name="ext_status"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                      </FieldWrapper>
                   </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for="ext_outcome" className={styles.customLabel}>
-                        <strong>Extension Outcome</strong>
-                      </Label>
+                  <Col md={3}>
+                      <FieldWrapper name="ext_outcome" label="Extension Outcome"
+                      required={false}>
                       <Field
                         as="select"
                         name="ext_outcome"
                         id="ext_outcome"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
                         value={formik.values.ext_outcome}
                       >
                         {outcomeOptions?.map((opt) => (
@@ -335,18 +302,10 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                           </option>
                         ))}
                       </Field>
-                      <ErrorMessage
-                        name="ext_outcome"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                    </FieldWrapper>
                   </Col>
                   <Col md={6}>
-                    <FormGroup>
-                      <Label for="notes" className={styles.customLabel}>
-                        <strong>Notes</strong>
-                      </Label>
+                    <FieldWrapper name ="notes" label="Notes" required={false}>
                       <Field
                         as="textarea"
                         name="notes"
@@ -355,31 +314,29 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         maxLength="2000" // Set the maxLength attribute
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`form-control ${styles.viewRecord}`}
                       />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
+                      <div
+                        className="help-text"
                       >
                         2000 character limit
-                      </small>
-                      <ErrorMessage
-                        name="notes"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                      </div>
+                    </FieldWrapper>
                   </Col>
                 </Row>
                 <br />
+                <Alert
+                color="success"
+                isOpen={showSuccessMessage}
+              >
+                Success: The exception data has been successfully updated.
+              </Alert>
                 <Alert color="danger" isOpen={showErrorMessage}>
                   Error: {errorMessage}
                 </Alert>
                 <Button
-                  type="submit"
-                  color="primary"
+                  type="primary"
+                  attr="submit"
                   disabled={formik.isSubmitting}
-                  className={styles.customSubmitButton}
                 >
                   Submit
                 </Button>
@@ -387,7 +344,8 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
             </FormikProvider>
           </QueryWrapper>
           <hr />
-          <div className={styles.viewRecord}>
+          <h4 className="modal-header">Current Exception Information</h4>
+          <div>
             {userFields.map((field, index) => (
               <Row key={index}>
                 <Col md={6}>
