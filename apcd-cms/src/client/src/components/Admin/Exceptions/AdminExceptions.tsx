@@ -26,7 +26,7 @@ export const AdminExceptions: React.FC = () => {
   useEffect(() => {
     refetch();
   }, [page, refetch]);
-  
+
   useEffect(() => {
     setPage(1);
   }, [status, org]);

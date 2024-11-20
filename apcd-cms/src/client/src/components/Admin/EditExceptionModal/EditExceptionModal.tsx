@@ -249,7 +249,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                       name="approved_threshold"
                       label="Approved Threshold"
                       required={false}
-                      >
+                    >
                       <Field
                         type="text"
                         name="approved_threshold"
@@ -262,12 +262,12 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                        <small
-                          className="form-text text-muted"
-                          style={{ fontStyle: 'italic' }}
-                        >
-                          Requested: {exception.requested_threshold}%
-                        </small>
+                      <small
+                        className="form-text text-muted"
+                        style={{ fontStyle: 'italic' }}
+                      >
+                        Requested: {exception.requested_threshold}%
+                      </small>
                     </FieldWrapper>
                   </Col>
                 )}
@@ -276,7 +276,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     name="approved_expiration_date"
                     label="Approved Expiration Date"
                     required={false}
-                    >
+                  >
                     <Field
                       type="date"
                       name="approved_expiration_date"
@@ -307,7 +307,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     name="status"
                     label="Exception Status"
                     required={false}
-                    >
+                  >
                     <Field
                       as="select"
                       name="status"
@@ -336,7 +336,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     name="outcome"
                     label="Exception Outcome"
                     required={false}
-                    >
+                  >
                     <Field
                       as="select"
                       name="outcome"
@@ -358,11 +358,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                   </FieldWrapper>
                 </Col>
                 <Col md={6}>
-                <FieldWrapper
-                    name="notes"
-                    label="Notes"
-                    required={false}
-                    >
+                  <FieldWrapper name="notes" label="Notes" required={false}>
                     <Field
                       as="textarea"
                       name="notes"

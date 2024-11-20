@@ -15,8 +15,10 @@ export const formatDate = (dateString: string | number | Date): string => {
 };
 
 export const formatModalDate = (dateString: string | number | Date): string => {
-  return formatDate(dateString).replace('.','').
-      replace('AM','a.m.').replace('PM','p.m.');
+  return formatDate(dateString)
+    .replace('.', '')
+    .replace('AM', 'a.m.')
+    .replace('PM', 'p.m.');
 };
 
 /**
