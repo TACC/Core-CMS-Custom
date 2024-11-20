@@ -119,29 +119,37 @@ export const AdminExtensions: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {data?.page.map((row: ExtensionRow, rowIndex: number) => (
-            <tr key={rowIndex}>
-              <td>{formatDate(row.created)}</td>
-              <td>{row.org_name}</td>
-              <td>{row.requestor}</td>
-              <td>{row.type}</td>
-              <td>{row.ext_outcome}</td>
-              <td>{row.ext_status}</td>
-              <td>{formatDate(row.approved_expiration_date)}</td>
-              <td className="modal-cell">
-                <select
-                  id={`actionsDropdown_${row.ext_id}`}
-                  defaultValue=""
-                  className="status-filter"
-                  onChange={(e) => openAction(e, row.ext_id)}
-                >
-                  <option value="">Select Action</option>
-                  <option value="viewExtension">View Record</option>
-                  <option value="editExtension">Edit Record</option>
-                </select>
+          {data?.page && data.page.length > 0 ? (
+            data?.page.map((row: ExtensionRow, rowIndex: number) => (
+              <tr key={rowIndex}>
+                <td>{formatDate(row.created)}</td>
+                <td>{row.org_name}</td>
+                <td>{row.requestor}</td>
+                <td>{row.type}</td>
+                <td>{row.ext_outcome}</td>
+                <td>{row.ext_status}</td>
+                <td>{formatDate(row.approved_expiration_date)}</td>
+                <td className="modal-cell">
+                  <select
+                    id={`actionsDropdown_${row.ext_id}`}
+                    defaultValue=""
+                    className="status-filter"
+                    onChange={(e) => openAction(e, row.ext_id)}
+                  >
+                    <option value="">Select Action</option>
+                    <option value="viewExtension">View Record</option>
+                    <option value="editExtension">Edit Record</option>
+                  </select>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={8} style={{ textAlign: 'center' }}>
+                No Data available
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
       <div className={styles.paginatorContainer}>

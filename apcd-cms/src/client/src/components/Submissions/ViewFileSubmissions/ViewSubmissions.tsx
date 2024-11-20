@@ -127,29 +127,37 @@ export const ViewFileSubmissions: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {submissionData?.page.map(
-            (row: FileSubmissionRow, rowIndex: number) => (
-              <tr key={rowIndex}>
-                <td>{formatDate(row.received_timestamp)}</td>
-                <td>{titleCase(row.entity_name)}</td>
-                <td>{titleCase(row.file_name)}</td>
-                <td>{titleCase(row.outcome)}</td>
-                <td>{titleCase(row.status)}</td>
-                <td>{formatDate(row.updated_at)}</td>
-                <td>
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      setSelectedSubmission(row);
-                      setSelectedSubmissionLog(row?.view_modal_content);
-                      setViewModalOpen(true);
-                    }}
-                  >
-                    View Logs
-                  </Button>
-                </td>
-              </tr>
+          {submissionData?.page && submissionData.page.length > 0 ? (
+            submissionData?.page.map(
+              (row: FileSubmissionRow, rowIndex: number) => (
+                <tr key={rowIndex}>
+                  <td>{formatDate(row.received_timestamp)}</td>
+                  <td>{titleCase(row.entity_name)}</td>
+                  <td>{titleCase(row.file_name)}</td>
+                  <td>{titleCase(row.outcome)}</td>
+                  <td>{titleCase(row.status)}</td>
+                  <td>{formatDate(row.updated_at)}</td>
+                  <td>
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        setSelectedSubmission(row);
+                        setSelectedSubmissionLog(row?.view_modal_content);
+                        setViewModalOpen(true);
+                      }}
+                    >
+                      View Logs
+                    </Button>
+                  </td>
+                </tr>
+              )
             )
+          ) : (
+            <tr>
+              <td colSpan={7} style={{ textAlign: 'center' }}>
+                No Data available
+              </td>
+            </tr>
           )}
         </tbody>
       </table>
