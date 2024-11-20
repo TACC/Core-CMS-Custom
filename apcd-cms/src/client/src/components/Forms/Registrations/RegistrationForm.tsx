@@ -166,22 +166,22 @@ const initialValues: RegistrationFormValues = {
 };
 
 const initialTouched = {
-    on_behalf_of: true,
-    type: true,
-    state: true,
-    entities: [
-      {
-        types_of_plans_commercial: true,
-        types_of_plans_medicare: true,
-        types_of_plans_medicaid: true,
-        types_of_files_eligibility_enrollment: true,
-        types_of_files_provider: true,
-        types_of_files_medical: true,
-        types_of_files_pharmacy: true,
-        types_of_files_dental: true,
-      }
-    ]
-}
+  on_behalf_of: true,
+  type: true,
+  state: true,
+  entities: [
+    {
+      types_of_plans_commercial: true,
+      types_of_plans_medicare: true,
+      types_of_plans_medicaid: true,
+      types_of_files_eligibility_enrollment: true,
+      types_of_files_provider: true,
+      types_of_files_medical: true,
+      types_of_files_pharmacy: true,
+      types_of_files_dental: true,
+    },
+  ],
+};
 
 export const RegistrationForm: React.FC<{
   isEdit?: boolean;
@@ -258,7 +258,10 @@ export const RegistrationForm: React.FC<{
           validateOnMount={true}
           initialValues={
             data
-              ? transformToRegistrationFormValues(data['registration_data'], data['renew'])
+              ? transformToRegistrationFormValues(
+                  data['registration_data'],
+                  data['renew']
+                )
               : inputValues ?? initialValues
           }
           initialTouched={initialTouched}
@@ -406,7 +409,7 @@ export const RegistrationForm: React.FC<{
                     (displayed after submitting this form).
                   </p>
                 )}
-                <div className='button-wrapper'>
+                <div className="button-wrapper">
                   <Button
                     className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
                     type="button"
@@ -457,7 +460,7 @@ export const RegistrationForm: React.FC<{
                 {values.contacts.map((contact, index) => (
                   <RegistrationContact key={index} index={index} />
                 ))}
-                <div className='button-wrapper'>
+                <div className="button-wrapper">
                   <Button
                     className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
                     type="button"

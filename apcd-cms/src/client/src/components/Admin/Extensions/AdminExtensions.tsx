@@ -105,7 +105,7 @@ export const AdminExtensions: React.FC = () => {
               </option>
             ))}
           </select>
-          {data?.selected_status !== "Pending" || data?.selected_org ? (
+          {data?.selected_status !== 'Pending' || data?.selected_org ? (
             <button onClick={clearSelections}>Clear Options</button>
           ) : null}
         </div>

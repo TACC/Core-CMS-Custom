@@ -8,7 +8,9 @@ import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
   return (
     <div>
-      <h5 className={`${styles.boldedHeader} ${styles.spacedHeader}`}>ENTITY {index + 1}</h5>
+      <h5 className={`${styles.boldedHeader} ${styles.spacedHeader}`}>
+        ENTITY {index + 1}
+      </h5>
       <TextFormField
         name={`entities.${index}.entity_name`}
         label="Name"
@@ -29,11 +31,11 @@ export const RegistrationEntity: React.FC<{ index: number }> = ({ index }) => {
             helpText="Enter in format 12-3456789."
           />
 
-        <TextFormField
-          name={`entities.${index}.license_number`}
-          label="License Number"
-          helpText="Enter digits only."
-        />
+          <TextFormField
+            name={`entities.${index}.license_number`}
+            label="License Number"
+            helpText="Enter digits only."
+          />
 
           <TextFormField
             name={`entities.${index}.naic_company_code`}
