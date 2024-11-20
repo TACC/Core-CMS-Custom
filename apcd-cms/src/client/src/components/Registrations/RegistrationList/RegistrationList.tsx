@@ -11,7 +11,8 @@ export const RegistrationList: React.FC<{
   useDataHook: any;
   isAdmin?: boolean;
 }> = ({ useDataHook, isAdmin = false }) => {
-  const [status, setStatus] = useState('All');
+  const initStateFilter = isAdmin ? 'Received' : ''; // for admin listing, show records w/ status 'Received' by default
+  const [status, setStatus] = useState(initStateFilter);
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useDataHook(status, org, page);
@@ -26,7 +27,7 @@ export const RegistrationList: React.FC<{
   }, [status, org, page, refetch]);
 
   const clearSelections = () => {
-    setStatus('');
+    setStatus(initStateFilter);
     setOrg('');
     setPage(1);
   };
@@ -113,7 +114,7 @@ export const RegistrationList: React.FC<{
               </option>
             ))}
           </select>
-          {data?.selected_status || data?.selected_org ? (
+          {data?.selected_status!== initStateFilter || data?.selected_org ? (
             <Button onClick={clearSelections}>Clear Options</Button>
           ) : null}
         </div>

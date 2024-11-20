@@ -23,6 +23,7 @@ const ViewRegistrationModal: React.FC<{
     city,
     state,
     zip,
+    status,
     entities,
     contacts,
   } = data;
@@ -65,6 +66,8 @@ const ViewRegistrationModal: React.FC<{
                 className={styles.verticalDataValue}
               >{`${city}, ${state}`}</dd>
               <dd className={styles.verticalDataValue}>{zip}</dd>
+              <dt className="c-data-list__key">Registration Status</dt>
+              <dd className={styles.verticalDataValue}>{status}</dd>
             </dl>
           </dd>
 
