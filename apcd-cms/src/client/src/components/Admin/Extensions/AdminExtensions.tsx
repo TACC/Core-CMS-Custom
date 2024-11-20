@@ -29,9 +29,16 @@ export const AdminExtensions: React.FC = () => {
     setPage(1);
   };
 
-  useEffect(() => {
+  const closeModal = () => {
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
+    setSelectedExtension(null);
+  };
+
+  const onEditSuccess = (updatedExtension: ExtensionRow) => {
+    // Refresh extension data after editing is successful
     refetch();
-  }, [status, org, page, refetch]);
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -155,14 +162,15 @@ export const AdminExtensions: React.FC = () => {
             <ViewExtensionModal
               extension={selectedExtension}
               isVisible={isViewModalOpen}
-              onClose={() => setIsViewModalOpen(false)}
+              onClose={closeModal}
             />
             <EditExtensionModal
               extension={selectedExtension}
               statusOptions={data?.status_edit_options}
               outcomeOptions={data?.outcome_edit_options}
               isVisible={isEditModalOpen}
-              onClose={() => setIsEditModalOpen(false)}
+              onEditSuccess={onEditSuccess}
+              onClose={closeModal}
             />
           </>
         )}

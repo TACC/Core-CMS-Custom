@@ -100,6 +100,10 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
     actions: FormikHelpers<FormValues>
   ) => {
     const { ext_id } = values;
+    const api_values = {
+      ...values,
+      'applicable_data_period': convertPeriodLabelToApiValue(values['applicable_data_period']),
+    }
     const url = `administration/update-extension/${ext_id}/`;
 
     try {
@@ -107,7 +111,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       const response = await fetchUtil({
         url,
         method: 'PUT',
-        body: values,
+        body: api_values,
       });
 
       if (onEditSuccess && response) {
@@ -158,27 +162,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
   };
-  /*
-  const userFields = [
-    {
-      label: 'Applicable Data Period',
-      value: extension.applicable_data_period
-        ? extension.applicable_data_period
-        : 'None',
-    },
-    {
-      label: 'Approved Expiration Date',
-      value: extension.approved_expiration_date
-        ? extension.approved_expiration_date
-        : 'None',
-    },
-    { label: 'Exception Status', value: extension.ex_status },
-    { label: 'Exception Outcome', value: extension.ex_outcome },
-    {
-      label: 'Exception Notes',
-      value: extension.notes ? extension.notes : 'None',
-    },
-  ];*/
+
   const closeBtn = (
     <button className="close" onClick={onClose} type="button">
       &times;
