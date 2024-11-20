@@ -111,14 +111,15 @@ export type RegistrationFormValues = {
 };
 
 export function transformToRegistrationFormValues(
-  registration: RegistrationContent, renew?: boolean | undefined
+  registration: RegistrationContent,
+  renew?: boolean | undefined
 ): RegistrationFormValues {
-
-  const typeValueMap:Record<string, string> = { // to set database value for field rather than display value
+  const typeValueMap: Record<string, string> = {
+    // to set database value for field rather than display value
     'Insurance Carrier': 'carrier',
     'Plan Administrator¹ (TPA/ASO)': 'tpa_aso',
-    'Pharmacy Benefit Manager (PBM)': 'pbm'
-  }
+    'Pharmacy Benefit Manager (PBM)': 'pbm',
+  };
   return {
     on_behalf_of: registration.for_self?.toString() ?? '',
     reg_year: (registration.year + (renew ? 1 : 0)).toString(),
