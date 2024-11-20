@@ -1,3 +1,4 @@
 import { ViewFileSubmissions } from './ViewSubmissions';
+import { ViewSubmissionLogsModal } from './ViewSubmissionsModal';
 
-export { ViewFileSubmissions };
+export { ViewFileSubmissions, ViewSubmissionLogsModal };

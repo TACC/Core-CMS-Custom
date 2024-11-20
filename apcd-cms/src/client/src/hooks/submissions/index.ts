@@ -28,6 +28,7 @@ export type FileSubmissionResult = {
 export type FileSubmissionLogsModalContent = {
   log_id: string;
   submission_id: string;
+  entity_name: string;
   file_type: string;
   validation_suite: string;
   outcome: string;
