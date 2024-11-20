@@ -82,6 +82,7 @@ def _set_registration(reg, reg_ent, reg_cont):
         'zip': reg[9].strip(),
         'for_self': reg[2],
         'year': reg[10],
+        'status': reg[3],
         'entities': [_set_entities(ent) for ent in reg_ent],
         'contacts': [_set_contacts(cont) for cont in reg_cont],
         'org_types': org_types,
