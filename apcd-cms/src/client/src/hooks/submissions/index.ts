@@ -32,6 +32,8 @@ export type FileSubmissionLogsModalContent = {
   file_type: string;
   validation_suite: string;
   outcome: string;
+  has_html_log: number;
+  has_json_log: number;
 };
 
 export { useListSubmissions, useSubmissionFilters } from './useSubmissions';

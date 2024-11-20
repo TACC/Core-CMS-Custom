@@ -114,7 +114,7 @@ export const RegistrationList: React.FC<{
               </option>
             ))}
           </select>
-          {data?.selected_status!== initStateFilter || data?.selected_org ? (
+          {data?.selected_status !== initStateFilter || data?.selected_org ? (
             <Button onClick={clearSelections}>Clear Options</Button>
           ) : null}
         </div>
