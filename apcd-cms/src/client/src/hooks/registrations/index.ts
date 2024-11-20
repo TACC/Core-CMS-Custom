@@ -41,6 +41,7 @@ export type RegistrationContent = {
   zip: number;
   for_self: string | null | undefined;
   year: number;
+  status: string;
   entities: RegistrationEntity[];
   contacts: RegistrationContact[];
   org_types: StringMap;

@@ -846,6 +846,7 @@ def get_user_submissions_and_logs(user):
             SELECT json_build_object(
                 'submission_id', submissions.submission_id,
                 'submitter_id', submissions.submitter_id,
+                'entity_name', submitters.entity_name,
                 'file_name', submissions.zip_file_name,
                 'status', submissions.status,
                 'outcome', submissions.outcome,
@@ -855,6 +856,7 @@ def get_user_submissions_and_logs(user):
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
                         'submission_id', submission_logs.submission_id,
+                        'entity_name', submitters.entity_name,
                         'file_type', submission_logs.file_type,
                         'validation_suite', submission_logs.validation_suite,
                         'outcome', submission_logs.outcome,
@@ -869,11 +871,13 @@ def get_user_submissions_and_logs(user):
             FROM submissions
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
+            LEFT JOIN submitters 
+                ON submitters.submitter_id = submissions.submitter_id
             WHERE submissions.submitter_id
             IN (
                 SELECT submitter_users.submitter_id FROM submitter_users 
                 WHERE submitter_users.user_id = %s )
-            GROUP BY (submissions.submission_id)
+            GROUP BY (submissions.submission_id, submitters.entity_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -914,6 +918,7 @@ def get_all_submissions_and_logs():
                             ELSE json_agg(json_build_object(
                                 'log_id', submission_logs.log_id,
                                 'submission_id', submission_logs.submission_id,
+                                'entity_name', submitters.entity_name,
                                 'file_type', submission_logs.file_type,
                                 'validation_suite', submission_logs.validation_suite,
                                 'outcome', submission_logs.outcome,

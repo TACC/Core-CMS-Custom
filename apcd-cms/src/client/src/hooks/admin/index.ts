@@ -26,37 +26,6 @@ export type UserResult = {
   total_pages: number;
 };
 
-export type SubmissionRow = {
-  submission_id: string;
-  submitter_id: string;
-  entity_name: string;
-  file_name: string;
-  status: string;
-  outcome: string;
-  received_timestamp: string;
-  updated_at: string;
-  view_modal_content: SubmissionLogsModalContent[];
-};
-
-export type SubmissionResult = {
-  header: string[];
-  selected_status: string;
-  selected_sort: string;
-  query_str: string;
-  pagination_url_namespaces: string;
-  page: SubmissionRow[];
-  page_num: number;
-  total_pages: number;
-};
-
-export type SubmissionLogsModalContent = {
-  log_id: string;
-  entity_name: string;
-  file_type: string;
-  validation_suite: string;
-  outcome: string;
-};
-
 export type ExtensionRow = {
   created: string;
   org_name: string;
