@@ -38,3 +38,7 @@
 .justification {
   font-size: unset;
 }
+.dateInputContainer :is(input):read-only {
+  border-color: unset;
+  background-color: #e9ecef;
+}

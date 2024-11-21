@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useExtensions, ExtensionRow, ExtensionEditRow } from 'hooks/admin';
+import { useExtensions, ExtensionRow } from 'hooks/admin';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Paginator from 'core-components/Paginator';
@@ -29,9 +29,16 @@ export const AdminExtensions: React.FC = () => {
     setPage(1);
   };
 
-  useEffect(() => {
+  const closeModal = () => {
+    setIsViewModalOpen(false);
+    setIsEditModalOpen(false);
+    setSelectedExtension(null);
+  };
+
+  const onEditSuccess = (updatedExtension: ExtensionRow) => {
+    // Refresh extension data after editing is successful
     refetch();
-  }, [status, org, page, refetch]);
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -77,7 +84,6 @@ export const AdminExtensions: React.FC = () => {
           <select
             id="statusFilter"
             className="status-filter"
-            //defaultValue={data?.selected_status} // Use defaultValue to set the initial selected value
             onChange={(e) => setStatus(e.target.value)}
             value={data?.selected_status}
           >
@@ -95,7 +101,6 @@ export const AdminExtensions: React.FC = () => {
           <select
             id="organizationFilter"
             className="status-filter org-filter"
-            //defaultValue={data?.selected_org} // Use defaultValue to set the initial selected value
             onChange={(e) => setOrg(e.target.value)}
             value={data?.selected_org}
           >
@@ -155,14 +160,15 @@ export const AdminExtensions: React.FC = () => {
             <ViewExtensionModal
               extension={selectedExtension}
               isVisible={isViewModalOpen}
-              onClose={() => setIsViewModalOpen(false)}
+              onClose={closeModal}
             />
             <EditExtensionModal
               extension={selectedExtension}
               statusOptions={data?.status_edit_options}
               outcomeOptions={data?.outcome_edit_options}
               isVisible={isEditModalOpen}
-              onClose={() => setIsEditModalOpen(false)}
+              onEditSuccess={onEditSuccess}
+              onClose={closeModal}
             />
           </>
         )}
