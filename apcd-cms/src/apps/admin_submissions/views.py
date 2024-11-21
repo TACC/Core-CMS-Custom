@@ -21,7 +21,7 @@ class AdminSubmissionsTable(TemplateView):
         if 'options' in request.path:
             return self.get_options(request)
         if 'view_log' in request.path:
-            return SubmissionsLogView.get_log(request, is_apcd_admin=True)
+            return SubmissionsLogView.get_log(request, is_admin=True)
         
         status = request.GET.get('status', 'All')
         sort = request.GET.get('sort', 'Newest Received')

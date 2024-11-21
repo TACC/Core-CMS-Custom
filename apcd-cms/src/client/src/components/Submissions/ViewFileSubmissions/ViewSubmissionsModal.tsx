@@ -60,7 +60,9 @@ export const ViewSubmissionLogsModal: React.FC<
                       <dd className="c-data-list__value">
                         {log.has_html_log === 1 && (
                           <Link
-                            to={`submissions/view_log?log_type=html&log_id=${log.log_id}`}
+                            to={`${
+                              isAdminUser ? 'administration' : 'submissions'
+                            }/view_log?log_type=html&log_id=${log.log_id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
