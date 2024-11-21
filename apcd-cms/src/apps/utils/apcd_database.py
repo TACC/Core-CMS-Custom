@@ -9,6 +9,17 @@ logger = logging.getLogger(__name__)
 APCD_DB = settings.APCD_DATABASE
 
 
+def db_connect():
+    return psycopg.connect(
+        host=APCD_DB['host'],
+        dbname=APCD_DB['database'],
+        user=APCD_DB['user'],
+        password=APCD_DB['password'],
+        port=APCD_DB['port'],
+        sslmode='require'
+    )
+
+
 def get_users():
     cur = None
     conn = None
@@ -52,7 +63,7 @@ def get_users():
             cur.close()
         if conn is not None:
             conn.close()
-            
+
 def update_user(form):
     cur = None
     conn = None
@@ -830,6 +841,40 @@ def get_cdl_exceptions(file_type):
             conn.close()
 
 
+def get_user_submission_log(log_id, log_type, user=None):
+    cur = None
+    conn = None
+    try:
+        conn = db_connect()
+        log_column_name = 'html_log' if log_type == 'html' else 'json_log'
+        filename_column_name = 'html_path' if log_type == 'html' else 'json_path'
+
+        query = f"""
+            SELECT {log_column_name}, {filename_column_name}
+            FROM submission_logs
+            JOIN submissions ON submissions.submission_id = submission_logs.submission_id
+            JOIN submitter_users ON submissions.submitter_id = submitter_users.submitter_id
+            WHERE submission_logs.log_id = %s
+        """
+
+        params = [log_id]
+        # for submitter scenario
+        if user is not None:
+            query += " AND submitter_users.user_id = %s"
+            params.append(user)
+
+        query += " LIMIT 1"
+
+        cur = conn.cursor()
+        cur.execute(query, params)
+        return cur.fetchall()
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
 def get_user_submissions_and_logs(user):
     cur = None
     conn = None
@@ -860,6 +905,14 @@ def get_user_submissions_and_logs(user):
                         'file_type', submission_logs.file_type,
                         'validation_suite', submission_logs.validation_suite,
                         'outcome', submission_logs.outcome,
+                        'has_json_log', CASE
+                                        WHEN submission_logs.json_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                    END,
+                        'has_html_log', CASE
+                                        WHEN submission_logs.html_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                        END,
                         'file_type_name', (
                             SELECT standard_codes.item_value FROM standard_codes
                             WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
@@ -922,6 +975,14 @@ def get_all_submissions_and_logs():
                                 'file_type', submission_logs.file_type,
                                 'validation_suite', submission_logs.validation_suite,
                                 'outcome', submission_logs.outcome,
+                                'has_json_log', CASE
+                                        WHEN submission_logs.json_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                    END,
+                                'has_html_log', CASE
+                                        WHEN submission_logs.html_log IS NOT NULL THEN 1
+                                        ELSE 1
+                                        END,
                                 'file_type_name', (
                                     SELECT standard_codes.item_value 
                                     FROM standard_codes

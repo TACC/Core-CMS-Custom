@@ -144,28 +144,36 @@ export const ViewUsers: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {userData?.page.map((user: UserRow, rowIndex: number) => (
-              <tr key={rowIndex}>
-                <td>{user.user_id}</td>
-                <td>{user.user_name}</td>
-                <td>{user.entity_name}</td>
-                <td>{user.role_name}</td>
-                <td>{user.status}</td>
-                <td>{user.user_number}</td>
-                <td>
-                  <select
-                    onChange={(event) => handleActionChange(event, user)}
-                    value={dropdownValue}
-                  >
-                    <option value="" disabled>
-                      Select Action
-                    </option>
-                    <option value="view">View Record</option>
-                    <option value="edit">Edit Record</option>
-                  </select>
+            {userData?.page && userData.page.length > 0 ? (
+              userData?.page.map((user: UserRow, rowIndex: number) => (
+                <tr key={rowIndex}>
+                  <td>{user.user_id}</td>
+                  <td>{user.user_name}</td>
+                  <td>{user.entity_name}</td>
+                  <td>{user.role_name}</td>
+                  <td>{user.status}</td>
+                  <td>{user.user_number}</td>
+                  <td>
+                    <select
+                      onChange={(event) => handleActionChange(event, user)}
+                      value={dropdownValue}
+                    >
+                      <option value="" disabled>
+                        Select Action
+                      </option>
+                      <option value="view">View Record</option>
+                      <option value="edit">Edit Record</option>
+                    </select>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} style={{ textAlign: 'center' }}>
+                  No Data available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
