@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from apps.utils.apcd_database import get_user_submissions_and_logs
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
+from apps.admin_submissions.views import SubmissionsLogView
 from django.core.paginator import Paginator
 import logging
 from dateutil import parser
@@ -23,7 +24,9 @@ class SubmissionsTable(TemplateView):
     def get(self, request, *args, **kwargs):
         if 'options' in request.path:
             return self.get_options(request)
-        
+        if 'view_log' in request.path:
+            return SubmissionsLogView.get_log(request)
+
         status = request.GET.get('status', 'All')
         sort = request.GET.get('sort', 'Newest Received')
         page_number = int(request.GET.get('page', 1))
@@ -41,18 +44,20 @@ class SubmissionsTable(TemplateView):
         except Exception as e:
             logger.error("Error fetching filtered user data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
-        
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.get_view_submissions_json(get_user_submissions_and_logs(self.request.user.username)))
         return context
-    
+
     def get_options(self, request):
         try:
-            status_options = ['All', 'In Process', 'Complete']            
-            sort_options = [ {'name': 'Newest Received', 'value': 'newDate'},
-            {'name': 'Oldest Received', 'value': 'oldDate'}]
-            
+            status_options = ['All', 'In Process', 'Complete']
+            sort_options = [
+                {'name': 'Newest Received', 'value': 'newDate'},
+                {'name': 'Oldest Received', 'value': 'oldDate'},
+            ]
+
             return JsonResponse({
                 'status_options': status_options,
                 'sort_options': sort_options,
@@ -65,18 +70,18 @@ class SubmissionsTable(TemplateView):
         def getDate(submission):
             date = submission['received_timestamp']
             return parser.parse(date) if date is not None else parser.parse('1-1-3005')
-        
+
         if status != 'All':
             submission_content = [submission for submission in submission_content 
                             if submission['status'].lower() == status.lower()]
-             
+
         submission_content = sorted(
             submission_content,
             key=lambda row: getDate(row),
             reverse=(sort == 'Newest Received')
         )
         return submission_content
-    
+
     def get_view_submissions_json(self, submission_content, selected_status='All', selected_sort='Newest Received'):
         context = {
             'page': [],
@@ -84,7 +89,7 @@ class SubmissionsTable(TemplateView):
             'selected_sort': selected_sort,
             'pagination_url_namespaces':'submissions:list_submissions'
         }
-        
+
         def _set_submissions(submission):
             return {
             'submission_id': submission['submission_id'],

@@ -7,4 +7,6 @@ urlpatterns = [
     path('list-submissions/', TemplateView.as_view(template_name='list_admin_submissions.html'), name="admin_submissions"),
     path('list-submissions/api/', AdminSubmissionsTable.as_view(), name="admin_submissions_api"),
     path('list-submissions/api/options', AdminSubmissionsTable.as_view(), name='admin_submissions_api_options'),
+    path('view_log', AdminSubmissionsTable.as_view(), name='admin-submissions-view-log'),
+
 ]

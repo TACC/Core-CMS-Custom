@@ -1,17 +1,19 @@
 import { FileSubmissionLogsModalContent } from 'hooks/submissions';
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { titleCase } from 'utils/stringUtil';
+import { Link } from 'react-router-dom';
 
 interface ViewSubmissionLogsModalProps {
   submission_logs: FileSubmissionLogsModalContent[];
   isOpen: boolean;
   parentToggle: () => void;
+  isAdminUser?: boolean;
 }
 
 export const ViewSubmissionLogsModal: React.FC<
   ViewSubmissionLogsModalProps
-> = ({ submission_logs, isOpen, parentToggle }) => {
+> = ({ submission_logs, isOpen, parentToggle, isAdminUser = false }) => {
   const closeBtn = (
     <button className="close" onClick={parentToggle} type="button">
       &times;
@@ -53,6 +55,34 @@ export const ViewSubmissionLogsModal: React.FC<
                       <dt className="c-data-list__key">Outcome</dt>
                       <dd className="c-data-list__value">
                         {titleCase(log.outcome)}
+                      </dd>
+                      <dt className="c-data-list__key">HTML Log</dt>
+                      <dd className="c-data-list__value">
+                        {log.has_html_log === 1 && (
+                          <Link
+                            to={`${
+                              isAdminUser ? 'administration' : 'submissions'
+                            }/view_log?log_type=html&log_id=${log.log_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Download
+                          </Link>
+                        )}
+                      </dd>
+                      <dt className="c-data-list__key">JSON Log</dt>
+                      <dd className="c-data-list__value">
+                        {log.has_json_log === 1 && (
+                          <Link
+                            to={`${
+                              isAdminUser ? 'administration' : 'submissions'
+                            }/view_log?log_type=json&log_id=${log.log_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Download
+                          </Link>
+                        )}
                       </dd>
                     </dl>
                     <hr />
