@@ -80,9 +80,9 @@ export const AdminSubmissions: React.FC = () => {
 
   return (
     <div>
-      <h1>View Submissions</h1>
+      <h1>All Submissions</h1>
       <hr />
-      <p>All completed submissions by organizations</p>
+      <p>All submissions by organizations</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
