@@ -178,6 +178,7 @@ export const AdminSubmissions: React.FC = () => {
           isOpen={viewModalOpen}
           parentToggle={closeModal}
           submission_logs={selectedSubmissionLog}
+          isAdminUser={true}
         />
       )}
     </div>

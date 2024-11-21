@@ -1,7 +1,7 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, Http404, HttpResponse
 from django.core.paginator import Paginator
 from django.views.generic.base import TemplateView
-from apps.utils.apcd_database import get_all_submissions_and_logs
+from apps.utils.apcd_database import get_all_submissions_and_logs, get_user_submission_log
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
 import logging
@@ -20,6 +20,8 @@ class AdminSubmissionsTable(TemplateView):
     def get(self, request, *args, **kwargs):
         if 'options' in request.path:
             return self.get_options(request)
+        if 'view_log' in request.path:
+            return SubmissionsLogView.get_log(request, is_admin=True)
         
         status = request.GET.get('status', 'All')
         sort = request.GET.get('sort', 'Newest Received')
@@ -32,7 +34,7 @@ class AdminSubmissionsTable(TemplateView):
             paginator = Paginator(filtered_submissions, items_per_page)
             page_info = paginator.get_page(page_number)
 
-            context= self.get_view_submissions_json(list(page_info), selected_status=status, selected_sort=sort)
+            context = self.get_view_submissions_json(list(page_info), selected_status=status, selected_sort=sort)
             context['page_num'] = page_info.number
             context['total_pages'] = paginator.num_pages
             return JsonResponse({'response': context})
@@ -58,6 +60,37 @@ class AdminSubmissionsTable(TemplateView):
         except Exception as e:
             logger.error("Error fetching options data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
+        
+    def get_log(self, request):
+        try:
+            log_type = self.get_required_param(request, 'log_type', default='html')
+            log_id = self.get_required_param(request, 'log_id')
+
+            results = get_user_submission_log(log_id, log_type)
+            if not results:
+                raise Http404("Log not found or empty.")
+
+            file_path = results[0][1]
+            file_name = file_path.split('/')[-1] if '/' in file_path else file_path
+
+            content_types = {
+                'html': "text/html",
+                'json': "application/json",
+            }
+
+            if log_type not in content_types:
+                raise Http404("Unsupported log type requested.")
+
+            response = HttpResponse(results[0][0], content_type=content_types[log_type])
+            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+            return response
+
+        except Http404 as e:
+            logger.warning("Log not found or unsupported log type: %s", e)
+            raise
+        except Exception as e:
+            logger.error("Error fetching log data: %s", e)
+            return JsonResponse({'error': 'Internal error fetching log.'}, status=500)
 
     def filtered_submissions(self, submission_content, status, sort):
         def getDate(submission):
@@ -99,3 +132,44 @@ class AdminSubmissionsTable(TemplateView):
 
         return context
     
+
+class SubmissionsLogView():
+    @classmethod
+    def get_required_param(cls, request, param_name, default=None):
+        value = request.GET.get(param_name, default)
+        if value is None:
+            raise Http404(f"Missing required query parameter: {param_name}")
+        return value
+
+    @classmethod
+    def get_log(cls, request, is_admin=False):
+        try:
+            log_type = SubmissionsLogView.get_required_param(request, 'log_type', default='html')
+            log_id = SubmissionsLogView.get_required_param(request, 'log_id')
+
+            user = None if is_admin else request.user.username
+            results = get_user_submission_log(log_id, log_type, user)
+            if not results:
+                raise Http404("Log not found or empty.")
+
+            file_path = results[0][1]
+            file_name = file_path.split('/')[-1] if '/' in file_path else file_path
+
+            content_types = {
+                'html': "text/html",
+                'json': "application/json",
+            }
+
+            if log_type not in content_types:
+                raise Http404("Unsupported log type requested.")
+
+            response = HttpResponse(results[0][0], content_type=content_types[log_type])
+            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+            return response
+
+        except Http404 as e:
+            logger.warning("Log not found or unsupported log type: %s", e)
+            raise
+        except Exception as e:
+            logger.error("Error fetching log data: %s", e)
+            return JsonResponse({'error': 'Internal error fetching log.'}, status=500)
