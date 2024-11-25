@@ -12,5 +12,6 @@ custom_urls = [
     path('submissions/', include('apps.extension.urls', namespace='extension')),
     path('submissions/', include('apps.exception.urls', namespace='exception')),
     path('submissions/', include('apps.submissions.urls', namespace='submissions')),
-    path('common_api/', include('apps.common_api.urls', namespace='common_api'))
+    path('common_api/', include('apps.common_api.urls', namespace='common_api')),
+    path('test_page/', include('apps.test_page.urls', namespace='test_page')),
 ]
