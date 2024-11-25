@@ -1,0 +1,18 @@
+{% extends "apcd_cms/templates/standard.html" %}
+
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>List Registrations</h1>
+  <hr />
+  <p style="margin-bottom: 30px">All completed registration requests to become a data submitter.</p>
+  <hr />
+  <div id="list-registrations-root"></div>
+</div>
+{% endblock %}

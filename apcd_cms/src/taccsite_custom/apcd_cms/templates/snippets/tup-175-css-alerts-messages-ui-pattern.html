@@ -1,0 +1,22 @@
+{# Load message styles from Core-Styles at the same version Core-CMS has #}
+{# FAQ: apcd_cms uses default TACC_CORE_STYLES_VERSION = 0, so v0.13.0 #}
+<link href="https://unpkg.com/@tacc/core-styles@0.13.0/dist/components/c-message.css" rel="stylesheet">
+{# HACK: Load up-to-date Core-Styles colors #}
+{# FAQ: Core-Styles v0.13.0 has outdated colors, loading directly overrides Core-CMS site.css color fix #}
+<link href="https://unpkg.com/@tacc/core-styles@2.22.2/dist/settings/color.css" rel="stylesheet">
+<style>
+.c-message a {
+  /* Fix Core-Styles v0 bug */
+  color: var(--global-color-accent--normal); /* overwite c-message.css */
+}
+</style>
+
+{% comment %}
+To get newer c-message styles (e.g. `c-message--type-…`, `c-message--type-info`)
+EITHER load CMS setting `TACC_CORE_STYLES_VERSION = 2` OR load relevant styles
+from @tacc/core-styles@2.N.N: components/c-message.css,
+components/c-message--expanded.css, settings/color.css
+{% endcomment %}
+
+{# The {{ html }} allows DjangoCMS Snippet to pass in more markup #}
+{{ html }}

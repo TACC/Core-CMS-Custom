@@ -1,0 +1,32 @@
+{% extends "apcd_cms/templates/standard.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_exception/css/table.css' %}">
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>View Exception Requests</h1>
+  <hr />
+  <p style="margin-bottom: 30px">All submitted exception requests</p>
+  <hr/>
+  <div id="admin-exceptions-root"></div>
+</div>
+<script>
+
+      function openAction(exception_id) {
+      var actionsDropdown, selectedOption, modal_id;
+      actionsDropdown = document.getElementById(`actionsDropdown_${exception_id}`);
+      /* grabs dropdown option number selected by user via selectedIndex, 
+        then grabs actual value associated with that option via 
+        options[index].value */
+      selectedOption = actionsDropdown.options[actionsDropdown.selectedIndex].value;
+      modal_id = `${selectedOption}Modal_${exception_id}`;
+      $(`#${modal_id}`).modal({backdrop: "static"}); /* modal appears manually */
+    
+      actionsDropdown.selectedIndex = 0; /* resets dropdown to display 'Select Action' again */
+    }
+  </script>
+{% endblock %}

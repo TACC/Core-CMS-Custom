@@ -1,0 +1,11 @@
+{% extends "apcd_cms/templates/standard.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_exception/css/modal.css' %}">
+<div id="viewAdminExceptionsModal_{{r.exception_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div id="view-exception-modal-root"></div>
+    </div>
+  </div>
+  
