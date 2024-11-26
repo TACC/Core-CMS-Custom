@@ -36,4 +36,4 @@ jobs:
         with:
           context: apcd_cms
           push: true
-          tags: taccwma/apcd_cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd_cms:${{ steps.vars.outputs.BRANCH_NAME }}
+          tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}
