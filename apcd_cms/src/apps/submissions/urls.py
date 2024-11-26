@@ -8,4 +8,5 @@ urlpatterns = [
     path('list-submissions/api/', SubmissionsTable.as_view(), name="list_submissions_api"),
     path('list-submissions/api/options', SubmissionsTable.as_view(), name="list_submissions_api_options"),
     path('view_log', SubmissionsTable.as_view(), name='submission-view-log'),
+    path('check-submitter-role/', check_submitter_role),
 ]
