@@ -60,37 +60,6 @@ class AdminSubmissionsTable(TemplateView):
         except Exception as e:
             logger.error("Error fetching options data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
-        
-    def get_log(self, request):
-        try:
-            log_type = self.get_required_param(request, 'log_type', default='html')
-            log_id = self.get_required_param(request, 'log_id')
-
-            results = get_user_submission_log(log_id, log_type)
-            if not results:
-                raise Http404("Log not found or empty.")
-
-            file_path = results[0][1]
-            file_name = file_path.split('/')[-1] if '/' in file_path else file_path
-
-            content_types = {
-                'html': "text/html",
-                'json': "application/json",
-            }
-
-            if log_type not in content_types:
-                raise Http404("Unsupported log type requested.")
-
-            response = HttpResponse(results[0][0], content_type=content_types[log_type])
-            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
-            return response
-
-        except Http404 as e:
-            logger.warning("Log not found or unsupported log type: %s", e)
-            raise
-        except Exception as e:
-            logger.error("Error fetching log data: %s", e)
-            return JsonResponse({'error': 'Internal error fetching log.'}, status=500)
 
     def filtered_submissions(self, submission_content, status, sort):
         def getDate(submission):
@@ -162,8 +131,8 @@ class SubmissionsLogView():
 
             if log_type not in content_types:
                 raise Http404("Unsupported log type requested.")
-
-            response = HttpResponse(results[0][0], content_type=content_types[log_type])
+        
+            response = HttpResponse(str(results[0][0]), content_type=content_types[log_type])
             response['Content-Disposition'] = f'attachment; filename="{file_name}"'
             return response
 
