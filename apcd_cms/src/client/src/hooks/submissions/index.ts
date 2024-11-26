@@ -11,6 +11,7 @@ export type FileSubmissionRow = {
   outcome: string;
   received_timestamp: string;
   updated_at: string;
+  payor_code: string;
   view_modal_content: FileSubmissionLogsModalContent[];
 };
 

@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
       requestedTargetDate: Yup.date().required(
         'Requested Target Date is required'
       ),
-      currentExpectedDate: Yup.date()
+      currentExpectedDate: Yup.date(),
     })
   ),
   requestorName: Yup.string().required('Requestor Name is required'),

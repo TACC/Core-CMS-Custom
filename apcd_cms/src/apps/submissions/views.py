@@ -29,11 +29,14 @@ class SubmissionsTable(TemplateView):
 
         status = request.GET.get('status', 'All')
         sort = request.GET.get('sort', 'Newest Received')
+        submitter_id = request.GET.get('submitterId', 'All')
+        payor_code = request.GET.get('payorCode', 'All')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
+
         try: 
             submission_content = get_user_submissions_and_logs(request.user.username)
-            filtered_submissions = self.filtered_submissions(submission_content, status, sort)
+            filtered_submissions = self.filtered_submissions(submission_content, status, sort, submitter_id, payor_code)
 
             paginator = Paginator(filtered_submissions, items_per_page)
             page_info = paginator.get_page(page_number)
@@ -44,20 +47,18 @@ class SubmissionsTable(TemplateView):
         except Exception as e:
             logger.error("Error fetching filtered user data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
-
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.get_view_submissions_json(get_user_submissions_and_logs(self.request.user.username)))
         return context
-
+    
     def get_options(self, request):
         try:
-            status_options = ['All', 'In Process', 'Complete']
-            sort_options = [
-                {'name': 'Newest Received', 'value': 'newDate'},
-                {'name': 'Oldest Received', 'value': 'oldDate'},
-            ]
-
+            status_options = ['All', 'In Process', 'Complete']            
+            sort_options = [{'name': 'Newest Received', 'value': 'newDate'},
+                            {'name': 'Oldest Received', 'value': 'oldDate'}]
+            
             return JsonResponse({
                 'status_options': status_options,
                 'sort_options': sort_options,
@@ -66,40 +67,46 @@ class SubmissionsTable(TemplateView):
             logger.error("Error fetching options data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
 
-    def filtered_submissions(self, submission_content, status, sort):
+    def filtered_submissions(self, submission_content, status, sort, submitter_id, payor_code):
         def getDate(submission):
             date = submission['received_timestamp']
             return parser.parse(date) if date is not None else parser.parse('1-1-3005')
-
+        
         if status != 'All':
-            submission_content = [submission for submission in submission_content 
-                            if submission['status'].lower() == status.lower()]
-
+            submission_content = [submission for submission in submission_content
+                                  if submission['status'].lower() == status.lower()]
+            
+        if submitter_id != 'All':
+            submission_content = [submission for submission in submission_content
+                                  if submission['submitter_id'] == int(submitter_id)]
+        if payor_code != 'All':
+            submission_content = [submission for submission in submission_content
+                                  if submission['payor_code'] == int(payor_code)]
         submission_content = sorted(
             submission_content,
             key=lambda row: getDate(row),
             reverse=(sort == 'Newest Received')
         )
         return submission_content
-
-    def get_view_submissions_json(self, submission_content, selected_status='All', selected_sort='Newest Received'):
+    
+    def get_view_submissions_json(self, submission_content, selected_status='All', selected_sort='Newest Received', submission_id='All', payor_code='All'):
         context = {
             'page': [],
             'selected_status': selected_status,
             'selected_sort': selected_sort,
             'pagination_url_namespaces':'submissions:list_submissions'
         }
-
+        
         def _set_submissions(submission):
             return {
             'submission_id': submission['submission_id'],
             'submitter_id': submission['submitter_id'],
-            'entity_name': submission['entity_name'],
             'file_name': submission['file_name'],
             'status': submission['status'],
             'outcome': title_case(submission['outcome']) if submission['outcome'] else None,
             'received_timestamp': submission['received_timestamp'],
             'updated_at': submission['updated_at'],
+            'payor_code': submission['payor_code'],
             'view_modal_content': submission['view_modal_content'],
             }
         for submission in submission_content:

@@ -897,6 +897,7 @@ def get_user_submissions_and_logs(user):
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
+                'payor_code', submissions.payor_code,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
