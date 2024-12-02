@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ExceptionFormPage } from './components/Submitter/Exceptions';
 import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
 import { ViewFileSubmissions } from './components/Submissions/ViewFileSubmissions';
+import { UserRegistrations } from 'apcd-components/Registrations/RegistrationList/UserRegistrations';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ function setupComponent(rootId: string, Component: React.ComponentType): void {
 const componentMap: { [key: string]: React.ComponentType<any> } = {
   'list-registrations-root': AdminRegistrations,
   'view-users-root': ViewUsers,
+  'list-registrations-user': UserRegistrations,
   'list-admin-submissions': AdminSubmissions,
   'admin-extensions-root': AdminExtensions,
   'admin-exceptions-root': AdminExceptions,
