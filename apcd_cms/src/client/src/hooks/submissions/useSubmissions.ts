@@ -31,11 +31,21 @@ const getListSubmissions = async (params: any) => {
 export const useListSubmissions = (
   status?: string,
   sort?: string,
+  submitterId?: string,
+  payorCode?: string,
   page?: number
 ): UseQueryResult<FileSubmissionResult> => {
-  const params: { status?: string; sort?: string; page?: number } = {
+  const params: {
+    status?: string;
+    sort?: string;
+    submitterId?: string;
+    payorCode?: string;
+    page?: number;
+  } = {
     status,
     sort,
+    submitterId,
+    payorCode,
     page,
   };
   const query = useQuery(['list_submissions', params], () =>

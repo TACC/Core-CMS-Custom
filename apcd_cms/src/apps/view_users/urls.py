@@ -8,6 +8,5 @@ urlpatterns = [
     path('view-users/api/', ViewUsersTable.as_view(), name='view_users_api'),
     path('view-users/api/options', ViewUsersTable.as_view(), name='view_users_api_options'),
     path('view-users/api/modal/<str:modal_type>/', ViewUsersTable.as_view(), name='view_users_modal'),
-    path('view-users/api/modal/<str:modal_type>/', ViewUsersTable.as_view(), name='view_users_modal'),
     path('users/<int:user_number>/', UpdateUserView.as_view(), name='update_user'),
 ]

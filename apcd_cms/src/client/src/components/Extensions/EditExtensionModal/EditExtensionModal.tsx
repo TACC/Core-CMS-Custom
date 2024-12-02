@@ -23,7 +23,10 @@ import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
 import { useEntities } from 'hooks/entities';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
-import { convertPeriodLabelToApiValue, convertApiValueToPeriodLabel } from 'utils/dateUtil';
+import {
+  convertPeriodLabelToApiValue,
+  convertApiValueToPeriodLabel,
+} from 'utils/dateUtil';
 import styles from './EditExtensionModal.module.css';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
@@ -103,8 +106,10 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
     const { ext_id } = values;
     const api_values = {
       ...values,
-      'applicable_data_period': convertPeriodLabelToApiValue(values['applicable_data_period']),
-    }
+      applicable_data_period: convertPeriodLabelToApiValue(
+        values['applicable_data_period']
+      ),
+    };
     const url = `administration/update-extension/${ext_id}/`;
 
     try {
@@ -120,7 +125,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         setUserFields([
           {
             label: 'Applicable Data Period',
-            value: convertApiValueToPeriodLabel(values.applicable_data_period) || 'None',
+            value:
+              convertApiValueToPeriodLabel(values.applicable_data_period) ||
+              'None',
           },
           {
             label: 'Approved Expiration Date',
@@ -190,11 +197,11 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
               <form onSubmit={formik.handleSubmit}>
                 <Row>
                   <Col md={3}>
-                      <FieldWrapper
-                          name="applicable_data_period"
-                          label="Applicable Data Period"
-                          required={false}
-                        >
+                    <FieldWrapper
+                      name="applicable_data_period"
+                      label="Applicable Data Period"
+                      required={false}
+                    >
                       <Field
                         as="select"
                         name="applicable_data_period"
@@ -219,17 +226,17 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                             </option>
                           ))}
                       </Field>
-                      <div
-                        className="help-text">
-                                Current:{' '}{(extension.applicable_data_period)}
+                      <div className="help-text">
+                        Current: {extension.applicable_data_period}
                       </div>
-                      </FieldWrapper>
+                    </FieldWrapper>
                   </Col>
                   <Col md={3}>
                     <FieldWrapper
                       name="approved_expiration_date"
                       label="Approved Expiration Date"
-                      required={false}>
+                      required={false}
+                    >
                       <Field
                         type="date"
                         name="approved_expiration_date"
@@ -242,9 +249,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <div
-                        className="help-text"
-                      >
+                      <div className="help-text">
                         Current:{' '}
                         {extension.approved_expiration_date
                           ? new Date(
@@ -252,12 +257,14 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                             ).toLocaleDateString()
                           : 'None'}
                       </div>
-                      </FieldWrapper>
+                    </FieldWrapper>
                   </Col>
                   <Col md={3}>
-                    <FieldWrapper name = "ext_status"
-                    label="Exception Status"
-                    required={false}>
+                    <FieldWrapper
+                      name="ext_status"
+                      label="Exception Status"
+                      required={false}
+                    >
                       <Field
                         as="select"
                         name="ext_status"
@@ -279,11 +286,14 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                             )
                         )}
                       </Field>
-                      </FieldWrapper>
+                    </FieldWrapper>
                   </Col>
                   <Col md={3}>
-                      <FieldWrapper name="ext_outcome" label="Extension Outcome"
-                      required={false}>
+                    <FieldWrapper
+                      name="ext_outcome"
+                      label="Extension Outcome"
+                      required={false}
+                    >
                       <Field
                         as="select"
                         name="ext_outcome"
@@ -305,7 +315,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                     </FieldWrapper>
                   </Col>
                   <Col md={6}>
-                    <FieldWrapper name ="notes" label="Notes" required={false}>
+                    <FieldWrapper name="notes" label="Notes" required={false}>
                       <Field
                         as="textarea"
                         name="notes"
@@ -315,21 +325,14 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <div
-                        className="help-text"
-                      >
-                        2000 character limit
-                      </div>
+                      <div className="help-text">2000 character limit</div>
                     </FieldWrapper>
                   </Col>
                 </Row>
                 <br />
-                <Alert
-                color="success"
-                isOpen={showSuccessMessage}
-              >
-                Success: The exception data has been successfully updated.
-              </Alert>
+                <Alert color="success" isOpen={showSuccessMessage}>
+                  Success: The exception data has been successfully updated.
+                </Alert>
                 <Alert color="danger" isOpen={showErrorMessage}>
                   Error: {errorMessage}
                 </Alert>
