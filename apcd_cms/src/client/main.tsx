@@ -8,6 +8,7 @@ import { AdminSubmissions } from 'apcd-components/Admin/Submissions';
 import { AdminExtensions } from 'apcd-components/Admin/Extensions';
 import { AdminExceptions } from 'apcd-components/Admin/Exceptions';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ViewSubmitterUsers } from 'apcd-components/Submitter/ViewSubmitterUsers';
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'list-admin-submissions': AdminSubmissions,
   'admin-extensions-root': AdminExtensions,
   'admin-exceptions-root': AdminExceptions,
+  'view-submitter-users-root': ViewSubmitterUsers,
   // Add new components with html id in the list above.
 };
 

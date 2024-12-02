@@ -5,5 +5,5 @@ from django.template import loader
 
 
 def AddedView(request):
-    template = loader.get_template('custom_example/custom_example.html')
+    template = loader.get_template('view_submitter_users/view_submitter_users.html')
     return HttpResponse(template.render({}, request))
