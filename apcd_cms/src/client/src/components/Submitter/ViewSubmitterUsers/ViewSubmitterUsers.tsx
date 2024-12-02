@@ -1,10 +1,221 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
+// import ViewRecordModal from './ViewRecordModal';
+// import EditRecordModal from './EditRecordModal';
+import LoadingSpinner from 'core-components/LoadingSpinner';
+import Paginator from 'core-components/Paginator';
+import styles from './ViewSubmitterUsers.module.scss';
+import Button from 'core-components/Button';
 
 export const ViewSubmitterUsers: React.FC = () => {
+    // Establishes the headers for each column of the table
+    const header = [
+        'User ID',
+        'Name',
+        'Entity Organization',
+        'Role',
+        'Status',
+        'User Number',
+        'Actions',
+    ];
+
+    // Sets user filters to prepare to get data?
+    const {
+        data: filterData,
+        isLoading: isFilterLoading,
+        isError: isFilterError,
+    } = useUserFilters();
+
+    // Sets the initial state of status, org, and page of the table
+    const [status, setStatus] = useState('All');
+    const [org, setOrg] = useState('All');
+    const [page, setPage] = useState(1);
+    
+    // Actually retrieves the data based on useUserFilters()?
+    const {
+        data: userData,
+        isLoading,
+        isError,
+        refetch,
+    } = useUsers(status, org, page);
+
+    // Sets the state for open modals, dropdowns, and selected users
+    const [viewModalOpen, setViewModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+    const [dropdownValue, setDropdownValue] = useState<string>('');
+
+    // Function to clear all filters set by dropdowns
+    const clearSelections = () => {
+        setStatus('All');
+        setOrg('All');
+        setPage(1);
+    };
+
+    // Opens modals based on a selected user
+    const handleActionChange = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+        user: UserRow
+    ) => {
+        const action = event.target.value;
+        setSelectedUser(user);
+        setDropdownValue('');
+        if (action === 'view') {
+            setViewModalOpen(true);
+            setEditModalOpen(false);
+        } else if (action === 'edit') {
+            setEditModalOpen(true);
+            setViewModalOpen(false);
+        }
+    };
+
+    // Goes to the page number selected if there's more than 1
+    const handlePageChange = (newPage: number) => {
+        if (newPage >= 1 && newPage <= (userData?.total_pages ?? 1)) {
+          setPage(newPage);
+        }
+    };
+
+    // Refresh user data after editing is successful
+    const handleEditSuccess = (updatedUser: UserRow) => {
+        // Refresh user data after editing is successful
+        refetch();
+        setEditModalOpen(false);
+    };
+
+    // Handles the closing of modals
+    const closeModal = () => {
+        setViewModalOpen(false);
+        setEditModalOpen(false);
+        setSelectedUser(null);
+    };
+
+    // Displays LoadingSpinner when the page is loading
+    if (isFilterLoading || isLoading) {
+        return (
+          <div className="loading-placeholder">
+            <LoadingSpinner />
+          </div>
+        );
+    }
+
+    // Displays an error message if an error happens when loading data
+    if (isFilterError || isError) {
+        return <div>Error loading data</div>;
+    }
+
     return (
         <div>
             <h1>View Submitter Users</h1>
-        </div>
+            <hr />
+            <p style={{ marginBottom: '30px' }}>View all submitter users.</p>
+            <hr />
+            <div className="filter-container">
+                <div className="filter-content">
+                {/* Filter */}
+                <span>
+                    <b>Filter by Status: </b>
+                </span>
+                <select
+                    id="statusFilter"
+                    className="status-filter"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                >
+                    {filterData?.status_options.map((status, index) => (
+                    <option className="dropdown-text" key={index} value={status}>
+                        {status}
+                    </option>
+                    ))}
+                </select>
+
+                {/* Filter by Organization */}
+                <span>
+                    <b>Filter by Organization: </b>
+                </span>
+                <select
+                    id="organizationFilter"
+                    className="org-filter"
+                    value={org}
+                    onChange={(e) => setOrg(e.target.value)}
+                >
+                    {filterData?.org_options.map((org, index) => (
+                    <option className="dropdown-text" key={index} value={org}>
+                        {org}
+                    </option>
+                    ))}
+                </select>
+                {status !== 'All' || org !== 'All' ? (
+                    <Button onClick={clearSelections}>Clear Options</Button>
+                ) : null}
+                </div>
+            </div>
+            <div>
+                <table id="viewUserTable" className="users-table">
+                <thead>
+                    <tr>
+                    {header.map((columnName: string, index: number) => (
+                        <th key={index}>{columnName}</th>
+                    ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {userData?.page && userData.page.length > 0 ? (
+                    userData?.page.map((user: UserRow, rowIndex: number) => (
+                        <tr key={rowIndex}>
+                        <td>{user.user_id}</td>
+                        <td>{user.user_name}</td>
+                        <td>{user.entity_name}</td>
+                        <td>{user.role_name}</td>
+                        <td>{user.status}</td>
+                        <td>{user.user_number}</td>
+                        <td>
+                            <select
+                            onChange={(event) => handleActionChange(event, user)}
+                            value={dropdownValue}
+                            >
+                            <option value="" disabled>
+                                Select Action
+                            </option>
+                            <option value="view">View Record</option>
+                            <option value="edit">Edit Record</option>
+                            </select>
+                        </td>
+                        </tr>
+                    ))
+                    ) : (
+                    <tr>
+                        <td colSpan={7} style={{ textAlign: 'center' }}>
+                        No Data available
+                        </td>
+                    </tr>
+                    )}
+                </tbody>
+                </table>
+            </div>
+            <div className={styles.paginatorContainer}>
+                <Paginator
+                pages={userData?.total_pages ?? 0}
+                current={userData?.page_num ?? 1}
+                callback={handlePageChange} // Pass setPage as the callback function
+                />
+            </div>
+            {/* {selectedUser && viewModalOpen && (
+                <ViewRecordModal
+                isOpen={viewModalOpen}
+                toggle={closeModal}
+                user={selectedUser}
+                />
+            )} */}
+            {/* {selectedUser && editModalOpen && (
+                <EditRecordModal
+                isOpen={editModalOpen}
+                toggle={closeModal}
+                user={selectedUser}
+                onEditSuccess={handleEditSuccess}
+                />
+            )} */}
+    </div>
     );
 };
 
