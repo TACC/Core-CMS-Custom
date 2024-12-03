@@ -15,6 +15,7 @@ export type FilterOptions = {
   status_options: string[];
   org_options: string[];
   sort_options: string[];
+  role_options: string[];
 };
 
 export type UserResult = {
@@ -109,6 +110,14 @@ export type ExceptionResult = {
   page: ExceptionRow[];
   page_num: number;
   total_pages: number;
+};
+
+export type SumbitterUserRow = {
+  submitter_id: string;
+  user_id: string;
+  user_number: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export {

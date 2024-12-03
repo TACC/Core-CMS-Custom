@@ -152,6 +152,44 @@ def get_user_role(user):
         if conn is not None:
             conn.close()
 
+def get_submitter_users():
+    cur = None
+    conn = None
+    try:
+        conn = psycopg.connect(
+            host=APCD_DB['host'],
+            dbname=APCD_DB['database'],
+            user=APCD_DB['user'],
+            password=APCD_DB['password'],
+            port=APCD_DB['port'],
+            sslmode='require'
+        )
+        query = """
+        SELECT DISTINCT submitter_users.submitter_id,
+        submitter_users.user_id,
+        submitter_users.user_number,
+        users.user_email,
+        users.user_name,
+        submissions.payor_code
+        FROM submitter_users
+        JOIN users
+           ON submitter_users.user_id = users.user_id
+           AND submitters_users.user_number = users.user_number
+        JOIN submissions
+            ON submitter_users.submitter_id = submissions.submitter_id;
+        """
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+    
+    except Exception as error:
+        logger.error(error)
+    
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def get_registrations(reg_id=None, submitter_code=None):
     cur = None

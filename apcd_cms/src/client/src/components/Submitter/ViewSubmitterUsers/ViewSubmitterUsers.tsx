@@ -10,13 +10,9 @@ import Button from 'core-components/Button';
 export const ViewSubmitterUsers: React.FC = () => {
     // Establishes the headers for each column of the table
     const header = [
+        'Submitter ID',
         'User ID',
-        'Name',
-        'Entity Organization',
-        'Role',
-        'Status',
         'User Number',
-        'Actions',
     ];
 
     // Sets user filters to prepare to get data?
@@ -112,7 +108,7 @@ export const ViewSubmitterUsers: React.FC = () => {
             <hr />
             <div className="filter-container">
                 <div className="filter-content">
-                {/* Filter */}
+                {/* Filter by Status */}
                 <span>
                     <b>Filter by Status: </b>
                 </span>
@@ -169,6 +165,7 @@ export const ViewSubmitterUsers: React.FC = () => {
                         <td>{user.role_name}</td>
                         <td>{user.status}</td>
                         <td>{user.user_number}</td>
+                        <td>{user.created_at}</td>
                         <td>
                             <select
                             onChange={(event) => handleActionChange(event, user)}
