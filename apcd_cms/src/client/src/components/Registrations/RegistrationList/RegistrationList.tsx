@@ -10,7 +10,8 @@ import Button from 'core-components/Button';
 export const RegistrationList: React.FC<{
   useDataHook: any;
   isAdmin?: boolean;
-}> = ({ useDataHook, isAdmin = false }) => {
+  byUser?: boolean;
+}> = ({ useDataHook, isAdmin = false, byUser = false }) => {
   const initStateFilter = isAdmin ? 'Received' : ''; // for admin listing, show records w/ status 'Received' by default
   const [status, setStatus] = useState(initStateFilter);
   const [org, setOrg] = useState('All');
@@ -100,7 +101,7 @@ export const RegistrationList: React.FC<{
           </select>
 
           <span>
-            <b>Filter by Organization: </b>
+            {byUser ? <b>Filter by User:</b> : <b>Filter by Organization:</b>}
           </span>
           <select
             id="organizationFilter"
@@ -122,6 +123,7 @@ export const RegistrationList: React.FC<{
       <table id="registrationTable" className="registration-table">
         <thead>
           <tr>
+            {byUser ? <th>Username</th> : null}
             {data?.header.map((columnName: string, index: number) => (
               <th key={index}>{columnName}</th>
             ))}
@@ -131,6 +133,7 @@ export const RegistrationList: React.FC<{
           {data?.page && data.page.length > 0 ? (
             data?.page.map((row: RegistrationRow, rowIndex: number) => (
               <tr key={rowIndex}>
+                {byUser ? <td>{'TestUser'}</td> : null}
                 <td>{row.biz_name}</td>
                 <td>{row.year ? row.year : 'None'}</td>
                 <td>{row.type}</td>

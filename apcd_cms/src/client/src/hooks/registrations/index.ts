@@ -49,6 +49,7 @@ export type RegistrationContent = {
 };
 
 export type RegistrationRow = {
+  user_name: string;
   biz_name: string;
   year: string;
   type: string;

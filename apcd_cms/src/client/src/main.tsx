@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AdminRegistrations } from './components/Admin/Registrations';
 import { ViewUsers } from './components/Admin/ViewUsers';
 import { AdminSubmissions } from './components/Admin/Submissions';
+import { UserRegistrations } from './components/Registrations/RegistrationList/UserRegistrations';
 import { AdminExtensions } from './components/Admin/Extensions';
 import { AdminExceptions } from './components/Admin/Exceptions';
 import { ViewExceptionModal } from './components/Admin/ViewExceptionModal';
@@ -15,7 +16,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ExceptionFormPage } from './components/Submitter/Exceptions';
 import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
 import { ViewFileSubmissions } from './components/Submissions/ViewFileSubmissions';
-import { UserRegistrations } from 'apcd-components/Registrations/RegistrationList/UserRegistrations';
 
 const queryClient = new QueryClient();
 
