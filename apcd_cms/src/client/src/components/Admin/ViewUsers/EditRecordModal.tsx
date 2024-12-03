@@ -3,12 +3,12 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Button,
   Label,
   FormGroup,
   Row,
   Col,
 } from 'reactstrap';
+import Button from 'core-components/Button';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
@@ -236,8 +236,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 </Row>
                 <br />
                 <Button
-                  type="submit"
-                  color="primary"
                   disabled={isSubmitting}
                   className={styles.customSubmitButton}
                 >
