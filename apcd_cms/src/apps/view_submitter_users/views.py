@@ -80,9 +80,9 @@ class ViewSubmitterUsersTable(TemplateView):
     # Retrieves both the View and Edit modals for getting/changing data
     def get_modals(self, request, modal_type):
         if modal_type == 'view':
-            modal_template = 'view_users_modal.html'
+            modal_template = 'view_submitter_users_modal.html'
         elif modal_type == 'edit':
-            modal_template = 'edit_users_modal.html'
+            modal_template = 'edit_submitter_users_modal.html'
         else:
             return JsonResponse({'error': 'Invalid modal type'}, status=400)
         
@@ -173,7 +173,7 @@ class ViewSubmitterUsersTable(TemplateView):
 
         return context
     
-class UpdateUserView(View):
+class UpdateSubmitterUserView(View):
     # Checks if the user is authenticated or an admin
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):

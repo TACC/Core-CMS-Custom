@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { ExtensionResult, UserResult, ExceptionResult, FilterOptions } from '.';
+import { ExtensionResult, UserResult, ExceptionResult, FilterOptions, SubmitterUserResult } from '.';
 
 import { FileSubmissionResult } from 'hooks/submissions';
 
@@ -35,6 +35,45 @@ const getUsersFilters = async () => {
 
 export const useUserFilters = (): UseQueryResult<FilterOptions> => {
   const query = useQuery(['userfilters'], () => getUsersFilters(), {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  }) as UseQueryResult<FilterOptions>;
+
+  return { ...query };
+};
+
+const getSubmitterUsers = async (params: any) => {
+  const url = `/administration/view-submitter-users/api/`;
+  const response = await fetchUtil({ url, params });
+  return response.response;
+};
+
+export const useSubmitterUsers = (
+  status?: string,
+  org?: string,
+  page?: number
+): UseQueryResult<SubmitterUserResult> => {
+  const params: { status?: string; org?: string; page?: number } = {
+    status,
+    org,
+    page,
+  };
+  const query = useQuery(['submitterUsers', params], () =>
+    getSubmitterUsers(params)
+  ) as UseQueryResult<SubmitterUserResult>;
+
+  return { ...query };
+};
+
+const getSubmitterUsersFilters = async () => {
+  const url = `/administration/view-submitter-users/api/options`;
+  const response = await fetchUtil({ url });
+  return response;
+};
+
+export const useSubmitterUserFilters = (): UseQueryResult<FilterOptions> => {
+  const query = useQuery(['submitterUserFilters'], () => getSubmitterUsersFilters(), {
     staleTime: 5 * 60 * 1000,
     cacheTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,

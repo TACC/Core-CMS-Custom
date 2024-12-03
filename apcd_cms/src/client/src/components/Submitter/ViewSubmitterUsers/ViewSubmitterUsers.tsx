@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
+// import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
+import { SubmitterUserRow, useSubmitterUsers, useSubmitterUserFilters } from 'hooks/admin';
 // import ViewRecordModal from './ViewRecordModal';
 // import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
@@ -13,14 +14,18 @@ export const ViewSubmitterUsers: React.FC = () => {
         'Submitter ID',
         'User ID',
         'User Number',
+        'User Email',
+        'User Name',
+        'Payor Code',
+        'Actions',
     ];
 
-    // Sets user filters to prepare to get data?
+    // Sets user filters to prepare to get data
     const {
         data: filterData,
         isLoading: isFilterLoading,
         isError: isFilterError,
-    } = useUserFilters();
+    } = useSubmitterUserFilters();
 
     // Sets the initial state of status, org, and page of the table
     const [status, setStatus] = useState('All');
@@ -29,16 +34,16 @@ export const ViewSubmitterUsers: React.FC = () => {
     
     // Actually retrieves the data based on useUserFilters()?
     const {
-        data: userData,
+        data: submitterUserData,
         isLoading,
         isError,
         refetch,
-    } = useUsers(status, org, page);
+    } = useSubmitterUsers(status, org, page);
 
     // Sets the state for open modals, dropdowns, and selected users
     const [viewModalOpen, setViewModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+    const [selectedUser, setSelectedUser] = useState<SubmitterUserRow | null>(null);
     const [dropdownValue, setDropdownValue] = useState<string>('');
 
     // Function to clear all filters set by dropdowns
@@ -51,7 +56,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     // Opens modals based on a selected user
     const handleActionChange = (
         event: React.ChangeEvent<HTMLSelectElement>,
-        user: UserRow
+        user: SubmitterUserRow
     ) => {
         const action = event.target.value;
         setSelectedUser(user);
@@ -67,13 +72,13 @@ export const ViewSubmitterUsers: React.FC = () => {
 
     // Goes to the page number selected if there's more than 1
     const handlePageChange = (newPage: number) => {
-        if (newPage >= 1 && newPage <= (userData?.total_pages ?? 1)) {
+        if (newPage >= 1 && newPage <= (submitterUserData?.total_pages ?? 1)) {
           setPage(newPage);
         }
     };
 
     // Refresh user data after editing is successful
-    const handleEditSuccess = (updatedUser: UserRow) => {
+    const handleEditSuccess = (updatedUser: SubmitterUserRow) => {
         // Refresh user data after editing is successful
         refetch();
         setEditModalOpen(false);
@@ -156,16 +161,15 @@ export const ViewSubmitterUsers: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {userData?.page && userData.page.length > 0 ? (
-                    userData?.page.map((user: UserRow, rowIndex: number) => (
+                    {submitterUserData?.page && submitterUserData.page.length > 0 ? (
+                    submitterUserData?.page.map((user: SubmitterUserRow, rowIndex: number) => (
                         <tr key={rowIndex}>
+                        <td>{user.submitter_id}</td>
                         <td>{user.user_id}</td>
-                        <td>{user.user_name}</td>
-                        <td>{user.entity_name}</td>
-                        <td>{user.role_name}</td>
-                        <td>{user.status}</td>
                         <td>{user.user_number}</td>
-                        <td>{user.created_at}</td>
+                        <td>{user.user_email}</td>
+                        <td>{user.user_name}</td>
+                        <td>{user.payor_code}</td>
                         <td>
                             <select
                             onChange={(event) => handleActionChange(event, user)}
@@ -192,8 +196,8 @@ export const ViewSubmitterUsers: React.FC = () => {
             </div>
             <div className={styles.paginatorContainer}>
                 <Paginator
-                pages={userData?.total_pages ?? 0}
-                current={userData?.page_num ?? 1}
+                pages={submitterUserData?.total_pages ?? 0}
+                current={submitterUserData?.page_num ?? 1}
                 callback={handlePageChange} // Pass setPage as the callback function
                 />
             </div>

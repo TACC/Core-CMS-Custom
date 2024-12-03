@@ -174,7 +174,7 @@ def get_submitter_users():
         FROM submitter_users
         JOIN users
            ON submitter_users.user_id = users.user_id
-           AND submitters_users.user_number = users.user_number
+           AND submitter_users.user_number = users.user_number
         JOIN submissions
             ON submitter_users.submitter_id = submissions.submitter_id;
         """

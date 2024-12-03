@@ -9,6 +9,8 @@ export type UserRow = {
   created_at: string;
   updated_at: string;
   notes: string;
+  submitter_id: string;
+  payor_code: string;
 };
 
 export type FilterOptions = {
@@ -112,12 +114,24 @@ export type ExceptionResult = {
   total_pages: number;
 };
 
-export type SumbitterUserRow = {
+export type SubmitterUserRow = {
   submitter_id: string;
   user_id: string;
   user_number: string;
   created_at: string;
   updated_at: string;
+  user_email: string;
+  user_name: string;
+  payor_code: string;
+};
+
+export type SubmitterUserResult = {
+  selected_status: string;
+  selected_org: string;
+  pagination_url_namespaces: string;
+  page: SubmitterUserRow[];
+  page_num: number;
+  total_pages: number;
 };
 
 export {
@@ -127,4 +141,6 @@ export {
   useExceptions,
   useUserFilters,
   useSubmissionFilters,
+  useSubmitterUsers,
+  useSubmitterUserFilters,
 } from './useAdmin';
