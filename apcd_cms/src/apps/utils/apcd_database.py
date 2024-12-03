@@ -1134,6 +1134,7 @@ def update_extension(form):
         if cur is not None:
             cur.close()
 
+
 def get_submitter_info(user):
     cur = None
     conn = None
