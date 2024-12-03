@@ -487,6 +487,7 @@ export const RegistrationForm: React.FC<{
                 </div>
                 <div className="button-wrapper submit">
                   <Button
+                    attr="submit"
                     className="form-button"
                     disabled={registrationSubmissionPending}
                   >
