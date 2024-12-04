@@ -201,6 +201,7 @@ export const ExceptionFormPage: React.FC = () => {
           isValid,
           submitCount,
           handleSubmit,
+          dirty,
         }) => {
           // To reset values to initial values if the form submits successfully
           useEffect(() => {
@@ -420,6 +421,7 @@ export const ExceptionFormPage: React.FC = () => {
                       <Button
                         type="primary"
                         attr="submit"
+                        disabled={isSubmitting || !dirty}
                         isLoading={isSubmitting}
                         onClick={() => setIsSuccess(false)}
                       >
@@ -439,6 +441,7 @@ export const ExceptionFormPage: React.FC = () => {
                     <Button
                       type="primary"
                       attr="submit"
+                      disabled={isSubmitting || !dirty}
                       isLoading={isSubmitting}
                       onClick={() => setIsSuccess(false)}
                     >

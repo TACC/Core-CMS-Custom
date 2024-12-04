@@ -268,7 +268,7 @@ export const RegistrationForm: React.FC<{
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, resetForm }) => (
+          {({ values, setFieldValue, resetForm, dirty }) => (
             useEffect(() => {
               if (isSuccess) {
                 resetForm();
@@ -499,7 +499,7 @@ export const RegistrationForm: React.FC<{
                     type="submit"
                     color="primary"
                     className="form-button"
-                    disabled={registrationSubmissionPending}
+                    disabled={registrationSubmissionPending || !dirty}
                   >
                     Submit
                   </Button>
