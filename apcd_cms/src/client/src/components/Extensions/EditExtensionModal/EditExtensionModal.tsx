@@ -21,7 +21,7 @@ import {
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
-import { useEntities } from 'hooks/entities';
+import { useSubmitterDataPeriods } from 'hooks/entities';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
 import {
   convertPeriodLabelToApiValue,
@@ -60,7 +60,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userFields, setUserFields] = useState([
+  const [extensionFields, setExtensionFields] = useState([
     {
       label: 'Applicable Data Period',
       value: extension?.applicable_data_period || 'None',
@@ -69,15 +69,15 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       label: 'Approved Expiration Date',
       value: extension?.approved_expiration_date || 'None',
     },
-    { label: 'Exception Status', value: extension?.ext_status },
-    { label: 'Exception Outcome', value: extension?.ext_outcome },
-    { label: 'Exception Notes', value: extension?.notes || 'None' },
+    { label: 'Extension Status', value: extension?.ext_status },
+    { label: 'Extension Outcome', value: extension?.ext_outcome },
+    { label: 'Extension Notes', value: extension?.notes || 'None' },
   ]);
   const {
     data: submitterData,
-    isLoading: entitiesLoading,
-    error: entitiesError,
-  } = useEntities();
+    isLoading: submitterDataLoading,
+    error: submitterDataError,
+  } = useSubmitterDataPeriods(extension?.submitter_id);
 
   if (!extension) return null;
 
@@ -114,6 +114,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
 
     try {
       setShowSuccessMessage(false);
+      setShowErrorMessage(false);
       const response = await fetchUtil({
         url,
         method: 'PUT',
@@ -122,7 +123,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
 
       if (onEditSuccess && response) {
         onEditSuccess(response);
-        setUserFields([
+        setExtensionFields([
           {
             label: 'Applicable Data Period',
             value:
@@ -133,9 +134,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
             label: 'Approved Expiration Date',
             value: values.approved_expiration_date || 'None',
           },
-          { label: 'Exception Status', value: values.ext_status },
-          { label: 'Exception Outcome', value: values.ext_outcome },
-          { label: 'Exception Notes', value: values.notes || 'None' },
+          { label: 'Extension Status', value: values.ext_status },
+          { label: 'Extension Outcome', value: values.ext_outcome },
+          { label: 'Extension Notes', value: values.notes || 'None' },
         ]);
       }
 
@@ -188,10 +189,10 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
           Edit Extension ID {extension.ext_id} for {extension.org_name}
         </ModalHeader>
         <ModalBody>
-          <h4 className="modal-header">Edit Selected Exception</h4>
+          <h4 className="modal-header">Edit Selected Extension</h4>
           <QueryWrapper
-            isLoading={entitiesLoading}
-            error={entitiesError as Error}
+            isLoading={submitterDataLoading}
+            error={submitterDataError as Error}
           >
             <FormikProvider value={formik}>
               <form onSubmit={formik.handleSubmit}>
@@ -212,19 +213,14 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       >
-                        {submitterData?.submitters
-                          .find(
-                            (s) =>
-                              s.submitter_id === Number(extension.submitter_id)
-                          )
-                          ?.data_periods?.map((item) => (
-                            <option
-                              key={item.data_period}
-                              value={item.data_period}
-                            >
-                              {item.data_period}
-                            </option>
-                          ))}
+                        {submitterData?.data_periods?.map((item) => (
+                          <option
+                            key={item.data_period}
+                            value={item.data_period}
+                          >
+                            {item.data_period}
+                          </option>
+                        ))}
                       </Field>
                       <div className="help-text">
                         Current: {extension.applicable_data_period}
@@ -262,7 +258,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                   <Col md={3}>
                     <FieldWrapper
                       name="ext_status"
-                      label="Exception Status"
+                      label="Extension Status"
                       required={false}
                     >
                       <Field
@@ -339,7 +335,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                 <Button
                   type="primary"
                   attr="submit"
-                  disabled={formik.isSubmitting}
+                  disabled={!formik.dirty || formik.isSubmitting}
                 >
                   Submit
                 </Button>
@@ -347,9 +343,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
             </FormikProvider>
           </QueryWrapper>
           <hr />
-          <h4 className="modal-header">Current Exception Information</h4>
+          <h4 className="modal-header">Current Extension Information</h4>
           <div>
-            {userFields.map((field, index) => (
+            {extensionFields.map((field, index) => (
               <Row key={index}>
                 <Col md={6}>
                   <p>{field.label}:</p>
