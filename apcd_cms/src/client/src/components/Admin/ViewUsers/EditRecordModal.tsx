@@ -236,6 +236,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 </Row>
                 <br />
                 <Button
+                  attr="submit"
                   disabled={isSubmitting}
                   className={styles.customSubmitButton}
                 >
