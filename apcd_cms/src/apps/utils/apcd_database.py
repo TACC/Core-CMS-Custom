@@ -1070,69 +1070,54 @@ def create_extension(form, extension, sub_data):
         if conn is not None:
             conn.close()
 
+
 def update_extension(form):
     cur = None
     conn = None
     try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        operation = """UPDATE extensions
-            SET
-            updated_at= %s,"""
-        
-        set_values = []
-        # to set column names for query to the correct DB name
-        columns = {
-            'applicable_data_period': 'applicable_data_period',
-            'status': 'status',
-            'outcome': 'outcome',
-            'approved_expiration_date': 'approved_expiration_date'
-        }
-        # To make sure fields are not blank. 
-        # If they aren't, add column to update set operation
-        for field, column_name in columns.items():
-            value = form.get(field)
-            if value not in (None, ""):
-                set_values.append(f"{column_name} = %s")
+        with db_connect() as conn:
+            cur = conn.cursor()
+            query = "UPDATE extensions SET updated_at = %s"
+            values = [datetime.now()]  # Timestamp for updated_at
 
-        # to allow notes to be cleared, need to move notes out of the loop that ignores none
-        operation += ", ".join(set_values) + ", notes = %s WHERE extension_id = %s"
-        ## add last update time to all extension updates
-        values = [
-            datetime.now(),
-        ]
-        
-        for field, column_name in columns.items():
-            value = form.get(field)
-            print(value)
-            if value not in (None, ""):
-                # to make sure applicable data period field is an int to insert to DB
-                if column_name == 'applicable_data_period':
-                    values.append(int(value.replace('-', '')))
-                # else server side clean values
-                else:
-                    values.append(_clean_value(value))
+            # Map form fields to DB columns
+            columns = {
+                'applicable_data_period': 'applicable_data_period',
+                'status': 'status',
+                'outcome': 'outcome',
+                'approved_expiration_date': 'approved_expiration_date'
+            }
 
-        # to allow notes to be cleared, need to move notes out of the loop that ignores none
-        values.append(_clean_value(form['notes']))
-        ## to make sure extension id is last in query to match with WHERE statement
-        values.append(_clean_value(form['extension_id']))
+            # Build the SET clause dynamically
+            set_clauses = []
+            for field, column_name in columns.items():
+                value = form.get(field)
+                if value not in (None, "", "None"):
+                    set_clauses.append(f"{column_name} = %s")
+                    if column_name == 'applicable_data_period':
+                        values.append(int(value.replace('-', '')))
+                    elif column_name == 'approved_expiration_date':
+                        # Convert to None if the value is 'None' (string)
+                        values.append(None if value == 'None' else _clean_value(value))
+                    else:
+                        values.append(_clean_value(value))
 
-        cur.execute(operation, values)
-        conn.commit()
+            # Include 'notes' field, allowing it to be cleared
+            set_clauses.append("notes = %s")
+            values.append(_clean_value(form.get('notes', "")))
+
+            query += ", " + ", ".join(set_clauses) + " WHERE extension_id = %s"
+            values.append(_clean_value(form['extension_id']))
+
+            cur.execute(query, values)
+            conn.commit()
     except Exception as error:
         logger.error(error)
         return error
     finally:
         if cur is not None:
             cur.close()
+
 
 def get_submitter_info(user):
     cur = None
