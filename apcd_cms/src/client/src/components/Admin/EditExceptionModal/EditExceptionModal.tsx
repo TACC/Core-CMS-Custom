@@ -23,6 +23,7 @@ import { formatDate } from 'utils/dateUtil';
 import styles from './EditExceptionModal.module.css';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
+import Message from 'core-components/Message';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -380,13 +381,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
               </Row>
               <br />
               <Alert
-                color="success"
-                isOpen={showSuccessMessage}
-                toggle={dismissMessages}
-              >
-                Success: The exception data has been successfully updated.
-              </Alert>
-              <Alert
                 color="danger"
                 isOpen={showErrorMessage}
                 toggle={dismissMessages}
@@ -400,6 +394,14 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
               >
                 Submit
               </Button>
+              <Alert
+                color="success"
+                isOpen={showSuccessMessage}
+                toggle={dismissMessages}
+                style={{ display: 'inline-block' }}
+              >
+                Success: The exception data has been successfully updated.
+              </Alert>
             </form>
           </FormikProvider>
           <hr />
