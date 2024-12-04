@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SubmitterUserRow, useSubmitterUsers } from 'hooks/admin';
 import ViewRecordModal from './ViewRecordModal';
-// import EditRecordModal from './EditRecordModal';
+import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmitterUsers.module.scss';
@@ -156,15 +156,15 @@ export const ViewSubmitterUsers: React.FC = () => {
                 user={selectedUser}
                 />
             )}
-            {/* {selectedUser && editModalOpen && (
+            {selectedUser && editModalOpen && (
                 <EditRecordModal
                 isOpen={editModalOpen}
                 toggle={closeModal}
                 user={selectedUser}
                 onEditSuccess={handleEditSuccess}
                 />
-            )} */}
-    </div>
+            )}
+        </div>
     );
 };
 

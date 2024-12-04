@@ -126,8 +126,8 @@ export type SubmitterUserRow = {
 };
 
 export type SubmitterUserResult = {
-  selected_status: string;
-  selected_org: string;
+  // selected_status: string;
+  // selected_org: string;
   pagination_url_namespaces: string;
   page: SubmitterUserRow[];
   page_num: number;
