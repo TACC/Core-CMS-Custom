@@ -248,7 +248,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     <FieldWrapper
                       name="approved_threshold"
                       label="Approved Threshold"
-                      required={false}
+                      required={true}
                     >
                       <Field
                         type="text"
@@ -275,7 +275,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                   <FieldWrapper
                     name="approved_expiration_date"
                     label="Approved Expiration Date"
-                    required={false}
+                    required={true}
                   >
                     <Field
                       type="date"
