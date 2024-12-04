@@ -267,6 +267,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
         toggle={() => setSuccessModalOpen(false)}
         className={styles.customModal}
       >
+        {/* Success must be in line with submit button*/}
         <div className={`modal-header ${styles.modalHeader}`}>
           <Label className={styles.customModalTitle}>Success</Label>
           <button
