@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
-import { SubmitterUserRow, useSubmitterUsers, useSubmitterUserFilters } from 'hooks/admin';
+import { SubmitterUserRow, useSubmitterUsers } from 'hooks/admin';
 // import ViewRecordModal from './ViewRecordModal';
 // import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
@@ -21,15 +21,15 @@ export const ViewSubmitterUsers: React.FC = () => {
     ];
 
     // Sets user filters to prepare to get data
-    const {
-        data: filterData,
-        isLoading: isFilterLoading,
-        isError: isFilterError,
-    } = useSubmitterUserFilters();
+    // const {
+    //     data: filterData,
+    //     isLoading: isFilterLoading,
+    //     isError: isFilterError,
+    // } = useSubmitterUserFilters();
 
     // Sets the initial state of status, org, and page of the table
-    const [status, setStatus] = useState('All');
-    const [org, setOrg] = useState('All');
+    // const [status, setStatus] = useState('All');
+    // const [org, setOrg] = useState('All');
     const [page, setPage] = useState(1);
     
     // Actually retrieves the data based on useUserFilters()?
@@ -38,7 +38,7 @@ export const ViewSubmitterUsers: React.FC = () => {
         isLoading,
         isError,
         refetch,
-    } = useSubmitterUsers(status, org, page);
+    } = useSubmitterUsers(page);
 
     // Sets the state for open modals, dropdowns, and selected users
     const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -48,8 +48,8 @@ export const ViewSubmitterUsers: React.FC = () => {
 
     // Function to clear all filters set by dropdowns
     const clearSelections = () => {
-        setStatus('All');
-        setOrg('All');
+        // setStatus('All');
+        // setOrg('All');
         setPage(1);
     };
 
@@ -92,7 +92,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     };
 
     // Displays LoadingSpinner when the page is loading
-    if (isFilterLoading || isLoading) {
+    if (isLoading) {
         return (
           <div className="loading-placeholder">
             <LoadingSpinner />
@@ -101,7 +101,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     }
 
     // Displays an error message if an error happens when loading data
-    if (isFilterError || isError) {
+    if (isError) {
         return <div>Error loading data</div>;
     }
 
@@ -111,48 +111,8 @@ export const ViewSubmitterUsers: React.FC = () => {
             <hr />
             <p style={{ marginBottom: '30px' }}>View all submitter users.</p>
             <hr />
-            <div className="filter-container">
-                <div className="filter-content">
-                {/* Filter by Status */}
-                <span>
-                    <b>Filter by Status: </b>
-                </span>
-                <select
-                    id="statusFilter"
-                    className="status-filter"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                >
-                    {filterData?.status_options.map((status, index) => (
-                    <option className="dropdown-text" key={index} value={status}>
-                        {status}
-                    </option>
-                    ))}
-                </select>
-
-                {/* Filter by Organization */}
-                <span>
-                    <b>Filter by Organization: </b>
-                </span>
-                <select
-                    id="organizationFilter"
-                    className="org-filter"
-                    value={org}
-                    onChange={(e) => setOrg(e.target.value)}
-                >
-                    {filterData?.org_options.map((org, index) => (
-                    <option className="dropdown-text" key={index} value={org}>
-                        {org}
-                    </option>
-                    ))}
-                </select>
-                {status !== 'All' || org !== 'All' ? (
-                    <Button onClick={clearSelections}>Clear Options</Button>
-                ) : null}
-                </div>
-            </div>
             <div>
-                <table id="viewUserTable" className="users-table">
+                <table id="viewSubmitterUserTable" className="submitter-users-table">
                 <thead>
                     <tr>
                     {header.map((columnName: string, index: number) => (

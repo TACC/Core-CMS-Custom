@@ -142,5 +142,4 @@ export {
   useUserFilters,
   useSubmissionFilters,
   useSubmitterUsers,
-  useSubmitterUserFilters,
 } from './useAdmin';
