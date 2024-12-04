@@ -129,7 +129,7 @@ export const ExtensionRequestForm: React.FC = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, isSubmitting, setFieldValue, resetForm }) => {
+        {({ values, isSubmitting, setFieldValue, resetForm, dirty }) => {
           useEffect(() => {
             if (isSuccess) {
               resetForm();
@@ -269,6 +269,7 @@ export const ExtensionRequestForm: React.FC = () => {
                       <Button
                         type="primary"
                         attr="submit"
+                        disabled={isSubmitting || !dirty}
                         isLoading={isSubmitting}
                         onClick={() => setIsSuccess(false)}
                       >
@@ -288,6 +289,7 @@ export const ExtensionRequestForm: React.FC = () => {
                     <Button
                       type="primary"
                       attr="submit"
+                      disabled={isSubmitting || !dirty}
                       isLoading={isSubmitting}
                       onClick={() => setIsSuccess(false)}
                     >
