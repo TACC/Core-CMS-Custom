@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-// import { UserRow, useUsers, useUserFilters } from 'hooks/admin';
 import { SubmitterUserRow, useSubmitterUsers } from 'hooks/admin';
-// import ViewRecordModal from './ViewRecordModal';
+import ViewRecordModal from './ViewRecordModal';
 // import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmitterUsers.module.scss';
-import Button from 'core-components/Button';
+// import Button from 'core-components/Button';
 
 export const ViewSubmitterUsers: React.FC = () => {
     // Establishes the headers for each column of the table
@@ -20,19 +19,10 @@ export const ViewSubmitterUsers: React.FC = () => {
         'Actions',
     ];
 
-    // Sets user filters to prepare to get data
-    // const {
-    //     data: filterData,
-    //     isLoading: isFilterLoading,
-    //     isError: isFilterError,
-    // } = useSubmitterUserFilters();
-
-    // Sets the initial state of status, org, and page of the table
-    // const [status, setStatus] = useState('All');
-    // const [org, setOrg] = useState('All');
+    // Sets the initial state of page of the table
     const [page, setPage] = useState(1);
     
-    // Actually retrieves the data based on useUserFilters()?
+    // Retrieves submitter user data
     const {
         data: submitterUserData,
         isLoading,
@@ -48,8 +38,6 @@ export const ViewSubmitterUsers: React.FC = () => {
 
     // Function to clear all filters set by dropdowns
     const clearSelections = () => {
-        // setStatus('All');
-        // setOrg('All');
         setPage(1);
     };
 
@@ -161,13 +149,13 @@ export const ViewSubmitterUsers: React.FC = () => {
                 callback={handlePageChange} // Pass setPage as the callback function
                 />
             </div>
-            {/* {selectedUser && viewModalOpen && (
+            {selectedUser && viewModalOpen && (
                 <ViewRecordModal
                 isOpen={viewModalOpen}
                 toggle={closeModal}
                 user={selectedUser}
                 />
-            )} */}
+            )}
             {/* {selectedUser && editModalOpen && (
                 <EditRecordModal
                 isOpen={editModalOpen}
