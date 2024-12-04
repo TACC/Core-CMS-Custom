@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';
 import { formatDate } from 'utils/dateUtil';
+import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
 
 interface EditRecordModalProps {
@@ -128,15 +129,20 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 <Row>
                   <Col md={3}>
                     <FormGroup>
-                      <Label for="user_name" className={styles.customLabel}>
-                        <strong>Name</strong>
-                      </Label>
-                      <Field
-                        type="text"
+                      {/*Would this need to remain strong in the styling?*/}
+                      <FieldWrapper
                         name="user_name"
-                        id="user_name"
-                        className={`form-control ${styles.viewRecord}`}
-                      />
+                        label="Name"
+                        className={styles.customLabel}
+                        required={true}
+                      >
+                        <Field
+                          type="text"
+                          name="user_name"
+                          id="user_name"
+                          className={`form-control ${styles.viewRecord}`}
+                        />
+                      </FieldWrapper>
                       <ErrorMessage
                         name="user_name"
                         component="div"
@@ -146,9 +152,12 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   </Col>
                   <Col md={3}>
                     <FormGroup>
-                      <Label for="user_email" className={styles.customLabel}>
-                        <strong>Email</strong>
-                      </Label>
+                      <FieldWrapper
+                        name="user_email"
+                        label="Email"
+                        className={styles.customLabel}
+                        required={true}
+                      ></FieldWrapper>
                       <Field
                         type="email"
                         name="user_email"
@@ -164,9 +173,13 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   </Col>
                   <Col md={2}>
                     <FormGroup>
-                      <Label for="status" className={styles.customLabel}>
-                        <strong>Active Status</strong>
-                      </Label>
+                      {/*Should name still be active status, causes new line for long name, style override?*/}
+                      <FieldWrapper
+                        name="status"
+                        label="Active Status"
+                        className={styles.customLabel}
+                        required={true}
+                      ></FieldWrapper>
                       <Field
                         as="select"
                         name="status"
@@ -185,9 +198,12 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   </Col>
                   <Col md={3}>
                     <FormGroup>
-                      <Label for="role_name" className={styles.customLabel}>
-                        <strong>Role</strong>
-                      </Label>
+                      <FieldWrapper
+                        name="role_name"
+                        label="Role"
+                        className={styles.customLabel}
+                        required={true}
+                      ></FieldWrapper>
                       <Field
                         as="select"
                         name="role_name"
@@ -209,9 +225,12 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 <Row>
                   <Col md={6}>
                     <FormGroup>
-                      <Label for="notes" className={styles.customLabel}>
-                        <strong>Notes</strong>
-                      </Label>
+                      <FieldWrapper
+                        name="notes"
+                        label="Notes"
+                        className={styles.customLabel}
+                        required={false}
+                      ></FieldWrapper>
                       <Field
                         as="textarea"
                         name="notes"
