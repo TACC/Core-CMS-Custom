@@ -200,7 +200,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                     <FieldWrapper
                       name="applicable_data_period"
                       label="Applicable Data Period"
-                      required={false}
+                      required={true}
                     >
                       <Field
                         as="select"
