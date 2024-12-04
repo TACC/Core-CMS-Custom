@@ -5,10 +5,8 @@ import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmitterUsers.module.scss';
-// import Button from 'core-components/Button';
 
 export const ViewSubmitterUsers: React.FC = () => {
-    // Establishes the headers for each column of the table
     const header = [
         'Submitter ID',
         'User ID',
@@ -19,10 +17,8 @@ export const ViewSubmitterUsers: React.FC = () => {
         'Actions',
     ];
 
-    // Sets the initial state of page of the table
     const [page, setPage] = useState(1);
     
-    // Retrieves submitter user data
     const {
         data: submitterUserData,
         isLoading,
@@ -30,13 +26,11 @@ export const ViewSubmitterUsers: React.FC = () => {
         refetch,
     } = useSubmitterUsers(page);
 
-    // Sets the state for open modals, dropdowns, and selected users
     const [viewModalOpen, setViewModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<SubmitterUserRow | null>(null);
     const [dropdownValue, setDropdownValue] = useState<string>('');
 
-    // Function to clear all filters set by dropdowns
     const clearSelections = () => {
         setPage(1);
     };
@@ -58,28 +52,24 @@ export const ViewSubmitterUsers: React.FC = () => {
         }
     };
 
-    // Goes to the page number selected if there's more than 1
     const handlePageChange = (newPage: number) => {
         if (newPage >= 1 && newPage <= (submitterUserData?.total_pages ?? 1)) {
           setPage(newPage);
         }
     };
 
-    // Refresh user data after editing is successful
     const handleEditSuccess = (updatedUser: SubmitterUserRow) => {
         // Refresh user data after editing is successful
         refetch();
         setEditModalOpen(false);
     };
 
-    // Handles the closing of modals
     const closeModal = () => {
         setViewModalOpen(false);
         setEditModalOpen(false);
         setSelectedUser(null);
     };
 
-    // Displays LoadingSpinner when the page is loading
     if (isLoading) {
         return (
           <div className="loading-placeholder">
@@ -88,7 +78,6 @@ export const ViewSubmitterUsers: React.FC = () => {
         );
     }
 
-    // Displays an error message if an error happens when loading data
     if (isError) {
         return <div>Error loading data</div>;
     }

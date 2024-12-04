@@ -14,7 +14,6 @@ import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { SubmitterUserRow } from 'hooks/admin';
 import styles from './ViewSubmitterUsers.module.scss';
-// import { formatDate } from 'utils/dateUtil';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -50,7 +49,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     values: SubmitterUserRow,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
   ) => {
-    console.log('Values: ',values); // This does nothing.
     const { user_number } = values;
     const url = `administration/users/${user_number}/`;
     try {
@@ -93,8 +91,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     { label: 'Email', value: user.user_email },
     { label: 'Name', value: user.user_name },
     { label: 'Payor Code', value: user.payor_code },
-    // { label: 'Created Date', value: formatDate(user.created_at) },
-    // { label: 'Updated Date', value: formatDate(user.updated_at) },
   ];
 
   const closeBtn = (
