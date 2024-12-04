@@ -1,6 +1,12 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { ExtensionResult, UserResult, ExceptionResult, FilterOptions, SubmitterUserResult } from '.';
+import {
+  ExtensionResult,
+  UserResult,
+  ExceptionResult,
+  FilterOptions,
+  SubmitterUserResult,
+} from '.';
 
 import { FileSubmissionResult } from 'hooks/submissions';
 

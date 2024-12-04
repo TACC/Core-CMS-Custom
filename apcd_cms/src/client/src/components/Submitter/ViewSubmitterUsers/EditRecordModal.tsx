@@ -35,7 +35,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
   if (!user) return null;
 
   const initialValues: SubmitterUserRow = {
-    ...user
+    ...user,
   };
 
   const validationSchema = Yup.object({
@@ -47,7 +47,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
 
   const handleSave = async (
     values: SubmitterUserRow,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
     const { user_number } = values;
     const url = `administration/users/${user_number}/`;
@@ -106,7 +106,9 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
           Edit User ID: {user.user_id} for {user.user_name}
         </ModalHeader>
         <ModalBody>
-          <div className={styles.greyRectangle}>Edit Selected Submitter User</div>
+          <div className={styles.greyRectangle}>
+            Edit Selected Submitter User
+          </div>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -195,7 +197,9 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
             <span aria-hidden="true">&#xe912;</span>
           </button>
         </div>
-        <ModalBody>The submitter user data has been successfully updated.</ModalBody>
+        <ModalBody>
+          The submitter user data has been successfully updated.
+        </ModalBody>
       </Modal>
 
       <Modal
