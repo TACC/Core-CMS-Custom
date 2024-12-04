@@ -854,7 +854,7 @@ def get_user_submission_log(log_id, log_type, user=None):
             FROM submission_logs
             JOIN submissions ON submissions.submission_id = submission_logs.submission_id
             JOIN submitter_users ON submissions.submitter_id = submitter_users.submitter_id
-            WHERE submission_logs.log_id = %s
+            WHERE submission_logs.log_id = %s AND {log_column_name} IS NOT NULL
         """
 
         params = [log_id]
