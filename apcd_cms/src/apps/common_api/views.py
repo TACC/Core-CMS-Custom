@@ -1,14 +1,13 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
-from django.template import loader
+from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.views.generic import TemplateView
 from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group
+from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
 from apps.utils.utils import title_case
 from datetime import datetime
 import logging
-import json
 
 logger = logging.getLogger(__name__)
+
 
 class EntitiesView(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -74,7 +73,7 @@ class cdlsView(TemplateView):
 
 class DataPeriodsView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(DataPeriodsView, self).dispatch(request, *args, **kwargs)
 
