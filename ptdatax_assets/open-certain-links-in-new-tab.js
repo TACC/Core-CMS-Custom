@@ -6,5 +6,5 @@ const links = document.querySelectorAll(
 );
 findLinksAndSetTargets( links, {
     shouldDebug: window.DEBUG,
-    shouldFilter: true,
+    shouldFilter: false,
 });
