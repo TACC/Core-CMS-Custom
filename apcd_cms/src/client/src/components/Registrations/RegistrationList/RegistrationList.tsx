@@ -5,7 +5,7 @@ import Paginator from 'core-components/Paginator';
 import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistrationModal/ViewRegistrationModal';
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
-import Button from 'core-components/Button';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
@@ -115,7 +115,7 @@ export const RegistrationList: React.FC<{
             ))}
           </select>
           {data?.selected_status !== initStateFilter || data?.selected_org ? (
-            <Button onClick={clearSelections}>Clear Options</Button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>
