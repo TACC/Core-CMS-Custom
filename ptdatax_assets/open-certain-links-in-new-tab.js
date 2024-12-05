@@ -4,6 +4,6 @@ const links = document.querySelectorAll(
     'a[href*="/core/internal-docs/"]'
 );
 findLinksAndSetTargets( links, {
-    shouldDebug: window.DEBUG,
+    shouldDebug: false,
     shouldFilter: false,
 });
