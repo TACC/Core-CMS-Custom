@@ -14,6 +14,7 @@ import * as Yup from 'yup';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';
 import { formatDate } from 'utils/dateUtil';
+import QueryWrapper from 'core-wrappers/QueryWrapper';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
 
@@ -33,8 +34,17 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState<Error | null>(
+    Error('User data is not avalible')
+  );
 
   if (!user) return null;
+  console.log('The user is ', user);
+  if (isLoading) {
+    setIsLoading(false);
+    setLoadingError(null);
+  }
 
   const initialValues: UserRow = {
     ...user,
@@ -119,164 +129,168 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
         </ModalHeader>
         <ModalBody>
           <div className={styles.greyRectangle}>Edit Selected User</div>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSave}
-          >
-            {({ isSubmitting, dirty }) => (
-              <Form>
-                <Row>
-                  <Col md={3}>
-                    <FormGroup>
-                      {/*Would this need to remain strong in the styling?*/}
-                      <FieldWrapper
-                        name="user_name"
-                        label="Name"
-                        className={styles.customLabel}
-                        required={true}
-                      >
-                        <Field
-                          type="text"
+          <QueryWrapper isLoading={false} error={loadingError}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSave}
+            >
+              {({ isSubmitting, dirty }) => (
+                <Form>
+                  <Row>
+                    <Col md={3}>
+                      <FormGroup>
+                        {/*Would this need to remain strong in the styling?*/}
+                        <FieldWrapper
                           name="user_name"
-                          id="user_name"
+                          label="Name"
+                          className={styles.customLabel}
+                          required={true}
+                        >
+                          <Field
+                            type="text"
+                            name="user_name"
+                            id="user_name"
+                            className={`form-control ${styles.viewRecord}`}
+                          />
+                        </FieldWrapper>
+                        <ErrorMessage
+                          name="user_name"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={3}>
+                      <FormGroup>
+                        <FieldWrapper
+                          name="user_email"
+                          label="Email"
+                          className={styles.customLabel}
+                          required={true}
+                        ></FieldWrapper>
+                        <Field
+                          type="email"
+                          name="user_email"
+                          id="user_email"
                           className={`form-control ${styles.viewRecord}`}
                         />
-                      </FieldWrapper>
-                      <ErrorMessage
-                        name="user_name"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={3}>
-                    <FormGroup>
-                      <FieldWrapper
-                        name="user_email"
-                        label="Email"
-                        className={styles.customLabel}
-                        required={true}
-                      ></FieldWrapper>
-                      <Field
-                        type="email"
-                        name="user_email"
-                        id="user_email"
-                        className={`form-control ${styles.viewRecord}`}
-                      />
-                      <ErrorMessage
-                        name="user_email"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={2}>
-                    <FormGroup>
-                      {/*Should name still be active status, causes new line for long name, style override?*/}
-                      <FieldWrapper
-                        name="status"
-                        label="Active Status"
-                        className={styles.customLabel}
-                        required={true}
-                      ></FieldWrapper>
-                      <Field
-                        as="select"
-                        name="status"
-                        id="status"
-                        className={`form-control ${styles.viewRecord}`}
-                      >
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                      </Field>
-                      <ErrorMessage
-                        name="status"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={3}>
-                    <FormGroup>
-                      <FieldWrapper
-                        name="role_name"
-                        label="Role"
-                        className={styles.customLabel}
-                        required={true}
-                      ></FieldWrapper>
-                      <Field
-                        as="select"
-                        name="role_name"
-                        id="role_name"
-                        className={`form-control ${styles.viewRecord}`}
-                      >
-                        <option value="SUBMITTER_USER">SUBMITTER_USER</option>
-                        <option value="SUBMITTER_ADMIN">SUBMITTER_ADMIN</option>
-                        <option value="APCD_ADMIN">APCD_ADMIN</option>
-                      </Field>
-                      <ErrorMessage
-                        name="role_name"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
+                        <ErrorMessage
+                          name="user_email"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={2}>
+                      <FormGroup>
+                        {/*Should name still be active status, causes new line for long name, style override?*/}
+                        <FieldWrapper
+                          name="status"
+                          label="Active Status"
+                          className={styles.customLabel}
+                          required={true}
+                        ></FieldWrapper>
+                        <Field
+                          as="select"
+                          name="status"
+                          id="status"
+                          className={`form-control ${styles.viewRecord}`}
+                        >
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </Field>
+                        <ErrorMessage
+                          name="status"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={3}>
+                      <FormGroup>
+                        <FieldWrapper
+                          name="role_name"
+                          label="Role"
+                          className={styles.customLabel}
+                          required={true}
+                        ></FieldWrapper>
+                        <Field
+                          as="select"
+                          name="role_name"
+                          id="role_name"
+                          className={`form-control ${styles.viewRecord}`}
+                        >
+                          <option value="SUBMITTER_USER">SUBMITTER_USER</option>
+                          <option value="SUBMITTER_ADMIN">
+                            SUBMITTER_ADMIN
+                          </option>
+                          <option value="APCD_ADMIN">APCD_ADMIN</option>
+                        </Field>
+                        <ErrorMessage
+                          name="role_name"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <FieldWrapper
+                          name="notes"
+                          label="Notes"
+                          className={styles.customLabel}
+                          required={false}
+                        ></FieldWrapper>
+                        <Field
+                          as="textarea"
+                          name="notes"
+                          id="notes"
+                          rows="5"
+                          maxLength="2000" // Set the maxLength attribute
+                          className={`form-control ${styles.viewRecord}`}
+                        />
+                        <small
+                          className="form-text text-muted"
+                          style={{ fontStyle: 'italic' }}
+                        >
+                          2000 character limit
+                        </small>
+                        <ErrorMessage
+                          name="notes"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Button
+                    type="primary"
+                    attr="submit"
+                    disabled={isSubmitting || !dirty}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+            <hr />
+            <div className={styles.viewRecord}>
+              {userFields.map((field, index) => (
+                <Row key={index}>
                   <Col md={6}>
-                    <FormGroup>
-                      <FieldWrapper
-                        name="notes"
-                        label="Notes"
-                        className={styles.customLabel}
-                        required={false}
-                      ></FieldWrapper>
-                      <Field
-                        as="textarea"
-                        name="notes"
-                        id="notes"
-                        rows="5"
-                        maxLength="2000" // Set the maxLength attribute
-                        className={`form-control ${styles.viewRecord}`}
-                      />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        2000 character limit
-                      </small>
-                      <ErrorMessage
-                        name="notes"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </FormGroup>
+                    <p>{field.label}:</p>
+                  </Col>
+                  <Col md={6}>
+                    <p>{field.value}</p>
                   </Col>
                 </Row>
-                <br />
-                <Button
-                  type="primary"
-                  attr="submit"
-                  disabled={isSubmitting || !dirty}
-                >
-                  Submit
-                </Button>
-              </Form>
-            )}
-          </Formik>
-          <hr />
-          <div className={styles.viewRecord}>
-            {userFields.map((field, index) => (
-              <Row key={index}>
-                <Col md={6}>
-                  <p>{field.label}:</p>
-                </Col>
-                <Col md={6}>
-                  <p>{field.value}</p>
-                </Col>
-              </Row>
-            ))}
-          </div>
+              ))}
+            </div>
+          </QueryWrapper>
         </ModalBody>
       </Modal>
 
