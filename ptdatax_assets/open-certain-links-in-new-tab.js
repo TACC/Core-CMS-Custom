@@ -1,4 +1,4 @@
-/* TODO: After deploy of Core-CMS version that has https://github.com/TACC/Core-CMS/pull/902, change this snippet to load `/static/site_cms/js/modules/setTargetForExternalLinks.js` */
+/* TODO: After deploy of Core-CMS v4.21.0, load script from `/static/site_cms/js/modules/setTargetForExternalLinks.js` */
 import findLinksAndSetTargets from 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.21.0/taccsite_cms/static/site_cms/js/modules/setTargetForExternalLinks.js';
 
 const links = document.querySelectorAll(
