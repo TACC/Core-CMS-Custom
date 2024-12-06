@@ -16,7 +16,15 @@ import { ExceptionFormPage } from './components/Submitter/Exceptions';
 import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
 import { ViewFileSubmissions } from './components/Submissions/ViewFileSubmissions';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+      refetchOnWindowFocus: false, // Disable refetching on window focus
+    },
+  },
+});
 
 function setupComponent(rootId: string, Component: React.ComponentType): void {
   const root = document.getElementById(rootId);
