@@ -379,18 +379,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Col>
               </Row>
               <br />
-              <Alert
-                color="success"
-                isOpen={showSuccessMessage}
-                toggle={dismissMessages}
-              >
+              <Alert color="success" isOpen={showSuccessMessage}>
                 Success: The exception data has been successfully updated.
               </Alert>
-              <Alert
-                color="danger"
-                isOpen={showErrorMessage}
-                toggle={dismissMessages}
-              >
+              <Alert color="danger" isOpen={showErrorMessage}>
                 Error: {errorMessage}
               </Alert>
               <Button
