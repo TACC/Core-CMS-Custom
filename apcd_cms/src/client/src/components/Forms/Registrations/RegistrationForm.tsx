@@ -53,15 +53,15 @@ const validationSchema = Yup.object().shape({
         types_of_files_dental: Yup.boolean(),
         total_covered_lives: Yup.number()
           .typeError('Must be an integer')
-          .positive()
+          .min(0)
           .required('Total covered lives is required'),
         claims_encounters_volume: Yup.number()
           .typeError('Must be an integer')
-          .positive()
+          .min(0)
           .required('Claims and Encounters volume is required'),
         total_claims_value: Yup.number()
           .typeError('Must be a number')
-          .positive()
+          .min(0)
           .required('Total Claims Value is required')
           .test(
             'maxDigitsAfterDecimal',
@@ -187,11 +187,13 @@ export const RegistrationForm: React.FC<{
   isEdit?: boolean;
   inputValues?: RegistrationFormValues;
   isModal?: boolean;
+  status_options?: string[];
   onSuccessCallback?: () => void;
 }> = ({
   isEdit = false,
   inputValues,
   isModal = false,
+  status_options = [],
   onSuccessCallback = () => {},
 }) => {
   const [searchParams] = useSearchParams();
@@ -303,6 +305,28 @@ export const RegistrationForm: React.FC<{
             ) : (
               <Form>
                 <h4>Organization</h4>
+                {status_options.length > 0 ? (
+                  <FieldWrapper
+                    name="reg_status"
+                    label="Registration Status"
+                    required={true}
+                  >
+                    <Field
+                      as="select"
+                      name="reg_status"
+                      id="type"
+                      className="choicefield"
+                    >
+                      {status_options.map((item, index) => (
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </Field>
+                  </FieldWrapper>
+                ) : (
+                  <></>
+                )}
                 <FieldWrapper
                   name="on_behalf_of"
                   label="On behalf of:"

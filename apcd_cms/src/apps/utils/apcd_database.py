@@ -268,6 +268,7 @@ def update_registration(form, reg_id):
         operation = """UPDATE registrations
             SET
             submitting_for_self = %s,
+            registration_status = %s,
             org_type = %s,
             business_name = %s,
             mail_address = %s,
@@ -280,6 +281,7 @@ def update_registration(form, reg_id):
         RETURNING registration_id"""
         values = (
             True if form['on_behalf_of'] == 'true' else False,
+            form['reg_status'],
             form['type'],
             _clean_value(form['business_name']),
             _clean_value(form['mailing_address']),

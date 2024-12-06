@@ -51,6 +51,7 @@ export function usePostRegistration() {
     },
     onSuccess: () => {
       const keysToInvalidate = [
+        'admin-registration',
         'admin-registrations',
         'submitter-registrations',
       ];
