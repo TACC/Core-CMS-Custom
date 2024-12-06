@@ -396,7 +396,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
               <Button
                 type="primary"
                 attr="submit"
-                disabled={formik.isSubmitting}
+                disabled={!formik.dirty || formik.isSubmitting}
               >
                 Submit
               </Button>

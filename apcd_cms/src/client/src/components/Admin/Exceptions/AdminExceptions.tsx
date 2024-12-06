@@ -6,6 +6,7 @@ import ViewExceptionModal from '../ViewExceptionModal/ViewExceptionModal';
 import EditExceptionModal from '../EditExceptionModal/EditExceptionModal';
 import styles from './AdminExceptions.module.css';
 import { formatDate } from 'utils/dateUtil';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const AdminExceptions: React.FC = () => {
   const [status, setStatus] = useState('Pending');
@@ -106,7 +107,7 @@ export const AdminExceptions: React.FC = () => {
               ))}
             </select>
             {status !== 'Pending' || org !== 'All' ? (
-              <button onClick={clearSelections}>Clear Options</button>
+              <ClearOptionsButton onClick={clearSelections} />
             ) : null}
           </div>
         </div>

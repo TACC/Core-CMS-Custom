@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import styles from './AdminSubmissions.module.css';
 import { formatDate } from 'utils/dateUtil';
 import { titleCase } from 'utils/stringUtil';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const AdminSubmissions: React.FC = () => {
   const header = [
@@ -119,7 +120,7 @@ export const AdminSubmissions: React.FC = () => {
             ))}
           </select>
           {status !== 'In Process' || sort !== 'Newest Received' ? (
-            <button onClick={clearSelections}>Clear Options</button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>
