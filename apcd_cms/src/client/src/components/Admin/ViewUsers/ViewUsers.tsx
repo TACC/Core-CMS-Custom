@@ -22,7 +22,7 @@ export const ViewUsers: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useUserFilters();
-  const [status, setStatus] = useState('All');
+  const [status, setStatus] = useState('Active');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const {
@@ -37,7 +37,7 @@ export const ViewUsers: React.FC = () => {
   const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const clearSelections = () => {
-    setStatus('All');
+    setStatus('Active');
     setOrg('All');
     setPage(1);
   };
@@ -129,7 +129,7 @@ export const ViewUsers: React.FC = () => {
               </option>
             ))}
           </select>
-          {status !== 'All' || org !== 'All' ? (
+          {status !== 'Active' || org !== 'All' ? (
             <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>

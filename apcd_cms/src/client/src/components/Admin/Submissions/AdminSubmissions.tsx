@@ -31,7 +31,7 @@ export const AdminSubmissions: React.FC = () => {
     isError: isFilterError,
   } = useSubmissionFilters();
 
-  const [status, setStatus] = useState<string>('All');
+  const [status, setStatus] = useState<string>('In Process');
   const [sort, setSort] = useState<string>('Newest Received');
   const [page, setPage] = useState<number>(1);
   const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -74,7 +74,7 @@ export const AdminSubmissions: React.FC = () => {
   }
 
   const clearSelections = () => {
-    setStatus('All');
+    setStatus('In Process');
     setSort('Newest Received');
     setPage(1);
   };
@@ -119,7 +119,7 @@ export const AdminSubmissions: React.FC = () => {
               </option>
             ))}
           </select>
-          {status !== 'All' || sort !== 'Newest Received' ? (
+          {status !== 'In Process' || sort !== 'Newest Received' ? (
             <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
