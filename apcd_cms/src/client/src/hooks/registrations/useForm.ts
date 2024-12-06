@@ -50,8 +50,15 @@ export function usePostRegistration() {
       console.log(err);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['submitter-registrations', 'admin-registrations'],
+      const keysToInvalidate = [
+        'admin-registrations',
+        'submitter-registrations',
+      ];
+      keysToInvalidate.forEach((key) => {
+        queryClient.invalidateQueries({
+          queryKey: [key],
+          exact: false, // we do not know the parameters, so all keys are invalidated
+        });
       });
     },
   });
