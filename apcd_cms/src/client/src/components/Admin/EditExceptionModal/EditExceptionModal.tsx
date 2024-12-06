@@ -287,7 +287,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                   <Col md={3}>
                     <FieldWrapper
                       name="approved_expiration_date"
-                      label="Approved Expiration Date"
+                      label="Expiration Date"
                       required={true}
                     >
                       <Field

@@ -140,7 +140,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   <Row>
                     <Col md={3}>
                       <FormGroup>
-                        {/*Would this need to remain strong in the styling?*/}
                         <FieldWrapper
                           name="user_name"
                           label="Name"
@@ -168,13 +167,15 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                           label="Email"
                           className={styles.customLabel}
                           required={true}
-                        ></FieldWrapper>
-                        <Field
-                          type="email"
-                          name="user_email"
-                          id="user_email"
-                          className={`form-control ${styles.viewRecord}`}
-                        />
+                        >
+                          <Field
+                            type="email"
+                            name="user_email"
+                            id="user_email"
+                            className={`form-control ${styles.viewRecord}`}
+                          />
+                        </FieldWrapper>
+
                         <ErrorMessage
                           name="user_email"
                           component="div"
@@ -184,22 +185,23 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                     </Col>
                     <Col md={2}>
                       <FormGroup>
-                        {/*Should name still be active status, causes new line for long name, style override?*/}
                         <FieldWrapper
                           name="status"
-                          label="Active Status"
+                          label="Status"
                           className={styles.customLabel}
                           required={true}
-                        ></FieldWrapper>
-                        <Field
-                          as="select"
-                          name="status"
-                          id="status"
-                          className={`form-control ${styles.viewRecord}`}
                         >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </Field>
+                          <Field
+                            as="select"
+                            name="status"
+                            id="status"
+                            className={`form-control ${styles.viewRecord}`}
+                          >
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                          </Field>
+                        </FieldWrapper>
+
                         <ErrorMessage
                           name="status"
                           component="div"
@@ -214,19 +216,22 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                           label="Role"
                           className={styles.customLabel}
                           required={true}
-                        ></FieldWrapper>
-                        <Field
-                          as="select"
-                          name="role_name"
-                          id="role_name"
-                          className={`form-control ${styles.viewRecord}`}
                         >
-                          <option value="SUBMITTER_USER">SUBMITTER_USER</option>
-                          <option value="SUBMITTER_ADMIN">
-                            SUBMITTER_ADMIN
-                          </option>
-                          <option value="APCD_ADMIN">APCD_ADMIN</option>
-                        </Field>
+                          <Field
+                            as="select"
+                            name="role_name"
+                            id="role_name"
+                            className={`form-control ${styles.viewRecord}`}
+                          >
+                            <option value="SUBMITTER_USER">
+                              SUBMITTER_USER
+                            </option>
+                            <option value="SUBMITTER_ADMIN">
+                              SUBMITTER_ADMIN
+                            </option>
+                            <option value="APCD_ADMIN">APCD_ADMIN</option>
+                          </Field>
+                        </FieldWrapper>
                         <ErrorMessage
                           name="role_name"
                           component="div"
