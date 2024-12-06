@@ -4,9 +4,8 @@ from apps.utils.registrations_data_formatting import _set_registration
 from apps.submitter_renewals_listing.views import get_submitter_code
 from apps.utils.apcd_groups import has_groups
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.template import loader
-from django.views.generic import View, TemplateView
+from django.http import HttpResponseRedirect, JsonResponse
+from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from requests.auth import HTTPBasicAuth
 import logging
@@ -44,15 +43,12 @@ class RegistrationFormView(TemplateView):
             return JsonResponse({'response': context})
         return HttpResponseRedirect('/')
 
-
     def post(self, request):
         form = json.loads(request.body)
         entities = form['entities']
         contacts = form['contacts']
-        old_reg_id = None
         renewal = False
         if 'reg_id' in form:
-            old_reg_id = form['reg_id']
             renewal = True
         errors = []
 
@@ -95,15 +91,20 @@ class RegistrationFormView(TemplateView):
                 description += "{}\n".format(err_msg)
             response = JsonResponse({'status': 'error', 'errors': errors}, status=400)
         else:
-            context = {'reg_id': reg_resp}
             response = JsonResponse({'status': 'success', 'reg_id': reg_resp}, status=200)
-
-        tracker.create_ticket(
-            Queue=RT_QUEUE,
-            Subject=subject,
-            Text=description,
-            Requestors=email
-        )
+        try:
+            tracker.create_ticket(
+                Queue=RT_QUEUE,
+                Subject=subject,
+                Text=description,
+                Requestor=email
+            )
+        except Exception as err:
+            msg = "Could not create ticket for new TX-APCD Registration Request"
+            logger.exception(msg=msg)
+            logger.error(err.args)
+            errors.append(str(msg))
+            response = JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
         return response
 
