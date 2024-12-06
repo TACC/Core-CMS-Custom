@@ -24,7 +24,7 @@ class ViewUsersTable(TemplateView):
         if 'modal' in request.path:
             return self.get_modals(request, kwargs['modal_type'])
         
-        status = request.GET.get('status', 'All')
+        status = request.GET.get('status', 'Active')
         org = request.GET.get('org', 'All')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
