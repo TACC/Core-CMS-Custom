@@ -314,7 +314,7 @@ export const RegistrationForm: React.FC<{
                     <Field
                       as="select"
                       name="reg_status"
-                      id="type"
+                      id="reg_status"
                       className="choicefield"
                     >
                       {status_options.map((item, index) => (
