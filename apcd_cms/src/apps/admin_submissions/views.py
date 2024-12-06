@@ -23,7 +23,7 @@ class AdminSubmissionsTable(TemplateView):
         if 'view_log' in request.path:
             return SubmissionsLogView.get_log(request, is_admin=True)
         
-        status = request.GET.get('status', 'All')
+        status = request.GET.get('status', 'In Process')
         sort = request.GET.get('sort', 'Newest Received')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
