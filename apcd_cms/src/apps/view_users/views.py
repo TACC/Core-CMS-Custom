@@ -24,7 +24,7 @@ class ViewUsersTable(TemplateView):
         if 'modal' in request.path:
             return self.get_modals(request, kwargs['modal_type'])
         
-        status = request.GET.get('status', 'All')
+        status = request.GET.get('status', 'Active')
         org = request.GET.get('org', 'All')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
@@ -115,6 +115,7 @@ class ViewUsersTable(TemplateView):
                 'status': 'Active' if usr[8] else 'Inactive',
                 'user_number': usr[9],
                 'role_name': usr[10],
+                'entity_name_no_parens': usr[4].replace("(", "").replace(")", "") if usr[4] else "None",  # just for filtering purposes
             }
 
         user_list = [_set_user(user) for user in users]
@@ -123,7 +124,8 @@ class ViewUsersTable(TemplateView):
             user_list = [user for user in user_list if user['status'] == status]
 
         if org != 'All':
-            user_list = [user for user in user_list if user['entity_name'] == org]
+            org_no_parens = org.replace("(", "").replace(")", "")
+            user_list = [user for user in user_list if user['entity_name_no_parens'] == org_no_parens]
 
         return user_list
     

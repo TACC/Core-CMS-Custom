@@ -80,6 +80,7 @@ export type RegistrationFormValues = {
   state: string;
   zip_code: string;
   reg_id?: number;
+  reg_status?: string;
   entities: {
     entity_name: string;
     fein: string;
@@ -130,6 +131,7 @@ export function transformToRegistrationFormValues(
     state: registration.state as string,
     zip_code: registration.zip.toString(),
     reg_id: registration.reg_id,
+    reg_status: registration.status,
     entities: registration.entities.map((entity) => ({
       entity_name: entity.ent_name,
       fein: entity.fein ?? '',
