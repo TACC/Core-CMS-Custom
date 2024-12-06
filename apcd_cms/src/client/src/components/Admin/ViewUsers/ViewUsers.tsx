@@ -5,7 +5,7 @@ import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewUsers.module.scss';
-import Button from 'core-components/Button';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const ViewUsers: React.FC = () => {
   const header = [
@@ -130,7 +130,7 @@ export const ViewUsers: React.FC = () => {
             ))}
           </select>
           {status !== 'All' || org !== 'All' ? (
-            <Button onClick={clearSelections}>Clear Options</Button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>
