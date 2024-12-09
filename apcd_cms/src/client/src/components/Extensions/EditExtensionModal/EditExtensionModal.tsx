@@ -201,7 +201,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                     <FieldWrapper
                       name="applicable_data_period"
                       label="Applicable Data Period"
-                      required={true}
+                      required={false}
                     >
                       <Field
                         as="select"
@@ -231,7 +231,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                     <FieldWrapper
                       name="approved_expiration_date"
                       label="Approved Expiration Date"
-                      required={true}
+                      required={false}
                     >
                       <Field
                         type="date"

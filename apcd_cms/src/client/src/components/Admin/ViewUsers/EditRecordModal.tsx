@@ -8,7 +8,6 @@ import {
   Row,
   Col,
 } from 'reactstrap';
-import Button from 'core-components/Button';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
@@ -272,30 +271,30 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                       </FormGroup>
                     </Col>
                   </Row>
-                <br />
-                <Button
-                  attr="submit"
-                  disabled={isSubmitting || !dirty}
-                  className={styles.customSubmitButton}
-                >
-                  Submit
-                </Button>
-              </Form>
-            )}
-          </Formik>
-          <hr />
-          <div className={styles.viewRecord}>
-            {userFields.map((field, index) => (
-              <Row key={index}>
-                <Col md={6}>
-                  <p>{field.label}:</p>
-                </Col>
-                <Col md={6}>
-                  <p>{field.value}</p>
-                </Col>
-              </Row>
-            ))}
-          </div>
+                  <br />
+                  <Button
+                    attr="submit"
+                    disabled={isSubmitting || !dirty}
+                    className={styles.customSubmitButton}
+                  >
+                    Submit
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+            <hr />
+            <div className={styles.viewRecord}>
+              {userFields.map((field, index) => (
+                <Row key={index}>
+                  <Col md={6}>
+                    <p>{field.label}:</p>
+                  </Col>
+                  <Col md={6}>
+                    <p>{field.value}</p>
+                  </Col>
+                </Row>
+              ))}
+            </div>
           </QueryWrapper>
         </ModalBody>
       </Modal>

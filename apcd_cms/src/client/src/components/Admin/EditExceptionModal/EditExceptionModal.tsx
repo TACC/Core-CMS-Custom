@@ -288,7 +288,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     <FieldWrapper
                       name="approved_expiration_date"
                       label="Expiration Date"
-                      required={true}
+                      required={false}
                     >
                       <Field
                         type="date"
@@ -386,37 +386,37 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         className="form-text text-muted"
                         style={{ fontStyle: 'italic' }}
                       >
-                       2000 character limit
-                    </small>
-                  </FieldWrapper>
-                </Col>
-              </Row>
-              <br />
-              <Alert color="success" isOpen={showSuccessMessage}>
-                Success: The exception data has been successfully updated.
-              </Alert>
-              <Alert color="danger" isOpen={showErrorMessage}>
-                Error: {errorMessage}
-              </Alert>
-              <Button
-                type="primary"
-                attr="submit"
-                disabled={!formik.dirty || formik.isSubmitting}
-              >
-                Submit
-              </Button>
-            </form>
-          </FormikProvider>
-          <hr />
-          <h4 className="modal-header">Current Exception Information</h4>
-          <div>
-            {currentException.map((field, index) => (
-              <Row key={index}>
-                <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
-                <Col md={7}>{field.value}</Col>
-              </Row>
-            ))}
-          </div>
+                        2000 character limit
+                      </small>
+                    </FieldWrapper>
+                  </Col>
+                </Row>
+                <br />
+                <Alert color="success" isOpen={showSuccessMessage}>
+                  Success: The exception data has been successfully updated.
+                </Alert>
+                <Alert color="danger" isOpen={showErrorMessage}>
+                  Error: {errorMessage}
+                </Alert>
+                <Button
+                  type="primary"
+                  attr="submit"
+                  disabled={!formik.dirty || formik.isSubmitting}
+                >
+                  Submit
+                </Button>
+              </form>
+            </FormikProvider>
+            <hr />
+            <h4 className="modal-header">Current Exception Information</h4>
+            <div>
+              {currentException.map((field, index) => (
+                <Row key={index}>
+                  <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
+                  <Col md={7}>{field.value}</Col>
+                </Row>
+              ))}
+            </div>
           </QueryWrapper>
         </ModalBody>
       </Modal>
