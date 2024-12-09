@@ -1,0 +1,62 @@
+$modal-width: 55%;
+
+.customModal {
+  max-width: $modal-width !important;
+  width: $modal-width;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customModalTitle {
+  text-transform: none !important; // Prevent text from being all caps
+  font-size: 2.5rem;
+  margin: 0; // Ensure there's no margin
+}
+
+.customLabel {
+  font-size: 1.5rem; // Adjust the font size as needed
+}
+
+.customSubmitButton {
+  font-size: 1.5rem; // Increase font size
+  padding: 0.75rem 1.5rem; // Increase padding
+}
+
+.viewRecord {
+  font-size: 1.25rem;
+  line-height: 75%;
+}
+
+.greyRectangle {
+  background-color: lightgrey;
+  padding: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+}
+
+.paginatorContainer {
+  display: flex;
+  justify-content: center; /* Centers the child horizontally */
+  align-items: center; /* Centers the child vertically */
+  height: 100%; /* Adjust as needed */
+  padding-top: 20px;
+}
+
+.userkey {
+  padding-bottom: 0.05em;
+  padding-right: 0.25em;
+}
+
+.userListing {
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
+
+.userRow {
+  padding-bottom: 0.1em;
+}
