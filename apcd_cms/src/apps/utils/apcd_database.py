@@ -177,10 +177,12 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.state,
                 registrations.zip,
                 registrations.registration_year
-                FROM registrations
-                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = ANY(%s)" if submitter_code is not None else ''}
-                ORDER BY registrations.registration_id"""
+            FROM registrations
+            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_code is not None else ''}
+            WHERE 1=1
+            {f" AND registrations.registration_id = {str(reg_id)}" if reg_id is not None else ''}
+            {f" AND submitters.submitter_code = ANY(%s)" if submitter_code is not None else ''}
+            ORDER BY registrations.registration_id"""
         cur = conn.cursor()
         if submitter_code:
             cur.execute(query, (submitter_code,))
