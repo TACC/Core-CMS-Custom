@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import { UserRow } from 'hooks/admin';
 import styles from './ViewUsers.module.scss';
 import { formatDate } from 'utils/dateUtil';
+import Button from 'core-components/Button';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -123,7 +124,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
             validationSchema={validationSchema}
             onSubmit={handleSave}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, dirty }) => (
               <Form>
                 <Row>
                   <Col md={3}>
@@ -237,7 +238,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 <br />
                 <Button
                   attr="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                   className={styles.customSubmitButton}
                 >
                   Submit

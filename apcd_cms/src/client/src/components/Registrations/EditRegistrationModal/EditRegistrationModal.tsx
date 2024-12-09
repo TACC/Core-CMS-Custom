@@ -10,8 +10,9 @@ import { RegistrationForm } from 'apcd-components/Forms/Registrations';
 const EditRegistrationModal: React.FC<{
   reg_id: number;
   isVisible: boolean;
+  status_options: string[];
   onClose: () => void;
-}> = ({ reg_id, isVisible, onClose }) => {
+}> = ({ reg_id, isVisible, status_options, onClose }) => {
   const { data, isLoading, error } = useAdminRegistration(reg_id);
 
   if (isLoading) return <div>Loading...</div>;
@@ -40,6 +41,9 @@ const EditRegistrationModal: React.FC<{
           isEdit={true}
           inputValues={form_values}
           isModal={true}
+          status_options={status_options.filter(
+            (option) => option !== 'All' && option !== 'None'
+          )}
           onSuccessCallback={onClose}
         />
       </ModalBody>

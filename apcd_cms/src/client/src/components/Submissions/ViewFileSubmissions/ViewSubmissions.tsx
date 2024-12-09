@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { ViewSubmissionLogsModal } from './ViewSubmissionsModal';
 import { formatDate } from 'utils/dateUtil';
 import { titleCase } from 'utils/stringUtil';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const ViewFileSubmissions: React.FC = () => {
   const header = [
@@ -166,7 +167,7 @@ export const ViewFileSubmissions: React.FC = () => {
           sort !== 'Newest Received' ||
           submitterId !== 'All' ||
           payorCode !== 'All' ? (
-            <button onClick={clearSelections}>Clear Options</button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>

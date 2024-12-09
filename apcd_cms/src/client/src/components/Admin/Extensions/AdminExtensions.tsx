@@ -7,6 +7,7 @@ import styles from './ExtensionList.module.css';
 import ViewExtensionModal from 'apcd-components/Extensions/ViewExtensionModal/ViewExtensionModal';
 import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/EditExtensionModal';
 import { formatDate } from 'utils/dateUtil';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const AdminExtensions: React.FC = () => {
   const [status, setStatus] = useState('Pending');
@@ -111,7 +112,7 @@ export const AdminExtensions: React.FC = () => {
             ))}
           </select>
           {data?.selected_status !== 'Pending' || data?.selected_org ? (
-            <button onClick={clearSelections}>Clear Options</button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>

@@ -44,8 +44,6 @@ class RegistrationsTable(TemplateView):
         updated_entity_ids = {reg['entity_id'] for reg in reg_entities if 'entity_id' in reg and reg['entity_id'] >= 0}
         updated_contact_ids = {con['contact_id'] for con in reg_contacts if 'contact_id' in con and con['contact_id'] >= 0}
         # Retrieve existing IDs
-        for reg in get_registration_entities(reg_id):
-            logger.error(reg)
         existing_entity_ids = {reg[3] for reg in get_registration_entities(reg_id)}
         existing_contact_ids = {contact[0] for contact in get_registration_contacts(reg_id)}
         # Find the deleted ones.
@@ -121,7 +119,7 @@ class RegistrationsTable(TemplateView):
         context = {}
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete', 'Withdrawn']
         context['org_options'] = ['All']
 
         try:

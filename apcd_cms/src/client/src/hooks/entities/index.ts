@@ -16,4 +16,8 @@ export type ApplicableDataPeriod = {
   expected_date: string;
 };
 
-export { useEntities } from './useEntities';
+export type SubmitterDataPeriods = {
+  data_periods: ApplicableDataPeriod[];
+};
+
+export { useEntities, useSubmitterDataPeriods } from './useEntities';
