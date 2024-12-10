@@ -90,9 +90,9 @@ export const ViewUsers: React.FC = () => {
 
   return (
     <div>
-      <h1>View Users</h1>
+      <h1>List Users</h1>
       <hr />
-      <p style={{ marginBottom: '30px' }}>View submitted users.</p>
+      <p style={{ marginBottom: '30px' }}>List of all system users attached to a submitter.</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">

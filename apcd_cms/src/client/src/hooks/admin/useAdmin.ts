@@ -1,6 +1,12 @@
 import { useQuery, UseQueryResult } from 'react-query';
 import { fetchUtil } from 'utils/fetchUtil';
-import { ExtensionResult, UserResult, ExceptionResult, FilterOptions } from '.';
+import {
+  ExtensionResult,
+  UserResult,
+  ExceptionResult,
+  FilterOptions,
+  SubmitterUserResult,
+} from '.';
 
 import { FileSubmissionResult } from 'hooks/submissions';
 
@@ -39,6 +45,25 @@ export const useUserFilters = (): UseQueryResult<FilterOptions> => {
     cacheTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
   }) as UseQueryResult<FilterOptions>;
+
+  return { ...query };
+};
+
+const getSubmitterUsers = async (params: any) => {
+  const url = `/administration/view-submitter-users/api/`;
+  const response = await fetchUtil({ url, params });
+  return response.response;
+};
+
+export const useSubmitterUsers = (
+  page?: number
+): UseQueryResult<SubmitterUserResult> => {
+  const params: { page?: number } = {
+    page,
+  };
+  const query = useQuery(['submitterUsers', params], () =>
+    getSubmitterUsers(params)
+  ) as UseQueryResult<SubmitterUserResult>;
 
   return { ...query };
 };
