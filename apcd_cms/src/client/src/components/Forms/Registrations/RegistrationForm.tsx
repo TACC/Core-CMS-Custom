@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label, Button, FormFeedback } from 'reactstrap';
-import { useSearchParams } from 'react-router-dom';
+import { FormGroup, Label, FormFeedback } from 'reactstrap';
+import Button from 'core-components/Button';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   RegistrationFormValues,
   transformToRegistrationFormValues,
@@ -53,15 +54,15 @@ const validationSchema = Yup.object().shape({
         types_of_files_dental: Yup.boolean(),
         total_covered_lives: Yup.number()
           .typeError('Must be an integer')
-          .positive()
+          .min(0)
           .required('Total covered lives is required'),
         claims_encounters_volume: Yup.number()
           .typeError('Must be an integer')
-          .positive()
+          .min(0)
           .required('Claims and Encounters volume is required'),
         total_claims_value: Yup.number()
           .typeError('Must be a number')
-          .positive()
+          .min(0)
           .required('Total Claims Value is required')
           .test(
             'maxDigitsAfterDecimal',
@@ -187,11 +188,13 @@ export const RegistrationForm: React.FC<{
   isEdit?: boolean;
   inputValues?: RegistrationFormValues;
   isModal?: boolean;
+  status_options?: string[];
   onSuccessCallback?: () => void;
 }> = ({
   isEdit = false,
   inputValues,
   isModal = false,
+  status_options = [],
   onSuccessCallback = () => {},
 }) => {
   const [searchParams] = useSearchParams();
@@ -211,6 +214,10 @@ export const RegistrationForm: React.FC<{
       ? `administration/request-to-submit/api/${inputValues?.reg_id ?? -1}/`
       : `register/request-to-submit/api/`;
     submitForm({ url, body: values });
+  };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/workbench/dashboard');
   };
 
   if (isLoading) {
@@ -268,7 +275,7 @@ export const RegistrationForm: React.FC<{
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, resetForm }) => (
+          {({ values, setFieldValue, resetForm, dirty }) => (
             useEffect(() => {
               if (isSuccess) {
                 resetForm();
@@ -282,8 +289,6 @@ export const RegistrationForm: React.FC<{
                 </div>
                 {isModal ? (
                   <Button
-                    type="button"
-                    className="c-button c-button--primary"
                     disabled={registrationSubmissionPending}
                     onClick={onSuccessCallback}
                   >
@@ -291,10 +296,8 @@ export const RegistrationForm: React.FC<{
                   </Button>
                 ) : (
                   <Button
-                    type="button"
-                    className="c-button c-button--primary"
                     disabled={registrationSubmissionPending}
-                    href="/workbench/dashboard"
+                    onClick={handleClick}
                   >
                     Go to Dashboard
                   </Button>
@@ -303,6 +306,28 @@ export const RegistrationForm: React.FC<{
             ) : (
               <Form>
                 <h4>Organization</h4>
+                {status_options.length > 0 ? (
+                  <FieldWrapper
+                    name="reg_status"
+                    label="Registration Status"
+                    required={true}
+                  >
+                    <Field
+                      as="select"
+                      name="reg_status"
+                      id="reg_status"
+                      className="choicefield"
+                    >
+                      {status_options.map((item, index) => (
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </Field>
+                  </FieldWrapper>
+                ) : (
+                  <></>
+                )}
                 <FieldWrapper
                   name="on_behalf_of"
                   label="On behalf of:"
@@ -412,8 +437,6 @@ export const RegistrationForm: React.FC<{
                 <div className="button-wrapper">
                   <Button
                     className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
-                    type="button"
-                    color="primary"
                     disabled={values.entities.length === 5}
                     onClick={() =>
                       setFieldValue('entities', [
@@ -443,13 +466,10 @@ export const RegistrationForm: React.FC<{
                     + Add Another Entity
                   </Button>{' '}
                   <Button
-                    className="c-button c-button--secondary"
-                    type="button"
                     onClick={() =>
                       values.entities.length > 1 &&
                       setFieldValue('entities', values.entities.slice(0, -1))
                     }
-                    color="secondary"
                     disabled={values.entities.length === 1}
                   >
                     - Remove Last Entity
@@ -463,8 +483,6 @@ export const RegistrationForm: React.FC<{
                 <div className="button-wrapper">
                   <Button
                     className={`c-button c-button--primary ${styles.contactsAndEntitiesButtons}`}
-                    type="button"
-                    color="primary"
                     disabled={values.contacts.length === 5}
                     onClick={() =>
                       setFieldValue('contacts', [
@@ -482,13 +500,10 @@ export const RegistrationForm: React.FC<{
                     + Add Another Contact
                   </Button>{' '}
                   <Button
-                    className="c-button c-button--secondary"
-                    type="button"
                     onClick={() =>
                       values.contacts.length > 1 &&
                       setFieldValue('contacts', values.contacts.slice(0, -1))
                     }
-                    color="secondary"
                     disabled={values.contacts.length === 1}
                   >
                     - Remove Last Contact
@@ -496,10 +511,9 @@ export const RegistrationForm: React.FC<{
                 </div>
                 <div className="button-wrapper submit">
                   <Button
-                    type="submit"
-                    color="primary"
+                    attr="submit"
                     className="form-button"
-                    disabled={registrationSubmissionPending}
+                    disabled={registrationSubmissionPending || !dirty}
                   >
                     Submit
                   </Button>

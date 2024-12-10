@@ -5,7 +5,7 @@ import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewUsers.module.scss';
-import Button from 'core-components/Button';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const ViewUsers: React.FC = () => {
   const header = [
@@ -22,7 +22,7 @@ export const ViewUsers: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useUserFilters();
-  const [status, setStatus] = useState('All');
+  const [status, setStatus] = useState('Active');
   const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
   const {
@@ -37,7 +37,7 @@ export const ViewUsers: React.FC = () => {
   const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const clearSelections = () => {
-    setStatus('All');
+    setStatus('Active');
     setOrg('All');
     setPage(1);
   };
@@ -90,9 +90,9 @@ export const ViewUsers: React.FC = () => {
 
   return (
     <div>
-      <h1>View Users</h1>
+      <h1>List Users</h1>
       <hr />
-      <p style={{ marginBottom: '30px' }}>View submitted users.</p>
+      <p style={{ marginBottom: '30px' }}>List of all system users attached to a submitter.</p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">
@@ -129,8 +129,8 @@ export const ViewUsers: React.FC = () => {
               </option>
             ))}
           </select>
-          {status !== 'All' || org !== 'All' ? (
-            <Button onClick={clearSelections}>Clear Options</Button>
+          {status !== 'Active' || org !== 'All' ? (
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>

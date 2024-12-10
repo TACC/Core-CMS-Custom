@@ -1,14 +1,11 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
 from django.views import View
-from django.template import loader
-from apps.utils.apcd_database import get_all_extensions, update_extension 
+from apps.utils.apcd_database import get_all_extensions, update_extension
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
-from dateutil import parser
 from datetime import date as datetimeDate
 from datetime import datetime
 import logging
@@ -16,21 +13,18 @@ import json
 
 logger = logging.getLogger(__name__)
 
+
 class AdminExtensionsTable(TemplateView):
 
     template_name = 'list_admin_extension.html'
 
     def get(self, request, *args, **kwargs):
         extension_content = get_all_extensions()
-
-        #context = self.get_context_data(extension_content, *args,**kwargs)
-        #template = loader.get_template(self.template_name)
-        #return HttpResponse(template.render(context, request))
         context = self.get_extensions_list_json(extension_content, *args, **kwargs)
         return JsonResponse({'response': context})
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user): 
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(AdminExtensionsTable, self).dispatch(request, *args, **kwargs)
 
@@ -131,12 +125,14 @@ class AdminExtensionsTable(TemplateView):
             'notes': ext[17] if ext[17] else "None",
         }
 
+
 # function converts int value in the format YYYYMM to a string with abbreviated month and year
 def _get_applicable_data_period(value):
     try:
         return datetime.strptime(str(value), '%Y%m').strftime('%b. %Y')
     except:
         return None
+
 
 class UpdateExtensionsView(View):
     def dispatch(self, request, *args, **kwargs):

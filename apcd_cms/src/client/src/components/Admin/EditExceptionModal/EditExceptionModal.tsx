@@ -21,8 +21,11 @@ import * as Yup from 'yup';
 import { ExceptionRow } from 'hooks/admin';
 import { formatDate } from 'utils/dateUtil';
 import styles from './EditExceptionModal.module.css';
+
+import QueryWrapper from 'core-wrappers/QueryWrapper';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
+import Message from 'core-components/Message';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -53,6 +56,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState<Error | null>(
+    Error('Exception data is not avalible')
+  );
   const dateFormat: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'short',
@@ -60,6 +67,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
   };
 
   if (!exception) return null;
+  if (isLoading) {
+    setIsLoading(false);
+    setLoadingError(null);
+  }
 
   // Use the custom hook to get form fields and validation
   const useFormFields = () => {
@@ -240,23 +251,52 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
         </ModalHeader>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Exception</h4>
-          <FormikProvider value={formik}>
-            <form onSubmit={formik.handleSubmit}>
-              <Row>
-                {exception.request_type == 'Threshold' && (
+
+          <QueryWrapper isLoading={false} error={loadingError}>
+            <FormikProvider value={formik}>
+              <form onSubmit={formik.handleSubmit}>
+                <Row>
+                  {exception.request_type == 'Threshold' && (
+                    <Col md={3}>
+                      <FieldWrapper
+                        name="approved_threshold"
+                        label="Approved Threshold"
+                        required={true}
+                      >
+                        <Field
+                          type="text"
+                          name="approved_threshold"
+                          id="approved_threshold"
+                          value={
+                            formik.values.approved_threshold
+                              ? formik.values.approved_threshold
+                              : ''
+                          }
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <small
+                          className="form-text text-muted"
+                          style={{ fontStyle: 'italic' }}
+                        >
+                          Requested: {exception.requested_threshold}%
+                        </small>
+                      </FieldWrapper>
+                    </Col>
+                  )}
                   <Col md={3}>
                     <FieldWrapper
-                      name="approved_threshold"
-                      label="Approved Threshold"
+                      name="approved_expiration_date"
+                      label="Expiration Date"
                       required={false}
                     >
                       <Field
-                        type="text"
-                        name="approved_threshold"
-                        id="approved_threshold"
+                        type="date"
+                        name="approved_expiration_date"
+                        id="approved_expiration_date"
                         value={
-                          formik.values.approved_threshold
-                            ? formik.values.approved_threshold
+                          formik.values.approved_expiration_date
+                            ? formik.values.approved_expiration_date
                             : ''
                         }
                         onChange={formik.handleChange}
@@ -266,152 +306,118 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         className="form-text text-muted"
                         style={{ fontStyle: 'italic' }}
                       >
-                        Requested: {exception.requested_threshold}%
+                        Current:{' '}
+                        {exception.approved_expiration_date
+                          ? new Date(
+                              exception.approved_expiration_date
+                            ).toLocaleDateString()
+                          : 'None'}
                       </small>
                     </FieldWrapper>
                   </Col>
-                )}
-                <Col md={3}>
-                  <FieldWrapper
-                    name="approved_expiration_date"
-                    label="Approved Expiration Date"
-                    required={false}
-                  >
-                    <Field
-                      type="date"
-                      name="approved_expiration_date"
-                      id="approved_expiration_date"
-                      value={
-                        formik.values.approved_expiration_date
-                          ? formik.values.approved_expiration_date
-                          : ''
-                      }
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                    <small
-                      className="form-text text-muted"
-                      style={{ fontStyle: 'italic' }}
-                    >
-                      Current:{' '}
-                      {exception.approved_expiration_date
-                        ? new Date(
-                            exception.approved_expiration_date
-                          ).toLocaleDateString()
-                        : 'None'}
-                    </small>
-                  </FieldWrapper>
-                </Col>
-                <Col md={3}>
-                  <FieldWrapper
-                    name="status"
-                    label="Exception Status"
-                    required={false}
-                  >
-                    <Field
-                      as="select"
+                  <Col md={3}>
+                    <FieldWrapper
                       name="status"
-                      id="status"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.status}
+                      label="Exception Status"
+                      required={false}
                     >
-                      {statusOptions?.map(
-                        (val, index) =>
-                          val !== 'All' && (
-                            <option
-                              className="dropdown-text"
-                              key={index}
-                              value={val}
-                            >
-                              {val}
-                            </option>
-                          )
-                      )}
-                    </Field>
-                  </FieldWrapper>
-                </Col>
-                <Col md={3}>
-                  <FieldWrapper
-                    name="outcome"
-                    label="Exception Outcome"
-                    required={false}
-                  >
-                    <Field
-                      as="select"
+                      <Field
+                        as="select"
+                        name="status"
+                        id="status"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.status}
+                      >
+                        {statusOptions?.map(
+                          (val, index) =>
+                            val !== 'All' && (
+                              <option
+                                className="dropdown-text"
+                                key={index}
+                                value={val}
+                              >
+                                {val}
+                              </option>
+                            )
+                        )}
+                      </Field>
+                    </FieldWrapper>
+                  </Col>
+                  <Col md={3}>
+                    <FieldWrapper
                       name="outcome"
-                      id="outcome"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.outcome}
+                      label="Exception Outcome"
+                      required={false}
                     >
-                      {outcomeOptions?.map((val, index) => (
-                        <option
-                          className="dropdown-text"
-                          key={index}
-                          value={val}
-                        >
-                          {val}
-                        </option>
-                      ))}
-                    </Field>
-                  </FieldWrapper>
-                </Col>
-                <Col md={6}>
-                  <FieldWrapper name="notes" label="Notes" required={false}>
-                    <Field
-                      as="textarea"
-                      name="notes"
-                      id="notes"
-                      rows="5"
-                      cols="40"
-                      maxLength="2000" // Set the maxLength attribute
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                    <small
-                      className="form-text text-muted"
-                      style={{ fontStyle: 'italic' }}
-                    >
-                      2000 character limit
-                    </small>
-                  </FieldWrapper>
-                </Col>
-              </Row>
-              <br />
-              <Alert
-                color="success"
-                isOpen={showSuccessMessage}
-                toggle={dismissMessages}
-              >
-                Success: The exception data has been successfully updated.
-              </Alert>
-              <Alert
-                color="danger"
-                isOpen={showErrorMessage}
-                toggle={dismissMessages}
-              >
-                Error: {errorMessage}
-              </Alert>
-              <Button
-                type="primary"
-                attr="submit"
-                disabled={formik.isSubmitting}
-              >
-                Submit
-              </Button>
-            </form>
-          </FormikProvider>
-          <hr />
-          <h4 className="modal-header">Current Exception Information</h4>
-          <div>
-            {currentException.map((field, index) => (
-              <Row key={index}>
-                <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
-                <Col md={7}>{field.value}</Col>
-              </Row>
-            ))}
-          </div>
+                      <Field
+                        as="select"
+                        name="outcome"
+                        id="outcome"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.outcome}
+                      >
+                        {outcomeOptions?.map((val, index) => (
+                          <option
+                            className="dropdown-text"
+                            key={index}
+                            value={val}
+                          >
+                            {val}
+                          </option>
+                        ))}
+                      </Field>
+                    </FieldWrapper>
+                  </Col>
+                  <Col md={6}>
+                    <FieldWrapper name="notes" label="Notes" required={false}>
+                      <Field
+                        as="textarea"
+                        name="notes"
+                        id="notes"
+                        rows="5"
+                        cols="40"
+                        maxLength="2000" // Set the maxLength attribute
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      <small
+                        className="form-text text-muted"
+                        style={{ fontStyle: 'italic' }}
+                      >
+                        2000 character limit
+                      </small>
+                    </FieldWrapper>
+                  </Col>
+                </Row>
+                <br />
+                <Alert color="success" isOpen={showSuccessMessage}>
+                  Success: The exception data has been successfully updated.
+                </Alert>
+                <Alert color="danger" isOpen={showErrorMessage}>
+                  Error: {errorMessage}
+                </Alert>
+                <Button
+                  type="primary"
+                  attr="submit"
+                  disabled={!formik.dirty || formik.isSubmitting}
+                >
+                  Submit
+                </Button>
+              </form>
+            </FormikProvider>
+            <hr />
+            <h4 className="modal-header">Current Exception Information</h4>
+            <div>
+              {currentException.map((field, index) => (
+                <Row key={index}>
+                  <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
+                  <Col md={7}>{field.value}</Col>
+                </Row>
+              ))}
+            </div>
+          </QueryWrapper>
         </ModalBody>
       </Modal>
     </>

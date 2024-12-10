@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { RegistrationResult, RegistrationRow } from 'hooks/registrations';
+import { RegistrationRow } from 'hooks/registrations';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistrationModal/ViewRegistrationModal';
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
-import Button from 'core-components/Button';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
@@ -115,7 +115,7 @@ export const RegistrationList: React.FC<{
             ))}
           </select>
           {data?.selected_status !== initStateFilter || data?.selected_org ? (
-            <Button onClick={clearSelections}>Clear Options</Button>
+            <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
       </div>
@@ -182,6 +182,7 @@ export const RegistrationList: React.FC<{
           <EditRegistrationModal
             reg_id={selectedRegistration.reg_id}
             isVisible={isEditModalOpen}
+            status_options={data?.status_options as string[]}
             onClose={() => setIsEditModalOpen(false)}
           />
         </>
