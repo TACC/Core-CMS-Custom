@@ -119,7 +119,7 @@ class RegistrationsTable(TemplateView):
         context = {}
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
-        context['status_options'] = ['All', 'Received', 'Processing', 'Complete']
+        context['status_options'] = ['All', 'Received', 'Processing', 'Complete', 'Withdrawn']
         context['org_options'] = ['All']
 
         try:

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RegistrationResult, RegistrationRow } from 'hooks/registrations';
+import { RegistrationRow } from 'hooks/registrations';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistrationModal/ViewRegistrationModal';
@@ -182,6 +182,7 @@ export const RegistrationList: React.FC<{
           <EditRegistrationModal
             reg_id={selectedRegistration.reg_id}
             isVisible={isEditModalOpen}
+            status_options={data?.status_options as string[]}
             onClose={() => setIsEditModalOpen(false)}
           />
         </>
