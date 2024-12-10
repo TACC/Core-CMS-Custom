@@ -169,7 +169,8 @@ def get_submitter_users():
            ON submitter_users.user_id = users.user_id
            AND submitter_users.user_number = users.user_number
         JOIN submissions
-            ON submitter_users.submitter_id = submissions.submitter_id;
+            ON submitter_users.submitter_id = submissions.submitter_id
+            ORDER BY users.user_id;
         """
         cur = conn.cursor()
         cur.execute(query)
