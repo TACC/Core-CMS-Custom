@@ -156,14 +156,7 @@ def get_submitter_users():
     cur = None
     conn = None
     try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
+        conn = db_connect()
         query = """
         SELECT DISTINCT submitter_users.submitter_id,
         submitter_users.user_id,
