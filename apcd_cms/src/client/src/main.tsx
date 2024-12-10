@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ExceptionFormPage } from './components/Submitter/Exceptions';
 import { ExtensionRequestForm } from 'apcd-components/Submitter/Extensions';
 import { ViewFileSubmissions } from './components/Submissions/ViewFileSubmissions';
+import { ViewSubmitterUsers } from 'apcd-components/Submitter/ViewSubmitterUsers';
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const componentMap: { [key: string]: React.ComponentType<any> } = {
   'exception-submission-root': ExceptionFormPage,
   'extension-submission-root': ExtensionRequestForm,
   'list-submissions-root': ViewFileSubmissions,
+  'view-submitter-users-root': ViewSubmitterUsers,
   // Add new components with html id in the list above.
 };
 
