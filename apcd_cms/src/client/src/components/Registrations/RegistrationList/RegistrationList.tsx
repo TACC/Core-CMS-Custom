@@ -45,7 +45,9 @@ export const RegistrationList: React.FC<{
       <>
         <p className="c-message c-message--error">
           An error occurred loading your registrations. For help,{' '}
-          <a href="/workbench/dashboard">submit a ticket</a>.
+          <a href="/workbench/dashboard/tickets/create" className="wb-link">
+            Please submit a ticket.
+          </a>
         </p>
         <a className="c-button c-button--primary" href="/">
           Back to Home

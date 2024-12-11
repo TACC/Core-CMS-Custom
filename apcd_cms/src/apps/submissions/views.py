@@ -107,6 +107,7 @@ class SubmissionsTable(TemplateView):
             'received_timestamp': submission['received_timestamp'],
             'updated_at': submission['updated_at'],
             'payor_code': submission['payor_code'],
+            'entity_name': submission['entity_name'],
             'view_modal_content': submission['view_modal_content'],
             }
         for submission in submission_content:

@@ -85,9 +85,9 @@ export const ViewFileSubmissions: React.FC = () => {
     return (
       <SectionMessage type="error">
         There was an error loading the page.{' '}
-        <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+        <a href="/workbench/dashboard/tickets/create" className="wb-link">
           Please submit a ticket.
-        </Link>
+        </a>
       </SectionMessage>
     );
   }
