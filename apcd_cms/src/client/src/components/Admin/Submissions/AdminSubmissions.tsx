@@ -9,7 +9,6 @@ import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Button from 'core-components/Button';
 import Paginator from 'core-components/Paginator';
-import { Link } from 'react-router-dom';
 import styles from './AdminSubmissions.module.css';
 import { formatDate } from 'utils/dateUtil';
 import { titleCase } from 'utils/stringUtil';
@@ -66,9 +65,9 @@ export const AdminSubmissions: React.FC = () => {
     return (
       <SectionMessage type="error">
         There was an error loading the page.{' '}
-        <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+        <a href="/workbench/dashboard/tickets/create" className="wb-link">
           Please submit a ticket.
-        </Link>
+        </a>
       </SectionMessage>
     );
   }

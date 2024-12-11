@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
-import { ExceptionModalContent, ExceptionRow } from 'hooks/admin';
+import { ExceptionRow } from 'hooks/admin';
 import { formatModalDate } from 'utils/dateUtil';
 import styles from './ViewExceptionModal.module.css';
 

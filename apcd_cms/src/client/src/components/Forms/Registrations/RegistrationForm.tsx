@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Label, FormFeedback } from 'reactstrap';
+import { FormGroup, Label } from 'reactstrap';
 import Button from 'core-components/Button';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
@@ -215,9 +215,8 @@ export const RegistrationForm: React.FC<{
       : `register/request-to-submit/api/`;
     submitForm({ url, body: values });
   };
-  const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/workbench/dashboard');
+    window.location.href = '/workbench/dashboard';
   };
 
   if (isLoading) {

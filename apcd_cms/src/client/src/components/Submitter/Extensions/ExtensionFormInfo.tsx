@@ -7,7 +7,6 @@ import {
   ApplicableDataPeriod,
 } from 'hooks/entities';
 import SectionMessage from 'core-components/SectionMessage';
-import { Link } from 'react-router-dom';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 const maxDate = new Date();
@@ -79,9 +78,9 @@ const ExtensionFormInfo: React.FC<{
         {!submitterData && (
           <SectionMessage type="error">
             There was an error finding your associated businesses.{' '}
-            <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+            <a href="/workbench/dashboard/tickets/create" className="wb-link">
               Please submit a ticket.
-            </Link>
+            </a>
           </SectionMessage>
         )}
       </FieldWrapper>

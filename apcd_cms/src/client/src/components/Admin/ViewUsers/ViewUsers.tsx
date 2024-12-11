@@ -92,7 +92,9 @@ export const ViewUsers: React.FC = () => {
     <div>
       <h1>List Users</h1>
       <hr />
-      <p style={{ marginBottom: '30px' }}>List of all system users attached to a submitter.</p>
+      <p style={{ marginBottom: '30px' }}>
+        List of all system users attached to a submitter.
+      </p>
       <hr />
       <div className="filter-container">
         <div className="filter-content">

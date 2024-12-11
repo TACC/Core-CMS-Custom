@@ -90,9 +90,9 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
         {entitiesError && (
           <SectionMessage type="error">
             There was an error finding your associated businesses.{' '}
-            <Link to="/workbench/dashboard/tickets/create" className="wb-link">
+            <a href="/workbench/dashboard/tickets/create" className="wb-link">
               Please submit a ticket.
-            </Link>
+            </a>
           </SectionMessage>
         )}
       </FieldWrapper>

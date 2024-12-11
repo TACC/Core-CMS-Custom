@@ -49,7 +49,7 @@ export const AdminExtensions: React.FC = () => {
     return (
       <SectionMessage type="error">
         There was an error loading the page.{''}
-        <a href="https://txapcd.org/workbench/dashboard/tickets/create">
+        <a href="/workbench/dashboard/tickets/create" className="wb-link">
           Please submit a ticket.
         </a>
       </SectionMessage>

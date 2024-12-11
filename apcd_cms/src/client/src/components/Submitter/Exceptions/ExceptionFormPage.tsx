@@ -60,7 +60,8 @@ export const ExceptionFormPage: React.FC = () => {
         .required('Business name is required'),
       fileType: Yup.string().required('File type is required'),
       fieldCode: Yup.string().required('Field code is required'),
-      expiration_date: Yup.date().required('Expiration date is required')
+      expiration_date: Yup.date()
+        .required('Expiration date is required')
         .max('9999-12-31', 'Expiration date must be MM/DD/YYYY')
         .min('0001-01-01', 'Expiration date must be MM/DD/YYYY'),
       requested_threshold: Yup.number().required(
@@ -81,9 +82,11 @@ export const ExceptionFormPage: React.FC = () => {
     }),
     expirationDateOther: Yup.mixed().when('exceptionType', {
       is: 'other',
-      then: (schema) => Yup.date().required('Required')
-        .max('9999-12-31', 'Date must be MM/DD/YYYY')
-        .min('0001-01-01', 'Date must be MM/DD/YYYY'),
+      then: (schema) =>
+        Yup.date()
+          .required('Required')
+          .max('9999-12-31', 'Date must be MM/DD/YYYY')
+          .min('0001-01-01', 'Date must be MM/DD/YYYY'),
       otherwise: (schema) => schema.strip(),
     }),
     otherExceptionBusinessName: Yup.mixed().when('exceptionType', {
