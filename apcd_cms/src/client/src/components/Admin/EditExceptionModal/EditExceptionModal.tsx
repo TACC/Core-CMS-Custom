@@ -1,31 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Label,
-  FormGroup,
-  Row,
-  Col,
-  Alert,
-} from 'reactstrap';
-import {
-  Field,
-  ErrorMessage,
-  useFormik,
-  FormikHelpers,
-  FormikProvider,
-} from 'formik';
+import { Modal, ModalBody, ModalHeader, Row, Col, Alert } from 'reactstrap';
+import { Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { ExceptionRow } from 'hooks/admin';
 import { formatDate } from 'utils/dateUtil';
 import styles from './EditExceptionModal.module.css';
-
 import QueryWrapper from 'core-wrappers/QueryWrapper';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
-import Message from 'core-components/Message';
 
 interface EditRecordModalProps {
   isOpen: boolean;
@@ -306,10 +289,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         className="form-text text-muted"
                         style={{ fontStyle: 'italic' }}
                       >
-                        Current:{' '}
-                        {exception.approved_expiration_date
+                        Requested Expy Date:{' '}
+                        {exception.view_modal_content.requested_expiration_date
                           ? new Date(
-                              exception.approved_expiration_date
+                              exception.view_modal_content.requested_expiration_date
                             ).toLocaleDateString()
                           : 'None'}
                       </small>
