@@ -61,7 +61,7 @@ export const AdminSubmissions: React.FC = () => {
     return <LoadingSpinner />;
   }
 
-  if (!isSubmissionsError) {
+  if (isSubmissionsError) {
     return (
       <SectionMessage type="error">
         There was an error loading the page.{' '}
