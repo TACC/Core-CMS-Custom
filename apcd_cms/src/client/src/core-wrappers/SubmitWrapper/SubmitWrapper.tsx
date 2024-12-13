@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoadingSpinner, Message } from '@tacc/core-components';
+import { LoadingSpinner, Message } from '../../core-components';
 import styles from './SubmitWrapper.module.css';
 
 type SubmitWrapperProps = React.PropsWithChildren<{

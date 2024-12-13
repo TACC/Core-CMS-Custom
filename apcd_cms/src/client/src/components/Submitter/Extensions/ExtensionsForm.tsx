@@ -8,7 +8,9 @@ import { fetchUtil } from 'utils/fetchUtil';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
 import Button from 'core-components/Button';
+import SubmitWrapper from 'core-wrappers/SubmitWrapper';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
+import { isError } from 'react-query';
 
 const validationSchema = Yup.object().shape({
   extensions: Yup.array().of(
@@ -70,14 +72,16 @@ const initialValues: FormValues = {
 };
 
 export const ExtensionRequestForm: React.FC = () => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>(null);
 
   const handleSubmit = async (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
-    setErrorMessage('');
+    setErrorMessage(null);
     const url = `submissions/extension/api/`;
     try {
       const response = await fetchUtil({
@@ -98,7 +102,9 @@ export const ExtensionRequestForm: React.FC = () => {
         );
       } else {
         setErrorMessage(
-          'An error occurred while saving the data. Please try again.'
+          new Error(
+            'An error occurred while saving the data. Please try again.'
+          )
         );
       }
     } finally {
@@ -124,148 +130,169 @@ export const ExtensionRequestForm: React.FC = () => {
     <>
       <h1>Request Extension</h1>
       <hr />
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ values, isSubmitting, setFieldValue, resetForm, dirty }) => {
-          useEffect(() => {
-            if (isSuccess) {
-              resetForm();
-            }
-          }, [isSuccess, resetForm]);
-          {
-            return (
-              <>
-                <p>
-                  This form should be completed and submitted by data submitters
-                  to request an extension to the deadline for submitting either
-                  a regular submission or a corrected resubmission. Please
-                  review the{' '}
-                  <a
-                    href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/payor-registration-information"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Data Submission Guide
-                  </a>{' '}
-                  for details about completing and submitting this form,
-                  especially regarding the timeliness of the request.
-                </p>
-                <Form>
-                  {values.extensions.map((extension, index) => (
-                    <ExtensionFormInfo
-                      key={index}
-                      index={index}
-                      submitterData={submitterData}
-                    />
-                  ))}
-                  <Button
-                    type="primary"
-                    onClick={() =>
-                      setFieldValue('extensions', [
-                        ...values.extensions,
-                        {
-                          businessName: '',
-                          extensionType: '',
-                          applicableDataPeriod: '',
-                          requestedTargetDate: '',
-                          currentExpectedDate: '',
-                        },
-                      ])
-                    }
-                    disabled={values.extensions.length >= 5}
-                  >
-                    + Add Another Extension Request
-                  </Button>{' '}
-                  <Button
-                    type="secondary"
-                    onClick={() =>
-                      values.extensions.length > 1 &&
-                      setFieldValue(
-                        'extensions',
-                        values.extensions.slice(0, -1)
-                      )
-                    }
-                    disabled={values.extensions.length === 1}
-                  >
-                    - Remove Last Extension Request
-                  </Button>
-                  <hr />
-                  <h4>Request and Justification</h4>
+      <SubmitWrapper error={errorMessage} isLoading={isLoading} success={data}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ values, isSubmitting, setFieldValue, resetForm, dirty }) => {
+            useEffect(() => {
+              if (isSuccess) {
+                resetForm();
+              }
+            }, [isSuccess, resetForm]);
+            {
+              return (
+                <>
                   <p>
-                    Provide rationale for the exception request, outlining the
-                    reasons why the organization is unable to comply with the
-                    relevant requirements. Provide as much detail as possible
-                    regarding the exception request, indicating the specific
-                    submission requirements for which relief is being sought. If
-                    applicable, indicate how the organization plans to become
-                    compliant.**
+                    This form should be completed and submitted by data
+                    submitters to request an extension to the deadline for
+                    submitting either a regular submission or a corrected
+                    resubmission. Please review the{' '}
+                    <a
+                      href="https://sph.uth.edu/research/centers/center-for-health-care-data/texas-all-payor-claims-database/payor-registration-information"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Data Submission Guide
+                    </a>{' '}
+                    for details about completing and submitting this form,
+                    especially regarding the timeliness of the request.
                   </p>
-                  <FieldWrapper
-                    name="justification"
-                    label=""
-                    required={true}
-                    description="2000 character limit"
-                  >
-                    <Field
-                      as="textarea"
+                  <Form>
+                    {values.extensions.map((extension, index) => (
+                      <ExtensionFormInfo
+                        key={index}
+                        index={index}
+                        submitterData={submitterData}
+                      />
+                    ))}
+                    <Button
+                      type="primary"
+                      onClick={() =>
+                        setFieldValue('extensions', [
+                          ...values.extensions,
+                          {
+                            businessName: '',
+                            extensionType: '',
+                            applicableDataPeriod: '',
+                            requestedTargetDate: '',
+                            currentExpectedDate: '',
+                          },
+                        ])
+                      }
+                      disabled={values.extensions.length >= 5}
+                    >
+                      + Add Another Extension Request
+                    </Button>{' '}
+                    <Button
+                      type="secondary"
+                      onClick={() =>
+                        values.extensions.length > 1 &&
+                        setFieldValue(
+                          'extensions',
+                          values.extensions.slice(0, -1)
+                        )
+                      }
+                      disabled={values.extensions.length === 1}
+                    >
+                      - Remove Last Extension Request
+                    </Button>
+                    <hr />
+                    <h4>Request and Justification</h4>
+                    <p>
+                      Provide rationale for the exception request, outlining the
+                      reasons why the organization is unable to comply with the
+                      relevant requirements. Provide as much detail as possible
+                      regarding the exception request, indicating the specific
+                      submission requirements for which relief is being sought.
+                      If applicable, indicate how the organization plans to
+                      become compliant.**
+                    </p>
+                    <FieldWrapper
                       name="justification"
-                      id="justification"
-                      rows="5"
-                      maxLength="2000"
-                    />
-                  </FieldWrapper>
-                  <hr />
-                  <h4>Acknowledgment of Terms</h4>
-                  <p>
-                    I understand and acknowledge that the Texas Department of
-                    Insurance (TDI) may review the validity of the information
-                    submitted on this form.
-                  </p>
-                  <div className={styles.fieldRows}>
-                    <FieldWrapper
-                      name="requestorName"
-                      label="Requestor Name"
+                      label=""
                       required={true}
+                      description="2000 character limit"
                     >
                       <Field
-                        type="text"
+                        as="textarea"
+                        name="justification"
+                        id="justification"
+                        rows="5"
+                        maxLength="2000"
+                      />
+                    </FieldWrapper>
+                    <hr />
+                    <h4>Acknowledgment of Terms</h4>
+                    <p>
+                      I understand and acknowledge that the Texas Department of
+                      Insurance (TDI) may review the validity of the information
+                      submitted on this form.
+                    </p>
+                    <div className={styles.fieldRows}>
+                      <FieldWrapper
                         name="requestorName"
-                        id="requestorName"
-                        className={`form-control`}
-                      />
-                    </FieldWrapper>
-                    <FieldWrapper
-                      name="requestorEmail"
-                      label="Requestor E-mail"
-                      required={true}
-                    >
-                      <Field
-                        type="email"
+                        label="Requestor Name"
+                        required={true}
+                      >
+                        <Field
+                          type="text"
+                          name="requestorName"
+                          id="requestorName"
+                          className={`form-control`}
+                        />
+                      </FieldWrapper>
+                      <FieldWrapper
                         name="requestorEmail"
-                        id="requestorEmail"
-                        className={`form-control`}
-                      />
-                    </FieldWrapper>
-                  </div>
-                  <div className={styles.fieldRows}>
-                    <FieldWrapper
-                      name="acceptTerms"
-                      label="Accept"
-                      required={true}
-                    >
-                      <Field
-                        type="checkbox"
+                        label="Requestor E-mail"
+                        required={true}
+                      >
+                        <Field
+                          type="email"
+                          name="requestorEmail"
+                          id="requestorEmail"
+                          className={`form-control`}
+                        />
+                      </FieldWrapper>
+                    </div>
+                    <div className={styles.fieldRows}>
+                      <FieldWrapper
                         name="acceptTerms"
-                        id="acceptTerms"
-                        className={`form-control`}
-                      />
-                    </FieldWrapper>
-                  </div>
-                  {isSuccess ? (
-                    <>
+                        label="Accept"
+                        required={true}
+                      >
+                        <Field
+                          type="checkbox"
+                          name="acceptTerms"
+                          id="acceptTerms"
+                          className={`form-control`}
+                        />
+                      </FieldWrapper>
+                    </div>
+                    {isSuccess ? (
+                      <>
+                        <Button
+                          type="primary"
+                          attr="submit"
+                          disabled={isSubmitting || !dirty}
+                          isLoading={isSubmitting}
+                          onClick={() => setIsSuccess(false)}
+                        >
+                          Submit Another Extension
+                        </Button>
+                        <div className={styles.fieldRows}>
+                          <SectionMessage
+                            type="success"
+                            canDismiss={true}
+                            onDismiss={() => setIsSuccess(false)}
+                          >
+                            Your extension request was successfully sent.
+                          </SectionMessage>
+                        </div>
+                      </>
+                    ) : (
                       <Button
                         type="primary"
                         attr="submit"
@@ -273,58 +300,40 @@ export const ExtensionRequestForm: React.FC = () => {
                         isLoading={isSubmitting}
                         onClick={() => setIsSuccess(false)}
                       >
-                        Submit Another Extension
+                        Submit
                       </Button>
+                    )}
+                    {errorMessage && (
                       <div className={styles.fieldRows}>
-                        <SectionMessage
-                          type="success"
-                          canDismiss={true}
-                          onDismiss={() => setIsSuccess(false)}
-                        >
-                          Your extension request was successfully sent.
+                        <SectionMessage type="error">
+                          {errorMessage}
                         </SectionMessage>
                       </div>
-                    </>
-                  ) : (
-                    <Button
-                      type="primary"
-                      attr="submit"
-                      disabled={isSubmitting || !dirty}
-                      isLoading={isSubmitting}
-                      onClick={() => setIsSuccess(false)}
-                    >
-                      Submit
-                    </Button>
-                  )}
-                  {errorMessage && (
-                    <div className={styles.fieldRows}>
-                      <SectionMessage type="error">
-                        {errorMessage}
-                      </SectionMessage>
-                    </div>
-                  )}
-                  <hr />
-                  <small>
-                    <sup>1</sup> Applicable data period - month/year in which
-                    claims data was adjudicated.
-                  </small>
-                  <br />
-                  <small>
-                    <sup>2</sup> Requested target date - requested
-                    day/month/year by which the data should be received (the
-                    extension date).
-                  </small>
-                  <br />
-                  <small>
-                    <sup>3</sup> Current expected date - day/month/year in which
-                    applicable data was expected within the submission window.
-                  </small>
-                </Form>
-              </>
-            );
-          }
-        }}
-      </Formik>
+                    )}
+                    <hr />
+                    <small>
+                      <sup>1</sup> Applicable data period - month/year in which
+                      claims data was adjudicated.
+                    </small>
+                    <br />
+                    <small>
+                      <sup>2</sup> Requested target date - requested
+                      day/month/year by which the data should be received (the
+                      extension date).
+                    </small>
+                    <br />
+                    <small>
+                      <sup>3</sup> Current expected date - day/month/year in
+                      which applicable data was expected within the submission
+                      window.
+                    </small>
+                  </Form>
+                </>
+              );
+            }
+          }}
+        </Formik>
+      </SubmitWrapper>
     </>
   );
 };
