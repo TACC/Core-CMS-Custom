@@ -6,11 +6,13 @@ import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistratio
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
 import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
+import SubmitWrapper from 'core-wrappers/SubmitWrapper';
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
   isAdmin?: boolean;
 }> = ({ useDataHook, isAdmin = false }) => {
+  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
   const initStateFilter = isAdmin ? 'Received' : ''; // for admin listing, show records w/ status 'Received' by default
   const [status, setStatus] = useState(initStateFilter);
   const [org, setOrg] = useState('All');
@@ -82,113 +84,119 @@ export const RegistrationList: React.FC<{
 
   return (
     <div>
-      <div className="filter-container">
-        <div className="filter-content">
-          {/* Filter */}
-          <span>
-            <b>Filter by Status: </b>
-          </span>
-          <select
-            id="statusFilter"
-            className="status-filter"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            {data?.status_options.map((status, index) => (
-              <option className="dropdown-text" key={index} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+      <SubmitWrapper
+        error={errorMessage}
+        isLoading={isLoading}
+        success={data.page.length > 0 ? data : 'No Data'} // Conditional needed for when there is empty data
+      >
+        <div className="filter-container">
+          <div className="filter-content">
+            {/* Filter */}
+            <span>
+              <b>Filter by Status: </b>
+            </span>
+            <select
+              id="statusFilter"
+              className="status-filter"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              {data?.status_options.map((status, index) => (
+                <option className="dropdown-text" key={index} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
 
-          <span>
-            <b>Filter by Organization: </b>
-          </span>
-          <select
-            id="organizationFilter"
-            className="status-filter org-filter"
-            value={org}
-            onChange={(e) => setOrg(e.target.value)}
-          >
-            {data?.org_options.map((org, index) => (
-              <option className="dropdown-text" key={index} value={org}>
-                {org}
-              </option>
-            ))}
-          </select>
-          {data?.selected_status !== initStateFilter || data?.selected_org ? (
-            <ClearOptionsButton onClick={clearSelections} />
-          ) : null}
+            <span>
+              <b>Filter by Organization: </b>
+            </span>
+            <select
+              id="organizationFilter"
+              className="status-filter org-filter"
+              value={org}
+              onChange={(e) => setOrg(e.target.value)}
+            >
+              {data?.org_options.map((org, index) => (
+                <option className="dropdown-text" key={index} value={org}>
+                  {org}
+                </option>
+              ))}
+            </select>
+            {data?.selected_status !== initStateFilter || data?.selected_org ? (
+              <ClearOptionsButton onClick={clearSelections} />
+            ) : null}
+          </div>
         </div>
-      </div>
-      <table id="registrationTable" className="registration-table">
-        <thead>
-          <tr>
-            {data?.header.map((columnName: string, index: number) => (
-              <th key={index}>{columnName}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data?.page && data.page.length > 0 ? (
-            data?.page.map((row: RegistrationRow, rowIndex: number) => (
-              <tr key={rowIndex}>
-                <td>{row.biz_name}</td>
-                <td>{row.year ? row.year : 'None'}</td>
-                <td>{row.type}</td>
-                <td>{row.location}</td>
-                <td>{row.reg_status ? row.reg_status : 'None'}</td>
-                <td>
-                  <select
-                    id={`actionsDropdown_${row.reg_id}`}
-                    defaultValue=""
-                    className="status-filter"
-                    onChange={(e) => openAction(e, row.reg_id)}
-                  >
-                    <option value="">Select Action</option>
-                    <option value="viewRegistration">View Record</option>
-                    {isAdmin ? (
-                      <option value="editRegistration">Edit Record</option>
-                    ) : (
-                      <option value="renewRegistration">
-                        Renew Registration
-                      </option>
-                    )}
-                  </select>
+        <table id="registrationTable" className="registration-table">
+          <thead>
+            <tr>
+              {data?.header.map((columnName: string, index: number) => (
+                <th key={index}>{columnName}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data?.page && data.page.length > 0 ? (
+              data?.page.map((row: RegistrationRow, rowIndex: number) => (
+                <tr key={rowIndex}>
+                  <td>{row.biz_name}</td>
+                  <td>{row.year ? row.year : 'None'}</td>
+                  <td>{row.type}</td>
+                  <td>{row.location}</td>
+                  <td>{row.reg_status ? row.reg_status : 'None'}</td>
+                  <td>
+                    <select
+                      id={`actionsDropdown_${row.reg_id}`}
+                      defaultValue=""
+                      className="status-filter"
+                      onChange={(e) => openAction(e, row.reg_id)}
+                    >
+                      <option value="">Select Action</option>
+                      <option value="viewRegistration">View Record</option>
+                      {isAdmin ? (
+                        <option value="editRegistration">Edit Record</option>
+                      ) : (
+                        <option value="renewRegistration">
+                          Renew Registration
+                        </option>
+                      )}
+                    </select>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center' }}>
+                  No Data available
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6} style={{ textAlign: 'center' }}>
-                No Data available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <div className={styles.paginatorContainer}>
-        <Paginator
-          pages={data?.total_pages ?? 0}
-          current={data?.page_num ?? 0}
-          callback={setPage}
-        />
-      </div>
-      {selectedRegistration && (
-        <>
-          <ViewRegistrationModal
-            reg_id={selectedRegistration.reg_id}
-            isVisible={isViewModalOpen}
-            onClose={() => setIsViewModalOpen(false)}
+            )}
+          </tbody>
+        </table>
+        <div className={styles.paginatorContainer}>
+          <Paginator
+            pages={data?.total_pages ?? 0}
+            current={data?.page_num ?? 0}
+            callback={setPage}
           />
-          <EditRegistrationModal
-            reg_id={selectedRegistration.reg_id}
-            isVisible={isEditModalOpen}
-            status_options={data?.status_options as string[]}
-            onClose={() => setIsEditModalOpen(false)}
-          />
-        </>
-      )}
+        </div>
+        {selectedRegistration && (
+          <>
+            <ViewRegistrationModal
+              reg_id={selectedRegistration.reg_id}
+              isVisible={isViewModalOpen}
+              onClose={() => setIsViewModalOpen(false)}
+            />
+            <EditRegistrationModal
+              reg_id={selectedRegistration.reg_id}
+              isVisible={isEditModalOpen}
+              status_options={data?.status_options as string[]}
+              onClose={() => setIsEditModalOpen(false)}
+            />
+          </>
+        )}
+      </SubmitWrapper>
     </div>
   );
 };
