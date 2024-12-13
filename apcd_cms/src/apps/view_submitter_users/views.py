@@ -97,10 +97,13 @@ class ViewSubmitterUsersTable(TemplateView):
             return {
                 'submitter_id': usr[0],
                 'user_id': usr[1],
-                'user_number': usr[2],
-                'user_email': usr[3],
-                'user_name': usr[4],
-                'payor_code': usr[5],
+                'user_name': usr[2],
+                'entity_name': usr[3] if usr[3] else 'None',
+                'role_name': usr[4],
+                'status': 'Active' if usr[5] else 'Inactive',
+                'user_number': usr[6],
+                'payor_code': usr[7],
+                'role_id': usr[8],
             }
 
         user_list = [_set_submitter_user(user) for user in users]
@@ -118,10 +121,13 @@ class ViewSubmitterUsersTable(TemplateView):
             return {
                 'submitter_id': usr['submitter_id'],
                 'user_id': usr['user_id'],
-                'user_number': usr['user_number'],
-                'user_email': usr['user_email'],
                 'user_name': usr['user_name'],
+                'entity_name': usr['entity_name'],
+                'role_name': usr['role_name'],
+                'status': usr['status'],
+                'user_number': usr['user_number'],
                 'payor_code': usr['payor_code'],
+                'role_id': usr['role_id'],
                 'view_link': f"/administration/view-user-details/{usr['user_id']}",
                 'edit_link': f"/administration/edit-user/{usr['user_id']}",
             }

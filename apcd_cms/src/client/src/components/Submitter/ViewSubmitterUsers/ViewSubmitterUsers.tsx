@@ -10,9 +10,11 @@ export const ViewSubmitterUsers: React.FC = () => {
   const header = [
     'Submitter ID',
     'User ID',
-    'User Number',
-    'User Email',
     'User Name',
+    'Entity Organization',
+    'Role',
+    'Status',
+    'User Number',
     'Payor Code',
     'Actions',
   ];
@@ -106,9 +108,11 @@ export const ViewSubmitterUsers: React.FC = () => {
                   <tr key={rowIndex}>
                     <td>{user.submitter_id}</td>
                     <td>{user.user_id}</td>
-                    <td>{user.user_number}</td>
-                    <td>{user.user_email}</td>
                     <td>{user.user_name}</td>
+                    <td>{user.entity_name}</td>
+                    <td>{user.role_name}</td>
+                    <td>{user.status}</td>
+                    <td>{user.user_number}</td>
                     <td>{user.payor_code}</td>
                     <td>
                       <select

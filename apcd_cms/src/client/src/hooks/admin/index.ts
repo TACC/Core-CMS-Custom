@@ -117,12 +117,15 @@ export type ExceptionResult = {
 export type SubmitterUserRow = {
   submitter_id: string;
   user_id: string;
+  user_name: string;
+  entity_name: string;
+  role_name: string;
+  status: string;
   user_number: string;
+  payor_code: string;
+  user_email: string;
   created_at: string;
   updated_at: string;
-  user_email: string;
-  user_name: string;
-  payor_code: string;
 };
 
 export type SubmitterUserResult = {
