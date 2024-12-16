@@ -32,6 +32,7 @@ export const ViewSubmitterUsers: React.FC = () => {
 
   const [status, setStatus] = useState('Active');
   const [payor_code, setPayorCode] = useState('All');
+  // const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
 
   const {

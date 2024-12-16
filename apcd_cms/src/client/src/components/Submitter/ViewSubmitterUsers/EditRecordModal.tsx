@@ -177,7 +177,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   </Col>
                 </Row>
                 <Row>
-                <Col md={12}>
+                  <Col md={12}>
                     <FormGroup>
                       <Label for="notes" className={styles.customLabel}>
                         <strong>Notes</strong>
