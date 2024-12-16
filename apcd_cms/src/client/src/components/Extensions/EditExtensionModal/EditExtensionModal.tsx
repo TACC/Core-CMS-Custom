@@ -21,7 +21,8 @@ import {
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
-import { useSubmitterDataPeriods } from 'hooks/entities';
+import { SubmitterDataPeriods, useSubmitterDataPeriods } from 'hooks/entities';
+import SubmitWrapper from 'core-wrappers/SubmitWrapper';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
 import {
   convertPeriodLabelToApiValue,
@@ -190,158 +191,166 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         </ModalHeader>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Extension</h4>
-          <QueryWrapper
+          <SubmitWrapper
+            error={submitterDataError as Error | null}
             isLoading={submitterDataLoading}
-            error={submitterDataError as Error}
+            success={
+              submitterData ? 'Your extension was successfully updated' : ''
+            } // Change submitterData variable to a variable on the upload success
           >
-            <FormikProvider value={formik}>
-              <form onSubmit={formik.handleSubmit}>
-                <Row>
-                  <Col md={3}>
-                    <FieldWrapper
-                      name="applicable_data_period"
-                      label="Applicable Data Period"
-                      required={false}
-                    >
-                      <Field
-                        as="select"
+            <QueryWrapper
+              isLoading={submitterDataLoading}
+              error={submitterDataError as Error}
+            >
+              <FormikProvider value={formik}>
+                <form onSubmit={formik.handleSubmit}>
+                  <Row>
+                    <Col md={3}>
+                      <FieldWrapper
                         name="applicable_data_period"
-                        id="applicable_data_period"
-                        value={convertPeriodLabelToApiValue(
-                          formik.values.applicable_data_period
-                        )}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        label="Applicable Data Period"
+                        required={false}
                       >
-                        {submitterData?.data_periods?.map((item) => (
-                          <option
-                            key={item.data_period}
-                            value={item.data_period}
-                          >
-                            {item.data_period}
-                          </option>
-                        ))}
-                      </Field>
-                      <div className="help-text">
-                        Current: {extension.applicable_data_period}
-                      </div>
-                    </FieldWrapper>
-                  </Col>
-                  <Col md={3}>
-                    <FieldWrapper
-                      name="approved_expiration_date"
-                      label="Approved Expiration Date"
-                      required={false}
-                    >
-                      <Field
-                        type="date"
+                        <Field
+                          as="select"
+                          name="applicable_data_period"
+                          id="applicable_data_period"
+                          value={convertPeriodLabelToApiValue(
+                            formik.values.applicable_data_period
+                          )}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        >
+                          {submitterData?.data_periods?.map((item) => (
+                            <option
+                              key={item.data_period}
+                              value={item.data_period}
+                            >
+                              {item.data_period}
+                            </option>
+                          ))}
+                        </Field>
+                        <div className="help-text">
+                          Current: {extension.applicable_data_period}
+                        </div>
+                      </FieldWrapper>
+                    </Col>
+                    <Col md={3}>
+                      <FieldWrapper
                         name="approved_expiration_date"
-                        id="approved_expiration_date"
-                        value={
-                          formik.values.approved_expiration_date
-                            ? formik.values.approved_expiration_date
-                            : ''
-                        }
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                      <div className="help-text">
-                        Current:{' '}
-                        {extension.approved_expiration_date
-                          ? new Date(
-                              extension.approved_expiration_date
-                            ).toLocaleDateString()
-                          : 'None'}
-                      </div>
-                    </FieldWrapper>
-                  </Col>
-                  <Col md={3}>
-                    <FieldWrapper
-                      name="ext_status"
-                      label="Extension Status"
-                      required={false}
-                    >
-                      <Field
-                        as="select"
+                        label="Approved Expiration Date"
+                        required={false}
+                      >
+                        <Field
+                          type="date"
+                          name="approved_expiration_date"
+                          id="approved_expiration_date"
+                          value={
+                            formik.values.approved_expiration_date
+                              ? formik.values.approved_expiration_date
+                              : ''
+                          }
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <div className="help-text">
+                          Current:{' '}
+                          {extension.approved_expiration_date
+                            ? new Date(
+                                extension.approved_expiration_date
+                              ).toLocaleDateString()
+                            : 'None'}
+                        </div>
+                      </FieldWrapper>
+                    </Col>
+                    <Col md={3}>
+                      <FieldWrapper
                         name="ext_status"
-                        id="ext_status"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.ext_status}
+                        label="Extension Status"
+                        required={false}
                       >
-                        {statusOptions?.map(
-                          (opt) =>
-                            opt.value !== 'All' && (
-                              <option
-                                className="dropdown-text"
-                                key={opt.key}
-                                value={opt.value}
-                              >
-                                {opt.value}
-                              </option>
-                            )
-                        )}
-                      </Field>
-                    </FieldWrapper>
-                  </Col>
-                  <Col md={3}>
-                    <FieldWrapper
-                      name="ext_outcome"
-                      label="Extension Outcome"
-                      required={false}
-                    >
-                      <Field
-                        as="select"
+                        <Field
+                          as="select"
+                          name="ext_status"
+                          id="ext_status"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.ext_status}
+                        >
+                          {statusOptions?.map(
+                            (opt) =>
+                              opt.value !== 'All' && (
+                                <option
+                                  className="dropdown-text"
+                                  key={opt.key}
+                                  value={opt.value}
+                                >
+                                  {opt.value}
+                                </option>
+                              )
+                          )}
+                        </Field>
+                      </FieldWrapper>
+                    </Col>
+                    <Col md={3}>
+                      <FieldWrapper
                         name="ext_outcome"
-                        id="ext_outcome"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.ext_outcome}
+                        label="Extension Outcome"
+                        required={false}
                       >
-                        {outcomeOptions?.map((opt) => (
-                          <option
-                            className="dropdown-text"
-                            key={opt.key}
-                            value={opt.value}
-                          >
-                            {opt.value}
-                          </option>
-                        ))}
-                      </Field>
-                    </FieldWrapper>
-                  </Col>
-                  <Col md={6}>
-                    <FieldWrapper name="notes" label="Notes" required={false}>
-                      <Field
-                        as="textarea"
-                        name="notes"
-                        id="notes"
-                        rows="5"
-                        maxLength="2000" // Set the maxLength attribute
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                      <div className="help-text">2000 character limit</div>
-                    </FieldWrapper>
-                  </Col>
-                </Row>
-                <br />
-                <Alert color="success" isOpen={showSuccessMessage}>
-                  Success: The exception data has been successfully updated.
-                </Alert>
-                <Alert color="danger" isOpen={showErrorMessage}>
-                  Error: {errorMessage}
-                </Alert>
-                <Button
-                  type="primary"
-                  attr="submit"
-                  disabled={!formik.dirty || formik.isSubmitting}
-                >
-                  Submit
-                </Button>
-              </form>
-            </FormikProvider>
-          </QueryWrapper>
+                        <Field
+                          as="select"
+                          name="ext_outcome"
+                          id="ext_outcome"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.ext_outcome}
+                        >
+                          {outcomeOptions?.map((opt) => (
+                            <option
+                              className="dropdown-text"
+                              key={opt.key}
+                              value={opt.value}
+                            >
+                              {opt.value}
+                            </option>
+                          ))}
+                        </Field>
+                      </FieldWrapper>
+                    </Col>
+                    <Col md={6}>
+                      <FieldWrapper name="notes" label="Notes" required={false}>
+                        <Field
+                          as="textarea"
+                          name="notes"
+                          id="notes"
+                          rows="5"
+                          maxLength="2000" // Set the maxLength attribute
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <div className="help-text">2000 character limit</div>
+                      </FieldWrapper>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Alert color="success" isOpen={showSuccessMessage}>
+                    Success: The exception data has been successfully updated.
+                  </Alert>
+                  <Alert color="danger" isOpen={showErrorMessage}>
+                    Error: {errorMessage}
+                  </Alert>
+                  <Button
+                    type="primary"
+                    attr="submit"
+                    disabled={!formik.dirty || formik.isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                </form>
+              </FormikProvider>
+            </QueryWrapper>
+          </SubmitWrapper>
           <hr />
           <h4 className="modal-header">Current Extension Information</h4>
           <div>
