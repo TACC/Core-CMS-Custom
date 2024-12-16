@@ -6,11 +6,13 @@ import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistratio
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
 import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
+import SubmitWrapper from 'core-wrappers/SubmitWrapper';
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
   isAdmin?: boolean;
 }> = ({ useDataHook, isAdmin = false }) => {
+  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
   const initStateFilter = isAdmin ? 'Received' : ''; // for admin listing, show records w/ status 'Received' by default
   const [status, setStatus] = useState(initStateFilter);
   const [org, setOrg] = useState('All');
