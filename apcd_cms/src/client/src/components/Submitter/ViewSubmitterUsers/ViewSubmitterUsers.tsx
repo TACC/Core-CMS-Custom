@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { SubmitterUserRow, useSubmitterUsers, useSubmitterUserFilters } from 'hooks/admin';
+import {
+  SubmitterUserRow,
+  useSubmitterUsers,
+  useSubmitterUserFilters,
+} from 'hooks/admin';
 import ViewRecordModal from './ViewRecordModal';
 import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';

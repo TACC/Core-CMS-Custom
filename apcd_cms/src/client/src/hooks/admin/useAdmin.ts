@@ -58,11 +58,11 @@ const getSubmitterUsers = async (params: any) => {
 export const useSubmitterUsers = (
   status?: string,
   payor_code?: string,
-  page?: number,
+  page?: number
 ): UseQueryResult<SubmitterUserResult> => {
-  const params: { status?: string, payor_code?: string, page?: number } = {
-    status, 
-    payor_code, 
+  const params: { status?: string; payor_code?: string; page?: number } = {
+    status,
+    payor_code,
     page,
   };
   const query = useQuery(['submitterUsers', params], () =>
@@ -79,11 +79,15 @@ const getSubmitterUsersFilters = async () => {
 };
 
 export const useSubmitterUserFilters = (): UseQueryResult<FilterOptions> => {
-  const query = useQuery(['submitteruserfilters'], () => getSubmitterUsersFilters(), {
-    staleTime: 5 * 60 * 1000,
-    cacheTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  }) as UseQueryResult<FilterOptions>;
+  const query = useQuery(
+    ['submitteruserfilters'],
+    () => getSubmitterUsersFilters(),
+    {
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }
+  ) as UseQueryResult<FilterOptions>;
 
   return { ...query };
 };

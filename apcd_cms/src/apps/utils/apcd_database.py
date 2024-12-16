@@ -166,7 +166,8 @@ def get_submitter_users():
         users.active,
         users.user_number,
         submissions.payor_code,
-        users.role_id
+        users.role_id,
+        users.user_email
         FROM submitter_users
         JOIN users
             ON submitter_users.user_id = users.user_id
