@@ -87,10 +87,14 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
   const userFields = [
     { label: 'Submitter ID', value: user.submitter_id },
     { label: 'User ID', value: user.user_id },
-    { label: 'User Number', value: user.user_number },
-    { label: 'Email', value: user.user_email },
     { label: 'Name', value: user.user_name },
+    { label: 'Email', value: user.user_email },
+    { label: 'Entity Organization', value: user.entity_name },
+    { label: 'Role', value: user.role_name },
+    { label: 'Status', value: user.status },
+    { label: 'User Number', value: user.user_number },
     { label: 'Payor Code', value: user.payor_code },
+    { label: 'Notes', value: user.notes },
   ];
 
   const closeBtn = (
@@ -148,6 +152,44 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                       />
                       <ErrorMessage
                         name="user_email"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={2}>
+                    <FormGroup>
+                      <Label for="payor_code" className={styles.customLabel}>
+                        <strong>Payor Code</strong>
+                      </Label>
+                      <Field
+                        type="text"
+                        name="payor_code"
+                        id="payor_code"
+                        className={`form-control ${styles.viewRecord}`}
+                      />
+                      <ErrorMessage
+                        name="payor_code"
+                        component="div"
+                        className="text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                <Col md={12}>
+                    <FormGroup>
+                      <Label for="notes" className={styles.customLabel}>
+                        <strong>Notes</strong>
+                      </Label>
+                      <Field
+                        type="text"
+                        name="notes"
+                        id="notes"
+                        className={`form-control ${styles.viewRecord}`}
+                      />
+                      <ErrorMessage
+                        name="notes"
                         component="div"
                         className="text-danger"
                       />

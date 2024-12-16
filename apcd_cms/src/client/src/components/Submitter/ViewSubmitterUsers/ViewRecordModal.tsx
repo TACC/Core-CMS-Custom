@@ -83,6 +83,12 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </Col>
             <Col sm="9">{user.payor_code}</Col>
           </Row>
+          <Row className={styles.userRow}>
+            <Col sm="3" className={styles.userkey}>
+              Notes:
+            </Col>
+            <Col sm="9">{user.notes ? user.notes : 'None'}</Col>
+          </Row>
         </div>
       </ModalBody>
     </Modal>

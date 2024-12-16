@@ -127,6 +127,7 @@ export type SubmitterUserRow = {
   user_email: string;
   created_at: string;
   updated_at: string;
+  notes: string;
 };
 
 export type SubmitterUserResult = {
