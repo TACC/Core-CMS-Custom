@@ -233,7 +233,11 @@ export const RegistrationForm: React.FC<{
   }
 
   return (
-    <SubmitWrapper error={isError} isLoading={isLoading} success={data}>
+    <SubmitWrapper
+      error={registrationError}
+      isLoading={isLoading}
+      success={isSuccess ? 'Your registration was successfuly updated.' : ''}
+    >
       <div className="row">
         <div className="col">
           {!isModal ? (
