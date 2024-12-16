@@ -168,7 +168,8 @@ def get_submitter_users():
         submissions.payor_code,
         users.role_id,
         users.user_email,
-        users.notes
+        users.notes,
+        submitters.org_name
         FROM submitter_users
         JOIN users
             ON submitter_users.user_id = users.user_id
@@ -177,6 +178,8 @@ def get_submitter_users():
             ON submitter_users.submitter_id = submissions.submitter_id
         JOIN roles 
             ON roles.role_id = users.role_id
+        JOIN submitters
+            ON submitter_users.submitter_id = submitters.submitter_id
         ORDER BY submitter_users.user_id;
         """
         cur = conn.cursor()

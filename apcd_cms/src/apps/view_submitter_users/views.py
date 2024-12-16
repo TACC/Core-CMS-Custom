@@ -122,6 +122,7 @@ class ViewSubmitterUsersTable(TemplateView):
                 'role_id': usr[8],
                 'user_email': usr[9],
                 'notes': usr[10],
+                'org_name': usr[11],
             }
 
         user_list = [_set_submitter_user(user) for user in users]
@@ -150,10 +151,11 @@ class ViewSubmitterUsersTable(TemplateView):
                 'role_name': usr['role_name'],
                 'status': usr['status'],
                 'user_number': usr['user_number'],
-                'payor_code': usr['payor_code'],
+                'payor_code': usr['org_name'], # Show payor_code as org_name
                 'role_id': usr['role_id'],
                 'user_email': usr['user_email'],
                 'notes': usr['notes'],
+                'org_name': usr['org_name'],
                 'view_link': f"/administration/view-user-details/{usr['user_id']}",
                 'edit_link': f"/administration/edit-user/{usr['user_id']}",
             }
