@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { SubmitterUserRow, useSubmitterUsers } from 'hooks/admin';
+import { SubmitterUserRow, useSubmitterUsers, useSubmitterUserFilters } from 'hooks/admin';
 import ViewRecordModal from './ViewRecordModal';
 import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmitterUsers.module.scss';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const ViewSubmitterUsers: React.FC = () => {
   const header = [
@@ -19,6 +20,14 @@ export const ViewSubmitterUsers: React.FC = () => {
     'Actions',
   ];
 
+  const {
+    data: filterData,
+    isLoading: isFilterLoading,
+    isError: isFilterError,
+  } = useSubmitterUserFilters();
+
+  const [status, setStatus] = useState('Active');
+  const [payor_code, setPayorCode] = useState('All');
   const [page, setPage] = useState(1);
 
   const {
@@ -26,7 +35,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     isLoading,
     isError,
     refetch,
-  } = useSubmitterUsers(page);
+  } = useSubmitterUsers(status, payor_code, page);
 
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -36,6 +45,8 @@ export const ViewSubmitterUsers: React.FC = () => {
   const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const clearSelections = () => {
+    setStatus('Active');
+    setPayorCode('All');
     setPage(1);
   };
 
@@ -74,7 +85,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     setSelectedUser(null);
   };
 
-  if (isLoading) {
+  if (isFilterLoading || isLoading) {
     return (
       <div className="loading-placeholder">
         <LoadingSpinner />
@@ -82,7 +93,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     );
   }
 
-  if (isError) {
+  if (isFilterError || isError) {
     return <div>Error loading data</div>;
   }
 
@@ -92,6 +103,46 @@ export const ViewSubmitterUsers: React.FC = () => {
       <hr />
       <p style={{ marginBottom: '30px' }}>View all submitter users.</p>
       <hr />
+      <div className="filter-container">
+        <div className="filter-content">
+          {/* Filter by Status */}
+          <span>
+            <b>Filter by Status: </b>
+          </span>
+          <select
+            id="statusFilter"
+            className="status-filter"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            {filterData?.status_options.map((status, index) => (
+              <option className="dropdown-text" key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          {/* Filter by Payor Code */}
+          <span>
+            <b>Filter by Payor Code: </b>
+          </span>
+          <select
+            id="payorCodeFilter"
+            className="payor-code-filter"
+            value={payor_code}
+            onChange={(e) => setPayorCode(e.target.value)}
+          >
+            {filterData?.payor_code_options.map((payor_code, index) => (
+              <option className="dropdown-text" key={index} value={payor_code}>
+                {payor_code}
+              </option>
+            ))}
+          </select>
+          {status !== 'Active' || payor_code !== 'All' ? (
+            <ClearOptionsButton onClick={clearSelections} />
+          ) : null}
+        </div>
+      </div>
       <div>
         <table id="viewSubmitterUserTable" className="submitter-users-table">
           <thead>

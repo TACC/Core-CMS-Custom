@@ -18,6 +18,7 @@ export type FilterOptions = {
   org_options: string[];
   sort_options: string[];
   role_options: string[];
+  payor_code_options: string[];
 };
 
 export type UserResult = {
@@ -129,6 +130,8 @@ export type SubmitterUserRow = {
 };
 
 export type SubmitterUserResult = {
+  selected_status: string;
+  selected_payor_code: string;
   pagination_url_namespaces: string;
   page: SubmitterUserRow[];
   page_num: number;
@@ -143,4 +146,5 @@ export {
   useUserFilters,
   useSubmissionFilters,
   useSubmitterUsers,
+  useSubmitterUserFilters,
 } from './useAdmin';

@@ -56,14 +56,34 @@ const getSubmitterUsers = async (params: any) => {
 };
 
 export const useSubmitterUsers = (
-  page?: number
+  status?: string,
+  payor_code?: string,
+  page?: number,
 ): UseQueryResult<SubmitterUserResult> => {
-  const params: { page?: number } = {
+  const params: { status?: string, payor_code?: string, page?: number } = {
+    status, 
+    payor_code, 
     page,
   };
   const query = useQuery(['submitterUsers', params], () =>
     getSubmitterUsers(params)
   ) as UseQueryResult<SubmitterUserResult>;
+
+  return { ...query };
+};
+
+const getSubmitterUsersFilters = async () => {
+  const url = `/administration/view-submitter-users/api/options`;
+  const response = await fetchUtil({ url });
+  return response;
+};
+
+export const useSubmitterUserFilters = (): UseQueryResult<FilterOptions> => {
+  const query = useQuery(['submitteruserfilters'], () => getSubmitterUsersFilters(), {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  }) as UseQueryResult<FilterOptions>;
 
   return { ...query };
 };
