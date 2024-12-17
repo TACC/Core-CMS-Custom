@@ -160,17 +160,27 @@ def get_submitter_users():
         query = """
         SELECT DISTINCT submitter_users.submitter_id,
         submitter_users.user_id,
-        submitter_users.user_number,
-        users.user_email,
         users.user_name,
-        submissions.payor_code
+        users.org_name,
+        roles.role_name,
+        users.active,
+        users.user_number,
+        submissions.payor_code,
+        users.role_id,
+        users.user_email,
+        users.notes,
+        submitters.org_name
         FROM submitter_users
         JOIN users
-           ON submitter_users.user_id = users.user_id
-           AND submitter_users.user_number = users.user_number
+            ON submitter_users.user_id = users.user_id
+            AND submitter_users.user_number = users.user_number
         JOIN submissions
             ON submitter_users.submitter_id = submissions.submitter_id
-            ORDER BY submitter_users.user_id;
+        JOIN roles 
+            ON roles.role_id = users.role_id
+        JOIN submitters
+            ON submitter_users.submitter_id = submitters.submitter_id
+        ORDER BY submitter_users.user_id;
         """
         cur = conn.cursor()
         cur.execute(query)
