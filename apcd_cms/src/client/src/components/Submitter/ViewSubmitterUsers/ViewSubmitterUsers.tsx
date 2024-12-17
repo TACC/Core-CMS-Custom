@@ -29,7 +29,6 @@ export const ViewSubmitterUsers: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useSubmitterUserFilters();
-  console.log(filterData);
 
   const [status, setStatus] = useState('Active');
   const [org, setOrg] = useState('All');

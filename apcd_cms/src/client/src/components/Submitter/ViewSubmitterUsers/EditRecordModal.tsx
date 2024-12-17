@@ -64,8 +64,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
 
       setSuccessModalOpen(true);
     } catch (error: any) {
-      console.error('Error saving data:', error);
-      console.log(url);
       if (error.response && error.response.data) {
         // Use error message from the server response
         setErrorMessage(
