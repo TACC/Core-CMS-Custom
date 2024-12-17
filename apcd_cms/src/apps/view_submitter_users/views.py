@@ -58,11 +58,11 @@ class ViewSubmitterUsersTable(TemplateView):
         try:
             status_options = ['All', 'Active', 'Inactive']
             user_content = get_submitter_users()
-            user_list = sorted(list(set(user[7] if user[7] else 'None' for user in user_content)))
-            payor_code_options = ['All'] + user_list
+            user_list = sorted(list(set(user[11] if user[11] else 'None' for user in user_content)))
+            org_options = ['All'] + user_list
             return JsonResponse({
                 'status_options': status_options,
-                'payor_code_options': payor_code_options,
+                'org_options': org_options,
             })
         except Exception as e:
             logger.error("Error fetching options data: %s", e)
@@ -151,7 +151,8 @@ class ViewSubmitterUsersTable(TemplateView):
                 'role_name': usr['role_name'],
                 'status': usr['status'],
                 'user_number': usr['user_number'],
-                'payor_code': usr['org_name'], # Show payor_code as org_name
+                # Show payor_code as org_name
+                'payor_code': usr['org_name'],
                 'role_id': usr['role_id'],
                 'user_email': usr['user_email'],
                 'notes': usr['notes'],

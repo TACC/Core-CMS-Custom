@@ -29,10 +29,10 @@ export const ViewSubmitterUsers: React.FC = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useSubmitterUserFilters();
+  console.log(filterData);
 
   const [status, setStatus] = useState('Active');
-  const [payor_code, setPayorCode] = useState('All');
-  // const [org, setOrg] = useState('All');
+  const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
 
   const {
@@ -40,7 +40,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     isLoading,
     isError,
     refetch,
-  } = useSubmitterUsers(status, payor_code, page);
+  } = useSubmitterUsers(status, org, page);
 
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -51,7 +51,7 @@ export const ViewSubmitterUsers: React.FC = () => {
 
   const clearSelections = () => {
     setStatus('Active');
-    setPayorCode('All');
+    setOrg('All');
     setPage(1);
   };
 
@@ -134,16 +134,16 @@ export const ViewSubmitterUsers: React.FC = () => {
           <select
             id="payorCodeFilter"
             className="payor-code-filter"
-            value={payor_code}
-            onChange={(e) => setPayorCode(e.target.value)}
+            value={org}
+            onChange={(e) => setOrg(e.target.value)}
           >
-            {filterData?.payor_code_options.map((payor_code, index) => (
-              <option className="dropdown-text" key={index} value={payor_code}>
-                {payor_code}
+            {filterData?.org_options.map((org, index) => (
+              <option className="dropdown-text" key={index} value={org}>
+                {org}
               </option>
             ))}
           </select>
-          {status !== 'Active' || payor_code !== 'All' ? (
+          {status !== 'Active' || org !== 'All' ? (
             <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
