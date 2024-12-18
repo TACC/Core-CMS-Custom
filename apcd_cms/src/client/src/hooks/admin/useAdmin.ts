@@ -40,10 +40,7 @@ const getUsersFilters = async () => {
 };
 
 export const useUserFilters = (): UseQueryResult<FilterOptions> => {
-  const query = useQuery(['userfilters'], () => getUsersFilters(), {
-    cacheTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  }) as UseQueryResult<FilterOptions>;
+  const query = useQuery(['userfilters'], () => getUsersFilters()) as UseQueryResult<FilterOptions>;
 
   return { ...query };
 };
@@ -74,10 +71,7 @@ const getSubmissionFilters = async () => {
 };
 
 export const useSubmissionFilters = (): UseQueryResult<FilterOptions> => {
-  const query = useQuery(['submissionFilters'], () => getSubmissionFilters(), {
-    cacheTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  }) as UseQueryResult<FilterOptions>;
+  const query = useQuery(['submissionFilters'], () => getSubmissionFilters()) as UseQueryResult<FilterOptions>;
 
   return { ...query };
 };

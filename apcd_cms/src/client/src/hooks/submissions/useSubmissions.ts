@@ -10,10 +10,7 @@ const getSubmissionFilters = async () => {
 };
 
 export const useSubmissionFilters = (): UseQueryResult<FilterOptions> => {
-  const query = useQuery(['submissionFilters'], () => getSubmissionFilters(), {
-    cacheTime: 10 * 60 * 1000,
-    refetchOnWindowFocus: false,
-  }) as UseQueryResult<FilterOptions>;
+  const query = useQuery(['submissionFilters'], () => getSubmissionFilters()) as UseQueryResult<FilterOptions>;
 
   return { ...query };
 };
