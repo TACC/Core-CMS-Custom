@@ -69,7 +69,7 @@
                       name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
                   <select name='applicable-data-period_1' required='required' id='applicable-data-period_1'>
                     <option class="dropdown-text" value=''>-- Select period --</option>
-                    {% for data_period in applicable_data_periods %}
+                    {% for data_period in submitters.0.applicable_data_periods %}
                     <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
                     {% endfor %}
                   </select>
@@ -295,7 +295,7 @@
                   name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
                   <select name='applicable-data-period_${extensions}' required='required' id='applicable-data-period_${extensions}'>
                     <option class="dropdown-text" value=''>-- Select period --</option>
-                    {% for data_period in applicable_data_periods %}
+                    {% for data_period in submitter.0.applicable_data_periods %}
                     <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
                     {% endfor %}
                   </select>
@@ -344,12 +344,31 @@
       };
       return extensions
     };
+    // To populate applicable data periods dropdown on choosing submitter (only used when user has >1 submitter)
+    function setApplicablePeriods(submitter_id, extensions) {
+      let submitterList = JSON.parse("{{ submitters | safe }}".replaceAll(`'`, `\"`).replaceAll('None', null));
+      let dataPeriodsList = submitterList.find(submitter => submitter.submitter_id == submitter_id).applicable_data_periods;
+      let applicableDataDropdown = $(`#applicable-data-period_${extensions}`);
+      let expectedDate = $(`#current-expected-date_${extensions}`); // also need to clear out expected date
+      let hiddenDate = $(`#hidden-current-expected-date_${extensions}`);
+
+      applicableDataDropdown.find('option').not(':first').remove(); // remove all data period options, prep for repopulating
+      expectedDate.val('');
+      hiddenDate.val('');
+
+      for (var i = 0; i < dataPeriodsList.length; i++) {
+        var dataPeriod = dataPeriodsList[i];
+        var dataPeriodOption = new Option(dataPeriod, dataPeriod)
+        applicableDataDropdown.append(dataPeriodOption)
+      }
+    }
+
     // To access previously hidden extension blocks and populate with info from AJAX call.
     function setExpectedDate(applicable_data_period, extensions) {
       let expectedDate = $(`#current-expected-date_${extensions}`);
       let hiddenDate = $(`#hidden-current-expected-date_${extensions}`);
+      const submitter_id = $(`#business-name_${extensions}`).val();
       // Gets submitter id from view context to pass to db call
-      const submitter_id = "{{ submitters.0.submitter_id}}"
       $.ajax({
         url: "{% url 'extension:get-expected-date' %}",
         type: 'GET',
@@ -371,6 +390,10 @@
     $(document).ready(function() {
       let extensions = 1;
       btnStatus(extensions);
+      $('[id^="business-name"]').change(function() {
+        let subId = $(this).val();
+        setApplicablePeriods(subId, extensions);
+      })
       $('[id^="requested-target-date"]').click(function() {
         let field = $(this).attr('id');
         restrictExpirationDate(field, extensions);
