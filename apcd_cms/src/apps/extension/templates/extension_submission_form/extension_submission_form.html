@@ -295,7 +295,7 @@
                   name="extension-date-asterisk"><span class="asterisk">*</span></label></label>
                   <select name='applicable-data-period_${extensions}' required='required' id='applicable-data-period_${extensions}'>
                     <option class="dropdown-text" value=''>-- Select period --</option>
-                    {% for data_period in submitter.0.applicable_data_periods %}
+                    {% for data_period in submitters.0.applicable_data_periods %}
                     <option class="dropdown-text" value={{data_period}}>{{data_period}}</option>
                     {% endfor %}
                   </select>
@@ -390,10 +390,11 @@
     $(document).ready(function() {
       let extensions = 1;
       btnStatus(extensions);
-      $('[id^="business-name"]').change(function() {
+      $('[id="business-name"]').change(function() {
         let subId = $(this).val();
-        setApplicablePeriods(subId, extensions);
-      })
+        let extensionsNum = $(this).attr('id').slice(-1);
+        setApplicablePeriods(subId, extensionsNum);
+      });
       $('[id^="requested-target-date"]').click(function() {
         let field = $(this).attr('id');
         restrictExpirationDate(field, extensions);
@@ -413,6 +414,11 @@
       // To track how many extension blocks there are for button logic
         extensions = addExtension(extensions);
         btnStatus(extensions);
+        $('[id^="business-name"]').change(function() {
+          let subId = $(this).val();
+          let extensionsNum = $(this).attr('id').slice(-1);
+          setApplicablePeriods(subId, extensionsNum);
+        });
       // Gets applicable data period for additional added blocks
         $('[id^="applicable-data-period"]').change(function() {
           let appDataValue = $(this).val();
