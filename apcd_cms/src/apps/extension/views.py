@@ -26,24 +26,27 @@ class ExtensionFormView(TemplateView):
 
         self.request.session['submitters'] = submitters
 
-        def _set_submitter(sub):
+        def _set_submitter(sub, applicable_data_periods):
             return {
                 "submitter_id": sub[0],
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
-                "entity_name": title_case(sub[4])
+                "entity_name": title_case(sub[4]),
+                "applicable_data_periods": applicable_data_periods
             }
         context["submitters"] = []
         context["applicable_data_periods"] = []
 
-        for submitter in submitters: 
-            context['submitters'].append(_set_submitter(submitter))
+        for submitter in submitters:
             applicable_data_periods = apcd_database.get_applicable_data_periods(submitter[0])
+            data_periods = []
             for data_period_tuple in applicable_data_periods:
                 for data_period in data_period_tuple:
                     data_period = _get_applicable_data_period(data_period)
-                    context['applicable_data_periods'].append(data_period)
+                    data_periods.append(data_period)
+            data_periods = sorted(data_periods, reverse=True)
+            context['submitters'].append(_set_submitter(submitter, data_periods))
 
         context['applicable_data_periods'] = sorted(context['applicable_data_periods'], reverse=True)
         return context
