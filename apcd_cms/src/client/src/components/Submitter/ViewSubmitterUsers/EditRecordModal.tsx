@@ -3,12 +3,13 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Button,
   Label,
   FormGroup,
   Row,
   Col,
+  Alert
 } from 'reactstrap';
+import Button from 'core-components/Button';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
@@ -28,8 +29,8 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
   user,
   onEditSuccess,
 }) => {
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   if (!user) return null;
@@ -52,6 +53,8 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
     const { user_number } = values;
     const url = `administration/users/${user_number}/`;
     try {
+      setShowSuccessMessage(false);
+      setShowErrorMessage(false);
       const response = await fetchUtil({
         url,
         method: 'PUT',
@@ -62,7 +65,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
         onEditSuccess(response);
       }
 
-      setSuccessModalOpen(true);
+      setShowSuccessMessage(true);
     } catch (error: any) {
       if (error.response && error.response.data) {
         // Use error message from the server response
@@ -76,7 +79,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
           'An error occurred while saving the data. Please try again.'
         );
       }
-      setErrorModalOpen(true);
+      setShowErrorMessage(true);
     } finally {
       setSubmitting(false);
     }
@@ -195,11 +198,16 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                   </Col>
                 </Row>
                 <br />
+                <Alert color="success" isOpen={showSuccessMessage}>
+                  Success: The user data has been successfully updated.
+                </Alert>
+                <Alert color="danger" isOpen={showErrorMessage}>
+                  Error: {errorMessage}
+                </Alert>
                 <Button
-                  type="submit"
-                  color="primary"
+                  type="primary"
+                  attr="submit"
                   disabled={isSubmitting}
-                  className={styles.customSubmitButton}
                 >
                   Submit
                 </Button>
@@ -220,44 +228,6 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
             ))}
           </div>
         </ModalBody>
-      </Modal>
-
-      <Modal
-        isOpen={successModalOpen}
-        toggle={() => setSuccessModalOpen(false)}
-        className={styles.customModal}
-      >
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>Success</Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={toggle}
-          >
-            <span aria-hidden="true">&#xe912;</span>
-          </button>
-        </div>
-        <ModalBody>
-          The submitter user data has been successfully updated.
-        </ModalBody>
-      </Modal>
-
-      <Modal
-        isOpen={errorModalOpen}
-        toggle={() => setErrorModalOpen(false)}
-        className={styles.customModal}
-      >
-        <div className={`modal-header ${styles.modalHeader}`}>
-          <Label className={styles.customModalTitle}>Error</Label>
-          <button
-            type="button"
-            className={`close ${styles.customCloseButton}`}
-            onClick={toggle}
-          >
-            <span aria-hidden="true">&#xe912;</span>
-          </button>
-        </div>
-        <ModalBody>{errorMessage}</ModalBody>
       </Modal>
     </>
   );

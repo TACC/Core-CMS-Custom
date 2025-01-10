@@ -80,7 +80,6 @@ export const ViewSubmitterUsers: React.FC = () => {
   const handleEditSuccess = (updatedUser: SubmitterUserRow) => {
     // Refresh user data after editing is successful
     refetch();
-    setEditModalOpen(false);
   };
 
   const closeModal = () => {
@@ -186,7 +185,7 @@ export const ViewSubmitterUsers: React.FC = () => {
               )
             ) : (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center' }}>
+                <td colSpan={9} style={{ textAlign: 'center' }}>
                   No Data available
                 </td>
               </tr>
