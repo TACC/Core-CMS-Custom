@@ -1,1 +1,8 @@
-/* No unique project styles yet */
+/* ... */
+
+/* NEWS */
+
+/* To hide "Uncategorized" category text */
+.category_none {
+  display: none;
+}
