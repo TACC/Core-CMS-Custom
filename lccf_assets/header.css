@@ -3,7 +3,7 @@
     height: 80px;
 }
 
-/* To increase vertical space of header*/
+/* To increase vertical space of header */
 .s-header.navbar {
     --nav-padding-vert: 10px;
 }
@@ -15,7 +15,7 @@
     }
 }
 
-/* To fix nav link which does not vertically align if logo is larger */
+/* To fix nav link alignment regardless the nav padding */
 /* TODO: Fix this in Core-Styles instead */
 :root {
     /* NOTE: Use this in Core-Styles `.s-header { … border-bottom: … }` */
