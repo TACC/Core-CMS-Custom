@@ -130,7 +130,6 @@ class ViewSubmitterUsersTable(TemplateView):
         if status != 'All':
             user_list = [user for user in user_list if user['status'] == status]
 
-        logger.error(user_list, status)
         if payor_code != 'All':
             user_list = [user for user in user_list if user['org_name'] == payor_code]
 
