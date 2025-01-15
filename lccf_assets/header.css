@@ -2,6 +2,8 @@
 .portal-logo {
     height: 80px;
 }
+
+/* To increase vertical space of header*/
 .s-header.navbar {
     --nav-padding-vert: 10px;
 }
@@ -13,20 +15,27 @@
     }
 }
 
-/* To fix position (given header resize code that does not consider everything) */
-.s-header .nav-link {
-    top: unset;
-}
-
-/* To accomodate dark logo */
-/*
+/* To fix nav link which does not vertically align if logo is larger */
+/* TODO: Fix this in Core-Styles instead */
 :root {
-  --header-text-color: var(--global-color-primary--x-dark);
-  --header-bkgd-color: var(--global-color-primary--x-light);
-  --header-minor-border-color: var(--global-color-primary--normal);
-  --header-major-border-color: var(--global-color-primary--normal);
-  --header-search-brdr-color: #D8D8D8;
-  --header-search-bkgd-color: var(--global-color-primary--xx-light);
-  --menu-toggle-icon: invert(100%);
+    /* NOTE: Use this in Core-Styles `.s-header { … border-bottom: … }` */
+    --header-major-border-width: 1px;
 }
-*/
+.s-header .nav-link {
+    --move-text-back-to-middle: var(--nav-padding-vert);
+    --move-underline-to-bottom: calc( var(--nav-padding-vert) + var(--header-major-border-width) );
+    border-color: var(--header-bkgd-color);
+    border-style: solid;
+    border-width: 0 0 var(--border-width);
+    /* HACK: To overwrite pseudo states use !important (not needed once in Core-Styles) */
+    margin-bottom: calc(var(--move-underline-to-bottom) * -1) !important;
+    height: calc( 100% + var(--move-underline-to-bottom) + var(--move-text-back-to-middle) );
+    top: calc( var(--move-text-back-to-middle) * -1 );
+    line-height: unset;
+}
+.s-header .nav-item.active .nav-link,
+.s-header .nav-link:active,
+.s-header .nav-link:focus,
+.s-header .nav-link:hover {
+    border-color: var(--global-color-secondary--light);
+}
