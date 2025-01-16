@@ -1,0 +1,26 @@
+/* To change shape of content across one or more rows */
+[class*="container"]:has(> .row:only-child) {
+    color: green;
+    .row:only-child .col-dark {
+        clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
+    }
+}
+[class*="container"]:has(> .row:nth-child(2)) {
+    & .row:nth-child(1) .col-dark {
+        clip-path: polygon(0 0, 100% 0%, 87.5% 100%, 0% 100%);
+    }
+    & .row:nth-child(2) .col-dark {
+        clip-path: polygon(0 0, 87.5% 0%, 75% 100%, 0% 100%);
+    }
+}
+[class*="container"]:has(> .row:nth-child(3)) {
+    & .row:nth-child(1) .col-dark {
+        clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
+    }
+    & .row:nth-child(2) .col-dark {
+        clip-path: polygon(0 0, 90% 0%, 80% 100%, 0% 100%);
+    }
+    & .row:nth-child(3) .col-dark {
+        clip-path: polygon(0 0, 80% 0%, 70% 100%, 0% 100%);
+    }
+}

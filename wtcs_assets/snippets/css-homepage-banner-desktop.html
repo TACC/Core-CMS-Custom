@@ -1,0 +1,73 @@
+<style id="css-banner">
+/* BANNER */
+.banner {
+    overflow: hidden;
+}
+.banner:not(.col) {
+    position: relative; /* to anchor child positions */
+}
+
+/* BANNER / BOOTSTRAP COMPATIBILITY */
+.banner.col,
+.col:has(.banner) {
+    padding-inline: unset; /* to undo Bootstrap */
+}
+
+/* BANNER TEXT */
+.banner__text {
+    /* To place atop banner image */
+    position: absolute;
+    z-index: 1;
+
+    /* To draw a circle */
+    clip-path: circle(100% at left center);
+    background-color: var(--global-color-tertiary--normal);
+
+    /* To size container */
+    width: 50%;
+    height: 100%;
+
+    /* To position content */
+    padding-left: 36px; /* .s-header --nav-padding-horz */
+    padding-top: 35px;
+}
+.banner__title,
+.banner__desc {
+    color: var(--global-color-primary--xx-light);
+}
+.banner__logo {
+    max-width: 160px;
+    width: 15vw;
+}
+.banner__title {
+    font-size: max(
+        2.5vw, /* approx. 30px on "wide screen" */
+        var(--global-font-size--x-large) /* i.e. 21px */
+    );
+    font-weight: normal; /* to reduce standard weight */
+
+    margin-block: 0.625em;
+}
+.banner__desc {
+    font-size: max(
+        1.25vw, /* approx. 15px on "wide screen" */
+        var(--global-font-size--medium) /* i.e. 14px */
+    );
+
+    margin-bottom: unset; /* to undo Bootstrap */
+}
+
+/* BANNER IMAGE */
+.banner__image {
+    /* To size and position image */
+    position: relative;
+    left: 40%;
+    width: 70%;
+}
+.banner--test-fix .banner__image {
+    object-fit: cover;
+    object-position: left 20%;
+    left: 30%;
+    max-height: 600px;
+}
+</style>
