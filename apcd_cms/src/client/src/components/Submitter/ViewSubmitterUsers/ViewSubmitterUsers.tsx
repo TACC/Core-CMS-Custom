@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
-import { SubmitterUserRow, useSubmitterUsers } from 'hooks/admin';
+import {
+  SubmitterUserRow,
+  useSubmitterUsers,
+  useSubmitterUserFilters,
+} from 'hooks/admin';
 import ViewRecordModal from './ViewRecordModal';
 import EditRecordModal from './EditRecordModal';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import Paginator from 'core-components/Paginator';
 import styles from './ViewSubmitterUsers.module.scss';
+import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const ViewSubmitterUsers: React.FC = () => {
   const header = [
     'Submitter ID',
     'User ID',
-    'User Number',
-    'User Email',
     'User Name',
+    'Entity Organization',
+    'Role',
+    'Status',
+    'User Number',
     'Payor Code',
     'Actions',
   ];
 
+  const {
+    data: filterData,
+    isLoading: isFilterLoading,
+    isError: isFilterError,
+  } = useSubmitterUserFilters();
+
+  const [status, setStatus] = useState('Active');
+  const [org, setOrg] = useState('All');
   const [page, setPage] = useState(1);
 
   const {
@@ -24,7 +39,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     isLoading,
     isError,
     refetch,
-  } = useSubmitterUsers(page);
+  } = useSubmitterUsers(status, org, page);
 
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -34,6 +49,8 @@ export const ViewSubmitterUsers: React.FC = () => {
   const [dropdownValue, setDropdownValue] = useState<string>('');
 
   const clearSelections = () => {
+    setStatus('Active');
+    setOrg('All');
     setPage(1);
   };
 
@@ -63,7 +80,6 @@ export const ViewSubmitterUsers: React.FC = () => {
   const handleEditSuccess = (updatedUser: SubmitterUserRow) => {
     // Refresh user data after editing is successful
     refetch();
-    setEditModalOpen(false);
   };
 
   const closeModal = () => {
@@ -72,7 +88,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     setSelectedUser(null);
   };
 
-  if (isLoading) {
+  if (isFilterLoading || isLoading) {
     return (
       <div className="loading-placeholder">
         <LoadingSpinner />
@@ -80,7 +96,7 @@ export const ViewSubmitterUsers: React.FC = () => {
     );
   }
 
-  if (isError) {
+  if (isFilterError || isError) {
     return <div>Error loading data</div>;
   }
 
@@ -90,6 +106,46 @@ export const ViewSubmitterUsers: React.FC = () => {
       <hr />
       <p style={{ marginBottom: '30px' }}>View all submitter users.</p>
       <hr />
+      <div className="filter-container">
+        <div className="filter-content">
+          {/* Filter by Status */}
+          <span>
+            <b>Filter by Status: </b>
+          </span>
+          <select
+            id="statusFilter"
+            className="status-filter"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            {filterData?.status_options.map((status, index) => (
+              <option className="dropdown-text" key={index} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          {/* Filter by Payor Code */}
+          <span>
+            <b>Filter by Payor Code: </b>
+          </span>
+          <select
+            id="payorCodeFilter"
+            className="payor-code-filter"
+            value={org}
+            onChange={(e) => setOrg(e.target.value)}
+          >
+            {filterData?.org_options.map((org, index) => (
+              <option className="dropdown-text" key={index} value={org}>
+                {org}
+              </option>
+            ))}
+          </select>
+          {status !== 'Active' || org !== 'All' ? (
+            <ClearOptionsButton onClick={clearSelections} />
+          ) : null}
+        </div>
+      </div>
       <div>
         <table id="viewSubmitterUserTable" className="submitter-users-table">
           <thead>
@@ -106,9 +162,11 @@ export const ViewSubmitterUsers: React.FC = () => {
                   <tr key={rowIndex}>
                     <td>{user.submitter_id}</td>
                     <td>{user.user_id}</td>
-                    <td>{user.user_number}</td>
-                    <td>{user.user_email}</td>
                     <td>{user.user_name}</td>
+                    <td>{user.entity_name}</td>
+                    <td>{user.role_name}</td>
+                    <td>{user.status}</td>
+                    <td>{user.user_number}</td>
                     <td>{user.payor_code}</td>
                     <td>
                       <select
@@ -127,7 +185,7 @@ export const ViewSubmitterUsers: React.FC = () => {
               )
             ) : (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center' }}>
+                <td colSpan={9} style={{ textAlign: 'center' }}>
                   No Data available
                 </td>
               </tr>

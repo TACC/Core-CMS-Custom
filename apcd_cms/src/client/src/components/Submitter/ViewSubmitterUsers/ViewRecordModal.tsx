@@ -43,9 +43,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           </Row>
           <Row className={styles.SubmitterUserRow}>
             <Col sm="3" className={styles.userkey}>
-              User Number:
+              Name:
             </Col>
-            <Col sm="9">{user.user_number}</Col>
+            <Col sm="9">{user.user_name}</Col>
           </Row>
           <Row className={styles.SubmitterUserRow}>
             <Col sm="3" className={styles.userkey}>
@@ -53,17 +53,41 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </Col>
             <Col sm="9">{user.user_email}</Col>
           </Row>
+          <Row className={styles.userRow}>
+            <Col sm="3" className={styles.userkey}>
+              Entity Organization:
+            </Col>
+            <Col sm="9">{user.entity_name}</Col>
+          </Row>
+          <Row className={styles.userRow}>
+            <Col sm="3" className={styles.userkey}>
+              Role:
+            </Col>
+            <Col sm="9">{user.role_name}</Col>
+          </Row>
+          <Row className={styles.userRow}>
+            <Col sm="3" className={styles.userkey}>
+              Status:
+            </Col>
+            <Col sm="9">{user.status}</Col>
+          </Row>
           <Row className={styles.SubmitterUserRow}>
             <Col sm="3" className={styles.userkey}>
-              Name:
+              User Number:
             </Col>
-            <Col sm="9">{user.user_name}</Col>
+            <Col sm="9">{user.user_number}</Col>
           </Row>
           <Row className={styles.SubmitterUserRow}>
             <Col sm="3" className={styles.userkey}>
               Payor Code:
             </Col>
             <Col sm="9">{user.payor_code}</Col>
+          </Row>
+          <Row className={styles.userRow}>
+            <Col sm="3" className={styles.userkey}>
+              Notes:
+            </Col>
+            <Col sm="9">{user.notes ? user.notes : 'None'}</Col>
           </Row>
         </div>
       </ModalBody>

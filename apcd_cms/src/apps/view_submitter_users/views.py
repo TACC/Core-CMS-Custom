@@ -27,12 +27,14 @@ class ViewSubmitterUsersTable(TemplateView):
         if 'modal' in request.path:
             return self.get_modals(request, kwargs['modal_type'])
         
+        status = request.GET.get('status', 'Active')
+        payor_code = request.GET.get('payor_code', 'All')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
 
         try:
             user_content = get_submitter_users()
-            filtered_users = self.filter_submitter_users(user_content)
+            filtered_users = self.filter_submitter_users(user_content, status, payor_code)
 
             paginator = Paginator(filtered_users, items_per_page)
             page_info = paginator.get_page(page_number)
@@ -51,6 +53,20 @@ class ViewSubmitterUsersTable(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update(self.get_view_users_json(get_submitter_users()))
         return context
+    
+    def get_options(self, request):
+        try:
+            status_options = ['All', 'Active', 'Inactive']
+            user_content = get_submitter_users()
+            user_list = sorted(list(set(user[11] if user[11] else 'None' for user in user_content)))
+            org_options = ['All'] + user_list
+            return JsonResponse({
+                'status_options': status_options,
+                'org_options': org_options,
+            })
+        except Exception as e:
+            logger.error("Error fetching options data: %s", e)
+            return JsonResponse({'error': str(e)}, status=500)
 
     # Retrieves both the View and Edit modals for getting/changing data
     def get_modals(self, request, modal_type):
@@ -92,18 +108,30 @@ class ViewSubmitterUsersTable(TemplateView):
         return HttpResponse(template.render({}, request))
     
     # Filters users based on status and organization
-    def filter_submitter_users(self, users):
+    def filter_submitter_users(self, users, status, payor_code):
         def _set_submitter_user(usr):
             return {
                 'submitter_id': usr[0],
                 'user_id': usr[1],
-                'user_number': usr[2],
-                'user_email': usr[3],
-                'user_name': usr[4],
-                'payor_code': usr[5],
+                'user_name': usr[2],
+                'entity_name': usr[3] if usr[3] else 'None',
+                'role_name': usr[4],
+                'status': 'Active' if usr[5] else 'Inactive',
+                'user_number': usr[6],
+                'payor_code': usr[7],
+                'role_id': usr[8],
+                'user_email': usr[9],
+                'notes': usr[10],
+                'org_name': usr[11],
             }
 
         user_list = [_set_submitter_user(user) for user in users]
+
+        if status != 'All':
+            user_list = [user for user in user_list if user['status'] == status]
+
+        if payor_code != 'All':
+            user_list = [user for user in user_list if user['org_name'] == payor_code]
 
         return user_list
     
@@ -118,10 +146,17 @@ class ViewSubmitterUsersTable(TemplateView):
             return {
                 'submitter_id': usr['submitter_id'],
                 'user_id': usr['user_id'],
-                'user_number': usr['user_number'],
-                'user_email': usr['user_email'],
                 'user_name': usr['user_name'],
-                'payor_code': usr['payor_code'],
+                'entity_name': usr['entity_name'],
+                'role_name': usr['role_name'],
+                'status': usr['status'],
+                'user_number': usr['user_number'],
+                # Show payor_code as org_name
+                'payor_code': usr['org_name'],
+                'role_id': usr['role_id'],
+                'user_email': usr['user_email'],
+                'notes': usr['notes'],
+                'org_name': usr['org_name'],
                 'view_link': f"/administration/view-user-details/{usr['user_id']}",
                 'edit_link': f"/administration/edit-user/{usr['user_id']}",
             }
