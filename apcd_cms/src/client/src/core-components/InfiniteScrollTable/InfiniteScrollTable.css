@@ -1,0 +1,79 @@
+.InfiniteScrollTable {
+  --cell-horizontal-padding: 0.35em; /* horizontal cell padding for inter-column buffer */
+
+  /* To force `width: 100%` to have effect when table is wider than container
+    (use case is any very narrow table, such as when screen is very narrow) */
+  /* FAQ: Table is wider than container when row content is wider than table */
+  /* CAVEAT: All tables' column widths must be % values whose sum is 100% */
+  /* SEE: https://stackoverflow.com/a/6601257 */
+  table-layout: fixed;
+
+  max-height: inherit; /* inherit max-height from parent wrapper */
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  & thead {
+    user-select: none;
+    color: var(--global-color-primary--x-dark);
+    border-bottom: 1px solid #707070;
+
+    & .-sort-asc,
+    & .sort-desc {
+      color: var(--global-color-primary--xx-dark);
+    }
+
+    /* Match horizontal padding of `td` elements in table to align properly */
+    & th {
+      padding-left: var(--cell-horizontal-padding);
+      padding-right: var(--cell-horizontal-padding);
+
+      border-bottom: 1px solid #707070;
+      background-color: var(--global-color-background--app);
+    }
+  }
+
+  & tbody {
+    & tr {
+      & button {
+        white-space: normal;
+      }
+      & link {
+        white-space: normal;
+      }
+      & .-status {
+        box-sizing: border-box;
+      }
+      & .-status td {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        text-align: center;
+      }
+    }
+    & tr:not(.-status) td {
+      border-bottom: 1px solid rgb(0 0 0 / 10%);
+    }
+    & tr:nth-child(even):not(.-status) {
+      background-color: rgb(0 0 0 / 3%);
+    }
+    & tr:hover:not(.-status) {
+      background-color: rgb(0 0 0 / 5%);
+    }
+
+    & tr:not(.-status) td {
+      vertical-align: middle;
+      padding: 0.7em var(--cell-horizontal-padding);
+      margin: auto 0; /* vertically center span content */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  /* Allow cell width to propogate to common child elements */
+  & td > a,
+  & td > span {
+    /* Stretch cell content to fit available space */
+    /* NOTE: Intentionally ineffectual when elements are `display: inline` */
+    width: 100%;
+  }
+}

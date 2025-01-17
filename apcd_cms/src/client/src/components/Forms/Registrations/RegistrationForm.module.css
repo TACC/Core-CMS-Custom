@@ -1,0 +1,24 @@
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.isRequired {
+  color: red;
+}
+
+.contactsAndEntitiesButtons {
+  background-color: var(--global-color-accent--normal);
+  border-color: var(--global-color-accent--normal);
+  color: var(--global-color-primary--xx-light);
+}
+
+.boldedHeader {
+  font-weight: bold;
+}
+
+.spacedHeader {
+  margin-top: 2rem;
+}

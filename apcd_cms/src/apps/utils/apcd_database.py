@@ -9,6 +9,17 @@ logger = logging.getLogger(__name__)
 APCD_DB = settings.APCD_DATABASE
 
 
+def db_connect():
+    return psycopg.connect(
+        host=APCD_DB['host'],
+        dbname=APCD_DB['database'],
+        user=APCD_DB['user'],
+        password=APCD_DB['password'],
+        port=APCD_DB['port'],
+        sslmode='require'
+    )
+
+
 def get_users():
     cur = None
     conn = None
@@ -38,7 +49,7 @@ def get_users():
         LEFT JOIN submitter_users ON users.user_id = submitter_users.user_id
         AND users.user_number = submitter_users.user_number
         LEFT JOIN submitters on submitter_users.submitter_id = submitters.submitter_id
-        ORDER BY submitters.entity_name ASC;
+        ORDER BY submitters.entity_name, users.user_id ASC;
         """
         cur = conn.cursor()
         cur.execute(query)
@@ -52,7 +63,7 @@ def get_users():
             cur.close()
         if conn is not None:
             conn.close()
-            
+
 def update_user(form):
     cur = None
     conn = None
@@ -141,6 +152,48 @@ def get_user_role(user):
         if conn is not None:
             conn.close()
 
+def get_submitter_users():
+    cur = None
+    conn = None
+    try:
+        conn = db_connect()
+        query = """
+        SELECT DISTINCT submitter_users.submitter_id,
+        submitter_users.user_id,
+        users.user_name,
+        users.org_name,
+        roles.role_name,
+        users.active,
+        users.user_number,
+        submissions.payor_code,
+        users.role_id,
+        users.user_email,
+        users.notes,
+        submitters.org_name
+        FROM submitter_users
+        JOIN users
+            ON submitter_users.user_id = users.user_id
+            AND submitter_users.user_number = users.user_number
+        JOIN submissions
+            ON submitter_users.submitter_id = submissions.submitter_id
+        JOIN roles 
+            ON roles.role_id = users.role_id
+        JOIN submitters
+            ON submitter_users.submitter_id = submitters.submitter_id
+        ORDER BY submitter_users.user_id;
+        """
+        cur = conn.cursor()
+        cur.execute(query)
+        return cur.fetchall()
+    
+    except Exception as error:
+        logger.error(error)
+    
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
 
 def get_registrations(reg_id=None, submitter_code=None):
     cur = None
@@ -166,9 +219,12 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.state,
                 registrations.zip,
                 registrations.registration_year
-                FROM registrations
-                {f"WHERE registration_id = {str(reg_id)}" if reg_id is not None else ''}
-                {f"LEFT JOIN registration_submitters on registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id WHERE submitter_code = ANY(%s) ORDER BY registrations.registration_id" if submitter_code is not None else ''}"""
+            FROM registrations
+            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_code is not None else ''}
+            WHERE 1=1
+            {f" AND registrations.registration_id = {str(reg_id)}" if reg_id is not None else ''}
+            {f" AND submitters.submitter_code = ANY(%s)" if submitter_code is not None else ''}
+            ORDER BY registrations.registration_id"""
         cur = conn.cursor()
         if submitter_code:
             cur.execute(query, (submitter_code,))
@@ -214,11 +270,11 @@ def create_registration(form, renewal=False):
         RETURNING registration_id"""
         values = (
             datetime.now(),
-            True if form['on-behalf-of'] == 'true' else False,
+            True if form['on_behalf_of'] == 'true' else False,
             'Received',
             form['type'],
-            _clean_value(form['business-name']),
-            _clean_value(form['mailing-address']),
+            _clean_value(form['business_name']),
+            _clean_value(form['mailing_address']),
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
@@ -267,11 +323,11 @@ def update_registration(form, reg_id):
         WHERE registration_id = %s
         RETURNING registration_id"""
         values = (
-            True if form['on-behalf-of'] == 'true' else False,
+            True if form['on_behalf_of'] == 'true' else False,
             form['reg_status'],
             form['type'],
-            _clean_value(form['business-name']),
-            _clean_value(form['mailing-address']),
+            _clean_value(form['business_name']),
+            _clean_value(form['mailing_address']),
             _clean_value(form['city']),
             form['state'][:2],
             form['zip_code'],
@@ -339,31 +395,31 @@ def get_registration_entities(reg_id=None, submitter_code=None):
             conn.close()
 
 
-def create_registration_entity(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
+def create_registration_entity(entity, reg_id, from_update_reg=None):#, old_reg_id=None):
     cur = None
     conn = None
     values = ()
     try:
-        if not _acceptable_entity(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
-            return
-        str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
+        #if not _acceptable_entity(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
+        #    return
+        #str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
         values = (
             reg_id,
-            float(form['total_claims_value_{}'.format(str_end)]),
-            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-            form['license_number_{}'.format(str_end)] if len(form['license_number_{}'.format(str_end)]) else None,
-            form['naic_company_code_{}'.format(str_end)] if len(form['naic_company_code_{}'.format(str_end)]) else None,
-            _set_int(form['total_covered_lives_{}'.format(str_end)]),
-            _clean_value(form['entity_name_{}'.format(str_end)]),
-            _clean_value(form['fein_{}'.format(str_end)]),
-            True if 'types_of_plans_commercial_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicare_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicaid_{}'.format(str_end) in form else False,
+            float(entity['total_claims_value']),
+            _set_int(entity['claims_encounters_volume']),
+            _set_int(entity['license_number']),
+            _set_int(entity['naic_company_code']),
+            _set_int(entity['total_covered_lives']),
+            _clean_value(entity['entity_name']),
+            _clean_value(entity['fein']),
+            entity['types_of_plans_commercial'],
+            entity['types_of_plans_medicare'],
+            entity['types_of_plans_medicaid'],
             True,
-            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-            True if 'types_of_files_dental_{}'.format(str_end) in form else False
+            entity['types_of_files_provider'],
+            entity['types_of_files_medical'],
+            entity['types_of_files_pharmacy'],
+            entity['types_of_files_dental']
         )
 
         operation = """INSERT INTO registration_entities(
@@ -408,35 +464,32 @@ def create_registration_entity(form, reg_id, iteration, from_update_reg=None, ol
             conn.close()
 
 
-def update_registration_entity(form, reg_id, iteration, no_entities):
+def update_registration_entity(entity, reg_id):
     cur = None
     conn = None
     values = ()
     try:
-        str_end = f'{iteration}_{reg_id}'
-        if not _acceptable_entity(form, iteration, reg_id):
-            if iteration <= no_entities: # entity is not in form but was in original entity list -> need to delete
-                return delete_registration_entity(reg_id, form['ent_id_{}'.format(str_end)])
-            return
-        if iteration > no_entities: # entity is in form but not in original list -> need to create
-            return create_registration_entity(form, reg_id, iteration, from_update_reg=True)
+        # if entity_id is not there or is less than 0, then 
+        # it is a new entity.
+        if 'entity_id' not in entity or entity['entity_id'] < 0:
+            return create_registration_entity(entity, reg_id)
         values = (
-            float(form['total_claims_value_{}'.format(str_end)]),
-            _set_int(form['claims_encounters_volume_{}'.format(str_end)]),
-            form['license_number_{}'.format(str_end)] if len(form['license_number_{}'.format(str_end)]) else None,
-            form['naic_company_code_{}'.format(str_end)] if len(form['naic_company_code_{}'.format(str_end)]) else None,
-            _set_int(form['total_covered_lives_{}'.format(str_end)]),
-            _clean_value(form['entity_name_{}'.format(str_end)]),
-            _clean_value(form['fein_{}'.format(str_end)]),
-            True if 'types_of_plans_commercial_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicare_{}'.format(str_end) in form else False,
-            True if 'types_of_plans_medicaid_{}'.format(str_end) in form else False,
-            True if 'types_of_files_provider_{}'.format(str_end) in form else False,
-            True if 'types_of_files_medical_{}'.format(str_end) in form else False,
-            True if 'types_of_files_pharmacy_{}'.format(str_end) in form else False,
-            True if 'types_of_files_dental_{}'.format(str_end) in form else False,
+            float(entity['total_claims_value']),
+            _set_int(entity['claims_encounters_volume']),
+            _set_int(entity['license_number']),
+            _set_int(entity['naic_company_code']),
+            _set_int(entity['total_covered_lives']),
+            _clean_value(entity['entity_name']),
+            _clean_value(entity['fein']),
+            entity['types_of_plans_commercial'],
+            entity['types_of_plans_medicare'],
+            entity['types_of_plans_medicaid'],
+            entity['types_of_files_provider'],
+            entity['types_of_files_medical'],
+            entity['types_of_files_pharmacy'],
+            entity['types_of_files_dental'],
             reg_id,
-            form['ent_id_{}'.format(str_end)]
+            entity['entity_id']
         )
         conn = psycopg.connect(
             host=APCD_DB['host'],
@@ -550,33 +603,23 @@ def get_registration_contacts(reg_id=None, submitter_code=None):
             conn.close()
 
 
-def create_registration_contact(form, reg_id, iteration, from_update_reg=None, old_reg_id=None):
+def create_registration_contact(contact, reg_id, from_update_reg=None):
     cur = None
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            if not _acceptable_contact(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
-                return
-            str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
-            values = (
-                reg_id,
-                True if 'contact_notifications_{}'.format(str_end) in form else False,
-                _clean_value(form['contact_type_{}'.format(str_end)]),
-                _clean_value(form['contact_name_{}'.format(str_end)]),
-                re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
-                _clean_email(form['contact_email_{}'.format(str_end)])
-            )
-        else:
-            str_end = f'_{iteration}_{reg_id}' if from_update_reg else (f"_{iteration}_{old_reg_id}" if old_reg_id else "")
-            values = (
-                reg_id,
-                True if f'contact_notifications{str_end}' in form else False,
-                _clean_value(form[f'contact_type{str_end}']),
-                _clean_value(form[f'contact_name{str_end}']),
-                re.sub("[^0-9]", "", form[f'contact_phone{str_end}']),
-                _clean_email(form[f'contact_email{str_end}'])
-            )
+        #if iteration > 1:
+            #if not _acceptable_contact(form, iteration, reg_id if from_update_reg else (old_reg_id if old_reg_id else None)):
+            #    return
+            #str_end = f'{iteration}{ f"_{reg_id}" if from_update_reg else (f"_{old_reg_id}" if old_reg_id else "") }'
+        values = (
+            reg_id,
+            contact['contact_notifications'],
+            _clean_value(contact['contact_type']),
+            _clean_value(contact['contact_name']),
+            re.sub("[^0-9]", "", contact['contact_phone']),
+            _clean_email(contact['contact_email'])
+        )
 
         operation = """INSERT INTO registration_contacts(
             registration_id,
@@ -610,26 +653,24 @@ def create_registration_contact(form, reg_id, iteration, from_update_reg=None, o
             conn.close()
 
 
-def update_registration_contact(form, reg_id, iteration, no_contacts):
+def update_registration_contact(contact, reg_id):
     cur = None
     conn = None
     values = ()
     try:
-        if not _acceptable_contact(form, iteration, reg_id):
-            if iteration <= no_contacts: # contact is not in form but was in original contact list -> need to delete
-                return delete_registration_contact(reg_id, form[f'cont_id_{iteration}'])
-            return
-        if iteration > no_contacts: # contact is in form but not in original list -> need to create
-            return create_registration_contact(form, reg_id, iteration, from_update_reg=True)
-        str_end = f'{iteration}_{reg_id}'
+        # if contact_id is not there or is less than 0, then 
+        # it is a new contact.
+        if 'contact_id' not in contact or contact['contact_id'] < 0:
+            return create_registration_contact(contact, reg_id)
+
         values = (
-            True if 'contact_notifications_{}'.format(str_end) in form else False,
-            _clean_value(form['contact_type_{}'.format(str_end)]),
-            _clean_value(form['contact_name_{}'.format(str_end)]),
-            re.sub("[^0-9]", "", form['contact_phone_{}'.format(str_end)]),
-            _clean_email(form['contact_email_{}'.format(str_end)]),
-            reg_id,
-            form[f'cont_id_{iteration}']
+            contact['contact_notifications'],
+            _clean_value(contact['contact_type']),
+            _clean_value(contact['contact_name']),
+            re.sub("[^0-9]", "", contact['contact_phone']),
+            _clean_email(contact['contact_email']),
+            _set_int(reg_id),
+            _set_int(contact['contact_id'])
         )
         conn = psycopg.connect(
             host=APCD_DB['host'],
@@ -725,14 +766,14 @@ def create_other_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["business-name"],
+            form["otherExceptionBusinessName"],
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
+            _clean_value(form['requestorName']),
+            _clean_email(form['requestorEmail']),
             "Other",
-            _clean_date(form['expiration-date']),
+            _clean_date(form['expirationDateOther']),
             _clean_value(form['justification']),
             "Pending"
         )
@@ -751,7 +792,7 @@ def create_other_exception(form, sub_data):
             conn.close()
 
 
-def create_threshold_exception(form, iteration, sub_data):
+def create_threshold_exception(form, exception, sub_data):
     cur = None
     conn = None
     values = ()
@@ -782,20 +823,20 @@ def create_threshold_exception(form, iteration, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            _clean_value(form['business-name_{}'.format(iteration)]),
+            _clean_value(int(exception['businessName'])),
             sub_data[1],
             sub_data[2],
             sub_data[3],
-            _clean_value(form['requestor-name']),
-            _clean_email(form['requestor-email']),
-            "threshold",
-            _clean_date(form['expiration-date_{}'.format(iteration)]),
-            _clean_value(form['file_type_{}'.format(iteration)]),
-            _clean_value(form['field-threshold-exception_{}'.format(iteration)]),
-            _clean_value(form['threshold-requested_{}'.format(iteration)]),
+            _clean_value(form['requestorName']),
+            _clean_email(form['requestorEmail']),
+            _clean_value(form['exceptionType']),
+            _clean_date(exception['expiration_date']),
+            _clean_value(exception['fileType']),
+            _clean_value(exception['fieldCode']),
+            _clean_value(exception['requested_threshold']),
             _clean_value(form['justification']),
             "pending",
-            _clean_value((form['required_threshold_{}'.format(iteration)])),
+            _clean_value((exception['required_threshold']))
         )
         cur = conn.cursor()
         cur.execute(operation, values)
@@ -849,6 +890,40 @@ def get_cdl_exceptions(file_type):
             conn.close()
 
 
+def get_user_submission_log(log_id, log_type, user=None):
+    cur = None
+    conn = None
+    try:
+        conn = db_connect()
+        log_column_name = 'html_log' if log_type == 'html' else 'json_log'
+        filename_column_name = 'html_path' if log_type == 'html' else 'json_path'
+
+        query = f"""
+            SELECT {log_column_name}, {filename_column_name}
+            FROM submission_logs
+            JOIN submissions ON submissions.submission_id = submission_logs.submission_id
+            JOIN submitter_users ON submissions.submitter_id = submitter_users.submitter_id
+            WHERE submission_logs.log_id = %s AND {log_column_name} IS NOT NULL
+        """
+
+        params = [log_id]
+        # for submitter scenario
+        if user is not None:
+            query += " AND submitter_users.user_id = %s"
+            params.append(user)
+
+        query += " LIMIT 1"
+
+        cur = conn.cursor()
+        cur.execute(query, params)
+        return cur.fetchall()
+    finally:
+        if cur is not None:
+            cur.close()
+        if conn is not None:
+            conn.close()
+
+
 def get_user_submissions_and_logs(user):
     cur = None
     conn = None
@@ -865,18 +940,29 @@ def get_user_submissions_and_logs(user):
             SELECT json_build_object(
                 'submission_id', submissions.submission_id,
                 'submitter_id', submissions.submitter_id,
+                'entity_name', submitters.entity_name,
                 'file_name', submissions.zip_file_name,
                 'status', submissions.status,
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
+                'payor_code', submissions.payor_code,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
                         'submission_id', submission_logs.submission_id,
+                        'entity_name', submitters.entity_name,
                         'file_type', submission_logs.file_type,
                         'validation_suite', submission_logs.validation_suite,
                         'outcome', submission_logs.outcome,
+                        'has_json_log', CASE
+                                        WHEN submission_logs.json_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                    END,
+                        'has_html_log', CASE
+                                        WHEN submission_logs.html_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                        END,
                         'file_type_name', (
                             SELECT standard_codes.item_value FROM standard_codes
                             WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
@@ -888,11 +974,13 @@ def get_user_submissions_and_logs(user):
             FROM submissions
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
+            LEFT JOIN submitters 
+                ON submitters.submitter_id = submissions.submitter_id
             WHERE submissions.submitter_id
             IN (
                 SELECT submitter_users.submitter_id FROM submitter_users 
                 WHERE submitter_users.user_id = %s )
-            GROUP BY (submissions.submission_id)
+            GROUP BY (submissions.submission_id, submitters.entity_name)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -928,18 +1016,32 @@ def get_all_submissions_and_logs():
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
                 'view_modal_content', (
-                    SELECT COALESCE(json_agg(json_build_object(
-                        'log_id', submission_logs.log_id,
-                        'submission_id', submission_logs.submission_id,
-                        'file_type', submission_logs.file_type,
-                        'validation_suite', submission_logs.validation_suite,
-                        'outcome', submission_logs.outcome,
-                        'file_type_name', (
-                            SELECT standard_codes.item_value FROM standard_codes
-                            WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) AND list_name='submission_file_type'
-                            LIMIT 1
-                        )
-                    )), '[]'::json)
+                    SELECT CASE
+                            WHEN COUNT(submission_logs.log_id) = 0 THEN '[]'::json
+                            ELSE json_agg(json_build_object(
+                                'log_id', submission_logs.log_id,
+                                'submission_id', submission_logs.submission_id,
+                                'entity_name', submitters.entity_name,
+                                'file_type', submission_logs.file_type,
+                                'validation_suite', submission_logs.validation_suite,
+                                'outcome', submission_logs.outcome,
+                                'has_json_log', CASE
+                                        WHEN submission_logs.json_log IS NOT NULL THEN 1
+                                        ELSE 0
+                                    END,
+                                'has_html_log', CASE
+                                        WHEN submission_logs.html_log IS NOT NULL THEN 1
+                                        ELSE 1
+                                        END,
+                                'file_type_name', (
+                                    SELECT standard_codes.item_value 
+                                    FROM standard_codes
+                                    WHERE UPPER(submission_logs.file_type) = UPPER(standard_codes.item_code) 
+                                    AND list_name='submission_file_type'
+                                    LIMIT 1
+                                )
+                            ))
+                        END
                 )
             )
             FROM submissions
@@ -960,41 +1062,25 @@ def get_all_submissions_and_logs():
         if conn is not None:
             conn.close()
 
-def create_extension(form, iteration, sub_data):
+def create_extension(form, extension, sub_data):
     cur = None
     conn = None
     values = ()
     try:
-        if iteration > 1:
-            values = (
-                _clean_value(form['business-name_{}'.format(iteration)]),
-                _clean_date(form['requested-target-date_{}'.format(iteration)]),
-                _clean_value(form['extension-type_{}'.format(iteration)]),
-                int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
-                _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
-                "pending",
-                _clean_value(sub_data[1]),
-                _clean_value(sub_data[2]),
-                _clean_value(sub_data[3]),
-                _clean_value(form["requestor-name"]),
-                _clean_email(form["requestor-email"]),
-                _clean_value(form["justification"])
-                )
-        else:
-            values = (
-            _clean_value(form['business-name_{}'.format(iteration)]),
-            _clean_date(form['requested-target-date_{}'.format(iteration)]),
-            _clean_value(form['extension-type_{}'.format(iteration)]),
-            int((form['applicable-data-period_{}'.format(iteration)].replace("-", ""))),
-            _clean_date(form['hidden-current-expected-date_{}'.format(iteration)]),
+        values = (
+            _clean_value(extension['businessName']),
+            _clean_value(extension['requestedTargetDate']),
+            _clean_value(extension['extensionType']),
+            _clean_value(extension['applicableDataPeriod'].replace("-", "")),
+            _clean_value(extension['currentExpectedDate']),
             "pending",
             _clean_value(sub_data[1]),
             _clean_value(sub_data[2]),
             _clean_value(sub_data[3]),
-            _clean_value(form["requestor-name"]),
-            _clean_email(form["requestor-email"]),
+            _clean_value(form["requestorName"]),
+            _clean_email(form["requestorEmail"]),
             _clean_value(form["justification"])
-            )
+        )
 
         operation = """INSERT INTO extensions(
             submitter_id,
@@ -1021,10 +1107,10 @@ def create_extension(form, iteration, sub_data):
         )
         cur = conn.cursor()
         cur.execute(operation, values)
-        conn.commit()         
+        conn.commit()
                 
     except Exception as error:
-        logger.error(error)
+        logger.error('DB error related to extension request creation: %s', error)
         return error
 
     finally:
@@ -1033,68 +1119,54 @@ def create_extension(form, iteration, sub_data):
         if conn is not None:
             conn.close()
 
+
 def update_extension(form):
     cur = None
     conn = None
     try:
-        conn = psycopg.connect(
-            host=APCD_DB['host'],
-            dbname=APCD_DB['database'],
-            user=APCD_DB['user'],
-            password=APCD_DB['password'],
-            port=APCD_DB['port'],
-            sslmode='require'
-        )
-        cur = conn.cursor()
-        operation = """UPDATE extensions
-            SET
-            updated_at= %s,"""
-        
-        set_values = []
-        # to set column names for query to the correct DB name
-        columns = {
-            'applicable-data-period': 'applicable_data_period',
-            'status': 'status',
-            'outcome': 'outcome',
-            'approved-expiration-date': 'approved_expiration_date'
-        }
-        # To make sure fields are not blank. 
-        # If they aren't, add column to update set operation
-        for field, column_name in columns.items():
-            value = form.get(field)
-            if value not in (None, ""):
-                set_values.append(f"{column_name} = %s")
+        with db_connect() as conn:
+            cur = conn.cursor()
+            query = "UPDATE extensions SET updated_at = %s"
+            values = [datetime.now()]  # Timestamp for updated_at
 
-        # to allow notes to be cleared, need to move notes out of the loop that ignores none
-        operation += ", ".join(set_values) + ", notes = %s WHERE extension_id = %s"
-        ## add last update time to all extension updates
-        values = [
-            datetime.now(),
-        ]
-        
-        for field, column_name in columns.items():
-            value = form.get(field)
-            if value not in (None, ""):
-                # to make sure applicable data period field is an int to insert to DB
-                if column_name == 'applicable_data_period':
-                    values.append(int(value.replace('-', '')))
-                # else server side clean values
-                else:
-                    values.append(_clean_value(value))
+            # Map form fields to DB columns
+            columns = {
+                'applicable_data_period': 'applicable_data_period',
+                'status': 'status',
+                'outcome': 'outcome',
+                'approved_expiration_date': 'approved_expiration_date'
+            }
 
-        # to allow notes to be cleared, need to move notes out of the loop that ignores none
-        values.append(_clean_value(form['notes']))
-        ## to make sure extension id is last in query to match with WHERE statement
-        values.append(_clean_value(form['extension_id']))
+            # Build the SET clause dynamically
+            set_clauses = []
+            for field, column_name in columns.items():
+                value = form.get(field)
+                if value not in (None, "", "None"):
+                    set_clauses.append(f"{column_name} = %s")
+                    if column_name == 'applicable_data_period':
+                        values.append(int(value.replace('-', '')))
+                    elif column_name == 'approved_expiration_date':
+                        # Convert to None if the value is 'None' (string)
+                        values.append(None if value == 'None' else _clean_value(value))
+                    else:
+                        values.append(_clean_value(value))
 
-        cur.execute(operation, values)
-        conn.commit()
+            # Include 'notes' field, allowing it to be cleared
+            set_clauses.append("notes = %s")
+            values.append(_clean_value(form.get('notes', "")))
+
+            query += ", " + ", ".join(set_clauses) + " WHERE extension_id = %s"
+            values.append(_clean_value(form['extension_id']))
+
+            cur.execute(query, values)
+            conn.commit()
     except Exception as error:
         logger.error(error)
         return error
     finally:
         if cur is not None:
             cur.close()
+
 
 def get_submitter_info(user):
     cur = None
@@ -1308,7 +1380,7 @@ def update_exception(form):
         # to set column names for query to the correct DB name
         columns = {
             'approved_threshold': 'approved_threshold',
-            'approved': 'approved_expiration_date',
+            'approved_expiration_date': 'approved_expiration_date',
             'status': 'status',
             'outcome': 'outcome',
         }
@@ -1401,5 +1473,9 @@ def _clean_date(date_string):
         return None
 
 def _set_int(value):
-    if len(value):
+    if value is None or value == '':
+        return None
+    try:
         return int(float(value))
+    except (ValueError, TypeError):
+        raise ValueError(f"Invalid input for _set_int: expected a numeric value or empty string. Value: {value}")
