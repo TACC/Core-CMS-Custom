@@ -1,41 +1,6 @@
-/* To resize logo */
 .portal-logo {
     height: 80px;
 }
-
-/* To increase vertical space of header */
 .s-header.navbar {
     --nav-padding-vert: 10px;
-}
-
-/* To vertically align center if #s-header is .navbar-expand-md */
-@media (min-width: 768px) {
-    .s-header .nav-item {
-        display: flex;
-    }
-}
-
-/* To fix nav link alignment regardless the nav padding */
-/* TODO: Fix this in Core-Styles instead */
-:root {
-    /* NOTE: Use this in Core-Styles `.s-header { … border-bottom: … }` */
-    --header-major-border-width: 1px;
-}
-.s-header .nav-link {
-    --move-text-back-to-middle: var(--nav-padding-vert);
-    --move-underline-to-bottom: calc( var(--nav-padding-vert) + var(--header-major-border-width) );
-    border-color: var(--header-bkgd-color);
-    border-style: solid;
-    border-width: 0 0 var(--border-width);
-    /* HACK: To overwrite pseudo states use !important (not needed once in Core-Styles) */
-    margin-bottom: calc(var(--move-underline-to-bottom) * -1) !important;
-    height: calc( 100% + var(--move-underline-to-bottom) + var(--move-text-back-to-middle) );
-    top: calc( var(--move-text-back-to-middle) * -1 );
-    line-height: unset;
-}
-.s-header .nav-item.active .nav-link,
-.s-header .nav-link:active,
-.s-header .nav-link:focus,
-.s-header .nav-link:hover {
-    border-color: var(--global-color-secondary--light);
 }
