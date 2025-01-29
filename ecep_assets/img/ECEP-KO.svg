@@ -15,7 +15,7 @@
       }
     </style>
   </defs>
-  <view id="crop" viewBox="100 250 1870 575" />
+  <view id="crop" viewBox="100 40 1780 525" />
   <!-- <rect width="100%" height="100%" /> -->
   <line class="cls-1" x1="698.48" y1="539.04" x2="698.48" y2="96.3"/>
   <g>

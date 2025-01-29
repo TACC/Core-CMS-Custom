@@ -82,7 +82,7 @@ article.post-detail .byline {
 /* Header */
 /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css */
 .s-header .navbar-brand {
-  min-width: 195px;
+  min-width: unset;
 }
 .s-header .nav-link {
   --border-color--active: var(--ecep-accent-gray);
