@@ -67,7 +67,7 @@
 /* COMPONENTS */
 
 /* Blog */
-/* https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.item.css */
+/* https://github.com/TACC/Core-CMS/blob/v4.17.1/taccsite_cms/templates/djangocms_blog/includes/blog_meta.html#L11-L20 */
 .blog-list article .byline,
 article.post-detail .byline {
   display: none;
@@ -80,7 +80,7 @@ article.post-detail .byline {
 /* TRUMPS */
 
 /* Header */
-/* https://github.com/TACC/Core-Styles/blob/main/source/_imports/trumps/s-header.css */
+/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css#L48-L50 */
 .s-header .navbar-brand {
   min-width: 76px;
 }
