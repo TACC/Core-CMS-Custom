@@ -84,3 +84,6 @@ article.post-detail .byline {
 .s-header .navbar-brand {
   min-width: 76px;
 }
+.s-header .nav-link {
+  --border-color: var(--ecep-gray);
+}
