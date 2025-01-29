@@ -80,10 +80,15 @@ article.post-detail .byline {
 /* TRUMPS */
 
 /* Header */
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css#L48-L50 */
+/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css */
 .s-header .navbar-brand {
-  min-width: 76px;
+  min-width: 195px;
 }
 .s-header .nav-link {
-  --border-color: var(--ecep-accent-gray);
+  --border-color--active: var(--ecep-accent-gray);
+}
+
+/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/branding_logos.css */
+.portal-logo {
+  height: 70px;
 }
