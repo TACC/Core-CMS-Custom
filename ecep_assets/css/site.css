@@ -25,12 +25,12 @@
 :root {
   /* Color */
   /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
-  --global-color-primary--x-light: oklch( from var(--ecep-gray) 87.5% c h );
-  --global-color-primary--light: oklch( from var(--ecep-gray) 75% c h );
-  --global-color-primary--normal: var(--ecep-gray );
-  --global-color-primary--dark: oklch( from var(--ecep-gray) 40% c h );
-  --global-color-primary--x-dark: oklch( from var(--ecep-gray) 33.3% c h );
-  --global-color-primary--xx-dark: oklch( from var(--ecep-gray) 25% c h );
+  --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 87.5% c h );
+  --global-color-primary--light: oklch( from var(--ecep-accent-gray) 75% c h );
+  --global-color-primary--normal: var(--ecep-accent-gray );
+  --global-color-primary--dark: oklch( from var(--ecep-accent-gray) 40% c h );
+  --global-color-primary--x-dark: oklch( from var(--ecep-accent-gray) 33.3% c h );
+  --global-color-primary--xx-dark: oklch( from var(--ecep-accent-gray) 25% c h );
 
   --global-color-accent--xxx-light: oklch( from var(--ecep-purple) 93.5% c h );
   --global-color-accent--xx-light: oklch( from var(--ecep-purple) 89.4% c h );
