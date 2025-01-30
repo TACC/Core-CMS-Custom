@@ -1,0 +1,27 @@
+/* NEWS */
+
+/* To center-align news article image */
+#news-col > .row > .col:first-child {
+    display: grid;
+    justify-content: center;
+}
+
+
+
+/* BANNER */
+
+figure#homepage-banner {
+    background-color: var(--global-color-accent--x-dark);
+    display: grid;
+    justify-content: center;
+}
+#homepage-banner figcaption {
+    display: none;
+}
+
+/* overwrites Bootstrap reboot.css */
+figure#homepage-banner,
+/* overwrites ecep-cms/…/site.css */
+figure#homepage-banner > img {
+    margin-bottom: 0;
+}
