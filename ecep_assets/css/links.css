@@ -1,5 +1,12 @@
+/* DISABLED */
+/* TODO: Remove when `TACC_CORE_STYLES_VERSION = 2` */
+[disabled] {
+    pointer-events: none;
+}
+
+/* IRREGULAR */
 /* TODO: Do this the right way:
-    1. Add "s-" class to a root element.
+    1. Add "s-irregular-links" class to a root element.
     2. Delete this stylesheet.
 */
 :is(main, .c-footer) :where(
