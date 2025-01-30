@@ -1,0 +1,24 @@
+/* TODO: Do this the right way:
+    1. Add "s-" class to a root element.
+    2. Delete this stylesheet.
+*/
+:is(main, .c-footer) :where(
+  a,
+  .c-button--as-link
+) {
+    text-decoration-line: underline;
+}
+:is(main, .c-footer) :where(
+  a:hover,
+  .c-button--as-link:hover
+) {
+    text-decoration-style: dashed;
+    text-decoration-thickness: from-font; /* TODO: Add to Core-Styles */
+}
+:is(main, .c-footer) :where(
+  a:active,
+  .c-button--as-link:active
+) {
+    text-decoration-style: dotted;
+    text-decoration-thickness: from-font; /* TODO: Add to Core-Styles */
+}
