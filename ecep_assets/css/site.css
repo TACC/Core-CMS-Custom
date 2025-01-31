@@ -7,30 +7,57 @@
 
 /* SETTINGS */
 
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
+/* ECEP Branding */
 :root {
-  /* Accent */
-  --global-color-accent--xxx-light: #DAADFF;
-  --global-color-accent--x-light: #A12EFF;
-  --global-color-accent--light: #6E00C8;
-  --global-color-accent--normal: #4F008F;
-  --global-color-accent--dark: #2F0054;
-  --global-color-accent--x-dark: #1E0037;
+  --ecep-purple: #4D008C;
+  --ecep-green: #8FC01C;
+  --ecep-accent-blue: #0177A9;
+  --ecep-accent-red: #C5103D;
+  --ecep-accent-gray: #888C8D;
 
-  --global-color-accent--alt: #DDC4F2;
-  --global-color-accent--weak: #5B00A440;
-
-  /* Link */
-  --global-color-link-on-light--normal: var(--global-color-accent--normal);
-  --global-color-link-on-dark--normal: var(--global-color-accent--xxx-light);
+  --ecep-font-title: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
+  --ecep-font-content: Arial, sans-serif;
 }
 
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/theme.default.css */
+
+
+/* Translate ECEP Branding to Core-Styles */
 :root {
-  --header-bkgd-color: #4F008F;
-  --header-minor-border-color: #DAADFF;
-  --header-search-brdr-color: #A12EFF;
-  --header-search-bkgd-color: #5f00ad;
+  /* Color */
+  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
+  --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 87.5% c h );
+  --global-color-primary--light: oklch( from var(--ecep-accent-gray) 75% c h );
+  --global-color-primary--normal: var(--ecep-accent-gray );
+  --global-color-primary--dark: oklch( from var(--ecep-accent-gray) 40% c h );
+  --global-color-primary--x-dark: oklch( from var(--ecep-accent-gray) 33.3% c h );
+  --global-color-primary--xx-dark: oklch( from var(--ecep-accent-gray) 25% c h );
+
+  --global-color-accent--xxx-light: oklch( from var(--ecep-purple) 93.5% c h );
+  --global-color-accent--xx-light: oklch( from var(--ecep-purple) 89.4% c h );
+  --global-color-accent--x-light: oklch( from var(--ecep-purple) 82.8% c h );
+  --global-color-accent--light: oklch( from var(--ecep-purple) 54.5% c h );
+  --global-color-accent--normal: var(--ecep-purple);
+  --global-color-accent--dark: oklch( from var(--ecep-purple) 28% c h );
+  --global-color-accent--x-dark: oklch( from var(--ecep-purple) 19% c h );
+
+  --global-color-accent--alt: oklch( from var(--ecep-purple) 82.8% c h );
+  --global-color-accent--weak: oklch( from var(--ecep-purple) 40% c h );
+
+  /* Font */
+  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/font.css */
+  --sans--cms: var(--ecep-font-content);
+  /* HACK: Distinguish heading font via style instead of variable */
+  /* FAQ: Because Core-Styles assumes the same font for headings */
+  & :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--ecep-font-title);
+  }
+
+  /* Header */
+  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/theme.default.css */
+  --header-bkgd-color: var(--ecep-purple);
+  --header-minor-border-color: var(--global-color-accent--xxx-light);
+  --header-search-brdr-color: var(--global-color-accent--x-light);
+  --header-search-bkgd-color: var(--global-color-accent--dark);
 }
 
 
@@ -39,7 +66,8 @@
 
 /* COMPONENTS */
 
-/* https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.item.css */
+/* Blog */
+/* https://github.com/TACC/Core-CMS/blob/v4.17.1/taccsite_cms/templates/djangocms_blog/includes/blog_meta.html#L11-L20 */
 .blog-list article .byline,
 article.post-detail .byline {
   display: none;
@@ -51,7 +79,16 @@ article.post-detail .byline {
 
 /* TRUMPS */
 
-/* SEE: TACC/Core-Styles/blob/main/source/_imports/trumps/s-header.css */
+/* Header */
+/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css */
 .s-header .navbar-brand {
-  min-width: 76px;
+  min-width: unset;
+}
+.s-header .nav-link {
+  --border-color--active: var(--ecep-accent-gray);
+}
+
+/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/branding_logos.css */
+.portal-logo {
+  height: 70px;
 }
