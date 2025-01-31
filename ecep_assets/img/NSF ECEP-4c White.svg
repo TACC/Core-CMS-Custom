@@ -1046,6 +1046,11 @@
     <linearGradient id="linear-gradient-80" x1="502.88" y1="349.99" x2="457.62" y2="349.99" xlink:href="#linear-gradient-76"/>
     <linearGradient id="linear-gradient-81" x1="528.55" y1="310.66" x2="457.6" y2="310.66" xlink:href="#linear-gradient-76"/>
   </defs>
+  <view id="crop" viewBox="100 75 1775 535" />
+  <!--
+  <rect id="file-view" width="100%" height="100%" style="fill: gray" />
+  <rect id="crop-view" x="100" y="75" width="1775" height="535" />
+  -->
   <g class="cls-109">
     <g id="Layer_1" data-name="Layer 1">
       <g>
