@@ -1,0 +1,32 @@
+<script id="js-news-open-external-articles-in-new-window" type="module">
+/* To open external article URL, instead of internal one, on news listing */
+import getArticleExternalURL from 'https://cdn.jsdelivr.net/gh/TACC/tup-ui@v1.1.13/apps/tup-cms/src/taccsite_cms/static/site_cms/js/modules/getArticleExternalURL.js';
+
+// The `{{html}}` is whatever user entered into snippet "HTML:" field
+// XXX: This feature requires this file is actually served as a snippet
+// const parameter = '{{html}}';
+const parameter = undefined;
+
+// Only certain articles should support this feature
+const extTagName = parameter ? parameter : `external`;
+
+// Only care about articles with the given tag
+const articles = document.querySelectorAll(
+  `.blog-list article.has-blog-tag-${extTagName}`
+);
+[ ...articles ].forEach( article => {
+  const externalLinkUrl = getArticleExternalURL( article );
+
+  if ( externalLinkUrl ) {
+    const postLinks = article.querySelectorAll(':is(h3, footer) a');
+
+    // All links to the post should open external URL in new window
+    [ ...postLinks ].forEach( postLink => {
+      console.debug(`Swap post link with "${externalLinkUrl}"`, postLink );
+
+      postLink.href = externalLinkUrl;
+      postLink.setAttribute('target', '_blank');
+    });
+  }
+});
+</script>
