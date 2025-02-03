@@ -1,5 +1,0 @@
-/* https://github.com/django-cms/djangocms-text-ckeditor/pull/590 */
-textarea.cke_source {
-    max-height: inherit;
-    background-color: var(--body-bg) !important;
-}
