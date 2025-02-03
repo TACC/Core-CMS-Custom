@@ -15,7 +15,7 @@
   max-width: 100%;
   height: auto;
 }
-:is(figure, a).rounded {
+:is(figure, a).rounded img {
   /* NOTE: Bootstrap used 0.25rem */
   border-radius: 1rem !important; /* overwrite Bootstrap (uses !important) */
 }
