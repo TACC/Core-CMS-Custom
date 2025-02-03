@@ -1,10 +1,10 @@
-/* DISABLED */
+/* To support DISABLED LINK feature */
 /* TODO: Remove when `TACC_CORE_STYLES_VERSION = 2` */
 [disabled] {
     pointer-events: none;
 }
 
-/* IRREGULAR */
+/* To apply IRREGULAR LINK styles */
 /* TODO: Do this the right way:
     1. Add "s-irregular-links" class to a root element.
     2. Delete this stylesheet.
