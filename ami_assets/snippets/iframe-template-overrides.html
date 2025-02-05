@@ -1,0 +1,14 @@
+<script id="iframe-template-overrides">
+document.addEventListener("DOMContentLoaded", function () {
+    const cmsContent = document.querySelector("#cms-content .container");
+
+    if (cmsContent) {
+        cmsContent.classList.remove("container");
+        const breadcrumbs = cmsContent.querySelector(".s-breadcrumbs");
+        
+        if (breadcrumbs) {
+            breadcrumbs.classList.add("container");
+        }
+    }
+});
+</script>

@@ -1,0 +1,35 @@
+<script id="iframe-auto-height" type="module">
+const iframe = document.getElementsByTagName('iframe')[0];
+const isIframeLoaded = (iframe.contentWindow.document.readyState === 'complete');
+
+function resizeIframe(iframe) {
+  const scrollHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+  const bufferToAvoidScrollbar = 1;
+  iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
+}
+
+/* to avoid both flicker effect and excessive calls when resizing iframe */
+function debounce(fn, delay = 50) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+const debouncedResizeIframe = debounce(resizeIframe);
+
+function setupResizeObserver(iframe) {
+  const iframeContent = iframe.contentWindow.document;
+  const resizeObserver = new ResizeObserver(() => debouncedResizeIframe(iframe));
+
+  resizeObserver.observe(iframeContent.body);
+  resizeIframe(iframe);
+}
+
+if (isIframeLoaded) {
+  setupResizeObserver(iframe);
+} else {
+  iframe.addEventListener('load', () => setupResizeObserver(iframe));
+}
+window.addEventListener('resize', () => debouncedResizeIframe(iframe));
+</script>
