@@ -1,11 +1,11 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
-from django.views import View
 from apps.utils.apcd_database import get_all_extensions, update_extension
 from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
 from datetime import date as datetimeDate
 from datetime import datetime
 import logging
@@ -18,16 +18,19 @@ class AdminExtensionsTable(TemplateView):
 
     template_name = 'list_admin_extension.html'
 
-    def get(self, request, *args, **kwargs):
-        extension_content = get_all_extensions()
-        context = self.get_extensions_list_json(extension_content, *args, **kwargs)
-        return JsonResponse({'response': context})
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super(AdminExtensionsTable, self).dispatch(request, *args, **kwargs)
 
+
+class AdminExtensionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
+
+    def get(self, request, *args, **kwargs):
+        extension_content = get_all_extensions()
+        context = self.get_extensions_list_json(extension_content, *args, **kwargs)
+        return JsonResponse({'response': context})
+    
     def get_extensions_list_json(self, extensions, *args, **kwargs):
         context = {}
 
@@ -90,7 +93,7 @@ class AdminExtensionsTable(TemplateView):
             extensions_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), extensions_table_entries, 'org_name')
 
         context['query_str'] = queryStr
-        page_info = paginator(self.request, extensions_table_entries)
+        page_info = paginator(page_num, extensions_table_entries)
         context['page'] = [{'org_name': obj['org_name'], 'created': obj['created'], 'type': obj['type'], 'requestor': obj['requestor'],
                             'ext_outcome': obj['ext_outcome'], 'ext_status': obj['ext_status'], 'ext_id': obj['ext_id'], 'submitter_id': obj['submitter_id'],
                             'approved_expiration_date': obj['approved_expiration_date'], 'current_expected_date': obj['current_expected_date'],
@@ -134,12 +137,7 @@ def _get_applicable_data_period(value):
         return None
 
 
-class UpdateExtensionsView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(UpdateExtensionsView, self).dispatch(request, *args, **kwargs)
-
+class UpdateExtensionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
     def _err_msg(self, resp):
         if hasattr(resp, 'pgerror'):
             return resp.pgerror

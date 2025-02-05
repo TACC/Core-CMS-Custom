@@ -6,7 +6,7 @@ from apps.utils.apcd_groups import has_groups
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import TemplateView
-from django.shortcuts import redirect
+from apps.base.base import BaseAPIView
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
@@ -20,28 +20,39 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class RegistrationFormView(TemplateView):
+class RegistrationFormTemplate(TemplateView):
+    template_name = 'registration_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
+            return HttpResponseRedirect('/')
+        return super(RegistrationFormTemplate, self).dispatch(request, *args, **kwargs)
+
+
+class RegistrationFormApi(BaseAPIView):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        return super(RegistrationFormTemplate, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
         formatted_reg_data = []
         renew = False
         reg_id = request.GET.get('reg_id', None).rstrip('/')  # reg_id coming from renew has trailing slash appended, need to remove to pass correct request through
         if reg_id and (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            try:
-                response = get_submitter_code(request.user)
-                submitter_code = json.loads(response.content)['submitter_code']
-                submitter_registrations = get_registrations(submitter_code=submitter_code)
-                registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
-                registration_entities = get_registration_entities(reg_id=reg_id)
-                registration_contacts = get_registration_contacts(reg_id=reg_id)
-                renew = True
-                formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
-            except Exception as exception:
-                logger.error(exception)
-                return redirect('/register/request-to-submit/')
+            response = get_submitter_code(request.user)
+            submitter_code = json.loads(response.content)['submitter_code']
+            submitter_registrations = get_registrations(submitter_code=submitter_code)
+            registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
+            registration_entities = get_registration_entities(reg_id=reg_id)
+            registration_contacts = get_registration_contacts(reg_id=reg_id)
+            renew = True
+            formatted_reg_data = _set_registration(registration_content, registration_entities, registration_contacts)
+
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             context = {'registration_data': formatted_reg_data, 'renew': renew}
             return JsonResponse({'response': context})
-        return HttpResponseRedirect('/')
 
     def post(self, request):
         form = json.loads(request.body)
@@ -52,14 +63,10 @@ class RegistrationFormView(TemplateView):
             renewal = True
         errors = []
 
-        if (request.user.is_authenticated):
-            username = request.user.username
-            email = request.user.email
-            first_name = request.user.first_name
-            last_name = request.user.last_name
-        else:
-            return HttpResponseRedirect('/')
-
+        username = request.user.username
+        email = request.user.email
+        first_name = request.user.first_name
+        last_name = request.user.last_name
         reg_resp = create_registration(form, renewal=renewal)
         if not _err_msg(reg_resp) and type(reg_resp) == int:
             for entity in entities:
@@ -89,7 +96,7 @@ class RegistrationFormView(TemplateView):
             description += "Error(s):\n"
             for err_msg in errors:
                 description += "{}\n".format(err_msg)
-            response = JsonResponse({'status': 'error', 'errors': errors}, status=400)
+            response = JsonResponse({'status': 'error', 'errors': errors}, status=500)
         else:
             response = JsonResponse({'status': 'success', 'reg_id': reg_resp}, status=200)
         try:
@@ -104,7 +111,7 @@ class RegistrationFormView(TemplateView):
             logger.exception(msg=msg)
             logger.error(err.args)
             errors.append(str(msg))
-            response = JsonResponse({'status': 'error', 'errors': errors}, status=400)
+            response = JsonResponse({'status': 'error', 'errors': errors}, status=500)
 
         return response
 

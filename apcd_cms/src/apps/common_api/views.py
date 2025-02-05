@@ -1,15 +1,15 @@
 from django.http import HttpResponseRedirect, JsonResponse, Http404
-from django.views.generic import TemplateView
 from apps.utils import apcd_database
 from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
 from apps.utils.utils import title_case
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDGroupAccessAPIMixin
 from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class EntitiesView(TemplateView):
+class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
         submitters = apcd_database.get_submitter_info(request.user.username)
 
@@ -17,11 +17,6 @@ class EntitiesView(TemplateView):
 
         context = {**submitter_info_json}
         return JsonResponse({'response': context})
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(EntitiesView, self).dispatch(request, *args, **kwargs)
 
     def get_submitter_info_json(self, submitters):
         context = {}
@@ -45,12 +40,7 @@ class EntitiesView(TemplateView):
         return context
 
 
-class cdlsView(TemplateView):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(cdlsView, self).dispatch(request, *args, **kwargs)
-
+class cdlsView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
         file_type = kwargs.get('file_type')
         
@@ -71,12 +61,10 @@ class cdlsView(TemplateView):
         return JsonResponse({"cdls": cdls_response})
 
 
-class DataPeriodsView(TemplateView):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(DataPeriodsView, self).dispatch(request, *args, **kwargs)
-
+class DataPeriodsView(APCDAdminAccessAPIMixin, BaseAPIView):
+    '''
+        Requires admin access to view data period for any given submitter.
+    '''
     def get(self, request, *args, **kwargs):
         submitter_id = request.GET.get('submitter_id', None)
         if submitter_id is None:

@@ -1,9 +1,8 @@
 from django.urls import path
-from django.views.generic import TemplateView
-from apps.extension.views import ExtensionFormView
+from apps.extension.views import ExtensionFormTemplate, ExtensionFormApi
 
 app_name = 'extension'
 urlpatterns = [
-    path('extension-request/', TemplateView.as_view(template_name='extension_submission_form/extension_submission_form.html'), name='extension'),
-    path('extension/api/', ExtensionFormView.as_view(), name='extension-api'),
+    path('extension-request/', ExtensionFormTemplate.as_view(), name='extension'),
+    path('extension/api/', ExtensionFormApi.as_view(), name='extension-api'),
 ]

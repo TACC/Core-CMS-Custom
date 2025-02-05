@@ -1,6 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
-from django.template import loader
 from apps.utils.apcd_database import (
     delete_registration_entity,
     delete_registration_contact,
@@ -18,6 +17,7 @@ from apps.utils.registrations_data_formatting import (
     _set_registration_for_listing,
 )
 from apps.components.paginator.paginator import paginator
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
 import logging
 from datetime import date as datetimeDate
 import json
@@ -28,6 +28,13 @@ logger = logging.getLogger(__name__)
 class RegistrationsTable(TemplateView):
     template_name = 'list_registrations.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
+
+
+class RegistrationsApi(APCDAdminAccessAPIMixin, BaseAPIView):
     def _get_first_registration_entry(self, reg_id):
         registrations = get_registrations(reg_id=reg_id)
         if len(registrations) > 0:
@@ -49,7 +56,7 @@ class RegistrationsTable(TemplateView):
         # Find the deleted ones.
         entity_ids_to_delete = existing_entity_ids - updated_entity_ids
         contact_ids_to_delete = existing_contact_ids - updated_contact_ids
-        
+
         def _err_msg(resp):
             if hasattr(resp, 'pgerror'):
                 return resp.pgerror
@@ -64,7 +71,7 @@ class RegistrationsTable(TemplateView):
                 delete_resp = delete_registration_entity(reg_id, id)
                 if _err_msg(delete_resp):
                     errors.append(str(delete_resp))
-            
+
             for id in contact_ids_to_delete:
                 delete_resp = delete_registration_contact(reg_id, id)
                 if _err_msg(delete_resp):
@@ -88,50 +95,39 @@ class RegistrationsTable(TemplateView):
             response = JsonResponse({'status': 'error', 'errors': description}, status=400)
         else:
             response = JsonResponse({'status': 'success', 'reg_id': reg_id}, status=200)
-        
+
         return response
 
     def get(self, request, *args, **kwargs):
-        try:
-            if request.GET.get('reg_id'):
-                reg_id = int(request.GET.get('reg_id'))
-                registration = self._get_first_registration_entry(reg_id)
-                registrations_entities = get_registration_entities(reg_id=reg_id)
-                registrations_contacts = get_registration_contacts(reg_id=reg_id)
-                return JsonResponse({'response': _set_registration(registration, registrations_entities, registrations_contacts)})
-            else:
-                registrations_content = get_registrations()
-                context = self.get_registration_list_json(registrations_content, *args, **kwargs)
-                return JsonResponse({'response': context})
-        except Exception as e:
-            logger.error("An error occurred: %s", str(e))
-            return JsonResponse({
-                'status': 'error',
-                'message': 'Internal server error',
-            }, status=500)
+        if request.GET.get('reg_id'):
+            reg_id = int(request.GET.get('reg_id'))
+            registration = self._get_first_registration_entry(reg_id)
+            registrations_entities = get_registration_entities(reg_id=reg_id)
+            registrations_contacts = get_registration_contacts(reg_id=reg_id)
+            return JsonResponse({'response': _set_registration(registration, registrations_entities, registrations_contacts)})
+        else:
+            registrations_content = get_registrations()
+            try:
+                page_num = int(request.GET.get('page'))
+            except:
+                page_num = 1
+            context = RegistrationsApi.get_registration_list_json(registrations_content, request.GET.get('status'),
+                                                                  request.GET.get('org'), page_num, *args, **kwargs)
+            return JsonResponse({'response': context})        
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
-
-    def get_registration_list_json(self, registrations_content, *args, **kwargs):
+    @staticmethod
+    def get_registration_list_json(registrations_content, status_filter, org_filter, page_num, *args, **kwargs):
         context = {}
 
         context['header'] = ['Business Name', 'Year', 'Type', 'Location', 'Registration Status', 'Actions']
         context['status_options'] = ['All', 'Received', 'Processing', 'Complete', 'Withdrawn']
         context['org_options'] = ['All']
 
-        try:
-            page_num = int(self.request.GET.get('page'))
-        except:
-            page_num = 1
-
         def getDate(row):
             date = row[1]
-            return date if date is not None else datetimeDate(1, 1, 1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
+            return date if date is not None else datetimeDate(1, 1, 1)  # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
-        registrations_content = sorted(registrations_content, key=lambda row:getDate(row), reverse=True)  # sort registrations by newest to oldest
+        registrations_content = sorted(registrations_content, key=lambda row: getDate(row), reverse=True)  # sort registrations by newest to oldest
 
         registration_table_entries = []
         for registration in registrations_content:
@@ -141,8 +137,6 @@ class RegistrationsTable(TemplateView):
                 context['org_options'].append(org_name)
 
         queryStr = ''
-        status_filter = self.request.GET.get('status')
-        org_filter = self.request.GET.get('org')
 
         context['selected_status'] = None
         if status_filter is not None and status_filter != 'All':
@@ -157,7 +151,7 @@ class RegistrationsTable(TemplateView):
             registration_table_entries = table_filter(org_filter.replace("(", "").replace(")", ""), registration_table_entries, 'biz_name')
 
         context['query_str'] = queryStr
-        page_info = paginator(self.request, registration_table_entries)
+        page_info = paginator(page_num, registration_table_entries)
         context['page'] = [
             {
                 'biz_name': obj['biz_name'],

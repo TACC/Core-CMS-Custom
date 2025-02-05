@@ -843,7 +843,7 @@ def create_threshold_exception(form, exception, sub_data):
         conn.commit()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
         return error
 
     finally:
@@ -881,7 +881,7 @@ def get_cdl_exceptions(file_type):
         return cur.fetchall()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
 
     finally:
         if cur is not None:
@@ -1061,6 +1061,7 @@ def get_all_submissions_and_logs():
             cur.close()
         if conn is not None:
             conn.close()
+
 
 def create_extension(form, extension, sub_data):
     cur = None

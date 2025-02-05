@@ -1,28 +1,29 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.base import TemplateView
-from django.views import View
-from django.template import loader
 from apps.utils.apcd_database import get_users, update_user
 from apps.utils.apcd_groups import is_apcd_admin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
+
 class ViewUsersTable(TemplateView):
     template_name = 'view_users.html'
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not is_apcd_admin(request.user):
             return HttpResponseRedirect('/')
         return super().dispatch(request, *args, **kwargs)
 
+
+class ViewUsersApi(APCDAdminAccessAPIMixin, BaseAPIView):
+
     def get(self, request, *args, **kwargs):
         if 'options' in request.path:
             return self.get_options(request)
-        if 'modal' in request.path:
-            return self.get_modals(request, kwargs['modal_type'])
         
         status = request.GET.get('status', 'Active')
         org = request.GET.get('org', 'All')
@@ -63,44 +64,7 @@ class ViewUsersTable(TemplateView):
         except Exception as e:
             logger.error("Error fetching options data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
-    
-    def get_modals(self, request, modal_type):
-        if modal_type == 'view':
-            modal_template = 'view_users_modal.html'
-        elif modal_type == 'edit':
-            modal_template = 'edit_users_modal.html'
-        else:
-            return JsonResponse({'error': 'Invalid modal type'}, status=400)
-        
-        modal_content = loader.render_to_string(modal_template)
-        return JsonResponse({'content': modal_content})
 
-    def post(self, request):
-        form = request.POST.copy()
-
-        def _err_msg(resp):
-            if hasattr(resp, 'pgerror'):
-                return resp.pgerror
-            if isinstance(resp, Exception):
-                return str(resp)
-            return None
-
-        def _edit_user(form):
-            errors = []
-            user_response = update_user(form)
-            if _err_msg(user_response):
-                errors.append(_err_msg(user_response))
-            if len(errors) != 0:
-                logger.debug(print(errors))
-                template = loader.get_template('view_user_edit_error.html')
-            else:
-                logger.debug(print("success"))
-                template = loader.get_template('view_user_edit_success.html')
-            return template
-
-        template = _edit_user(form)
-        return HttpResponse(template.render({}, request))
-    
     def filter_users(self, users, status, org):
         def _set_user(usr):
             return {
@@ -159,12 +123,7 @@ class ViewUsersTable(TemplateView):
         return context
 
 
-class UpdateUserView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super().dispatch(request, *args, **kwargs)
+class UpdateUserView(APCDAdminAccessAPIMixin, BaseAPIView):
 
     def _err_msg(self, resp):
         if hasattr(resp, 'pgerror'):
