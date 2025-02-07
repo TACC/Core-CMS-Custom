@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views import View
-from apps.utils.apcd_groups import is_apcd_admin, has_apcd_group
+from apps.utils.apcd_groups import is_apcd_admin, has_apcd_group, has_groups
 import logging
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,7 @@ class APCDSubmitterAdminAccessTemplateMixin:
     """ Template Mixin to restrict access to users with Admin and Submitter Admin. """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
+        if not request.user.is_authenticated or not has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
             return HttpResponseRedirect('/')
         return super().dispatch(request, *args, **kwargs)
 
@@ -68,6 +68,6 @@ class APCDSubmitterAdminAccessAPIMixin:
     """ API Mixin to restrict access to users with Admin and Submitter Admin. """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
+        if not request.user.is_authenticated or not has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN']):
             return JsonResponse({'error': 'Unauthorized'}, status=403)
         return super().dispatch(request, *args, **kwargs)

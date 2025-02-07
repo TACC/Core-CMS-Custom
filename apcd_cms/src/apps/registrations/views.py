@@ -1,12 +1,12 @@
 from apps.utils.apcd_database import create_registration, create_registration_entity, create_registration_contact, get_registrations, get_registration_entities, get_registration_contacts
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.registrations_data_formatting import _set_registration
-from apps.submitter_renewals_listing.views import get_submitter_code
+from apps.submitter_renewals_listing.utils import get_submitter_codes
 from apps.utils.apcd_groups import has_groups
 from django.conf import settings
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic import TemplateView
-from apps.base.base import BaseAPIView, APCDSubmitterAdminAccessAPIMixin, APCDSubmitterAdminAccessTemplateMixin
+from apps.base.base import BaseAPIView, APCDGroupAccessTemplateMixin, APCDGroupAccessAPIMixin
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
@@ -20,20 +20,21 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class RegistrationFormTemplate(APCDSubmitterAdminAccessTemplateMixin, TemplateView):
+class RegistrationFormTemplate(APCDGroupAccessTemplateMixin, TemplateView):
     template_name = 'registration_form.html'
 
 
-class RegistrationFormApi(APCDSubmitterAdminAccessAPIMixin, BaseAPIView):
+class RegistrationFormApi(APCDGroupAccessAPIMixin, BaseAPIView):
 
     def get(self, request):
         formatted_reg_data = []
         renew = False
         reg_id = request.GET.get('reg_id', None).rstrip('/')  # reg_id coming from renew has trailing slash appended, need to remove to pass correct request through
+        # this is primarily used for renewal and restricted to admins
         if reg_id and (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            response = get_submitter_code(request.user)
-            submitter_code = json.loads(response.content)['submitter_code']
-            submitter_registrations = get_registrations(submitter_code=submitter_code)
+            response = get_submitter_codes(request.user)
+            submitter_codes = json.loads(response.content)['submitter_codes']
+            submitter_registrations = get_registrations(submitter_codes=submitter_codes)
             registration_content = [registration for registration in submitter_registrations if registration[0] == int(reg_id)][0]
             registration_entities = get_registration_entities(reg_id=reg_id)
             registration_contacts = get_registration_contacts(reg_id=reg_id)

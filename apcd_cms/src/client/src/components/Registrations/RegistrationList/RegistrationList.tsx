@@ -6,6 +6,8 @@ import ViewRegistrationModal from 'apcd-components/Registrations/ViewRegistratio
 import EditRegistrationModal from 'apcd-components/Registrations/EditRegistrationModal/EditRegistrationModal';
 import styles from './RegistrationList.module.css';
 import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
+import { useAdminRegistration, useSubmitterRegistration } from 'hooks/registrations';
+
 
 export const RegistrationList: React.FC<{
   useDataHook: any;
@@ -179,11 +181,13 @@ export const RegistrationList: React.FC<{
           <ViewRegistrationModal
             reg_id={selectedRegistration.reg_id}
             isVisible={isViewModalOpen}
+            useDataHook={isAdmin?useAdminRegistration:useSubmitterRegistration}
             onClose={() => setIsViewModalOpen(false)}
           />
           <EditRegistrationModal
             reg_id={selectedRegistration.reg_id}
             isVisible={isEditModalOpen}
+            useDataHook={isAdmin?useAdminRegistration:useSubmitterRegistration}
             status_options={data?.status_options as string[]}
             onClose={() => setIsEditModalOpen(false)}
           />
