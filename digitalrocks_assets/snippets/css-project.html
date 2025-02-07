@@ -1,0 +1,56 @@
+<style id="css-project">
+    /* DESCRIPTION */
+    .project-desc a {
+        word-break: break-all;
+    }
+
+
+
+    /* TABS */
+
+    #project-tabset ul {
+        padding-left: unset;
+    }
+
+
+
+
+
+    /* DATASETS */
+
+    /* Root */
+    ul.datasets-list {
+        /* to unset list styles */
+        padding-left: unset;
+        list-style: none;
+
+        /* to render in columns */
+        column-width: 40ch;
+        column-count: 2;
+        column-gap: 2rem;
+    }
+
+
+    /* Top-Level Items */
+
+    .datasets-list > li:not(:last-child) {
+        margin-bottom: 1.5rem;
+        /* Prevent items from breaking across columns */
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .datasets-list > li > strong {
+        font-weight: var(--medium);
+    }
+
+
+    /* Nested Items */
+
+    /* to change list item bullet */
+    ul.datasets-list li li { list-style: none; }
+    ul.datasets-list li li::before {
+        content: '↳ ';
+        list-style: none;
+        font-weight: var(--bold);
+    }
+</style>
