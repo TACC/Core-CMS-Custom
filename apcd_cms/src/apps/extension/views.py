@@ -1,21 +1,15 @@
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group
-from apps.base.base import BaseAPIView, APCDGroupAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDGroupAccessAPIMixin, APCDGroupAccessTemplateMixin
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
 
-class ExtensionFormTemplate(TemplateView):
+class ExtensionFormTemplate(APCDGroupAccessTemplateMixin, TemplateView):
     template_name = 'extension_submission_form/extension_submission_form.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(ExtensionFormTemplate, self).dispatch(request, *args, **kwargs)
 
 
 class ExtensionFormApi(APCDGroupAccessAPIMixin, BaseAPIView):

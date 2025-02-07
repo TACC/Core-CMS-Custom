@@ -1,24 +1,17 @@
-from django.http import HttpResponseRedirect, JsonResponse, Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse
 from django.core.paginator import Paginator
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_all_submissions_and_logs, get_user_submission_log
-from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
 from dateutil import parser
 
 logger = logging.getLogger(__name__)
 
 
-class AdminSubmissionsTable(TemplateView):
-
+class AdminSubmissionsTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'list_admin_submissions.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user): 
-            return HttpResponseRedirect('/')
-        return super(AdminSubmissionsTable, self).dispatch(request, *args, **kwargs)
 
 
 class AdminSubmissionsApi(APCDAdminAccessAPIMixin, BaseAPIView):

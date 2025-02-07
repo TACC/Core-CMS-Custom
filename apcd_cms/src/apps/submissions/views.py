@@ -1,11 +1,11 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth.decorators import login_required
 from apps.utils.apcd_database import get_user_submissions_and_logs
 from apps.utils.apcd_groups import has_apcd_group
 from apps.utils.utils import title_case
 from apps.admin_submissions.views import SubmissionsLogView
-from apps.base.base import BaseAPIView, APCDGroupAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDGroupAccessAPIMixin, APCDGroupAccessTemplateMixin
 from django.core.paginator import Paginator
 import logging
 from dateutil import parser
@@ -13,14 +13,8 @@ from dateutil import parser
 logger = logging.getLogger(__name__)
 
 
-class SubmissionsTable(TemplateView):
-
+class SubmissionsTable(APCDGroupAccessTemplateMixin, TemplateView):
     template_name = 'list_submissions.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(SubmissionsTable, self).dispatch(request, *args, **kwargs)
 
 
 class SubmissionsView(APCDGroupAccessAPIMixin, BaseAPIView):

@@ -1,11 +1,10 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_all_extensions, update_extension
-from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.utils import title_case
 from apps.components.paginator.paginator import paginator
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 from datetime import date as datetimeDate
 from datetime import datetime
 import logging
@@ -14,14 +13,9 @@ import json
 logger = logging.getLogger(__name__)
 
 
-class AdminExtensionsTable(TemplateView):
-
+class AdminExtensionsTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'list_admin_extension.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(AdminExtensionsTable, self).dispatch(request, *args, **kwargs)
 
 
 class AdminExtensionsApi(APCDAdminAccessAPIMixin, BaseAPIView):

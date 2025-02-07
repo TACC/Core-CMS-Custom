@@ -1,24 +1,18 @@
-from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic.base import TemplateView, View
+from django.http import JsonResponse
+from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_all_exceptions, update_exception
-from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case, table_filter
 from apps.components.paginator.paginator import paginator
 from dateutil import parser
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
 
-class AdminExceptionsTable(TemplateView):
+class AdminExceptionsTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'list_admin_exception.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(AdminExceptionsTable, self).dispatch(request, *args, **kwargs)
 
 
 class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):

@@ -1,9 +1,8 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_submitter_users, update_user
-from apps.utils.apcd_groups import is_apcd_admin
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
 import json
 
@@ -11,14 +10,8 @@ import json
 logger = logging.getLogger(__name__)
 
 
-class ViewSubmitterUsersTable(TemplateView):
+class ViewSubmitterUsersTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'view_submitter_users.html'
-
-    # Checks if the user is authenticated or an admin
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super().dispatch(request, *args, **kwargs)
 
 
 class ViewSubmitterUsersApi(APCDAdminAccessAPIMixin, BaseAPIView):

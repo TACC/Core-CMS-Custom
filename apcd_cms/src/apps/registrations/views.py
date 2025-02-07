@@ -6,7 +6,7 @@ from apps.utils.apcd_groups import has_groups
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import TemplateView
-from apps.base.base import BaseAPIView
+from apps.base.base import BaseAPIView, APCDSubmitterAdminAccessAPIMixin, APCDSubmitterAdminAccessTemplateMixin
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
@@ -20,21 +20,11 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class RegistrationFormTemplate(TemplateView):
+class RegistrationFormTemplate(APCDSubmitterAdminAccessTemplateMixin, TemplateView):
     template_name = 'registration_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            return HttpResponseRedirect('/')
-        return super(RegistrationFormTemplate, self).dispatch(request, *args, **kwargs)
 
-
-class RegistrationFormApi(BaseAPIView):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            return JsonResponse({'error': 'Unauthorized'}, status=403)
-        return super(RegistrationFormTemplate, self).dispatch(request, *args, **kwargs)
+class RegistrationFormApi(APCDSubmitterAdminAccessAPIMixin, BaseAPIView):
 
     def get(self, request):
         formatted_reg_data = []

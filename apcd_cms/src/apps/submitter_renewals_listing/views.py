@@ -1,9 +1,8 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from apps.utils.apcd_database import get_registrations, get_registration_contacts, get_submitter_info, get_registration_entities
-from apps.utils.apcd_groups import has_groups
 from django.views.generic.base import TemplateView
 from apps.admin_regis_table.views import RegistrationsApi
-from apps.base.base import BaseAPIView
+from apps.base.base import BaseAPIView, APCDSubmitterAdminAccessAPIMixin, APCDSubmitterAdminAccessTemplateMixin
 from apps.utils.registrations_data_formatting import _set_registration
 import logging
 import json
@@ -11,21 +10,11 @@ import json
 logger = logging.getLogger(__name__)
 
 
-class SubmittersTable(TemplateView):
+class SubmittersTable(APCDSubmitterAdminAccessTemplateMixin, TemplateView):
     template_name = 'list_submitter_registrations.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            return HttpResponseRedirect('/')
-        return super(SubmittersTable, self).dispatch(request, *args, **kwargs)
 
-
-class SubmittersApi(BaseAPIView):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not (has_groups(request.user, ['APCD_ADMIN', 'SUBMITTER_ADMIN'])):
-            return JsonResponse({'error': 'Unauthorized'}, status=403)
-        return super(SubmittersApi, self).dispatch(request, *args, **kwargs)
+class SubmittersApi(APCDSubmitterAdminAccessAPIMixin, BaseAPIView):
 
     def _get_first_registration_entry(self, submitter_code, reg_id):
         registrations = get_registrations(submitter_code=submitter_code, reg_id=reg_id)

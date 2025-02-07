@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import (
     delete_registration_entity,
@@ -10,14 +10,13 @@ from apps.utils.apcd_database import (
     update_registration_contact,
     update_registration_entity,
 )
-from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import table_filter
 from apps.utils.registrations_data_formatting import (
     _set_registration,
     _set_registration_for_listing,
 )
 from apps.components.paginator.paginator import paginator
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
 from datetime import date as datetimeDate
 import json
@@ -25,13 +24,8 @@ import json
 logger = logging.getLogger(__name__)
 
 
-class RegistrationsTable(TemplateView):
+class RegistrationsTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'list_registrations.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(RegistrationsTable, self).dispatch(request, *args, **kwargs)
 
 
 class RegistrationsApi(APCDAdminAccessAPIMixin, BaseAPIView):

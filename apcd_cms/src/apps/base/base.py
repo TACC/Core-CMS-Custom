@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views import View
 from apps.utils.apcd_groups import is_apcd_admin, has_apcd_group
 import logging
@@ -19,6 +19,33 @@ class BaseAPIView(View):
                 status=500)
 
 
+class APCDAdminAccessTemplateMixin:
+    """ API Mixin to restrict access to authenticated APCD admins only. """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not is_apcd_admin(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class APCDGroupAccessTemplateMixin:
+    """ Template Mixin to restrict access to users with any APCD group. """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class APCDSubmitterAdminAccessTemplateMixin:
+    """ Template Mixin to restrict access to users with Admin and Submitter Admin. """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class APCDAdminAccessAPIMixin:
     """ API Mixin to restrict access to authenticated APCD admins only. """
 
@@ -30,6 +57,15 @@ class APCDAdminAccessAPIMixin:
 
 class APCDGroupAccessAPIMixin:
     """ API Mixin to restrict access to users with any APCD group. """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not has_apcd_group(request.user):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+
+class APCDSubmitterAdminAccessAPIMixin:
+    """ API Mixin to restrict access to users with Admin and Submitter Admin. """
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not has_apcd_group(request.user):

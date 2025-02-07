@@ -1,22 +1,16 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
 from apps.utils.apcd_database import get_users, update_user
-from apps.utils.apcd_groups import is_apcd_admin
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
 
-class ViewUsersTable(TemplateView):
+class ViewUsersTable(APCDAdminAccessTemplateMixin, TemplateView):
     template_name = 'view_users.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super().dispatch(request, *args, **kwargs)
 
 
 class ViewUsersApi(APCDAdminAccessAPIMixin, BaseAPIView):
