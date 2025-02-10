@@ -127,17 +127,23 @@
 
     /* Tables */
 
-    /* to reduce excess width of key */
+    /* to reduce excess width of table key */
     .datasets-list th.c-data-list__key {
         width: 22ch;
     }
 
-    .datasets-list .c-data-list__row--final:nth-child(odd),
-    .datasets-list .c-data-list__row--final:nth-child(odd) + tr :is(td, th) {
+    /* to put description list key and value on same line */
+    .datasets-list dt { float: left; }
+    .datasets-list dt::after { content: ':\00a0'; }
+    .datasets-list dd { clear: right; }
+
+    /* to use one background color for all final rows */
+    .datasets-list .c-data-list__row--start-final:nth-child(odd),
+    .datasets-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
         background-color: var(--global-color-background--app);
     }
-    .datasets-list .c-data-list__row--final:nth-child(even),
-    .datasets-list .c-data-list__row--final:nth-child(even) + tr :is(td, th) {
+    .datasets-list .c-data-list__row--start-final:nth-child(even),
+    .datasets-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
         background-color: var(--global-color-primary--x-light);
     }
 </style>
