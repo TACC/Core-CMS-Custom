@@ -195,7 +195,8 @@ def get_submitter_users():
         if conn is not None:
             conn.close()
 
-def get_registrations(reg_id=None, submitter_code=None):
+
+def get_registrations(reg_id=None, submitter_codes=None):
     cur = None
     conn = None
     try:
@@ -220,14 +221,14 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.zip,
                 registrations.registration_year
             FROM registrations
-            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_code is not None else ''}
+            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_codes is not None else ''}
             WHERE 1=1
             {f" AND registrations.registration_id = {str(reg_id)}" if reg_id is not None else ''}
-            {f" AND submitters.submitter_code = ANY(%s)" if submitter_code is not None else ''}
+            {f" AND submitters.submitter_code = ANY(%s)" if submitter_codes is not None else ''}
             ORDER BY registrations.registration_id"""
         cur = conn.cursor()
-        if submitter_code:
-            cur.execute(query, (submitter_code,))
+        if submitter_codes:
+            cur.execute(query, (submitter_codes,))
         else:
             cur.execute(query)
         return cur.fetchall()
@@ -843,7 +844,7 @@ def create_threshold_exception(form, exception, sub_data):
         conn.commit()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
         return error
 
     finally:
@@ -881,7 +882,7 @@ def get_cdl_exceptions(file_type):
         return cur.fetchall()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
 
     finally:
         if cur is not None:
@@ -1061,6 +1062,7 @@ def get_all_submissions_and_logs():
             cur.close()
         if conn is not None:
             conn.close()
+
 
 def create_extension(form, extension, sub_data):
     cur = None
