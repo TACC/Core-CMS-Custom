@@ -57,6 +57,18 @@
 
 
 
+
+    /* PUBLICATIONS */
+
+    .publication__title {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+
+
+
+
     /* LICENSE */
 
     ul.license-list {
@@ -113,13 +125,19 @@
     }
 
 
-    /* Nested Items */
+    /* Tables */
 
-    /* to change list item bullet */
-    ul.datasets-list li li { list-style: none; }
-    ul.datasets-list li li::before {
-        content: '↳ ';
-        list-style: none;
-        font-weight: var(--bold);
+    /* to reduce excess width of key */
+    .datasets-list th.c-data-list__key {
+        width: 22ch;
+    }
+
+    .datasets-list .c-data-list__row--final:nth-child(odd),
+    .datasets-list .c-data-list__row--final:nth-child(odd) + tr :is(td, th) {
+        background-color: var(--global-color-background--app);
+    }
+    .datasets-list .c-data-list__row--final:nth-child(even),
+    .datasets-list .c-data-list__row--final:nth-child(even) + tr :is(td, th) {
+        background-color: var(--global-color-primary--x-light);
     }
 </style>
