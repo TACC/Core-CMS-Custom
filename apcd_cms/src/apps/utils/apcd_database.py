@@ -1219,7 +1219,7 @@ def get_applicable_data_periods(submitter_id):
             sslmode='require',
         )
         cur = conn.cursor()
-        query = """ SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        query = """ SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is NOT NULL """
         cur.execute(query, (submitter_id,))
         return cur.fetchall()
 
