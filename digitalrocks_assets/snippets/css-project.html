@@ -101,16 +101,14 @@
     /* Root */
 
     ul.dataset-list {
-        /* to unset list styles */
         padding-left: unset;
         list-style: none;
-
-        /* to render in columns */
-        column-width: 40ch;
-        column-count: 2;
-        column-gap: 2rem;
     }
-
+    .dataset-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
+        gap: 2rem;
+    }
 
     /* Elements */
 
