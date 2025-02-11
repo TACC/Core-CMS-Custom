@@ -1,24 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Label,
-  FormGroup,
-  Row,
-  Col,
-  Alert,
-} from 'reactstrap';
-import {
-  Formik,
-  Field,
-  Form,
-  ErrorMessage,
-  useFormik,
-  FormikHelpers,
-  FormikProvider,
-} from 'formik';
+import { Modal, ModalBody, ModalHeader, Row, Col, Alert } from 'reactstrap';
+import { Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
+import { formatDate } from 'utils/dateUtil';
 import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
 import { useSubmitterDataPeriods } from 'hooks/entities';
@@ -27,7 +11,6 @@ import {
   convertPeriodLabelToApiValue,
   convertApiValueToPeriodLabel,
 } from 'utils/dateUtil';
-import styles from './EditExtensionModal.module.css';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
 
@@ -60,33 +43,104 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [extensionFields, setExtensionFields] = useState([
-    {
-      label: 'Applicable Data Period',
-      value: extension?.applicable_data_period || 'None',
-    },
-    {
-      label: 'Approved Expiration Date',
-      value: extension?.approved_expiration_date || 'None',
-    },
-    { label: 'Extension Status', value: extension?.ext_status },
-    { label: 'Extension Outcome', value: extension?.ext_outcome },
-    { label: 'Extension Notes', value: extension?.notes || 'None' },
-  ]);
+  const [currentExtension, setCurrentExtension] = useState<ExtensionRow | null>(
+    extension
+  );
+
   const {
     data: submitterData,
     isLoading: submitterDataLoading,
     error: submitterDataError,
   } = useSubmitterDataPeriods(extension?.submitter_id);
 
-  if (!extension) return null;
+  useEffect(() => {
+    setCurrentExtension(extension);
+  }, [extension]);
+
+  if (!currentExtension) return null;
+
+  const extensionFields = [
+    {
+      label: 'Created',
+      value: currentExtension?.created
+        ? formatDate(currentExtension.created)
+        : 'None',
+    },
+    {
+      label: 'Entity Organization',
+      value: currentExtension?.org_name,
+    },
+    {
+      label: 'Requestor',
+      value: currentExtension?.requestor,
+    },
+    {
+      label: 'Requestor Email',
+      value: currentExtension?.requestor_email,
+    },
+    {
+      label: 'Extension Type',
+      value: currentExtension?.type,
+    },
+    {
+      label: 'Status',
+      value: currentExtension?.ext_status,
+    },
+    {
+      label: 'Outcome',
+      value: currentExtension?.ext_outcome,
+    },
+    {
+      label: 'Applicable Data Period',
+      value: currentExtension?.applicable_data_period,
+    },
+    {
+      label: 'Current Expected Date',
+      value:
+        currentExtension?.current_expected_date &&
+        currentExtension?.current_expected_date !== 'None'
+          ? formatDate(currentExtension?.current_expected_date)
+          : 'None',
+    },
+    {
+      label: 'Requested Target Date',
+      value:
+        currentExtension?.requested_target_date &&
+        currentExtension?.requested_target_date !== 'None'
+          ? formatDate(currentExtension?.requested_target_date)
+          : 'None',
+    },
+    {
+      label: 'Approved Expiration Date',
+      value:
+        currentExtension?.approved_expiration_date &&
+        currentExtension?.approved_expiration_date !== 'None'
+          ? formatDate(currentExtension?.requested_target_date)
+          : 'None',
+    },
+    {
+      label: 'Extension Justification',
+      value: currentExtension?.explanation_justification,
+    },
+    {
+      label: 'Extension Notes',
+      value: currentExtension?.notes,
+    },
+    {
+      label: 'Last Updated',
+      value:
+        currentExtension?.updated_at && currentExtension?.updated_at !== 'None'
+          ? formatDate(currentExtension?.updated_at)
+          : 'None',
+    },
+  ];
 
   // Use the custom hook to get form fields and validation
   const useFormFields = () => {
     const initialValues: FormValues = {
-      ...extension,
-      ext_id: extension?.ext_id,
-      notes: extension?.notes || 'None', // Set notes to 'None' if it is null
+      ...currentExtension,
+      ext_id: currentExtension?.ext_id,
+      notes: currentExtension?.notes || 'None', // Set notes to 'None' if it is null
     };
 
     const validationSchema = Yup.object({
@@ -121,26 +175,20 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         body: api_values,
       });
 
-      if (onEditSuccess && response) {
-        onEditSuccess(response);
-        setExtensionFields([
-          {
-            label: 'Applicable Data Period',
-            value:
-              convertApiValueToPeriodLabel(values.applicable_data_period) ||
-              'None',
-          },
-          {
-            label: 'Approved Expiration Date',
-            value: values.approved_expiration_date || 'None',
-          },
-          { label: 'Extension Status', value: values.ext_status },
-          { label: 'Extension Outcome', value: values.ext_outcome },
-          { label: 'Extension Notes', value: values.notes || 'None' },
-        ]);
-      }
+      if (response) {
+        setCurrentExtension((prevExtension) => ({
+          ...prevExtension!,
+          ext_status: values.ext_status,
+          ext_outcome: values.ext_outcome,
+          applicable_data_period: values.applicable_data_period,
+          approved_expiration_date: values.approved_expiration_date,
+          notes: values.notes,
+          updated_at: new Date().toISOString(),
+        }));
 
-      setShowSuccessMessage(true);
+        setShowSuccessMessage(true);
+        if (onEditSuccess) onEditSuccess(response);
+      }
     } catch (error: any) {
       if (error.response && error.response.data) {
         // Use error message from the server response
@@ -170,6 +218,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
   const handleClose = () => {
     setShowSuccessMessage(false);
     setShowErrorMessage(false);
+    onClose();
   };
 
   const closeBtn = (
@@ -186,7 +235,8 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         className="modal-dialog modal-lg"
       >
         <ModalHeader close={closeBtn}>
-          Edit Extension ID {extension.ext_id} for {extension.org_name}
+          Edit Extension ID {currentExtension.ext_id} for{' '}
+          {currentExtension.org_name}
         </ModalHeader>
         <ModalBody>
           <h4 className="modal-header">Edit Selected Extension</h4>
@@ -223,7 +273,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         ))}
                       </Field>
                       <div className="help-text">
-                        Current: {extension.applicable_data_period}
+                        Current: {currentExtension.applicable_data_period}
                       </div>
                     </FieldWrapper>
                   </Col>
@@ -246,10 +296,10 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         onBlur={formik.handleBlur}
                       />
                       <div className="help-text">
-                        Current:{' '}
-                        {extension.approved_expiration_date
+                        Requested Expy Date:{' '}
+                        {currentExtension.requested_target_date
                           ? new Date(
-                              extension.approved_expiration_date
+                              currentExtension.requested_target_date
                             ).toLocaleDateString()
                           : 'None'}
                       </div>
@@ -327,7 +377,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                 </Row>
                 <br />
                 <Alert color="success" isOpen={showSuccessMessage}>
-                  Success: The exception data has been successfully updated.
+                  Success: The extension data has been successfully updated.
                 </Alert>
                 <Alert color="danger" isOpen={showErrorMessage}>
                   Error: {errorMessage}
@@ -347,12 +397,8 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
           <div>
             {extensionFields.map((field, index) => (
               <Row key={index}>
-                <Col md={6}>
-                  <p>{field.label}:</p>
-                </Col>
-                <Col md={6}>
-                  <p>{field.value}</p>
-                </Col>
+                <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
+                <Col md={6}>{field.value}</Col>
               </Row>
             ))}
           </div>
