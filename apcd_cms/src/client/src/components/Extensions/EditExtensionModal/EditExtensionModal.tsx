@@ -296,7 +296,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
                         onBlur={formik.handleBlur}
                       />
                       <div className="help-text">
-                        Requested Expy Date:{' '}
+                        Requested Target Date:{' '}
                         {currentExtension.requested_target_date
                           ? new Date(
                               currentExtension.requested_target_date
