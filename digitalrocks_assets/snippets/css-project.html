@@ -96,11 +96,11 @@
 
 
 
-    /* DATASETS */
+    /* DATASET LIST */
 
     /* Root */
 
-    ul.datasets-list {
+    ul.dataset-list {
         /* to unset list styles */
         padding-left: unset;
         list-style: none;
@@ -114,13 +114,13 @@
 
     /* Top-Level Items */
 
-    .datasets-list > li:not(:last-child) {
+    .dataset-list > li:not(:last-child) {
         margin-bottom: 1.5rem;
         /* Prevent items from breaking across columns */
         break-inside: avoid;
         page-break-inside: avoid;
     }
-    .datasets-list > li > strong {
+    .dataset-list > li > strong {
         font-weight: var(--medium);
     }
 
@@ -128,22 +128,22 @@
     /* Tables */
 
     /* to reduce excess width of table key */
-    .datasets-list th.c-data-list__key {
+    .dataset-list th.c-data-list__key {
         width: 22ch;
     }
 
     /* to put description list key and value on same line */
-    .datasets-list dt { float: left; }
-    .datasets-list dt::after { content: ':\00a0'; }
-    .datasets-list dd { clear: right; }
+    .dataset-list dt { float: left; }
+    .dataset-list dt::after { content: ':\00a0'; }
+    .dataset-list dd { clear: right; }
 
     /* to use one background color for all final rows */
-    .datasets-list .c-data-list__row--start-final:nth-child(odd),
-    .datasets-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
+    .dataset-list .c-data-list__row--start-final:nth-child(odd),
+    .dataset-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
         background-color: var(--global-color-background--app);
     }
-    .datasets-list .c-data-list__row--start-final:nth-child(even),
-    .datasets-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
+    .dataset-list .c-data-list__row--start-final:nth-child(even),
+    .dataset-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
         background-color: var(--global-color-primary--x-light);
     }
 </style>
