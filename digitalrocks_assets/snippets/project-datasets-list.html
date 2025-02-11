@@ -1,18 +1,21 @@
 <!-- TODO: Integrate into Core-CMS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@7957b2c/src/lib/_imports/components/c-show-more.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@ad9a937/dist/components/c-show-more.css" />
 <script type="module">
-	import { generateMarkup } from 'https://cdn.jsdelivr.net/gh/TACC/Core-Styles@7957b2c/src/lib/_imports/components/c-show-more/c-show-more.js';
+	import { defaults, generateMarkup } from 'https://cdn.jsdelivr.net/gh/TACC/Core-Styles@ad9a937/src/lib/_imports/components/c-show-more/c-show-more.js';
 
-	generateMarkup();
+	generateMarkup(
+		document.getElementsByClassName('js-show-more'),
+		{ shouldToggleResembleLink: true }
+	);
 </script>
 
 <ul class="dataset-list">
-	<li>
-		<h4>
+	<li class="dataset-list__item">
+		<h4 class="dataset-list__title">
 			<span>Sample</span>
-			<em>Berea</em>
+			<strong>Berea</strong>
 		</h4>
-		<p class="js-show-more--one-line">Berea sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
+		<p class="js-show-more">Berea sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
 		<table class="c-data-list c-data-list--is-vert c-data-list--is-narrow c-data-list--should-truncate-values">
 			<tbody>
 				<tr>
@@ -66,9 +69,9 @@
 	<li>
 		<h4>
 			<span>Sample</span>
-			<em>Bandera Brown</em>
+			<strong>Berea</strong>
 		</h4>
-		<p class="js-show-more--one-line">Bandera Brown sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
+		<p class="js-show-more">Bandera Brown sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
 		<table class="c-data-list c-data-list--is-vert c-data-list--is-narrow c-data-list--should-truncate-values">
 			<tbody>
 				<tr>
@@ -122,9 +125,9 @@
 	<li>
 		<h4>
 			<span>Sample</span>
-			<em>Bandera Gray</em>
+			<strong>Berea</strong>
 		</h4>
-		<p class="js-show-more--one-line">Bandera Gray sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
+		<p class="js-show-more">Bandera Gray sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
 		<table class="c-data-list c-data-list--is-vert c-data-list--is-narrow c-data-list--should-truncate-values">
 			<tbody>
 				<tr>
@@ -178,9 +181,9 @@
 	<li>
 		<h4>
 			<span>Sample</span>
-			<em>Bentheimer</em>
+			<strong>Berea</strong>
 		</h4>
-		<p class="js-show-more--one-line">Bentheimer sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
+		<p class="js-show-more">Bentheimer sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
 		<table class="c-data-list c-data-list--is-vert c-data-list--is-narrow c-data-list--should-truncate-values">
 			<tbody>
 				<tr>
@@ -234,9 +237,9 @@
 	<li>
 		<h4>
 			<span>Sample</span>
-			<em>Berea Sister Gray</em>
+			<strong>Berea</strong>
 		</h4>
-		<p class="js-show-more--one-line">Berea Sister Gray sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
+		<p class="js-show-more">Berea Sister Gray sandstone sample. For experimental and computational estimates of porosity and permeability, please refer to the related publications.</p>
 		<table class="c-data-list c-data-list--is-vert c-data-list--is-narrow c-data-list--should-truncate-values">
 			<tbody>
 				<tr>
