@@ -1,0 +1,162 @@
+<style id="css-project">
+    /* DESCRIPTION */
+
+    .project-desc > img {
+        width: 20%;
+        padding: 10px;
+    }
+    .project-desc p a {
+        word-break: break-all;
+    }
+
+    .project-desc th.c-data-list__key {
+        width: 25ch;
+    }
+
+
+
+    /* DOWNLOAD */
+
+    /* Button */
+
+    .project-download-button {
+        /* to align as if it were a far-right tab */
+        float: right;
+        position: relative;
+        bottom: -12px;
+    }
+
+    p:has(.project-download-button) {
+        text-align: center;
+    }
+
+    .project-download-button i.icon-download {
+        font-weight: bold;
+    }
+
+
+
+    /* METRICS */
+
+    #project-metrics-modal small {
+        font-style: italic;
+    }
+    #project-metrics-modal c-message--scope-section {
+        padding-block: 8px;
+        padding-inline: 12px;
+    }
+    .metrics-tableset {
+        display: flex;
+        gap: 1rem;
+        justify-content: space-evenly;
+    }
+
+    .u-thead-content-with-input {
+        display: flex;
+        gap: 1ch;
+    }
+
+
+
+
+    /* MODAL */
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+
+
+
+
+    /* PUBLICATIONS */
+
+    .publication__title {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+
+
+
+
+    /* LICENSE */
+
+    ul.license-list {
+        padding-left: unset;
+        list-style: none;
+    }
+    .license__title:has(.icon) {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+    }
+    .license__deets {
+        /* to align with license__title text */
+        padding-left: 3.5em; /* icon width + gap between icon and text */
+    }
+
+
+
+    /* TABS */
+
+    ul.nav-tabs {
+        padding-left: unset;
+    }
+
+
+
+
+    /* DATASET LIST */
+
+    /* Root */
+
+    ul.dataset-list {
+        padding-left: unset;
+        list-style: none;
+    }
+    .dataset-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
+        gap: 2rem;
+    }
+
+    /* Elements */
+
+    .dataset-list__title span { font-weight: normal; }
+    .dataset-list__title strong { font-weight: inherit; }
+    .dataset-list__title span::after {
+        content: ':';
+    }
+
+    .dataset-list__item *:last-child {
+        margin-bottom: unset;
+    }
+
+
+    /* Tables */
+
+    /* to reduce excess width of table key */
+    .dataset-list th.c-data-list__key {
+        width: 22ch;
+    }
+
+    /* to put description list key and value on same line */
+    .dataset-list dt { float: left; }
+    .dataset-list dt::after { content: ':\00a0'; }
+    .dataset-list dd { clear: right; }
+
+    /* to swap colors for key and value (special design request) */
+    .dataset-list .c-data-list__key { color: var(--global-color-primary--dark); }
+    .dataset-list .c-data-list__value { color: var(--global-color-primary--x-dark) }
+
+    /* to use one background color for all final rows */
+    .dataset-list .c-data-list__row--start-final:nth-child(odd),
+    .dataset-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
+        background-color: var(--global-color-background--app);
+    }
+    .dataset-list .c-data-list__row--start-final:nth-child(even),
+    .dataset-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
+        background-color: var(--global-color-primary--x-light);
+    }
+</style>
