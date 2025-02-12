@@ -128,10 +128,7 @@
     /* Elements */
 
     .dataset-list__title span { font-weight: normal; }
-    .dataset-list__title strong { font-weight: inherit; }
-    .dataset-list__title span::after {
-        content: ':';
-    }
+    .dataset-list__title span::after { content: ':'; }
 
     .dataset-list__item *:last-child {
         margin-bottom: unset;
@@ -163,4 +160,11 @@
     .dataset-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
         background-color: var(--global-color-primary--x-light);
     }
+
+
+
+    /* ORIGIN DATA */
+
+    #project-content--data span { font-weight: normal; }
+    #project-content--data span::after { content: ':'; }
 </style>
