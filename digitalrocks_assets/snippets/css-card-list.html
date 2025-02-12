@@ -1,7 +1,29 @@
 <style id="css-card-list">
-    /* CARDS */
+    /* CARD LIST */
+
+    /* Root */
+
+    ul.card-list {
+        padding-left: unset;
+        list-style: none;
+    }
+    .card-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: var(--global-space--bootstrap-gap);
+    }
+
+
+    /* Elements */
 
     .card-list [class*="card--"] img {
         padding: 10px;
     }
+
+
+    /* Components */
+
+    /* to swap colors for key and value (special design request) */
+    .card-list .c-data-list__key { color: var(--global-color-primary--dark); }
+    .card-list .c-data-list__value { color: var(--global-color-primary--x-dark) }
 </style>
