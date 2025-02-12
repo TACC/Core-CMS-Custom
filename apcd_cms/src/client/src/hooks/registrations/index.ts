@@ -165,5 +165,6 @@ export function transformToRegistrationFormValues(
 export {
   useAdminRegistrations,
   useSubmitterRegistrations,
+  useSubmitterRegistration,
   useAdminRegistration,
 } from './useRegistrations';
