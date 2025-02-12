@@ -124,6 +124,7 @@
         gap: 2rem;
     }
 
+
     /* Elements */
 
     .dataset-list__title span { font-weight: normal; }
@@ -136,18 +137,18 @@
         margin-bottom: unset;
     }
 
+    /* to put description list key and value on same line */
+    .dataset-list__item dt { float: left; }
+    .dataset-list__item dt::after { content: ':\00a0'; }
+    .dataset-list__item dd { clear: right; }
 
-    /* Tables */
+
+    /* Components */
 
     /* to reduce excess width of table key */
     .dataset-list th.c-data-list__key {
         width: 22ch;
     }
-
-    /* to put description list key and value on same line */
-    .dataset-list dt { float: left; }
-    .dataset-list dt::after { content: ':\00a0'; }
-    .dataset-list dd { clear: right; }
 
     /* to swap colors for key and value (special design request) */
     .dataset-list .c-data-list__key { color: var(--global-color-primary--dark); }
