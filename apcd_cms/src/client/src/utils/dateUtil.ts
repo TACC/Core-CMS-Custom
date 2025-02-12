@@ -15,10 +15,9 @@ export const formatDate = (dateString: string | number | Date): string => {
 };
 
 export const formatModalDate = (dateString: string | number | Date): string => {
-  return formatDate(dateString)
-    .replace('.', '')
-    .replace('AM', 'a.m.')
-    .replace('PM', 'p.m.');
+  const date = new Date(dateString).getTime() + (1000 * 60 * 60 * 24);
+
+  return formatDate(date);
 };
 
 /**
