@@ -6,7 +6,7 @@ import Paginator from 'core-components/Paginator';
 import styles from './ExtensionList.module.css';
 import ViewExtensionModal from 'apcd-components/Extensions/ViewExtensionModal/ViewExtensionModal';
 import EditExtensionModal from 'apcd-components/Extensions/EditExtensionModal/EditExtensionModal';
-import { formatDate, formatModalDate } from 'utils/dateUtil';
+import { formatDate } from 'utils/dateUtil';
 import { ClearOptionsButton } from 'apcd-components/ClearOptionsButton';
 
 export const AdminExtensions: React.FC = () => {
@@ -134,7 +134,7 @@ export const AdminExtensions: React.FC = () => {
                 <td>{row.type}</td>
                 <td>{row.ext_outcome}</td>
                 <td>{row.ext_status}</td>
-                <td>{formatModalDate(row.approved_expiration_date)}</td>
+                <td>{formatDate(row.approved_expiration_date)}</td>
                 <td className="modal-cell">
                   <select
                     id={`actionsDropdown_${row.ext_id}`}
