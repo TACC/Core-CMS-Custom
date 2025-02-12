@@ -1,14 +1,22 @@
 <style id="css-project">
     /* DESCRIPTION */
 
+    .project-desc > p:first-of-type::before {
+        content: 'Description: ';
+        font-weight: var(--bold);
+    }
+
     .project-desc > img {
-        width: 50%;
+        width: 20%;
         padding: 10px;
     }
     .project-desc p a {
         word-break: break-all;
     }
 
+    .project-desc th.c-data-list__key {
+        width: 25ch;
+    }
 
 
 
@@ -16,9 +24,15 @@
 
     /* Button */
 
+    .project-download-button {
+        /* to align as if it were a far-right tab */
+        float: right;
+    }
+
     p:has(.project-download-button) {
         text-align: center;
     }
+
     .project-download-button i.icon-download {
         font-weight: bold;
     }
