@@ -1,11 +1,6 @@
 <style id="css-project">
     /* DESCRIPTION */
 
-    .project-desc > p:first-of-type::before {
-        content: 'Description: ';
-        font-weight: var(--bold);
-    }
-
     .project-desc > img {
         width: 20%;
         padding: 10px;
@@ -147,10 +142,6 @@
         width: 22ch;
     }
 
-    /* to swap colors for key and value (special design request) */
-    .dataset-list .c-data-list__key { color: var(--global-color-primary--dark); }
-    .dataset-list .c-data-list__value { color: var(--global-color-primary--x-dark) }
-
     /* to use one background color for all final rows */
     .dataset-list .c-data-list__row--start-final:nth-child(odd),
     .dataset-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
@@ -167,4 +158,13 @@
 
     #project-content--data span { font-weight: normal; }
     #project-content--data span::after { content: ':'; }
+
+
+
+
+    /* COMPONENTS */
+
+    /* to swap colors for key and value (special design request) */
+    .c-data-list__key { color: var(--global-color-primary--dark); }
+    .c-data-list__value { color: var(--global-color-primary--x-dark) }
 </style>
