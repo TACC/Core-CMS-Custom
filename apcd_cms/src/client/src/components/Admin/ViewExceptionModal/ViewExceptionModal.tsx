@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { ExceptionRow } from 'hooks/admin';
-import { formatStringDate } from 'utils/dateUtil';
+import { formatUTCDate } from 'utils/dateUtil';
 import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
@@ -50,7 +50,7 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
               <Col md={7}>
-                {(created_at && formatStringDate(created_at)) || 'None'}
+                {(created_at && formatUTCDate(created_at)) || 'None'}
               </Col>
             </Row>
             <Row>
