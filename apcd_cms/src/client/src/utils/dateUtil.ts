@@ -14,9 +14,8 @@ export const formatDate = (dateString: string | number | Date): string => {
   }).format(date);
 };
 
-export const formatCSTDate = (dateString: string | number | Date): string => {
-  const dateUTC = new Date(dateString);
-  const date = new Date(dateUTC.valueOf() + dateUTC.getTimezoneOffset() * 60000);
+export const formatStringDate = (dateString: string): string => {
+  const date = new Date(dateString);
     
   if (isNaN(date.getTime())) {
     return '';
@@ -26,6 +25,7 @@ export const formatCSTDate = (dateString: string | number | Date): string => {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'UTC'
   }).format(date);
 };
 
