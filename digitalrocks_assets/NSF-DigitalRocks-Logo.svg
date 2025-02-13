@@ -3,12 +3,15 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:svg="http://www.w3.org/2000/svg">
-  <style>
+  <style id="style1">
     #path139 {
       stroke: rgb(86,86,86);
     }
-    #DigitalRocks_Text > * {
+    #DigitalRocks_Text * {
       fill: #000;
+    }
+    #DigitalRocks_Image_Bkgd {
+      fill: #fff;
     }
   </style>
   <g id="DigitalRocks_Text" transform="matrix(21.8552,0,0,21.8552,-461.508,74.4398)">
@@ -183,8 +186,9 @@
     </g>
     <path id="path139" d="M645.65,555.45L645.65,112.7" style="stroke-width:5px;" />
   </g>
-  <g id="DigitalRocks_Logo" transform="matrix(0.788162,0,0,0.786585,648,-2.27374e-13)">
-    <use id="Use_DigitalRocks_Image" xlink:href="#DigitalRocks_Image" x="0" y="0" width="642px" height="656px" />
+  <g id="DigitalRocks_Logo" transform="matrix(0.788162,0,0,0.786585,648,0)">
+    <path d="M 649.43091,131.90978 853.54282,0.74174119 1152.8239,27.178808 1141.9751,309.29177 1023.6349,514.6744 745.55195,403.98127 Z" id="DigitalRocks_Image_Bkgd" transform="matrix(1.2687747,0,0,1.2713184,-822.166,0)" />
+    <use id="Use_DigitalRocks_Image" xlink:href="#DigitalRocks_Image" x="0" y="0" width="642" height="656" />
   </g>
   <defs id="defs457">
     <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(522.8,0,0,522.8,53.06,448.97)">
