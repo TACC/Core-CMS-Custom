@@ -1,0 +1,23 @@
+<style id="css-icon-data-label">
+    /* to create a dynamic label atop an existing icon */
+    .icon[data-label] {
+        display: inline-grid;
+
+        font-size: 2.5em;
+    }
+    .icon[data-label]::before,
+    .icon[data-label]::after {
+        grid-area: 1 / 1;
+    }
+    .icon[data-label]::after {
+        content: attr(data-label);
+        place-self: center;
+
+        font-size: 0.375em;
+        -webkit-text-stroke: medium white;
+        background-color: currentColor;
+        border-color: currentColor;
+        border-style: solid;
+        border-width: 0 0.25em 0.25em;
+    }
+</style>
