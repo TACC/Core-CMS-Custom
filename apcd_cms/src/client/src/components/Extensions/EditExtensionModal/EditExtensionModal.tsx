@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, ModalBody, ModalHeader, Row, Col, Alert } from 'reactstrap';
 import { Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
-import { formatDate } from 'utils/dateUtil';
+import { formatDate, formatCSTDate } from 'utils/dateUtil';
 import * as Yup from 'yup';
 import { ExtensionRow } from 'hooks/admin';
 import { useSubmitterDataPeriods } from 'hooks/entities';
@@ -115,8 +115,9 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       value:
         currentExtension?.approved_expiration_date &&
         currentExtension?.approved_expiration_date !== 'None'
-          ? formatDate(currentExtension?.approved_expiration_date)
-          : 'None',
+          ? formatCSTDate(currentExtension?.approved_expiration_date)
+          : 'None'
+        + 'currentExtension?.approved_expiration_date',
     },
     {
       label: 'Extension Justification',
