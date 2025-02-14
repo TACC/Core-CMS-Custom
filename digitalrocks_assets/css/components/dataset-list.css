@@ -1,0 +1,43 @@
+/* DATASET LIST */
+
+/* Root */
+
+ul.dataset-list {
+    padding-left: unset;
+    list-style: none;
+}
+.dataset-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
+    gap: var(--global-space--bootstrap-gap);
+}
+
+
+/* Elements */
+
+.dataset-list__item *:last-child {
+    margin-bottom: unset;
+}
+
+/* to put description list key and value on same line */
+.dataset-list__item dt { float: left; }
+.dataset-list__item dt::after { content: ':\00a0'; }
+.dataset-list__item dd { clear: right; }
+
+
+/* Components */
+
+/* to reduce excess width of table key */
+.dataset-list th.c-data-list__key {
+    width: 22ch;
+}
+
+/* to use one background color for all final rows */
+.dataset-list .c-data-list__row--start-final:nth-child(odd),
+.dataset-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
+    background-color: var(--global-color-background--app);
+}
+.dataset-list .c-data-list__row--start-final:nth-child(even),
+.dataset-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
+    background-color: var(--global-color-primary--x-light);
+}
