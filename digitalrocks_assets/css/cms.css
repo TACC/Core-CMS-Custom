@@ -1,10 +1,10 @@
 /* CUSTOM PATTERNS */
 
-@import url('dataset-list.css');
-@import url('project.css');
-@import url('publications.css');
-@import url('metrics.css');
-@import url('license.css');
+@import url('components/dataset-list.css');
+@import url('components/project.css');
+@import url('components/publications.css');
+@import url('components/metrics.css');
+@import url('components/license.css');
 
 
 
