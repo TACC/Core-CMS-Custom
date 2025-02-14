@@ -14,11 +14,19 @@ export const formatDate = (dateString: string | number | Date): string => {
   }).format(date);
 };
 
-export const formatModalDate = (dateString: string | number | Date): string => {
-  return formatDate(dateString)
-    .replace('.', '')
-    .replace('AM', 'a.m.')
-    .replace('PM', 'p.m.');
+export const formatUTCDate = (dateString: string | number | Date): string => {
+  const date = new Date(dateString);
+    
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).format(date);
 };
 
 /**
