@@ -1,0 +1,43 @@
+/* CUSTOM PATTERNS */
+
+@import url('dataset-list.css');
+@import url('project.css');
+@import url('publications.css');
+@import url('metrics.css');
+@import url('license.css');
+@import url('origin-data.css');
+
+
+
+
+/* TWEAK CORE-STYLES */
+
+/* Card */
+
+.c-card-list [class*="card--"] img {
+    padding: 20px;
+}
+
+
+/* Data List */
+
+/* to swap colors for key and value (design request specific to projects) */
+.c-data-list__key { color: var(--global-color-primary--dark); }
+.c-data-list__value { color: var(--global-color-primary--x-dark) }
+
+
+/* Modal */
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+
+
+
+/* CUSTOM UTILITIES */
+
+.u-thead-content-with-input {
+    display: flex;
+    gap: 1ch;
+}
