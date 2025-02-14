@@ -15,9 +15,6 @@ ul.dataset-list {
 
 /* Elements */
 
-.dataset-list__title span { font-weight: normal; }
-.dataset-list__title span::after { content: ':'; }
-
 .dataset-list__item *:last-child {
     margin-bottom: unset;
 }

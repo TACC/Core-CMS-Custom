@@ -5,7 +5,6 @@
 @import url('publications.css');
 @import url('metrics.css');
 @import url('license.css');
-@import url('origin-data.css');
 
 
 
@@ -41,3 +40,6 @@
     display: flex;
     gap: 1ch;
 }
+
+.u-title-needs-colon span { font-weight: normal; }
+.u-title-needs-colon span::after { content: ':'; }

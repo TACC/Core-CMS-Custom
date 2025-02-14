@@ -1,4 +1,0 @@
-/* Origin Data */
-
-.origin-data__title span { font-weight: normal; }
-.origin-data__title span::after { content: ':'; } 
