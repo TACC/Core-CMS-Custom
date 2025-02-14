@@ -13,7 +13,7 @@ ul.license-list {
     align-items: center;
     gap: 1em;
 }
-.license__deets {
+.license__details {
     /* to align with license__title text */
     padding-left: 3.5em; /* icon width + gap between icon and text */
 }
