@@ -99,7 +99,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       value:
         currentExtension?.current_expected_date &&
         currentExtension?.current_expected_date !== 'None'
-          ? formatDate(currentExtension?.current_expected_date)
+          ? formatUTCDate(currentExtension?.current_expected_date)
           : 'None',
     },
     {
@@ -107,7 +107,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
       value:
         currentExtension?.requested_target_date &&
         currentExtension?.requested_target_date !== 'None'
-          ? formatDate(currentExtension?.requested_target_date)
+          ? formatUTCDate(currentExtension?.requested_target_date)
           : 'None',
     },
     {
