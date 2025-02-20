@@ -75,7 +75,7 @@ export const ViewFileSubmissions: React.FC = () => {
     data: submitterData,
     isLoading: entitiesLoading,
     error: entitiesError,
-  } = useEntities();
+  } = useEntities(false);
 
   if (isSubmissionLoading) {
     return <LoadingSpinner />;
@@ -208,7 +208,7 @@ export const ViewFileSubmissions: React.FC = () => {
             )
           ) : (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>
+              <td colSpan={header.length} style={{ textAlign: 'center' }}>
                 No Data available
               </td>
             </tr>
