@@ -24,10 +24,12 @@ class AdminSubmissionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         
         status = request.GET.get('status', 'In Process')
         sort = request.GET.get('sort', 'Newest Received')
+        submitter_id = request.GET.get('submitterId', 'All')
+        payor_code = request.GET.get('payorCode', 'All')
         page_number = int(request.GET.get('page', 1))
         items_per_page = int(request.GET.get('limit', 50))
         submission_content = get_all_submissions_and_logs()
-        filtered_submissions = self.filtered_submissions(submission_content, status, sort)
+        filtered_submissions = self.filtered_submissions(submission_content, status, sort, submitter_id, payor_code)
 
         paginator = Paginator(filtered_submissions, items_per_page)
         page_info = paginator.get_page(page_number)
@@ -56,7 +58,7 @@ class AdminSubmissionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
             logger.error("Error fetching options data: %s", e)
             return JsonResponse({'error': str(e)}, status=500)
 
-    def filtered_submissions(self, submission_content, status, sort):
+    def filtered_submissions(self, submission_content, status, sort, submitter_id, payor_code):
         def getDate(submission):
             date = submission['received_timestamp']
             return parser.parse(date) if date is not None else parser.parse('1-1-3005')
@@ -64,6 +66,13 @@ class AdminSubmissionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         if status != 'All':
             submission_content = [submission for submission in submission_content
                                   if submission['status'].lower() == status.lower()]
+
+        if submitter_id != 'All':
+            submission_content = [submission for submission in submission_content
+                                  if submission['submitter_id'] == int(submitter_id)]
+        if payor_code != 'All':
+            submission_content = [submission for submission in submission_content
+                                  if submission['payor_code'] == int(payor_code)]
 
         submission_content = sorted(
             submission_content,
@@ -89,6 +98,7 @@ class AdminSubmissionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
             'outcome': title_case(submission['outcome']) if submission['outcome'] else None,
             'received_timestamp': submission['received_timestamp'],
             'updated_at': submission['updated_at'],
+            'payor_code': submission['payor_code'],
             'view_modal_content': submission['view_modal_content'],
             }
         for submission in submission_content:
