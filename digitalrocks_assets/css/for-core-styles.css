@@ -65,3 +65,14 @@ tr.c-data-list__row--start-final:nth-child(even) :is(th, td),
 tr.c-data-list__row--start-final:nth-child(even) ~ tr :is(th, td) {
     background: var(--global-color-primary--x-light);
 }
+
+
+
+
+
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/459 */
+
+.c-card-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
