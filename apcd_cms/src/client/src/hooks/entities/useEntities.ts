@@ -33,7 +33,7 @@ export const useSubmitterDataPeriods = (
 ): UseQueryResult<SubmitterDataPeriods> => {
   const params: { submitter_id?: string } = { submitter_id };
   const query = useQuery(
-    ['submitterDataPeriods'],
+    ['submitterDataPeriods', submitter_id],
     () => getSubmitterDataPeriods(params),
     {
       enabled: submitter_id !== undefined && submitter_id !== null, // Allow `0` as valid
