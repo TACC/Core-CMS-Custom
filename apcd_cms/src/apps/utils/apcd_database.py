@@ -947,7 +947,8 @@ def get_user_submissions_and_logs(user):
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'payor_code', submitters.org_name,
+                'org_name', submitters.org_name,
+                'payor_code', submitters.payor_code,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -981,7 +982,7 @@ def get_user_submissions_and_logs(user):
             IN (
                 SELECT submitter_users.submitter_id FROM submitter_users 
                 WHERE submitter_users.user_id = %s )
-            GROUP BY (submissions.submission_id, submitters.entity_name, submitters.org_name)
+            GROUP BY (submissions.submission_id, submitters.entity_name, submitters.org_name, submitters.payor_code)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1016,7 +1017,8 @@ def get_all_submissions_and_logs():
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'payor_code', submitters.org_name,
+                'payor_code', submitters.payor_code,
+                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT CASE
                             WHEN COUNT(submission_logs.log_id) = 0 THEN '[]'::json

@@ -159,7 +159,7 @@ export const ViewFileSubmissions: React.FC = () => {
                 value={`${submitter.submitter_id},${submitter.payor_code}`}
                 key={`${submitter.submitter_id},${submitter.payor_code}`}
               >
-                {submitter.entity_name} - Payor Code: {submitter.payor_code}
+                {submitter.org_name} - Payor Code: {submitter.payor_code}
               </option>
             ))}
           </select>

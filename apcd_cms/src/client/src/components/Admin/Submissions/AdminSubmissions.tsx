@@ -194,7 +194,7 @@ export const AdminSubmissions: React.FC = () => {
                   <td>{titleCase(row.outcome)}</td>
                   <td>{titleCase(row.status)}</td>
                   <td>{formatDate(row.updated_at)}</td>
-                  <td>{row.payor_code}</td>
+                  <td>{row.org_name}</td>
                   <td>
                     <Button
                       type="link"
