@@ -8,7 +8,6 @@ export type Entities = {
   payor_code: number;
   user_id: string;
   entity_name: string;
-  data_periods: ApplicableDataPeriod[];
   org_name: string;
 };
 

@@ -24,24 +24,22 @@ class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get_submitter_info_json(self, submitters):
         context = {}
 
-        def _set_submitter(sub, data_periods):
+        def _set_submitter(sub):
             return {
                 "submitter_id": sub[0],
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
                 "entity_name": title_case(sub[4]),
-                "data_periods": data_periods,
                 "org_name": sub[5]
             }
 
         context["submitters"] = []
 
         for submitter in submitters:
-            data_periods = _getApplicableDataPeriods(submitter[0])
             checkForExistingCode = [submitter[2] == listed_submitter["payor_code"] for listed_submitter in context['submitters']]
             if not any(checkForExistingCode):  # grab unique payor codes
-                context["submitters"].append(_set_submitter(submitter, data_periods))
+                context["submitters"].append(_set_submitter(submitter))
 
         return context
 

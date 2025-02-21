@@ -5,6 +5,7 @@ import {
   SubmitterEntityData,
   Entities,
   ApplicableDataPeriod,
+  useSubmitterDataPeriods,
 } from 'hooks/entities';
 import SectionMessage from 'core-components/SectionMessage';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
@@ -21,21 +22,23 @@ const ExtensionFormInfo: React.FC<{
   const [dataPeriods, setDataPeriods] = useState<ApplicableDataPeriod[]>([]);
   const { setFieldValue, values } = useFormikContext<any>();
 
+  const {
+    data: fetchedDataPeriods,
+    isLoading: dataPeriodsLoading,
+    error: dataPeriodsError,
+  } = useSubmitterDataPeriods(selectedEntity);
+
   useEffect(() => {
-    if (selectedEntity) {
-      const entityId = parseInt(selectedEntity, 10);
-      setFieldValue(`extensions[${index}].currentExpectedDate`, '');
-      setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
-      setDataPeriods(
-        submitterData?.submitters.find((s) => s.submitter_id === entityId)
-          ?.data_periods ?? []
-      );
-    } else {
-      setFieldValue(`extensions[${index}].currentExpectedDate`, '');
-      setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
-      setDataPeriods([]);
+    setDataPeriods([]); // Reset on entity change
+    setFieldValue(`extensions[${index}].currentExpectedDate`, '');
+    setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
+  }, [selectedEntity, index, setFieldValue]);
+  
+  useEffect(() => {
+    if (!dataPeriodsLoading && !dataPeriodsError) {
+      setDataPeriods(fetchedDataPeriods?.data_periods?? []);
     }
-  }, [selectedEntity, index]);
+  }, [fetchedDataPeriods, dataPeriodsLoading, dataPeriodsError]);
 
   return (
     <>
