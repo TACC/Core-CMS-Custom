@@ -12,7 +12,7 @@ const getEntities = async (params: any) => {
 };
 
 export const useEntities = (
-  from_admin: boolean | undefined
+  from_admin: boolean | undefined  = false
 ): UseQueryResult<SubmitterEntityData> => {
   const params: { from_admin?: boolean } = { from_admin }
   const query = useQuery(['entities'], () =>
