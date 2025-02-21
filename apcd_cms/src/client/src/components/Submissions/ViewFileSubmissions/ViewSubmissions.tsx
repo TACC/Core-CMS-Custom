@@ -75,7 +75,7 @@ export const ViewFileSubmissions: React.FC = () => {
     data: submitterData,
     isLoading: entitiesLoading,
     error: entitiesError,
-  } = useEntities();
+  } = useEntities(false);
 
   if (isSubmissionLoading) {
     return <LoadingSpinner />;
@@ -159,7 +159,7 @@ export const ViewFileSubmissions: React.FC = () => {
                 value={`${submitter.submitter_id},${submitter.payor_code}`}
                 key={`${submitter.submitter_id},${submitter.payor_code}`}
               >
-                {submitter.entity_name} - Payor Code: {submitter.payor_code}
+                {submitter.org_name} - Payor Code: {submitter.payor_code}
               </option>
             ))}
           </select>
@@ -190,7 +190,7 @@ export const ViewFileSubmissions: React.FC = () => {
                   <td>{titleCase(row.outcome)}</td>
                   <td>{titleCase(row.status)}</td>
                   <td>{formatDate(row.updated_at)}</td>
-                  <td>{row.payor_code}</td>
+                  <td>{row.org_name}</td>
                   <td>
                     <Button
                       type="link"
@@ -208,7 +208,7 @@ export const ViewFileSubmissions: React.FC = () => {
             )
           ) : (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>
+              <td colSpan={header.length} style={{ textAlign: 'center' }}>
                 No Data available
               </td>
             </tr>

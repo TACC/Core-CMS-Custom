@@ -4,6 +4,7 @@ import {
   FileSubmissionRow,
   FileSubmissionLogsModalContent,
 } from 'hooks/submissions';
+import { Entities, useEntities } from 'hooks/entities';
 import { ViewSubmissionLogsModal } from 'apcd-components/Submissions/ViewFileSubmissions';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
@@ -22,6 +23,7 @@ export const AdminSubmissions: React.FC = () => {
     'Outcome',
     'Status',
     'Last Updated',
+    'Payor Code',
     'Actions',
   ];
   const {
@@ -33,6 +35,9 @@ export const AdminSubmissions: React.FC = () => {
   const [status, setStatus] = useState<string>('In Process');
   const [sort, setSort] = useState<string>('Newest Received');
   const [page, setPage] = useState<number>(1);
+  const [submitterId, setSubmitterId] = useState<string>('All');
+  const [payorCode, setPayorCode] = useState<string>('All');
+  const [submitterPayorCode, setSubmitterPayorCode] = useState<string>('All');
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] =
     useState<FileSubmissionRow | null>(null);
@@ -51,11 +56,25 @@ export const AdminSubmissions: React.FC = () => {
     isLoading: isSubmissionsLoading,
     isError: isSubmissionsError,
     refetch,
-  } = useSubmissions(status, sort, page);
+  } = useSubmissions(status, sort, submitterId, payorCode, page);
+
+  useEffect(() => {
+    if (submitterId && payorCode) {
+      setSubmitterPayorCode(`${submitterId},${payorCode}`);
+    } else {
+      setSubmitterPayorCode('All');
+    }
+  }, [submitterId, payorCode]);
 
   useEffect(() => {
     refetch();
   }, [status, sort, page]);
+
+  const {
+    data: submitterData,
+    isLoading: entitiesLoading,
+    error: entitiesError,
+  } = useEntities(true);
 
   if (isSubmissionsLoading) {
     return <LoadingSpinner />;
@@ -75,6 +94,8 @@ export const AdminSubmissions: React.FC = () => {
   const clearSelections = () => {
     setStatus('In Process');
     setSort('Newest Received');
+    setSubmitterId('All');
+    setPayorCode('All');
     setPage(1);
   };
 
@@ -118,7 +139,38 @@ export const AdminSubmissions: React.FC = () => {
               </option>
             ))}
           </select>
-          {status !== 'In Process' || sort !== 'Newest Received' ? (
+          <span>
+            <b>Payor Code: </b>
+          </span>
+          <select
+            id="payorFilter"
+            className="status-filter"
+            value={submitterPayorCode}
+            onChange={(e) => {
+              if (e.target.value === 'All') {
+                setSubmitterId('All');
+                setPayorCode('All');
+              } else {
+                const [submitterId, payorCode] = e.target.value.split(',');
+                setSubmitterId(submitterId);
+                setPayorCode(payorCode);
+              }
+            }}
+          >
+            <option>All</option>
+            {submitterData?.submitters?.map((submitter: Entities) => (
+              <option
+                value={`${submitter.submitter_id},${submitter.payor_code}`}
+                key={`${submitter.submitter_id},${submitter.payor_code}`}
+              >
+                {submitter.org_name} - Payor Code: {submitter.payor_code}
+              </option>
+            ))}
+          </select>
+          {status !== 'In Process' ||
+          sort !== 'Newest Received' ||
+          submitterId !== 'All' ||
+          payorCode !== 'All' ? (
             <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>
@@ -142,6 +194,7 @@ export const AdminSubmissions: React.FC = () => {
                   <td>{titleCase(row.outcome)}</td>
                   <td>{titleCase(row.status)}</td>
                   <td>{formatDate(row.updated_at)}</td>
+                  <td>{row.org_name}</td>
                   <td>
                     <Button
                       type="link"
@@ -159,7 +212,7 @@ export const AdminSubmissions: React.FC = () => {
             )
           ) : (
             <tr>
-              <td colSpan={7} style={{ textAlign: 'center' }}>
+              <td colSpan={header.length} style={{ textAlign: 'center' }}>
                 No Data available
               </td>
             </tr>

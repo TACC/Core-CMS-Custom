@@ -7,7 +7,7 @@ import {
   FormGroup,
   Row,
   Col,
-  Alert
+  Alert,
 } from 'reactstrap';
 import Button from 'core-components/Button';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -204,11 +204,7 @@ const EditRecordModal: React.FC<EditRecordModalProps> = ({
                 <Alert color="danger" isOpen={showErrorMessage}>
                   Error: {errorMessage}
                 </Alert>
-                <Button
-                  type="primary"
-                  attr="submit"
-                  disabled={isSubmitting}
-                >
+                <Button type="primary" attr="submit" disabled={isSubmitting}>
                   Submit
                 </Button>
               </Form>

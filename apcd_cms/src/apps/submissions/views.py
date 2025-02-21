@@ -96,6 +96,7 @@ class SubmissionsView(APCDGroupAccessAPIMixin, BaseAPIView):
                 'received_timestamp': submission['received_timestamp'],
                 'updated_at': submission['updated_at'],
                 'payor_code': submission['payor_code'],
+                'org_name': submission['org_name'],
                 'entity_name': submission['entity_name'],
                 'view_modal_content': submission['view_modal_content'],
             }

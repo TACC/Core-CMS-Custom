@@ -16,7 +16,7 @@ export const formatDate = (dateString: string | number | Date): string => {
 
 export const formatUTCDate = (dateString: string | number | Date): string => {
   const date = new Date(dateString);
-    
+
   if (isNaN(date.getTime())) {
     return '';
   }
@@ -25,7 +25,7 @@ export const formatUTCDate = (dateString: string | number | Date): string => {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-    timeZone: 'UTC'
+    timeZone: 'UTC',
   }).format(date);
 };
 
