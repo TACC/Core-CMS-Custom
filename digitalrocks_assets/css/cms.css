@@ -13,8 +13,18 @@
 
 /* Card */
 
+/* To make project link align across cards */
+/* FAQ: Card layout is inconsistent cuz headings can span few to many lines */
+[class*="card--image-top"] {
+    grid-template-rows: repeat(3, min-content) 1fr;
+}
+[class*="card--image-top"] > p:has(a:only-child) {
+    align-self: end;
+}
+
 .c-card-list [class*="card--"] img {
     padding: 20px;
+    aspect-ratio: 1 / 1;
 }
 
 
