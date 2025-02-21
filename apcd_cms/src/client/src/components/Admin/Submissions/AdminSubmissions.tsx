@@ -65,7 +65,7 @@ export const AdminSubmissions: React.FC = () => {
       setSubmitterPayorCode('All');
     }
   }, [submitterId, payorCode]);
-  
+
   useEffect(() => {
     refetch();
   }, [status, sort, page]);
@@ -75,7 +75,6 @@ export const AdminSubmissions: React.FC = () => {
     isLoading: entitiesLoading,
     error: entitiesError,
   } = useEntities(true);
-
 
   if (isSubmissionsLoading) {
     return <LoadingSpinner />;
@@ -167,12 +166,11 @@ export const AdminSubmissions: React.FC = () => {
                 {submitter.org_name} - Payor Code: {submitter.payor_code}
               </option>
             ))}
-          </select>  
-          {
-            status !== 'In Process' ||
-            sort !== 'Newest Received' ||
-            submitterId !== 'All' ||
-            payorCode !== 'All' ? (
+          </select>
+          {status !== 'In Process' ||
+          sort !== 'Newest Received' ||
+          submitterId !== 'All' ||
+          payorCode !== 'All' ? (
             <ClearOptionsButton onClick={clearSelections} />
           ) : null}
         </div>

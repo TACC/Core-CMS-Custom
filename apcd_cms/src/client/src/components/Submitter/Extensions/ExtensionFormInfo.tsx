@@ -33,10 +33,10 @@ const ExtensionFormInfo: React.FC<{
     setFieldValue(`extensions[${index}].currentExpectedDate`, '');
     setFieldValue(`extensions[${index}].applicableDataPeriod`, '');
   }, [selectedEntity, index, setFieldValue]);
-  
+
   useEffect(() => {
     if (!dataPeriodsLoading && !dataPeriodsError) {
-      setDataPeriods(fetchedDataPeriods?.data_periods?? []);
+      setDataPeriods(fetchedDataPeriods?.data_periods ?? []);
     }
   }, [fetchedDataPeriods, dataPeriodsLoading, dataPeriodsError]);
 

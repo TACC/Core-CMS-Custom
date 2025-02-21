@@ -6,15 +6,15 @@ const getEntities = async (params: any) => {
   const url = `common_api/entities/`;
   const response = await fetchUtil({
     url,
-    params
+    params,
   });
   return response.response;
 };
 
 export const useEntities = (
-  from_admin: boolean | undefined  = false
+  from_admin: boolean | undefined = false
 ): UseQueryResult<SubmitterEntityData> => {
-  const params: { from_admin?: boolean } = { from_admin }
+  const params: { from_admin?: boolean } = { from_admin };
   const query = useQuery(['entities'], () =>
     getEntities(params)
   ) as UseQueryResult<SubmitterEntityData>;

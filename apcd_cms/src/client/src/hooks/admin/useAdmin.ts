@@ -124,12 +124,12 @@ export const useSubmissions = (
   payorCode?: string,
   page?: number
 ): UseQueryResult<FileSubmissionResult> => {
-  const params: { 
+  const params: {
     status?: string;
     sort?: string;
     submitterId?: string;
     payorCode?: string;
-    page?: number 
+    page?: number;
   } = {
     status,
     sort,
