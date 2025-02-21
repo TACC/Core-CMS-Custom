@@ -1,0 +1,5 @@
+<script id="js-about">
+/* FAQ: WYSIWYG (as of 2024-11) does not permit "reversed" attribute in markup */
+const lists = document.getElementById('cms-content').getElementsByTagName('ol');
+[ ...lists ].forEach( list => list.reversed = true );
+</script>
