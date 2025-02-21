@@ -263,10 +263,9 @@ export const RegistrationForm: React.FC<{
         <Formik
           validateOnMount={true}
           initialValues={
-            data
-              ? transformToRegistrationFormValues(
-                  data['registration_data'],
-                  data['renew']
+            data && isEdit
+              ? transformToRegistrationFormValues( // use initialValues to preload data for edit registration
+                  data['registration_data']        // to leverage formik's dirty test and disable submit on form load
                 )
               : inputValues ?? initialValues
           }
@@ -274,12 +273,21 @@ export const RegistrationForm: React.FC<{
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, resetForm, dirty }) => (
+          {({ values, setFieldValue, resetForm, setValues, dirty }) => (
             useEffect(() => {
               if (isSuccess) {
                 resetForm();
               }
             }, [isSuccess, resetForm]),
+            useEffect(() => {
+              if (data && !isEdit) {
+                setValues(transformToRegistrationFormValues(
+                  data['registration_data'],
+                  data['renew']
+                ));
+              }
+            }, [data, isEdit, setValues]), // set form values via setValues method instead of initialValues prop 
+                                           // for reg renewal to pass formik's dirty test and enable submit button on form load
             isSuccess ? (
               <>
                 <div style={{ marginTop: '16px', marginBottom: '16px' }}>
