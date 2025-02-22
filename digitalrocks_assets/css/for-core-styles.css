@@ -99,9 +99,9 @@ summary.u-summary-fake-marker {
 }
 summary.u-summary-link-merged::before,
 summary.u-summary-fake-marker::before {
-    content: '▶';
+    content: '▸';
 }
 details[open] > summary.u-summary-link-merged::before,
 details[open] > summary.u-summary-fake-marker::before {
-    content: '▼';
+    content: '▾';
 }

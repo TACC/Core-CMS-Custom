@@ -12,6 +12,9 @@ ul.dataset-list {
 .dataset-list ul {
     padding-left: var(--indent);
 }
+.dataset-list ul ul {
+    padding-left: calc(var(--indent)* 2);
+}
 
 /* To indent all expanded content */
 .dataset-list {
