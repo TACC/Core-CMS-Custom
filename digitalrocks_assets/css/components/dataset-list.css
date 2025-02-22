@@ -2,19 +2,20 @@
 
 /* Root */
 
-ul.dataset-list {
-    padding-left: unset;
+ul.dataset-list,
+.dataset-list ul {
     list-style: none;
 }
-.dataset-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
-    gap: var(--global-space--bootstrap-gap);
+ul.dataset-list {
+    padding-left: unset;
+}
+.dataset-list ul {
+    padding-left: var(--indent);
 }
 
 /* To indent all expanded content */
 .dataset-list {
-    --indent: 20px;
+    --indent: 1.5rem;
 }
 .dataset-list__item details {
     margin-left: var(--indent);
@@ -22,21 +23,18 @@ ul.dataset-list {
 .dataset-list__item summary {
     margin-left: calc( -1 * var(--indent) );
 }
-.dataset-list__item summary.u-summary-link::before {
+.dataset-list__item summary.u-summary-link-merged::before,
+.dataset-list__item summary.u-summary-fake-marker::before {
     width: var(--indent);
+    display: inline-block;
 }
 
 
 /* Elements */
 
-.dataset-list__item *:last-child {
-    margin-bottom: unset;
+.dataset-list__item ul {
+    margin-top: 1rem; /* to mimic core-styles details margin-bottom */
 }
-
-/* to put description list key and value on same line */
-.dataset-list__item dt { float: left; }
-.dataset-list__item dt::after { content: ':\00a0'; }
-.dataset-list__item dd { clear: right; }
 
 
 /* Components */

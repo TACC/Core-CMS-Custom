@@ -80,20 +80,28 @@ tr.c-data-list__row--start-final:nth-child(even) ~ tr :is(th, td) {
 /* TODO: Add to Core-Styles */
 /* https://github.com/TACC/Core-Styles/issues/460 */
 
-summary.u-summary-link {
+summary.u-summary-link-merged {
     display: flex;
 }
-summary.u-summary-link::before {
-    content: '▶';
-}
-summary.u-summary-link > a {
+summary.u-summary-link-merged > a {
     flex: 1;
 }
-/* To undo core-styles, whcih assumes href-less <a> is disabled */
-summary.u-summary-link > a:not([href]) {
+/* To undo core-styles, which assumes href-less <a> is disabled */
+summary.u-summary-link-merged > a:not([href]) {
     pointer-events: auto;
     opacity: 1;
 }
-details[open] > summary.u-summary-link::before {
+
+/* To use text content instead of a ::marker */
+summary.u-summary-link-merged,
+summary.u-summary-fake-marker {
+   list-style: none;
+}
+summary.u-summary-link-merged::before,
+summary.u-summary-fake-marker::before {
+    content: '▶';
+}
+details[open] > summary.u-summary-link-merged::before,
+details[open] > summary.u-summary-fake-marker::before {
     content: '▼';
 }
