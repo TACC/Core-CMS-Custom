@@ -2,32 +2,32 @@
 
 /* Root */
 
-ul.dataset-list,
-.dataset-list ul {
+ul.data-tree,
+.data-tree ul {
     list-style: none;
 }
-ul.dataset-list {
+ul.data-tree {
     padding-left: unset;
 }
-.dataset-list ul {
+.data-tree ul {
     padding-left: var(--indent);
 }
-.dataset-list ul ul {
+.data-tree ul ul {
     padding-left: calc(var(--indent)* 2);
 }
 
 /* To indent all expanded content */
-.dataset-list {
+.data-tree {
     --indent: 1.5rem;
 }
-.dataset-list__item details {
+.data-tree__item details {
     margin-left: var(--indent);
 }
-.dataset-list__item summary {
+.data-tree__item summary {
     margin-left: calc( -1 * var(--indent) );
 }
-.dataset-list__item summary.u-summary-link-merged::before,
-.dataset-list__item summary.u-summary-fake-marker::before {
+.data-tree__item summary.u-summary-link-merged::before,
+.data-tree__item summary.u-summary-fake-marker::before {
     width: var(--indent);
     display: inline-block;
 }
@@ -35,7 +35,7 @@ ul.dataset-list {
 
 /* Elements */
 
-.dataset-list__item ul {
+.data-tree__item ul {
     margin-top: 1rem; /* to mimic core-styles details margin-bottom */
 }
 
@@ -43,6 +43,6 @@ ul.dataset-list {
 /* Components */
 
 /* to reduce excess width of table key */
-.dataset-list th.c-data-list__key {
+.data-tree th.c-data-list__key {
     width: 22ch;
 }
