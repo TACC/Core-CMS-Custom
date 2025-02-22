@@ -12,6 +12,20 @@ ul.dataset-list {
     gap: var(--global-space--bootstrap-gap);
 }
 
+/* To indent all expanded content */
+.dataset-list {
+    --indent: 20px;
+}
+.dataset-list__item details {
+    margin-left: var(--indent);
+}
+.dataset-list__item summary {
+    margin-left: calc( -1 * var(--indent) );
+}
+.dataset-list__item summary.u-summary-link::before {
+    width: var(--indent);
+}
+
 
 /* Elements */
 
