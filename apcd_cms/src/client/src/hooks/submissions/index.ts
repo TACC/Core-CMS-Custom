@@ -12,6 +12,7 @@ export type FileSubmissionRow = {
   received_timestamp: string;
   updated_at: string;
   payor_code: string;
+  org_name: string;
   view_modal_content: FileSubmissionLogsModalContent[];
 };
 
