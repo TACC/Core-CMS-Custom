@@ -9,10 +9,10 @@ ul.data-tree,
 ul.data-tree {
     padding-left: unset;
 }
-.data-tree ul {
+.data-tree ul:has(details) {
     padding-left: var(--indent);
 }
-.data-tree ul ul {
+.data-tree ul:not(:has(details)) {
     padding-left: calc(var(--indent)* 2);
 }
 
@@ -36,7 +36,7 @@ ul.data-tree {
 /* Elements */
 
 .data-tree__item ul {
-    margin-top: 1rem; /* to mimic core-styles details margin-bottom */
+    margin-block: 1rem;
 }
 
 
