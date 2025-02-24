@@ -31,13 +31,3 @@ ul.dataset-list {
 .dataset-list th.c-data-list__key {
     width: 22ch;
 }
-
-/* to use one background color for all final rows */
-.dataset-list .c-data-list__row--start-final:nth-child(odd),
-.dataset-list .c-data-list__row--start-final:nth-child(odd) + tr :is(td, th) {
-    background-color: var(--global-color-background--app);
-}
-.dataset-list .c-data-list__row--start-final:nth-child(even),
-.dataset-list .c-data-list__row--start-final:nth-child(even) + tr :is(td, th) {
-    background-color: var(--global-color-primary--x-light);
-}

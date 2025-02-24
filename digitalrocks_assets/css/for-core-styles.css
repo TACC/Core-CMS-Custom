@@ -49,3 +49,30 @@ ins {
 .s-references ol li {
     margin-block: 1em;
 }
+
+
+
+
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/458 */
+
+/* to use one background color for all final rows */
+tr.c-data-list__row--start-final:nth-child(odd) :is(th, td),
+tr.c-data-list__row--start-final:nth-child(odd) ~ tr :is(th, td) {
+    background: var(--global-color-background--app);
+}
+tr.c-data-list__row--start-final:nth-child(even) :is(th, td),
+tr.c-data-list__row--start-final:nth-child(even) ~ tr :is(th, td) {
+    background: var(--global-color-primary--x-light);
+}
+
+
+
+
+
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/459 */
+
+.c-card-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
