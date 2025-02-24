@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
         from_admin = json.loads(request.GET.get('from_admin', False))  # for admin submissions page, need all submitters, not just for requesting user
+        if from_admin and not is_apcd_admin(request.user):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
         user = request.user.username if not from_admin else None
         submitters = apcd_database.get_submitter_info(user)
 
