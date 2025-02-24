@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
+import { formatUTCDate } from 'utils/dateUtil';
 import { ExtensionRow } from 'hooks/admin';
 
 const ViewExtensionModal: React.FC<{
@@ -61,9 +62,7 @@ const ViewExtensionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Current Expected Date</Col>
               <Col md={7}>
                 {extension.current_expected_date
-                  ? new Date(
-                      extension.current_expected_date
-                    ).toLocaleDateString()
+                  ? formatUTCDate(extension.current_expected_date)
                   : 'None'}
               </Col>
             </Row>
@@ -71,9 +70,7 @@ const ViewExtensionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Requested Target Date</Col>
               <Col md={7}>
                 {extension.requested_target_date
-                  ? new Date(
-                      extension.requested_target_date
-                    ).toLocaleDateString()
+                  ? formatUTCDate(extension.requested_target_date)
                   : 'None'}
               </Col>
             </Row>
@@ -81,9 +78,7 @@ const ViewExtensionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Approved Expiration Date</Col>
               <Col md={7}>
                 {extension.approved_expiration_date
-                  ? new Date(
-                      extension.approved_expiration_date
-                    ).toLocaleDateString()
+                  ? formatUTCDate(extension.approved_expiration_date)
                   : 'None'}
               </Col>
             </Row>
