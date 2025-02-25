@@ -521,6 +521,7 @@ export const RegistrationForm: React.FC<{
                     attr="submit"
                     className="form-button"
                     disabled={registrationSubmissionPending || !dirty}
+                    isLoading={registrationSubmissionPending}
                   >
                     Submit
                   </Button>
