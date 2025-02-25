@@ -27,7 +27,7 @@ Extensions of the [Core CMS] project
 
 ## Project Architecture
 
-Within a `/custom_project_dir` can be:
+Within a `/customproject_cms` can be:
 
 | directory | contents |
 | - | - |
@@ -55,12 +55,12 @@ Set up a new local CMS instance.
 
 0. Core CMS:
 
-    In the `/custom_project_dir/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
+    In the `/customproject_cms/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
 1. Docker Containers:
 
     ```sh
-    cd custom_project_dir
+    cd customproject_cms
     make start
     ```
 
@@ -107,7 +107,7 @@ Read [Upgrade Project] for developer instructions.
 1. If CMS Docker files changed, rebuild Docker Containers:
 
     ```sh
-    cd custom_project_dir
+    cd customproject_cms
     make stop
     make build
     make start
@@ -128,7 +128,7 @@ Read [Upgrade Project] for developer instructions.
 
 ## Run Project
 
-Read the relevant `custom_project_dir/README.md`.
+Read the relevant `customproject_cms/README.md`.
 
 To run multiple projects, first read [Multiple Projects](./docs/run-project.md#multiple-projects).
 
@@ -141,7 +141,7 @@ Read either of these for developer instructions:
 | scope | reference |
 | - | - |
 | relevant to any project | [Develop Project](./docs/develop-project.md) |
-| specific to one project | `custom_project_dir/README.md` |
+| specific to one project | `customproject_cms/README.md` |
 
 ## Build Project
 
