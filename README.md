@@ -2,6 +2,17 @@
 
 Extensions of the [Core CMS] project
 
+> [!TIP]
+> If you just need custom assets (logo, styles, scripts):
+> 1. Create a `customproject_assets` directory.
+> 2. Add your assets into that directory.
+> 3. Get paths to those assets [via a CDN](https://www.jsdelivr.com/?docs=gh).
+> 4. Find the project in [Core Portal Deployments].
+> 5. Set those paths in its CMS settings file ([example](https://github.com/TACC/Core-Portal-Deployments/blob/2391315/digitalrocks/camino/cms.settings_custom.py)).
+
+> [!IMPORTANT]
+> This README is **only** for heavily-customized Django CMS projects.
+
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
