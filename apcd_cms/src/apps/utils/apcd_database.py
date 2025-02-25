@@ -947,7 +947,8 @@ def get_user_submissions_and_logs(user):
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'payor_code', submissions.payor_code,
+                'org_name', submitters.org_name,
+                'payor_code', submitters.payor_code,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -981,7 +982,7 @@ def get_user_submissions_and_logs(user):
             IN (
                 SELECT submitter_users.submitter_id FROM submitter_users 
                 WHERE submitter_users.user_id = %s )
-            GROUP BY (submissions.submission_id, submitters.entity_name)
+            GROUP BY (submissions.submission_id, submitters.entity_name, submitters.org_name, submitters.payor_code)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1016,6 +1017,8 @@ def get_all_submissions_and_logs():
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
+                'payor_code', submitters.payor_code,
+                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT CASE
                             WHEN COUNT(submission_logs.log_id) = 0 THEN '[]'::json
@@ -1050,7 +1053,7 @@ def get_all_submissions_and_logs():
                 ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, submitters.entity_name)
+            GROUP BY (submissions.submission_id, submitters.submitter_id)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1173,6 +1176,7 @@ def update_extension(form):
 def get_submitter_info(user):
     cur = None
     conn = None
+    values = (user,) if user is not None else None
     try:
         conn = psycopg.connect(
             host=APCD_DB['host'],
@@ -1183,20 +1187,21 @@ def get_submitter_info(user):
             sslmode='require',
         )
         cur = conn.cursor()
-        query = """
+        query = f"""
                 SELECT 
                     submitter_users.submitter_id, 
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    submitters.entity_name
+                    submitters.entity_name,
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
-                    ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
+                    ON submitter_users.submitter_id = submitters.submitter_id {f"and submitter_users.user_id = (%s)" if user is not None else ''}
                 ORDER BY submitters.entity_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
-        cur.execute(query, (user,))
+        cur.execute(query, values)
         return cur.fetchall()
 
     except Exception as error:
