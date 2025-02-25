@@ -5,13 +5,18 @@ from apps.utils.utils import title_case
 from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDGroupAccessAPIMixin
 from datetime import datetime
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
 
 class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
-        submitters = apcd_database.get_submitter_info(request.user.username)
+        from_admin = json.loads(request.GET.get('from_admin', False))  # for admin submissions page, need all submitters, not just for requesting user
+        if from_admin and not is_apcd_admin(request.user):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        user = request.user.username if not from_admin else None
+        submitters = apcd_database.get_submitter_info(user)
 
         submitter_info_json = self.get_submitter_info_json(submitters)
 
@@ -21,21 +26,22 @@ class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get_submitter_info_json(self, submitters):
         context = {}
 
-        def _set_submitter(sub, data_periods):
+        def _set_submitter(sub):
             return {
                 "submitter_id": sub[0],
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
                 "entity_name": title_case(sub[4]),
-                "data_periods": data_periods
+                "org_name": sub[5]
             }
 
         context["submitters"] = []
 
         for submitter in submitters:
-            data_periods = _getApplicableDataPeriods(submitter[0])
-            context["submitters"].append(_set_submitter(submitter, data_periods))
+            checkForExistingCode = [submitter[2] == listed_submitter["payor_code"] for listed_submitter in context['submitters']]
+            if not any(checkForExistingCode):  # grab unique payor codes
+                context["submitters"].append(_set_submitter(submitter))
 
         return context
 
