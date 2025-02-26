@@ -116,7 +116,7 @@ const EditExtensionModal: React.FC<EditExtensionModalProps> = ({
         currentExtension?.approved_expiration_date &&
         currentExtension?.approved_expiration_date !== 'None'
           ? formatUTCDate(currentExtension?.approved_expiration_date)
-          : 'None' + 'currentExtension?.approved_expiration_date',
+          : 'None',
     },
     {
       label: 'Extension Justification',
