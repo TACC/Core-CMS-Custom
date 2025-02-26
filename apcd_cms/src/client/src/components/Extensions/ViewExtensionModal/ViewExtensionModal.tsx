@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
-import { formatUTCDate } from 'utils/dateUtil';
+import { formatDate, formatUTCDate } from 'utils/dateUtil';
 import { ExtensionRow } from 'hooks/admin';
 
 const ViewExtensionModal: React.FC<{
@@ -92,7 +92,11 @@ const ViewExtensionModal: React.FC<{
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
-              <Col md={7}>{extension.updated_at}</Col>
+              <Col md={7}>
+                {extension.updated_at
+                  ? formatDate(extension.updated_at)
+                  : 'None'}
+              </Col>
             </Row>
             <hr />
           </div>
