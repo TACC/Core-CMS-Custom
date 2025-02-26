@@ -1,7 +1,7 @@
 export const formatDate = (dateString: string | number | Date): string => {
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    return '';
+    return 'None';
   }
 
   return new Intl.DateTimeFormat('en-US', {
@@ -18,7 +18,7 @@ export const formatUTCDate = (dateString: string | number | Date): string => {
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
-    return '';
+    return 'None';
   }
 
   return new Intl.DateTimeFormat('en-US', {
