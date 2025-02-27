@@ -99,7 +99,7 @@ const validationSchema = Yup.object().shape({
           !value.types_of_files_dental
         ) {
           return this.createError({
-            message: 'Please select at least one claims file type (see above).',
+            message: 'Please select at least one claims file type (see below).',
             path: this.path + '.types_of_files_hidden',
           });
         }
