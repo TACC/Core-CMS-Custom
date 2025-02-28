@@ -32,7 +32,7 @@ export const RegistrationList: React.FC<{
 
   const clearSelections = () => {
     setStatus(initStateFilter);
-    setOrg('');
+    setOrg('All');
     setPage(1);
   };
 
