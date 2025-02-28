@@ -100,9 +100,6 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         limit = 50
         offset = limit * (page_num - 1)
 
-        limit = 50
-        offset = limit * (page_num - 1)
-
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
@@ -144,19 +141,6 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
                             'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
                             'requested_threshold': obj['requested_threshold'],} 
                             for obj in page_info['page']]
-        page_info = paginator(page_num, exception_table_entries, limit)
-        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
-                            'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
-                            'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
-                            'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
-                            'requested_threshold': obj['requested_threshold'],} 
-                            for obj in page_info['page']]
-        context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
-
-        context['page_num'] = page_num
-        context['total_pages'] = page_info['page'].paginator.num_pages
-
-        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
 
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages

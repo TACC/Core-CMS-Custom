@@ -39,7 +39,7 @@ def get_registration_list_json(registrations_content, status_filter, org_filter,
     if org_filter is not None and org_filter != 'All':
         context['selected_org'] = org_filter
         queryStr += f'&org={org_filter}'
-        registration_table_entries = table_filter(org_filter.replace("(", "").replace(")", ""), registration_table_entries, 'biz_name')
+        registration_table_entries = table_filter(org_filter.replace("(", "").replace(")", ""), registration_table_entries, 'biz_name', exact_match=True)
 
     context['query_str'] = queryStr
     page_info = paginator(page_num, registration_table_entries)
