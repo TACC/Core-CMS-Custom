@@ -6,7 +6,7 @@ from apps.utils.apcd_groups import has_groups
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.generic import TemplateView
-from apps.base.base import BaseAPIView, APCDGroupAccessTemplateMixin, APCDGroupAccessAPIMixin
+from apps.base.base import BaseAPIView, AuthenticatedUserTemplateMixin, AuthenticatedUserAPIMixin
 from requests.auth import HTTPBasicAuth
 import logging
 import rt
@@ -20,11 +20,11 @@ RT_PW = getattr(settings, 'RT_PW', '')
 RT_QUEUE = getattr(settings, 'RT_QUEUE', '')
 
 
-class RegistrationFormTemplate(APCDGroupAccessTemplateMixin, TemplateView):
+class RegistrationFormTemplate(AuthenticatedUserTemplateMixin, TemplateView):
     template_name = 'registration_form.html'
 
 
-class RegistrationFormApi(APCDGroupAccessAPIMixin, BaseAPIView):
+class RegistrationFormApi(AuthenticatedUserAPIMixin, BaseAPIView):
 
     def get(self, request):
         formatted_reg_data = []
@@ -44,6 +44,8 @@ class RegistrationFormApi(APCDGroupAccessAPIMixin, BaseAPIView):
         if (request.user.is_authenticated and has_apcd_group(request.user)):
             context = {'registration_data': formatted_reg_data, 'renew': renew}
             return JsonResponse({'response': context})
+        else: 
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
 
     def post(self, request):
         form = json.loads(request.body)

@@ -19,6 +19,14 @@ class BaseAPIView(View):
                 status=500)
 
 
+class AuthenticatedUserTemplateMixin:
+    """ API Mixin to restrict access to authenticated users only. """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+    
 class APCDAdminAccessTemplateMixin:
     """ API Mixin to restrict access to authenticated APCD admins only. """
 
@@ -45,6 +53,14 @@ class APCDSubmitterAdminAccessTemplateMixin:
             return HttpResponseRedirect('/')
         return super().dispatch(request, *args, **kwargs)
 
+
+class AuthenticatedUserAPIMixin:
+    """ API Mixin to restrict access to authenticated users."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        return super().dispatch(request, *args, **kwargs)
 
 class APCDAdminAccessAPIMixin:
     """ API Mixin to restrict access to authenticated APCD admins only. """
