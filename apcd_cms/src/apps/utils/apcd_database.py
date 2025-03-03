@@ -1212,6 +1212,7 @@ def get_submitter_info(user):
             conn.close()
 
 def _get_extension_where_clause():
+    # see wiki: https://tacc-main.atlassian.net/wiki/x/A4D4Aw?atlOrigin=eyJpIjoiNTNmNTgyZmUzMjk0NGUzZDllODVhOGQ4ZmQ3MzJmNGUiLCJwIjoiYyJ9
     return "cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null"
 
 def get_applicable_data_periods(submitter_id):
