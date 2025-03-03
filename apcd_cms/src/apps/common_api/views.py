@@ -1,8 +1,8 @@
-from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.http import JsonResponse, Http404
 from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
+from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
-from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDGroupAccessAPIMixin
+from apps.base.base import BaseAPIView, APCDSubmitterAdminAccessAPIMixin, APCDGroupAccessAPIMixin
 from datetime import datetime
 import logging
 import json
@@ -67,7 +67,7 @@ class cdlsView(APCDGroupAccessAPIMixin, BaseAPIView):
         return JsonResponse({"cdls": cdls_response})
 
 
-class DataPeriodsView(APCDAdminAccessAPIMixin, BaseAPIView):
+class DataPeriodsView(APCDSubmitterAdminAccessAPIMixin, BaseAPIView):
     '''
         Requires admin access to view data period for any given submitter.
     '''
@@ -75,6 +75,13 @@ class DataPeriodsView(APCDAdminAccessAPIMixin, BaseAPIView):
         submitter_id = request.GET.get('submitter_id', None)
         if submitter_id is None:
             raise Http404("Submitter Id not provided")
+        if not is_apcd_admin(request.user):
+            # if user is not apcd admin, then submitter admin
+            # should have access to the submitter
+            submitters = apcd_database.get_submitter_info(request.user.username)
+            if not any(submitter_id == str(submitter[0]) for submitter in submitters):
+                return JsonResponse({'error': f'Unauthorized for submitter id {submitter_id}'}, status=403)
+
         applicable_data_periods = _getApplicableDataPeriods(submitter_id)
 
         return JsonResponse({'response': {"data_periods": applicable_data_periods}})
