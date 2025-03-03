@@ -1211,6 +1211,9 @@ def get_submitter_info(user):
         if conn is not None:
             conn.close()
 
+def _get_extension_where_clause():
+    return "cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null"
+
 def get_applicable_data_periods(submitter_id):
     cur = None
     conn = None
@@ -1223,8 +1226,9 @@ def get_applicable_data_periods(submitter_id):
             port=APCD_DB['port'],
             sslmode='require',
         )
+        where_clause = _get_extension_where_clause()
         cur = conn.cursor()
-        query = """ SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is NOT NULL """
+        query = f""" SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND {where_clause} """
         cur.execute(query, (submitter_id,))
         return cur.fetchall()
 
@@ -1249,8 +1253,9 @@ def get_current_exp_date(submitter_id, applicable_data_period):
             port=APCD_DB['port'],
             sslmode='require',
         )
+        where_clause = _get_extension_where_clause()
         cur = conn.cursor()
-        query = """ SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        query = f""" SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND {where_clause}"""
         cur.execute(query, (submitter_id, applicable_data_period,))
         return cur.fetchall()
 
