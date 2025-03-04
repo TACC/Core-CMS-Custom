@@ -91,7 +91,6 @@ const ViewRegistrationModal: React.FC<{
                 <dd className={styles.verticalDataValue}>
                   {entity.naic ? entity.naic : 'None'}
                 </dd>
-                <h6>Type of Plan</h6>
                 <dd>
                   <dl className="c-data-list--is-vert c-data-list--is-wide">
                     <dt className="c-data-list__key">Types of Plans</dt>
