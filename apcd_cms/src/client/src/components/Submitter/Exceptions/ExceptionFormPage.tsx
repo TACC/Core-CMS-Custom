@@ -91,7 +91,7 @@ export const ExceptionFormPage: React.FC = () => {
     }),
     otherExceptionBusinessName: Yup.mixed().when('exceptionType', {
       is: 'other',
-      then: () => Yup.number().min(1, 'Required').required('Required'),
+      then: () => Yup.number().min(0, 'Required').required('Required'),
       otherwise: () => Yup.mixed().strip(),
     }),
   });
@@ -312,7 +312,7 @@ export const ExceptionFormPage: React.FC = () => {
                             name={`otherExceptionBusinessName`}
                             id={`otherExceptionBusinessName`}
                           >
-                            <option>-- Select a Business --</option>
+                            <option value="">-- Select a Business --</option>
                             {submitterData?.submitters?.map(
                               (submitter: Entities) => (
                                 <option

@@ -75,7 +75,7 @@ export const ExceptionForm: React.FC<{ index: number }> = ({ index }) => {
               name={`exceptions[${index}].businessName`}
               id={`exceptions[${index}].businessName`}
             >
-              <option value="0">Select a Business Name</option>
+              <option value="">Select a Business Name</option>
               {submitterData?.submitters?.map((submitter: Entities) => (
                 <option
                   value={submitter.submitter_id}

@@ -195,10 +195,10 @@ export const ExtensionRequestForm: React.FC = () => {
                   <hr />
                   <h4>Request and Justification</h4>
                   <p>
-                    Provide rationale for the exception request, outlining the
+                    Provide rationale for the extension request, outlining the
                     reasons why the organization is unable to comply with the
                     relevant requirements. Provide as much detail as possible
-                    regarding the exception request, indicating the specific
+                    regarding the extension request, indicating the specific
                     submission requirements for which relief is being sought. If
                     applicable, indicate how the organization plans to become
                     compliant.**
