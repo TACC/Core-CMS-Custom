@@ -1,3 +1,10 @@
+/* CORE PATTERNS */
+
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/components/bootstrap.pagination.css');
+
+
+
+
 /* CUSTOM PATTERNS */
 
 @import url('components/data-tree.css');
