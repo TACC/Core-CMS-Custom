@@ -1,28 +1,16 @@
 /* CITATION */
 
-#citation {
+.project-citation {
     display: flex;
     align-items: center;
 }
-#citation p {
+.project-citation p {
     margin-bottom: 0;
 }
 
 
 /* DESCRIPTION */
 
-#project-desc > img {
-    width: 20%;
-    padding: 10px;
-}
-#project-desc p a {
-    word-break: break-all;
-}
-
-#project-desc th.c-data-list__key {
-    width: 25ch;
-}
-/* TODO: Update Dataset #218 to use ID instead of class */
 .project-desc > img {
     width: 20%;
     padding: 10px;
@@ -39,17 +27,6 @@
 
 /* DOWNLOAD BUTTON */
 
-#project-download-button {
-    /* to align as if it were a far-right tab */
-    float: right;
-}
-p:has(#project-download-button) {
-    text-align: center;
-}
-#project-download-button i.icon-download {
-    font-weight: bold;
-}
-/* TODO: Update Dataset #218 to use ID instead of class */
 .project-download-button {
     /* to align as if it were a far-right tab */
     float: right;
@@ -64,11 +41,11 @@ p:has(.project-download-button) {
 
 /* CONTENT */
 
-#project-content.row {
+.project-content.row {
     gap: calc( var(--global-space--bootstrap-gap) / 2 );
 }
 
-#project-content {
+.project-content {
     display: grid;
     grid-template-columns: repeat( auto-fit, minmax( min( 100%, 40ch ), 1fr ));
     gap: var(--global-space--bootstrap-gap);
