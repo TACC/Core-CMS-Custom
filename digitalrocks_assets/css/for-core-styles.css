@@ -105,3 +105,17 @@ details[open] > summary.u-summary-link-merged::before,
 details[open] > summary.u-summary-fake-marker::before {
     content: '▾';
 }
+
+
+/* TODO: Add to Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/481 */
+
+.dropdown-menu {
+  font-size: inherit;
+
+  padding-block: 5px;
+}
+.dropdown-item {
+  padding-block: 2.5px;
+  padding-inline: 15px;
+}
