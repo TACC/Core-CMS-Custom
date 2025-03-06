@@ -1,0 +1,64 @@
+<style>
+  #dev-warning {
+    margin-block: 20px;
+  }
+  #dev-warning details {
+    margin-bottom: 10px;
+  }
+  #dev-warning details :is(p, dt, dd) {
+    font-size: smaller;
+    margin-block: 0.5rem;
+  }
+  #dev-warning li + li {
+    margin-top: 10px;
+  }
+</style>
+<aside id="dev-warning" class="c-message c-message--scope-section c-message--type-warning">
+  <h3>‼️ Developer Notice</h3>
+  <ul class="data-tree">
+    <li class="data-tree__item">
+      <details>
+        <summary><strong>Some</strong> HTML (and CSS) is <strong>not</strong> finalized, because client feedback changed design.</summary>
+        <dl>
+          <dt><strong>complete</strong></dt>
+          <dd>
+            <ul>
+              <li>"Cite this Data"</li>
+              <li>"Files"</li>
+            </ul>
+          </dd>
+          <dt>seems <strong>complete</strong></dt>
+          <dd>
+            <ul>
+              <li>"Origin Data"</li>
+              <li>"Analysis Data"</li>
+              <li>the rest</li>
+            </ul>
+          </dd>
+          <dt><strong>will</strong> likely <strong>change</strong></dt>
+          <dd>
+            <ul>
+              <li>"Related Works"</li>
+            </ul>
+          </dd>
+        </dl>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>HTML is available via Developer Tools seeing live DOM (e.g. "Elements" tab, "Inspect" context menu option).</summary>
+        <p>
+          The <strong>sample HTML</strong> is added via <a href="/datasets/317/?structure" target="_blank">CMS <strong>plugin instances</strong></a> and <a href="/admin/djangocms_snippet/snippet/" target="_blank">CMS <strong>snippets</strong></a>.
+        </p>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>CSS already <strong>automatically</strong> loads on every page.</summary>
+        <p>
+          The <strong>working CSS</strong> is automatically loaded via <a href="https://github.com/TACC/Core-Portal-Deployments/blob/main/digitalrocks/camino/cms.settings_custom.py#L30-L39" target="_blank">Core-Portal-Deployments</a> and <a href="https://github.com/TACC/Core-CMS-Custom/tree/feat/WP-848-drocks-project-pages--round-2/digitalrocks_assets/css">Core-CMS-Custom</a>. WMA shouldn't need to worry about it.
+        </p>
+      </details>
+    </li>
+  </ul>
+</aside>

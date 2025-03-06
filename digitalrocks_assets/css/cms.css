@@ -1,8 +1,15 @@
+/* CORE PATTERNS */
+
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/components/bootstrap.pagination.css');
+
+
+
+
 /* CUSTOM PATTERNS */
 
-@import url('components/dataset-list.css');
+@import url('components/data-tree.css');
 @import url('components/project.css');
-@import url('components/publications.css');
+@import url('components/publication.css');
 @import url('components/metrics.css');
 @import url('components/license.css');
 
@@ -33,6 +40,23 @@
 /* to swap colors for key and value (design request specific to projects) */
 .c-data-list__key { color: var(--global-color-primary--dark); }
 .c-data-list__value { color: var(--global-color-primary--x-dark) }
+
+/* to arrange and truncate links in value column */
+.c-data-list__value nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+.c-data-list__value nav a {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+.c-data-list__value nav a span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 /* Modal */
