@@ -41,6 +41,23 @@
 .c-data-list__key { color: var(--global-color-primary--dark); }
 .c-data-list__value { color: var(--global-color-primary--x-dark) }
 
+/* to arrange and truncate links in value column */
+.c-data-list__value nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+.c-data-list__value nav a {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+.c-data-list__value nav a span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 
 /* Modal */
 
