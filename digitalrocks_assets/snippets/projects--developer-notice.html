@@ -1,30 +1,47 @@
-<aside class="c-message c-message--scope-section c-message--type-warning" style="margin-block: 20px">
+<style>
+  #dev-warning {
+    margin-block: 20px;
+  }
+  #dev-warning ul {
+    list-style: none;
+  }
+  #dev-warning details {
+    margin-bottom: 10px;
+  }
+  #dev-warning details p {
+    font-size: smaller;
+    margin-block: 0.5rem;
+  }
+  #dev-warning li + li {
+    margin-top: 10px;
+  }
+</style>
+<aside id="dev-warning" class="c-message c-message--scope-section c-message--type-warning">
   <h3>‼️ Developer Notice</h3>
-  <details>
-    <summary>HTML and CSS are <strong>not</strong> finalized, because client feedback changed design.</summary>
-    <p>
-    <ul>
-      <li>For latest work-in-progress <strong>design</strong>, see <a href="https://pprd.digitalrocks.tacc.utexas.edu/datasets/317--2025-03" target="_blank">/datasets/317--2025-03</a>.</em>
-      </li>
-      <li>For latest work-in-progress <strong>code</strong>, see <a href="https://github.com/TACC/Core-CMS-Custom/pull/430" target="_blank">TACC/Core-CMS-Custom#430</a>.</li>
-    </ul>
-    </p>
-  </details>
-  <details>
-    <summary>Reference HTML via "Inspect Element" feature. CSS is already automatically loaded.</summary>
-    <p>
-    <ul>
-      <li>The <strong>sample HTML</strong> is added via <a href="/datasets/317/?structure" target="_blank">CMS
-          <strong>plugin instances</strong></a> and <a href="/admin/djangocms_snippet/snippet/" target="_blank">CMS
-          <strong>snippets</strong></a>. <em>Expect consolidation in <a
-            href="https://github.com/TACC/Core-CMS-Custom/pull/430" target="_blank">TACC/Core-CMS-Custom#430</a>.</em>
-      </li>
-      <li>The <strong>working CSS</strong> is automatically loaded via <a
-          href="https://github.com/TACC/Core-Portal-Deployments/blob/main/digitalrocks/camino/cms.settings_custom.py#L30-L39"
-          target="_blank">Core-Portal-Deployments</a> and <a
-          href="https://github.com/TACC/Core-CMS-Custom/tree/feat/WP-848-drocks-project-pages--round-2/digitalrocks_assets/css">Core-CMS-Custom</a>.
-        WMA shouldn’t need to worry about it.</li>
-    </ul>
-    </p>
-  </details>
+  <ul class="data-tree">
+    <li class="data-tree__item">
+      <details>
+        <summary>HTML (and CSS) are <strong>not</strong> finalized, because client feedback changed design.</summary>
+        <p>
+          Latest <strong>design</strong> and <strong>HTML</strong> are available via <a href="/datasets/317--2025-03"><kbd>/datasets/317--2025-03</kbd></a>.
+        </p>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>HTML is available via Developer Tools seeing live DOM (e.g. "Elements" tab, "Inspect" context menu option).</summary>
+        <p>
+          The <strong>sample HTML</strong> is added via <a href="/datasets/317/?structure" target="_blank">CMS <strong>plugin instances</strong></a> and <a href="/admin/djangocms_snippet/snippet/" target="_blank">CMS <strong>snippets</strong></a>.
+        </p>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>CSS already <strong>automatically</strong> loads on every page.</summary>
+        <p>
+          The <strong>working CSS</strong> is automatically loaded via <a href="https://github.com/TACC/Core-Portal-Deployments/blob/main/digitalrocks/camino/cms.settings_custom.py#L30-L39" target="_blank">Core-Portal-Deployments</a> and <a href="https://github.com/TACC/Core-CMS-Custom/tree/feat/WP-848-drocks-project-pages--round-2/digitalrocks_assets/css">Core-CMS-Custom</a>. WMA shouldn't need to worry about it.
+        </p>
+      </details>
+    </li>
+  </ul>
 </aside>
