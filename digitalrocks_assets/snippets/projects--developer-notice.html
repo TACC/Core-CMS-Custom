@@ -2,13 +2,10 @@
   #dev-warning {
     margin-block: 20px;
   }
-  #dev-warning ul {
-    list-style: none;
-  }
   #dev-warning details {
     margin-bottom: 10px;
   }
-  #dev-warning details p {
+  #dev-warning details :is(p, dt, dd) {
     font-size: smaller;
     margin-block: 0.5rem;
   }
@@ -21,10 +18,30 @@
   <ul class="data-tree">
     <li class="data-tree__item">
       <details>
-        <summary>HTML (and CSS) are <strong>not</strong> finalized, because client feedback changed design.</summary>
-        <p>
-          Latest <strong>design</strong> and <strong>HTML</strong> are available via <a href="/datasets/317--2025-03"><kbd>/datasets/317--2025-03</kbd></a>.
-        </p>
+        <summary><strong>Some</strong> HTML (and CSS) is <strong>not</strong> finalized, because client feedback changed design.</summary>
+        <dl>
+          <dt><strong>complete</strong></dt>
+          <dd>
+            <ul>
+              <li>"Cite this Data"</li>
+              <li>"Files"</li>
+            </ul>
+          </dd>
+          <dt>seems <strong>complete</strong></dt>
+          <dd>
+            <ul>
+              <li>"Origin Data"</li>
+              <li>"Analysis Data"</li>
+              <li>the rest</li>
+            </ul>
+          </dd>
+          <dt><strong>will</strong> likely <strong>change</strong></dt>
+          <dd>
+            <ul>
+              <li>"Related Works"</li>
+            </ul>
+          </dd>
+        </dl>
       </details>
     </li>
     <li class="data-tree__item">
