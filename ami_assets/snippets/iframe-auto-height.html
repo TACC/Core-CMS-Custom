@@ -8,7 +8,7 @@ function resizeIframe(iframe) {
   iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
 }
 
-/* to avoid both flicker effect and excessive calls when resizing iframe */
+// to avoid both flicker effect and excessive calls when resizing iframe
 function debounce(fn, delay = 50) {
   let timeoutId;
   return (...args) => {
