@@ -1,10 +1,9 @@
 from django.urls import path
-from apps.admin_exception.views import AdminExceptionsTable
+from apps.admin_exception.views import AdminExceptionsTable, AdminExceptionsApi, UpdateExceptionApi
 
 app_name = 'admin_exception'
 urlpatterns = [
     path('list-exceptions/', AdminExceptionsTable.as_view(), name="list_exceptions"),
-    path('list-exceptions/<str:status>', AdminExceptionsTable.as_view(), name='status'),
-    path('list-exceptions/<str:org>', AdminExceptionsTable.as_view(), name='org'),
-    path('list-exceptions/<str:status><str:org>', AdminExceptionsTable.as_view(), name='status_org')
+    path('list-exceptions/api/', AdminExceptionsApi.as_view(), name='admin_exceptions_table_api'),
+    path('exceptions/<int:exception_id>/', UpdateExceptionApi.as_view(), name='update_exceptions'),
 ]

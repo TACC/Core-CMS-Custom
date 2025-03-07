@@ -1,0 +1,25 @@
+.root {
+  composes: c-page-list from '@tacc/core-styles/dist/components/c-page.css';
+}
+.endcap {
+  composes: c-page-end from '@tacc/core-styles/dist/components/c-page.css';
+
+  /* HELP: Should this be in @tacc/core-styles? */
+  margin-inline: 12px;
+}
+
+.etcetera {
+  composes: c-page-item--etcetera from '@tacc/core-styles/dist/components/c-page.css';
+}
+
+.page-root {
+  composes: c-page-item from '@tacc/core-styles/dist/components/c-page.css';
+}
+
+.page {
+  composes: c-page-link from '@tacc/core-styles/dist/components/c-page.css';
+  composes: c-page-link--always-click from '@tacc/core-styles/dist/components/c-page.css';
+
+  /* To show `c-page-link--always-click` pseudo elements */
+  overflow: visible; /* overwrite <Button>'s `c-button` */
+}

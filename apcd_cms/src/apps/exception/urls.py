@@ -1,13 +1,9 @@
 from django.urls import path
-from apps.exception.views import ExceptionFormView
-from . import views
-from apps.exception.views import ExceptionOtherFormView
-from apps.exception.views import ExceptionThresholdFormView
+from apps.exception.views import ExceptionFormTemplate, ExceptionFormApi
+
 
 app_name = 'exception'
 urlpatterns = [
-    path('exception/', ExceptionFormView.as_view(), name="index"),
-    path('threshold-exception/', ExceptionThresholdFormView.as_view(), name="threshold-exception"),
-    path('get-cdls/', views.get_cdls, name='get-cdls'),
-    path('other-exception/', ExceptionOtherFormView.as_view(), name="other-exception")
+    path('exception/', ExceptionFormTemplate.as_view(), name='exception'),
+    path('exception/api/', ExceptionFormApi.as_view(), name='exception-api'),
 ]

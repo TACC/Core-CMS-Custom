@@ -2,6 +2,19 @@
 
 Extensions of the [Core CMS] project
 
+> [!TIP]
+> If you just need custom assets (logo, styles, scripts):
+> 1. Create a `customproject_assets` directory.
+> 2. Add your assets into that directory.
+> 3. Get paths to those assets [via a CDN](https://www.jsdelivr.com/?docs=gh).
+> 4. Find the project in [Core Portal Deployments].
+> 5. Set those paths in its CMS settings file ([example](https://github.com/TACC/Core-Portal-Deployments/blob/2391315/digitalrocks/camino/cms.settings_custom.py)).
+>
+> <sup>[Learn more.](https://tacc-main.atlassian.net/wiki/x/ABhv)</sup>
+
+> [!IMPORTANT]
+> This README is **only** for heavily-customized Django CMS projects.
+
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
@@ -27,7 +40,7 @@ Extensions of the [Core CMS] project
 
 ## Project Architecture
 
-Within a `/custom_project_dir` can be:
+Within a `/customproject_cms` can be:
 
 | directory | contents |
 | - | - |
@@ -55,12 +68,12 @@ Set up a new local CMS instance.
 
 0. Core CMS:
 
-    In the `/custom_project_dir/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
+    In the `/customproject_cms/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
 1. Docker Containers:
 
     ```sh
-    cd custom_project_dir
+    cd customproject_cms
     make start
     ```
 
@@ -107,7 +120,7 @@ Read [Upgrade Project] for developer instructions.
 1. If CMS Docker files changed, rebuild Docker Containers:
 
     ```sh
-    cd custom_project_dir
+    cd customproject_cms
     make stop
     make build
     make start
@@ -128,7 +141,7 @@ Read [Upgrade Project] for developer instructions.
 
 ## Run Project
 
-Read the relevant `custom_project_dir/README.md`.
+Read the relevant `customproject_cms/README.md`.
 
 To run multiple projects, first read [Multiple Projects](./docs/run-project.md#multiple-projects).
 
@@ -141,7 +154,7 @@ Read either of these for developer instructions:
 | scope | reference |
 | - | - |
 | relevant to any project | [Develop Project](./docs/develop-project.md) |
-| specific to one project | `custom_project_dir/README.md` |
+| specific to one project | `customproject_cms/README.md` |
 
 ## Build Project
 

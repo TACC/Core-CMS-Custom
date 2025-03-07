@@ -1,0 +1,44 @@
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.dateInputField {
+  padding-right: 2ch; /* Adjust space for icons or padding */
+  min-width: 10ch; /* Minimum width for empty input */
+}
+
+.dateInputContainer {
+  display: inline-block;
+}
+
+.loadingField {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.termsCheckbox input {
+  position: unset;
+  margin-left: 0;
+  margin-right: 2px;
+}
+.fieldRows {
+  display: flex;
+  gap: 5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.fieldRows input {
+  font-size: inherit;
+}
+.justification {
+  font-size: unset;
+}
+.dateInputContainer :is(input):read-only {
+  border-color: unset;
+  background-color: #e9ecef;
+}

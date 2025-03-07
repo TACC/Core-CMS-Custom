@@ -1,24 +1,28 @@
 {# This template overwrites the original from TACC/Core-CMS #}
-{# NOTE: This should extend taccsite_cms via taccsite_custom, not overwrite #}
-{# FAQ: To extend, via app template inheritance, see TACC/Core-CMS#492 #}
+{# TODO: Add `site.cms.css` to APCD's PORTAL_STYLES setting in Core-Portal-Deployments #}
 
 
-
-{# COPIED FROM CORE #}
-{# https://github.com/TACC/Core-CMS/blob/64a72e2/taccsite_cms/templates/assets_custom.html #}
+{# CORE CODE #}
+{# https://github.com/TACC/Core-CMS/blob/3a3741e/taccsite_cms/templates/assets_custom.html #}
 
 {% load static %}
 
-<!-- Custom Site Assets: Favicon. -->
+<!-- Custom Assets: Favicon. -->
 {% with settings.PORTAL_FAVICON as favicon %}
 <link rel="icon" href="{% if favicon.is_remote %}{{ favicon.img_file_src }}{% else %}{% static favicon.img_file_src %}{% endif %}" type="image/x-icon" />
+{% endwith %}
+
+<!-- Custom Assets: Styles. -->
+{% with settings.PORTAL_STYLES as styles %}
+{% for style in styles %}
+<link rel="stylesheet" href="{% if style.is_remote %}{{ style.path }}{% else %}{% static style.path %}{% endif %}" />
+{% endfor %}
 {% endwith %}
 
 
 
 {# NEW CODE #}
 
-<!-- TUP CMS UI Styles -->
 <style>
   @import url("{% static 'apcd_cms/css/site.cms.css' %}");
 </style>

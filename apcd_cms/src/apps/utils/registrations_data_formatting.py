@@ -1,22 +1,23 @@
-def _set_registration(reg, reg_ents, reg_conts):
-    org_types = {
-            'carrier': 'Insurance Carrier',
-            'tpa_aso': 'Plan Administrator¹ (TPA/ASO)',
-            'pbm': 'Pharmacy Benefit Manager (PBM)'
-    }
+def _get_orgtypes():
     return {
-            'biz_name': reg[5],
-            'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
-            'location': '{city}, {state}'.format
-                (
-                    city=reg[7],
-                    state=reg[8]
-                ),
-            'reg_status': reg[3].title() if reg[3] else None,
-            'reg_id': reg[0],
-            'year': reg[10],
-            'view_modal_content': _set_modal_content(reg, reg_ents, reg_conts, org_types)
-        }
+        'carrier': 'Insurance Carrier',
+        'tpa_aso': 'Plan Administrator¹ (TPA/ASO)',
+        'pbm': 'Pharmacy Benefit Manager (PBM)',
+    }
+
+
+def _set_registration_for_listing(reg):
+    org_types = _get_orgtypes()
+    return {
+        'biz_name': reg[5],
+        'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
+        'location': '{city}, {state}'.format(city=reg[7], state=reg[8]),
+        'reg_status': reg[3].title() if reg[3] else None,
+        'reg_id': reg[0],
+        'year': reg[10],
+    }
+
+
 def _set_entities(reg_ent):
     return {
         'claim_val': reg_ent[0],
@@ -40,6 +41,8 @@ def _set_entities(reg_ent):
             "Dental": reg_ent[16]
         }
     }
+
+
 def _set_contacts(reg_cont):
 
     def format_phone_number(num):
@@ -65,16 +68,21 @@ def _set_contacts(reg_cont):
         'phone': format_phone_number(reg_cont[5]) if reg_cont[5] else None,
         'email': reg_cont[6],
     }
-def _set_modal_content(reg, reg_ent, reg_cont, org_types):
+
+
+def _set_registration(reg, reg_ent, reg_cont):
+    org_types = _get_orgtypes()
     return {
+        'reg_id': reg[0],
         'biz_name': reg[5],
         'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
         'city': reg[7],
         'state': reg[8],
         'address': reg[6],
-        'zip': reg[9],
+        'zip': reg[9].strip(),
         'for_self': reg[2],
         'year': reg[10],
+        'status': reg[3].title() if reg[3] else None,
         'entities': [_set_entities(ent) for ent in reg_ent],
         'contacts': [_set_contacts(cont) for cont in reg_cont],
         'org_types': org_types,

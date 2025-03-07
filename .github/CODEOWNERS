@@ -1,8 +1,9 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#example-of-a-codeowners-file
 
 # architecture
-/.github/  @wesleyboar
-.gitignore @wesleyboar
+# HELP: @wesleyboar was pinged on PRs that do not make changes to these files
+# /.github/  @wesleyboar
+# .gitignore @wesleyboar
 
 # projects
 #             simple customizations
