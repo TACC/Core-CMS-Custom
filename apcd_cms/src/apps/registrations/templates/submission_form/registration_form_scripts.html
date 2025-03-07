@@ -1,0 +1,539 @@
+{% load static %}
+
+<aside>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {# To check for blank space only in text inputs #}
+    <script src="{% static 'utils/js/checkForBlankInputs.js' %}"></script>
+    {# Adds blank space listener to all text input fields on page load #}
+    <script>
+      const formTextInputs = document.querySelectorAll('input, textarea');
+      noEmptyInputs(formTextInputs);
+    </script>
+    {# To require at least one "entity" identifier value #}
+    <script id="form-entity_id-required">
+      function entityIdGroupValidation(ent_no, reg_id) {
+        const idGroup = Array.from(
+          document.querySelectorAll(`
+          input[name=fein_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=license_number_${ent_no}${ reg_id ? `_${reg_id}`: ''}],
+          input[name=naic_company_code_${ent_no}${ reg_id ? `_${reg_id}`: ''}]`)
+        );
+        idGroup.forEach(i => i.addEventListener('invalid', function (event) {
+          if (event.target.validity.valueMissing) {
+            event.target.setCustomValidity('Please fill in at least one Number/Code.');
+          }
+        }));
+        idGroup.forEach(i => i.addEventListener('change', function (event) {
+          idGroup.forEach(j => {
+            j.required = true;
+            if (!event.target.validity.valueMissing || idGroup.some(input => input.value.length > 0)) { // if value exists, no other inputs in this group are required
+              j.setCustomValidity('');
+              j.required = false;
+            }
+          });
+        }));
+      }
+    </script>  
+    <script id="form-entity_plan_type-required">
+      function checkboxGroupValidation(checkboxGroup, customValidityMessage) {
+        checkboxGroup.forEach(i => i.addEventListener('invalid', function (event) {
+          if (!event.target.checked) {
+            event.target.setCustomValidity(customValidityMessage);
+          }
+        }));
+        checkboxGroup.forEach(i => i.addEventListener('click', function (event) {
+          checkboxGroup.forEach(j => {
+            j.required = true;
+            if (checkboxGroup.some(input => input.checked)) { // if box checked, no other inputs in this group are required
+              j.setCustomValidity('');
+              j.required = false;
+            }
+          });
+        }));
+      }
+    </script>  
+    {# To let user add and remove entities #}
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-entity" type="module">
+      const addEntityBtn = document.getElementById("entity-add-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const dropEntityBtn = document.getElementById("entity-drop-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const btnStatus = (() => {
+        addEntityBtn.disabled = ( entities == 5 ? true : false );
+        dropEntityBtn.disabled = ( entities == 1 ? true : false );
+      });
+      let entities = 
+        {% if r %}
+            Number(`
+                {% with r.view_modal_content.entities|length as no_entities %}
+                    {% if no_entities == 0 %}
+                        1
+                    {% else %}
+                        {{ no_entities }}
+                    {% endif %}
+                {% endwith %}
+            `)
+        {% else %}
+            1
+        {% endif %};
+      let reg_id = 
+        {% if r %}
+          Number(`{{r.reg_id}}`)
+        {% else %}
+          null
+        {% endif %};
+      let reg_id_substr = reg_id ? `_${reg_id}`: '';
+
+      for (let ent_no = 1; ent_no < entities + 1; ent_no +=1) {
+        entityIdGroupValidation(ent_no, reg_id); // add validation for entities already on form at page load
+        let planTypeBoxes = Array.from(
+          document.querySelectorAll(`
+          input[name=types_of_plans_commercial_${ent_no}${reg_id_substr}],
+          input[name=types_of_plans_medicare_${ent_no}${reg_id_substr}],
+          input[name=types_of_plans_medicaid_${ent_no}${reg_id_substr}]`)
+        );
+        let claimFileTypeBoxes = Array.from(
+          document.querySelectorAll(`
+          input[name=types_of_files_medical_${ent_no}${reg_id_substr}],
+          input[name=types_of_files_pharmacy_${ent_no}${reg_id_substr}],
+          input[name=types_of_files_dental_${ent_no}${reg_id_substr}]`)
+        );
+        checkboxGroupValidation(planTypeBoxes, 'Please select at least one plan type.');
+        checkboxGroupValidation(claimFileTypeBoxes, 'Please select at least one claims file type (see above).');
+      };
+      btnStatus();
+
+      addEntityBtn.addEventListener("click", () => {
+        if (entities < 5) entities += 1;
+        let entityBlock = document.getElementById(`entity_block_${entities}${reg_id_substr}`);
+        document.getElementById(`entity_header_${entities}${reg_id_substr}`).style.display = 'block';
+        entityBlock.innerHTML = `
+        <div class="field-wrapper textinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="entity_name_${entities}${reg_id_substr}"> Name<span class="asterisk">*</span> </label>
+          <input
+            type="text"
+            name="entity_name_${entities}${reg_id_substr}"
+            required
+            class="textinput"
+            id="entity_name_${entities}${reg_id_substr}"
+            maxlength="255"
+          />
+          <div id="help-text-entity_name_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper required">
+          <label>
+            Number/Code<span class="asterisk">*</span>
+          </label>
+          <div class="help-text">
+            Provide all available identifiers. At least one of the following is
+            required.
+          </div>
+        </div>
+        <div class="o-grid o-grid--col-auto-count">
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="fein_${entities}${reg_id_substr}"> FEIN<sup>2</sup> </label>
+            <input
+              type="text"
+              name="fein_${entities}${reg_id_substr}"
+              placeholder="12-3456789"
+              class="textinput"
+              id="fein_${entities}${reg_id_substr}"
+              inputmode="numeric"
+              minlength="10"
+              maxlength="10"
+              pattern="\\d{2}-\\d{7}"
+              required
+            />
+            <div id="help-text-fein_${entities}" class="help-text">
+              Enter in format <samp>12-3456789</samp>.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="license_number_${entities}${reg_id_substr}"> License Number </label>
+            <input
+              type="text"
+              name="license_number_${entities}${reg_id_substr}"
+              placeholder="1234567890"
+              class="integerfield"
+              id="license_number_${entities}${reg_id_substr}"
+              inputmode="numeric"
+              pattern="^(?!0+$)[0-9]{1,10}$"
+              required
+            />
+            <div id="help-text-license_number_${entities}" class="help-text">
+              Enter digits only.
+            </div>
+          </div>
+          <div class="field-wrapper textinput">
+            <div class="field-errors" style="display: none"></div>
+            <label for="naic_company_code_${entities}${reg_id_substr}"> NAIC<sup>3</sup> Company Code </label>
+            <input
+              type="text"
+              name="naic_company_code_${entities}${reg_id_substr}"
+              placeholder="12345"
+              class="integerfield"
+              id="naic_company_code_${entities}${reg_id_substr}"
+              inputmode="numeric"
+              pattern="^(?!0+$)[0-9]{1,10}$"
+              required
+            />
+            <div id="help-text-naic_company_code_${entities}" class="help-text">
+              Enter digits only.
+            </div>
+          </div>
+        </div>
+        <h6>Type of Plan</h6>
+        <div class="field-wrapper required">
+            <label>
+                Plan Types<span class="asterisk">*</span>
+            </label>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_plans" class="checkboxselectmultiple">
+                <li>
+                    <label for="types_of_plans_commercial_${entities}${reg_id_substr}"
+                    ><input
+                        type="checkbox"
+                        name="types_of_plans_commercial_${entities}${reg_id_substr}"
+                        id="types_of_plans_commercial_${entities}${reg_id_substr}"
+                        required
+                    />Commercial</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_plans_medicare_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_plans_medicare_${entities}${reg_id_substr}"
+                        id="types_of_plans_medicare_${entities}${reg_id_substr}"
+                        required
+                        />Medicare</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_plans_medicaid_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_plans_medicaid_${entities}${reg_id_substr}"
+                        id="types_of_plans_medicaid_${entities}${reg_id_substr}"
+                        required
+                        >
+                        <span>Medicaid 
+                          <small>(for state use only)</small>
+                        </span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <h6>File Submission</h6>
+        <div class="field-wrapper required">
+        <label>
+            Types of Files
+        </label>
+        <div class="help-text">
+            Eligibility/Enrollment files are mandatory. At least one claims file type (Medical, Pharmacy, and Dental) must be selected.
+        </div>
+        </div>
+
+        <div class="field-wrapper checkboxselectmultiple required">
+            <div class="field-errors" style="display: none"></div>
+
+            <ul id="types_of_files" class="checkboxselectmultiple">
+                <li>
+                    <label for="types_of_files_eligibility_enrollment_${entities}${reg_id_substr}"
+                    ><input
+                        type="checkbox"
+                        name="types_of_files_eligibility_enrollment_${entities}${reg_id_substr}"
+                        required
+                        id="types_of_files_eligibility_enrollment_${entities}${reg_id_substr}"
+                        checked=""
+                        disabled
+                    />Eligibility/Enrollment*</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_provider_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_provider_${entities}${reg_id_substr}"
+                        id="types_of_files_provider_${entities}${reg_id_substr}"
+                        />Provider</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_medical_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_medical_${entities}${reg_id_substr}"
+                        id="types_of_files_medical_${entities}${reg_id_substr}"
+                        required
+                        />Medical</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_pharmacy_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_pharmacy_${entities}${reg_id_substr}"
+                        id="types_of_files_pharmacy_${entities}${reg_id_substr}"
+                        required
+                        />Pharmacy</label
+                    >
+                </li>
+                <li>
+                    <label for="types_of_files_dental_${entities}${reg_id_substr}"
+                        ><input
+                        type="checkbox"
+                        name="types_of_files_dental_${entities}${reg_id_substr}"
+                        id="types_of_files_dental_${entities}${reg_id_substr}"
+                        required
+                        />Dental</label
+                    >
+                </li>
+            </ul>
+        </div>
+
+        <h6>
+          Coverage Estimates
+          <small>(Inclusive of all claims as of December 31 of previous year.)</small>
+        </h6>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_covered_lives_${entities}${reg_id_substr}">
+            Total Covered Lives<span class="asterisk">*</span>
+          </label>
+          <input
+            type="text"
+            name="total_covered_lives_${entities}${reg_id_substr}"
+            required
+            class="integerfield"
+            id="total_covered_lives_${entities}${reg_id_substr}"
+            inputmode="numeric"
+            pattern="^[1-9]+[0-9]*$"
+          />
+          <div id="help-text-total_covered_lives_${entities}" class="help-text">
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required">
+          <div class="field-errors" style="display: none"></div>
+          <label for="claims_encounters_volume_${entities}${reg_id_substr}">
+            Claims and Encounters Volume<span class="asterisk">*</span>
+          </label>
+          <input
+            type="text"
+            name="claims_encounters_volume_${entities}${reg_id_substr}"
+            required
+            class="integerfield"
+            id="claims_encounters_volume_${entities}${reg_id_substr}"
+            inputmode="numeric"
+            pattern="^[1-9]+[0-9]*$"
+          />
+          <div id="help-text-claims_encounters_volume_${entities}" class="help-text">
+            Enter a whole number.
+          </div>
+        </div>
+        <div class="field-wrapper numberinput required s-affixed-input-wrapper s-affixed-input-wrapper--prefix">
+          <div class="field-errors" style="display: none"></div>
+          <label for="total_claims_value_${entities}${reg_id_substr}">
+            Total Claims Value (USD<sup>4</sup>)<span class="asterisk">*</span>
+          </label>
+          <span class="s-affixed-input-wrapper__prefix">$</span>
+          <input
+            type="text"
+            name="total_claims_value_${entities}${reg_id_substr}"
+            required
+            class="integerfield"
+            id="total_claims_value_${entities}${reg_id_substr}"
+            inputmode="numeric"
+            pattern="^(?=.*[1-9])[0-9]*[.]?[0-9]{1,2}$"
+          />
+          <div id="help-text-total_claims_value_${entities}" class="help-text">
+          </div>
+        </div>
+        {% if not r %}
+        ${( entities === 5 ?
+             `<p class="c-message c-message--type-info c-message--scope-inline">If you need to associate more than 5 entities with your registration, <a href="/workbench/dashboard" target="_blank">submit a ticket</a> with your additional entries and your registration ID (displayed after submitting this form).</p>`
+          : ''
+        )}
+        {% endif %}
+        `;
+        entityIdGroupValidation(entities, reg_id); // add entity input validation for new entities on form
+        let planTypeBoxes = Array.from(
+          document.querySelectorAll(`
+          input[name=types_of_plans_commercial_${entities}${reg_id_substr}],
+          input[name=types_of_plans_medicare_${entities}${reg_id_substr}],
+          input[name=types_of_plans_medicaid_${entities}${reg_id_substr}`)
+        );
+        let claimFileTypeBoxes = Array.from(
+          document.querySelectorAll(`
+          input[name=types_of_files_medical_${entities}${reg_id_substr}],
+          input[name=types_of_files_pharmacy_${entities}${reg_id_substr}],
+          input[name=types_of_files_dental_${entities}${reg_id_substr}]`)
+        );
+        checkboxGroupValidation(planTypeBoxes, 'Please select at least one plan type.');
+        checkboxGroupValidation(claimFileTypeBoxes, 'Please select at least one claims file type (see above).');
+
+        const addEntityNameInput = document.querySelectorAll(`input[name=entity_name_${entities}${reg_id_substr}]`);
+        noEmptyInputs(addEntityNameInput);
+
+        btnStatus();
+      });
+
+      dropEntityBtn.addEventListener("click", () => {
+        document.getElementById(`entity_header_${entities}${reg_id_substr}`).style.display = 'none';
+        let entityBlock = document.getElementById(`entity_block_${entities}${reg_id_substr}`);
+        entityBlock.innerHTML = '';
+        if (entities > 1) entities -= 1;
+        btnStatus();
+      });
+    </script>
+
+    {# To let user add and remove contacts #}
+    {# RFE: Do not duplicate entity markup #}
+    {# IDEA: HTML template for any instance; used by markup for 0, JS for 1+ #}
+    <script id="form-add-remove-contact" type="module">
+      const addContactBtn = document.getElementById("contact-add-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const dropContactBtn = document.getElementById("contact-drop-btn{% if r %}-{{r.reg_id}}{% endif %}");
+      const btnStatus = (() => {
+        addContactBtn.disabled = ( contacts == 5 ? true : false );
+        dropContactBtn.disabled = ( contacts == 1 ? true : false );
+      });
+      let contacts =
+        {% if r %}
+            Number(`
+                {% with r.view_modal_content.contacts|length as no_contacts %}
+                    {% if no_contacts == 0 %}
+                        1
+                    {% else %}
+                        {{ no_contacts }}
+                    {% endif %}
+                {% endwith %}
+            `)
+        {% else %}
+            1
+        {% endif %};
+      let reg_id = 
+        {% if r %}
+          Number(`{{r.reg_id}}`)
+        {% else %}
+          null
+        {% endif %};
+      let reg_id_substr = reg_id ? `_${reg_id}`: '';
+      btnStatus();
+
+      addContactBtn.addEventListener("click", () => {
+        if (contacts < 5) contacts += 1;
+        let contactBlock = document.getElementById(`contact_block_${contacts}${reg_id_substr}`);
+        document.getElementById(`contact_header_${contacts}${reg_id_substr}`).style.display = 'block';
+        contactBlock.innerHTML = `
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_type_${contacts}${reg_id_substr}"> Company Role<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_type_${contacts}${reg_id_substr}"
+                required
+                class="textinput"
+                id="contact_type_${contacts}${reg_id_substr}"
+                maxlength="100"
+              />
+            </div>
+            <div class="field-wrapper textinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_name_${contacts}${reg_id_substr}"> Name<span class="asterisk">*</span> </label>
+              <input
+                type="text"
+                name="contact_name_${contacts}${reg_id_substr}"
+                required
+                class="textinput"
+                id="contact_name_${contacts}${reg_id_substr}"
+                maxlength="100"
+              />
+            </div>
+            <div class="field-wrapper telephoneinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_phone_${contacts}${reg_id_substr}"> Phone<span class="asterisk">*</span> </label>
+              <input
+                type="tel"
+                name="contact_phone_${contacts}${reg_id_substr}"
+                required
+                class="telephoneinput"
+                id="contact_phone_${contacts}${reg_id_substr}"
+                inputmode="tel"
+                pattern="^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.\\-]\\d{3}[\\s.\\-]\\d{4}$"
+              />
+              <div id="help-text-contact_phone_${contacts}" class="help-text">
+                <details>
+                  <summary>
+                    <a
+                      href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"
+                      target="_blank"
+                      >North American Numbering Plan</a
+                    >
+                    e.g. <samp>123 456-7890</samp>…
+                  </summary>
+                  <ul>
+                    <li><samp>123-456-7890</samp></li>
+                    <li><samp>(123) 456-7890</samp></li>
+                    <li><samp>123 456 7890</samp></li>
+                    <li><samp>123.456.7890</samp></li>
+                    <li><samp>+1 (123) 456-7890</samp></li>
+                  </ul>
+                </details>
+              </div>
+            </div>
+            <div class="field-wrapper emailinput required">
+              <div class="field-errors" style="display: none"></div>
+              <label for="contact_email_${contacts}${reg_id_substr}"> Email<span class="asterisk">*</span> </label>
+              <input
+                type="email"
+                name="contact_email_${contacts}${reg_id_substr}"
+                autocomplete="email"
+                required
+                class="emailinput"
+                pattern="^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\.[a-z]{2,4}$"
+                id="contact_email_${contacts}${reg_id_substr}"
+                maxlength="50"
+              />
+            </div>
+            <div class="field-wrapper checkboxinput">
+              <div class="field-errors" style="display: none"></div>
+              <input
+                type="checkbox"
+                name="contact_notifications_${contacts}${reg_id_substr}"
+                class="booleanfield"
+                id="contact_notifications_${contacts}"
+              />
+              <label for="contact_notifications_${contacts}${reg_id_substr}">
+                Select to receive system notifications
+              </label>
+              <div id="help-text-contact_notifications_${contacts}${reg_id_substr}" class="help-text">
+              </div>
+            </div>
+        `;
+
+        const addContactTextInputs = document.querySelectorAll(`
+          input[name=contact_type_${contacts}${reg_id_substr}],
+          input[name=contact_name_${contacts}${reg_id_substr}]
+        `);
+        noEmptyInputs(addContactTextInputs);
+
+        btnStatus();
+      });
+
+      dropContactBtn.addEventListener("click", () => {
+        document.getElementById(`contact_header_${contacts}${reg_id_substr}`).style.display = 'none';
+        let contactBlock = document.getElementById(`contact_block_${contacts}${reg_id_substr}`);
+        contactBlock.innerHTML = '';
+        if (contacts > 1) contacts -= 1;
+        btnStatus();
+      });
+    </script>
+</aside>

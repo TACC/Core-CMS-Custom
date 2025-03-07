@@ -1,0 +1,28 @@
+<hr class="pre-footer-border">
+<aside class="pre-footer  o-section o-section--style-muted">
+    <p>The <strong>Digital Rocks Portal</strong> is funded by a grant from the National Science Foundation <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2324786&amp;HistoricalAwards=false">NSF GEO OSE 2324786</a>.</p>
+    <p>Initial development was funded by <a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1255622" target="_blank">NSF EAR CAREER Grant 1255622</a>&nbsp;and&nbsp;<a href="http://www.nsf.gov/awardsearch/showAward?AWD_ID=1541088" target="_blank">EarthCube Grant 1541008</a>.</p>
+</aside>
+<style id="css-pre-footer">
+.pre-footer {
+    border-top: var(--global-border--normal);
+    text-align: center;
+}
+.pre-footer-border {
+    width: 100%;
+    position: absolute;
+    margin-block: unset;
+    left: 0;
+}
+
+/* To remove card bottom margin when directly above pre-footer */
+/* NOTE: Funcitonal, just don't know whether to remove the space… *//*
+:is(
+    .o-section, .section, [class*="section--"]
+):has(
+    .o-card, .card, [class*="card--"]
+) + .pre-footer-border + .pre-footer {
+    margin-top: calc(-1* var(--global-space--bootstrap-gap));
+}
+*/
+</style>

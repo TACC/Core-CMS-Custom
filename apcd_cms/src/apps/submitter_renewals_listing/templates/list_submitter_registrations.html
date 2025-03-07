@@ -1,0 +1,19 @@
+{% extends "apcd_cms/templates/standard.html" %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'apcd_cms/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'apcd_cms/css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'admin_regis_table/css/table.css' %}">
+
+<div class="container">
+  {% include "nav_cms_breadcrumbs.html" %}
+
+  <h1>Registration Information</h1>
+  <hr />
+  <p style="margin-bottom: 30px">Current registration information on file for your organization is listed below. On the right of the screen, select the dropdown menu under “Actions” to view or renew your organization’s registration information.</p>
+  <hr />
+  <div id="list-submitter-registrations-root"></div>
+</div>
+{% endblock %}

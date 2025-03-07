@@ -1,0 +1,7 @@
+.paginatorContainer {
+  display: flex;
+  justify-content: center; /* Centers the child horizontally */
+  align-items: center; /* Centers the child vertically */
+  height: 100%; /* Adjust as needed */
+  padding-top: 20px;
+}

@@ -1,0 +1,63 @@
+/* Field Widths */
+
+/* for an Entity*/
+input[name*="fein"],
+input[name*="license_number"],
+input[name*="naic_company_code"],
+/* for an Organization */
+input[name^="zip_code"] {
+    width: 10ch;
+    box-sizing: content-box;
+}
+div.checkboxselectmultiple label, div.radioselect label {
+    align-items: center;
+    display: flex;
+    gap: .5em;
+}
+/* for a Contact */
+input[name*="contact_phone"] {
+    width: 17ch;
+    box-sizing: content-box;
+}
+
+/* Field Layouts */
+
+/* To make (radio/check)box sets take up less vertical space */
+div[id*="types_of_files"], div[id*="types_of_plans"], div[id*="submission_method"], div[id*="on_behalf_of"] {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    row-gap: 0.5em;
+}
+
+/* To make contact fields take up less vertical space */
+[id^="contact_block_"] {
+    --max-col-width: 50ch;
+
+    /* Expectations:
+        - automatically enough columns
+        - maximum column count of 2 (i.e. minimum column width of 50%)
+        - maximum column width of 50 char's (same as max-width of fields)
+        - equal width columns
+    */
+    display: grid;
+    column-gap: var(--global-space--grid-gap);
+    grid-template-columns: repeat( auto-fill, var(--max-col-width) );
+    max-width: calc( var(--global-space--grid-gap) + var(--max-col-width) * 2 );
+}
+.field-wrapper:has([id*="contact_email"]) {
+    /* To mimic site.css `.help-text` margin-top */
+    margin-bottom: calc(var(--global-font-size--small) * 0.3);
+}
+.field-wrapper:has([id*="contact_phone"]) {
+    /* To pull contact_notifications up against contact_email */
+    /* NOTE: A span 2 seems like enough, but only span 3+ does the job */
+    grid-row: span 3;
+}
+
+/* Field Content */
+
+/* to remove 'scroll arrows' from numeric input fields */
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

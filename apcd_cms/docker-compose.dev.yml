@@ -1,0 +1,56 @@
+version: "3"
+services:
+  cms:
+    build: .
+    ports:
+      - 127.0.0.1:8000:8000
+    command: ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+    container_name: core_cms
+    hostname: core_cms
+    volumes:
+      - ./src/apps:/code/apps
+      - ./src/taccsite_custom:/code/taccsite_custom
+      - ./src/taccsite_cms/custom_app_settings.py:/code/taccsite_cms/custom_app_settings.py
+      - ./src/taccsite_cms/urls_custom.py:/code/taccsite_cms/urls_custom.py
+      - ./src/taccsite_cms/settings_custom.py:/code/taccsite_cms/settings_custom.py
+      - ./src/taccsite_cms/settings_local.py:/code/taccsite_cms/settings_local.py
+      - ./src/taccsite_cms/secrets.py:/code/taccsite_cms/secrets.py
+    networks:
+      - core_cms_net
+
+  postgres:
+    image: postgres:14.9
+    environment:
+      - POSTGRES_PASSWORD=taccforever
+      - POSTGRES_USER=postgresadmin
+      - POSTGRES_DB=taccsite
+      - PGDATA=/var/lib/postgresql/data/taccsite
+    volumes:
+      - core_cms_postgres_data:/var/lib/postgresql/data
+    hostname: core_cms_postgres
+    container_name: core_cms_postgres
+    networks:
+      - core_cms_net
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    ulimits:
+      memlock: -1
+    environment:
+      - ES_HEAP_SIZE:1g
+      - discovery.type=single-node
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - core_cms_es_data:/usr/share/elasticsearch/data
+    container_name: core_cms_elasticsearch
+    ports:
+      - 127.0.0.1:9201:9200
+    networks:
+      - core_cms_net
+
+volumes:
+  core_cms_postgres_data:
+  core_cms_es_data:
+
+networks:
+  core_cms_net:

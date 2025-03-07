@@ -41,11 +41,14 @@ Read [Django CMS User Guide] for CMS user instructions.
 
 ## Customize Project
 
-Edit `./src/taccsite_cms/settings_custom.py`.
+| Purpose | File to Update |
+| - | - |
+| Test | `/custom_project_dir/src/taccsite_cms/settings_custom.py` |
+| Commit | [TACC/Core-Portal-Deployments][Core Portal Deployments]:`/project_dir/camino/settings_custom.py` |
 
-To know what settings are available, see [Core-CMS `settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
+To know what settings are available, see [TACC/Core-CMS:`/taccsite_cms/settings.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings.py).
 
-The settings usually edited are `LOGO` and `..._BRANDING`.
+The settings usually edited are `PORTAL_LOGO` and `..._BRANDING`.
 
 ## Create a Custom App
 
@@ -72,7 +75,8 @@ If there is a change that should be made in all CMS projects, consider whether i
 [Core CMS]: https://github.com/TACC/Core-CMS
 [Core Portal]: https://github.com/TACC/Core-Portal
 [Core Styles]: https://github.com/TACC/Core-Styles
+[Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
 
 [TACC UI Patterns]: https://tacc.utexas.edu/static/ui/
 
-[Django CMS User Guide]: https://confluence.tacc.utexas.edu/x/FgDqCw
+[Django CMS User Guide]: https://tacc-main.atlassian.net/wiki/x/phdv

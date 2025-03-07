@@ -1,0 +1,17 @@
+/* Organize via ITCSS */
+/* SEE: https://tacc-main.atlassian.net/wiki/x/QQhv */
+
+/* ELEMENTS */
+
+/* To prevent super-long fields */
+input:not(
+  /* FAQ: These types of fields should not grow to a max */
+  [type=time],
+  [type=date],
+  [type=checkbox],
+  [type=radio]
+),
+select,
+textarea {
+  max-width: 50ch;
+}

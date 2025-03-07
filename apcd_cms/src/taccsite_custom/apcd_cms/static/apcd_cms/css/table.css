@@ -1,0 +1,128 @@
+/* CORE TABLE STYLES */
+
+@import url('./table--conflicts-with-core.css');
+
+
+
+/* APCD TABLE STYLES */
+
+/* Table Elements */
+
+table {
+    width: 100%;
+    table-layout: fixed; /* allows table to shrink (reason unknown) */
+}
+
+/* SEE: https://css-tricks.com/responsive-data-tables/ */
+/* TODO: Migrate this solution to Core-Styles */
+@media (max-width: 767px) {
+    table {
+        /*! START: Copied from Core-Styles v0.13 (Core-CMS v3.10) */
+        --cell-pad-vert: 8px;
+        --cell-pad-horz: 16px;
+        /*! END: Copied from Core[…] */
+        --row-pad-vert: calc( var(--cell-pad-vert) * 3 );
+    }
+
+    /* To escape table layout */
+    table,
+    :is(thead, tbody, th, td, tr) {
+        display: block;
+    }
+
+    /* To hide table headers (but not `display: none;`, for a11y) */
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    /* To restore row borders */
+    tr:not(:last-of-type) {
+        border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--normal);
+    }
+
+    /* To make each cell behave like a "row" */
+    td {
+        position: relative;
+        padding-left: 50%;
+    }
+    tr > :is(td,th):last-of-type /* FAQ: extra specific to trump Core */ {
+        border-bottom: none;
+    }
+
+    /* To add space between rows (for legibility) */
+    td:first-of-type { padding-top: var(--row-pad-vert); }
+    td:last-of-type { padding-bottom: var(--row-pad-vert); }
+
+    /* To make cells look like left-aligned labels */
+    td::before {
+        --buffer: var(--cell-pad-horz);
+
+        /* To position cells */
+        position: absolute;
+        width: calc( 50% - var(--buffer) );
+        top: var(--cell-pad-vert);
+        left: var(--cell-pad-horz);
+
+        /* To style cells */
+        font-weight: bold;
+
+        /* To truncate cells */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* To mimic cell padding on labels */
+    td:first-of-type::before { top: var(--row-pad-vert); }
+    td:last-of-type::before { bottom: var(--row-pad-vert); }
+
+    /* To diminish label borders */
+    tr > :is(td,th):not(:last-of-type) /* FAQ: extra specific to trump Core */ {
+        border-bottom-color: var(--global-color-primary--x-light);
+    }
+
+    /* To label the cells */
+    /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
+    td:nth-of-type(1)::before { content: "Label 1"; }
+    td:nth-of-type(2)::before { content: "Label 2"; }
+    td:nth-of-type(3)::before { content: "Label 3"; }
+    td:nth-of-type(4)::before { content: "Label 4"; }
+    td:nth-of-type(5)::before { content: "Label 5"; }
+}
+
+/* Internal Components */
+/* TODO: Evaluate whether Core provides, or should provide, these components */
+
+.no-bullets {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.no-bullets li {
+    line-height: 1.9em; /* overwrite Core CMS site.css */
+}
+
+.filter-container {
+    margin-bottom: 30px;
+    width: auto;
+
+}
+.filter-content {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* To reveal floated child (.filter-content) on narrow screen i.e. "clearfix" */
+/* SEE: https://www.google.com/search?q=clearfix */
+.filter-container::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.status-filter {
+    width: max-content;
+}

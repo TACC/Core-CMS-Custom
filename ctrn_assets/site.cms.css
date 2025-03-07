@@ -1,0 +1,8 @@
+/* ... */
+
+/* NEWS */
+
+/* To hide "Uncategorized" category text */
+.category_none {
+  display: none;
+}

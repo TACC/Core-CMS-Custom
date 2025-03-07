@@ -1,0 +1,37 @@
+/* Block */
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  align-content: flex-end; /* preserve alignment of items when wrapped */
+
+  margin-bottom: 15px;
+}
+.root:not(.for-form, .for-table, .for-list) {
+  padding-bottom: 15px;
+  border-bottom: var(--global-border-width--normal) solid
+    var(--global-color-primary--dark);
+}
+
+/* Elements */
+
+/* Elements: Header Actions */
+.heading ~ * {
+  max-height: 100%; /* (gently) force oversized elements to fit */
+}
+.heading ~ a {
+  font-weight: var(--bold);
+}
+
+/* Modifiers */
+
+.for-form,
+.for-list {
+  /* FAQ: No styles necessary, but defining class to avoid build error */
+}
+
+.for-table {
+  border-bottom: none;
+}

@@ -1,0 +1,28 @@
+{# This template overwrites the original from TACC/Core-CMS #}
+{# TODO: Add `site.cms.css` to APCD's PORTAL_STYLES setting in Core-Portal-Deployments #}
+
+
+{# CORE CODE #}
+{# https://github.com/TACC/Core-CMS/blob/3a3741e/taccsite_cms/templates/assets_custom.html #}
+
+{% load static %}
+
+<!-- Custom Assets: Favicon. -->
+{% with settings.PORTAL_FAVICON as favicon %}
+<link rel="icon" href="{% if favicon.is_remote %}{{ favicon.img_file_src }}{% else %}{% static favicon.img_file_src %}{% endif %}" type="image/x-icon" />
+{% endwith %}
+
+<!-- Custom Assets: Styles. -->
+{% with settings.PORTAL_STYLES as styles %}
+{% for style in styles %}
+<link rel="stylesheet" href="{% if style.is_remote %}{{ style.path }}{% else %}{% static style.path %}{% endif %}" />
+{% endfor %}
+{% endwith %}
+
+
+
+{# NEW CODE #}
+
+<style>
+  @import url("{% static 'apcd_cms/css/site.cms.css' %}");
+</style>

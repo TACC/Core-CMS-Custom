@@ -1,0 +1,17 @@
+.submission-table td {
+    word-wrap: break-word;
+}
+
+/* SEE: https://css-tricks.com/responsive-data-tables/ */
+@media (max-width: 767px) {
+    /* To label the cells */
+    /* RFE: Add `data-label` to each cell so we can use `attr(data-label)` */
+    .submission-table td:nth-of-type(1):before { content: "Received"; }
+    .submission-table td:nth-of-type(2):before { content: "Organization"; }
+    .submission-table td:nth-of-type(3):before { content: "File Name"; }
+    .submission-table td:nth-of-type(4):before { content: "Outcome"; }
+    .submission-table td:nth-of-type(5):before { content: "Status"; }
+    .submission-table td:nth-of-type(6):before { content: "Last Updated"; }
+    .submission-table td:nth-of-type(7):before { content: "Payor Code"; }
+    .submission-table td:nth-of-type(8):before { content: "Actions"; }
+}

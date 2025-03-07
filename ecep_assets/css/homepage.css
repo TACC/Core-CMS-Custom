@@ -1,0 +1,17 @@
+/* BANNER */
+
+/* to center-align banner image when it's too narrow to fill screen */
+figure#homepage-banner {
+    background-color: var(--global-color-accent--x-dark);
+    display: grid;
+    justify-content: center;
+}
+/* to hide caption */
+#homepage-banner figcaption {
+    display: none;
+}
+/* to remove extra space below banner */
+figure#homepage-banner /* overwrites Bootstrap reboot.css */,
+figure#homepage-banner > img /* overwrites ecep-cms/…/site.css */ {
+    margin-bottom: 0;
+}

@@ -1,0 +1,56 @@
+/*Text Style*/
+.justificationAsterisk {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* Field Sizes */
+.thresholdRequested,
+.expirationDate {
+  min-width: 15ch;
+}
+.fieldRows {
+  display: flex;
+  gap: 5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.fieldRows input {
+  font-size: inherit;
+}
+.loadingField {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.requiredThreshold {
+  background-color: #e9ecef;
+  color: #6c757d;
+  border-color: #ced4da;
+}
+.requiredThreshold,
+.thresholdRequested {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+.termsCheckbox input {
+  position: unset;
+  margin-left: 0;
+}
+
+.justification {
+  font-size: unset;
+}
+.isInvalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+/* To match CEP styles of required fields */
+.requiredBadge {
+  margin-left: 10px;
+}
