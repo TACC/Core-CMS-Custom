@@ -29,9 +29,17 @@
     align-self: end;
 }
 
+
+/* Card List */
+
 .c-card-list [class*="card--"] img {
     padding: 20px;
     aspect-ratio: 1 / 1;
+}
+
+/* to allow long file names to wrap */
+.c-card-list p {
+    word-break: break-word;
 }
 
 
