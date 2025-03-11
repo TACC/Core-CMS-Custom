@@ -1,10 +1,12 @@
 <style id="css-portals-list">
-/* TODO: Consider modifier class for this to be in TACC/Core-Styles */
-
 .c-card-list [class*="card--"] img {
     padding: 20px;
+
+    /* to keep image box size equal */
     aspect-ratio: 1 / 1;
-    object-fit: contain;
+    width: 100%;
+    /* to fill image box but not stretch image content */
+    object-fit: scale-down;
 }
 
 
