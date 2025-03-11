@@ -10,12 +10,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">&#10;  <style
-   id="style1">&#10;    #path139 {&#10;      stroke: #fff;&#10;    }&#10;    #DigitalRocks_Text &gt; * {&#10;      fill: #fff;&#10;    }&#10;    #DigitalRocks_Image_Bkgd {&#10;      fill: #fff;&#10;    }&#10;  </style>&#10;  &#10;  &#10;  <g
+   id="style1">&#10;    #path139 {&#10;      stroke: rgb(86,86,86);&#10;    }&#10;    #DigitalRocks_Text * {&#10;      fill: #000;&#10;    }&#10;    #DigitalRocks_Image_Bkgd {&#10;      fill: #fff;&#10;    }&#10;  </style>&#10;  &#10;  &#10;  <g
    id="DigitalRocks_Logo"
-   transform="scale(0.788162,0.786585)">&#10;    <path
-   d="M 649.43091,131.90978 853.54282,0.74174119 1152.8239,27.178808 1141.9751,309.29177 1023.6349,514.6744 745.55195,403.98127 Z"
-   id="DigitalRocks_Image_Bkgd"
-   transform="matrix(1.2687747,0,0,1.2713184,-822.166,0)" />&#10;    <use
+   transform="scale(0.788162,0.786585)">&#10;    &#10;    <use
    id="Use_DigitalRocks_Image"
    xlink:href="#DigitalRocks_Image"
    x="0"
