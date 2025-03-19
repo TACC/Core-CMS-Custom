@@ -31,8 +31,13 @@ if (isIframeLoaded) {
 } else {
   iframe.addEventListener('load', () => setupResizeObserver(iframe));
 }
-window.addEventListener('resize', () => debouncedResizeIframe(iframe));
 
-// a courtesy resize after page load helps us more often win the race condition
+// Catching local events to trigger iframe resize.
+window.addEventListener('resize', () => debouncedResizeIframe(iframe));
 window.addEventListener('load', () => debouncedResizeIframe(iframe));
+//window.addEventListener('load', () => window.dispatchEvent(new Event('resize')));
+
+// Events bubbling up from Dash app to trigger iframe resize.
+window.addEventListener('IFrameInit', () => debouncedResizeIframe(iframe));
+window.addEventListener('IFrameLoaded', () => debouncedResizeIframe(iframe));
 </script>
