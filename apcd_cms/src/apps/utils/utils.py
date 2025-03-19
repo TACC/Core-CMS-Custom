@@ -10,14 +10,19 @@ def title_case(value):
         return value
 
 
-def table_filter(filter, table_data, filtered_category, check_other_options=True):
+def table_filter(filter, table_data, filtered_category, check_other_options=True, exact_match=False):
     filtered_data = []
-    formatted_filter = filter.lower()
+    if not exact_match:
+        formatted_filter = filter.lower()
+    else:
+        formatted_filter = filter  # Keep original case
     for row in table_data:
         if row[filtered_category] is None:
             continue
-        formatted_value = row[filtered_category].lower()
-        if formatted_value == formatted_filter or (formatted_filter in formatted_value and check_other_options): # not all filters need this behavior, thus check_other_filters
+        formatted_value = row[filtered_category] if exact_match else row[filtered_category].lower()
+        
+        # If exact_match is True, only allow exact matches
+        if formatted_value == formatted_filter or (not exact_match and formatted_filter in formatted_value and check_other_options and formatted_filter in formatted_value):
             filtered_data.append(row)
 
     return filtered_data

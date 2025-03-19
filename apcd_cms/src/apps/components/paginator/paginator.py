@@ -4,12 +4,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def paginator(request, table_rows, entries_per_page=50):
-    try:
-        page_num = int(request.GET.get('page'))
-    except:
-        page_num = 1
-
+def paginator(page_num, table_rows, entries_per_page=50):
     p = Paginator(table_rows, entries_per_page)
 
     try:

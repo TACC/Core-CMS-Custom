@@ -48,6 +48,18 @@ export const useSubmitterRegistrations = (
   return { ...query };
 };
 
+export const useSubmitterRegistration = (
+  reg_id: number
+): UseQueryResult<RegistrationResult> => {
+  const params: { reg_id: number } = {
+    reg_id,
+  };
+  const query = useQuery(['submitter-registration', params], () =>
+    getSubmitterRegistrations(params)
+  ) as UseQueryResult<RegistrationResult>;
+  return { ...query };
+};
+
 export const useAdminRegistration = (
   reg_id: number
 ): UseQueryResult<RegistrationContent> => {

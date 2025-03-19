@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { ExceptionRow } from 'hooks/admin';
-import { formatModalDate } from 'utils/dateUtil';
+import { formatUTCDate } from 'utils/dateUtil';
 import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
@@ -34,11 +34,6 @@ export const ViewExceptionModal: React.FC<{
     notes,
     updated_at,
   } = exception.view_modal_content;
-  const dateFormat: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  };
 
   return (
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
@@ -50,7 +45,7 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
               <Col md={7}>
-                {(created_at && formatModalDate(created_at)) || 'None'}
+                {(created_at && new Date(created_at).toLocaleString()) || 'None'}
               </Col>
             </Row>
             <Row>
@@ -101,10 +96,7 @@ export const ViewExceptionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Requested Expiration Date</Col>
               <Col md={7}>
                 {(requested_expiration_date &&
-                  new Date(requested_expiration_date).toLocaleDateString(
-                    undefined,
-                    dateFormat
-                  )) ||
+                  formatUTCDate(requested_expiration_date)) ||
                   'None'}
               </Col>
             </Row>
@@ -112,10 +104,7 @@ export const ViewExceptionModal: React.FC<{
               <Col md={{ size: 4, offset: 1 }}>Approved Expiration Date</Col>
               <Col md={7}>
                 {(approved_expiration_date &&
-                  new Date(approved_expiration_date).toLocaleDateString(
-                    undefined,
-                    dateFormat
-                  )) ||
+                  formatUTCDate(approved_expiration_date)) ||
                   'None'}
               </Col>
             </Row>
@@ -130,7 +119,7 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
               <Col md={7}>
-                {(updated_at && formatModalDate(updated_at)) || 'None'}
+                {(updated_at && new Date(updated_at).toLocaleString()) || 'None'}
               </Col>
             </Row>
             <hr />

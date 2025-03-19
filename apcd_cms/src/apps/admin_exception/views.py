@@ -1,28 +1,21 @@
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.http import JsonResponse
 from django.views.generic.base import TemplateView
-from django.template import loader
 from apps.utils.apcd_database import get_all_exceptions, update_exception
-from apps.utils.apcd_groups import is_apcd_admin
-from apps.utils.utils import title_case
-from apps.utils.utils import table_filter
+from apps.utils.utils import title_case, table_filter
 from apps.components.paginator.paginator import paginator
-from datetime import date as datetimeDate
 from dateutil import parser
-from django.views import View
-from django.views import View
+from apps.base.base import BaseAPIView, APCDAdminAccessAPIMixin, APCDAdminAccessTemplateMixin
 import logging
-import json
 import json
 
 logger = logging.getLogger(__name__)
 
-class AdminExceptionsTable(TemplateView):
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user): 
-            return HttpResponseRedirect('/')
-        return super(AdminExceptionsTable, self).dispatch(request, *args, **kwargs)
+class AdminExceptionsTable(APCDAdminAccessTemplateMixin, TemplateView):
+    template_name = 'list_admin_exception.html'
+
+
+class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
 
     def get(self, *args, **kwargs):
         exception_content = get_all_exceptions()
@@ -107,9 +100,6 @@ class AdminExceptionsTable(TemplateView):
         limit = 50
         offset = limit * (page_num - 1)
 
-        limit = 50
-        offset = limit * (page_num - 1)
-
         exception_table_entries = []       
         for exception in exception_content:
             # to be used by paginator
@@ -144,26 +134,13 @@ class AdminExceptionsTable(TemplateView):
             exception_table_entries = table_filter(org_filter.replace("(", "").replace(")",""), exception_table_entries, 'entity_name')
 
         context['query_str'] = queryStr
-        page_info = paginator(self.request, exception_table_entries, limit)
+        page_info = paginator(page_num, exception_table_entries, limit)
         context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
                             'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
                             'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
                             'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
                             'requested_threshold': obj['requested_threshold'],} 
                             for obj in page_info['page']]
-        page_info = paginator(self.request, exception_table_entries, limit)
-        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
-                            'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
-                            'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
-                            'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
-                            'requested_threshold': obj['requested_threshold'],} 
-                            for obj in page_info['page']]
-        context['pagination_url_namespaces'] = 'admin_exception:list_exceptions'
-
-        context['page_num'] = page_num
-        context['total_pages'] = page_info['page'].paginator.num_pages
-
-        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
 
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
@@ -172,38 +149,8 @@ class AdminExceptionsTable(TemplateView):
 
         return context
 
-class UpdateExceptionView(View):
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super().dispatch(request, *args, **kwargs)
-
-    def _err_msg(self, resp):
-        if hasattr(resp, 'pgerror'):
-            return resp.pgerror
-        if isinstance(resp, Exception):
-            return str(resp)
-        return None
-
-    def put(self, request, exception_id):
-        data = json.loads(request.body)
-        errors = []
-        exception_response = update_exception(data)
-        if self._err_msg(exception_response):
-            errors.append(self._err_msg(exception_response))
-        if len(errors) != 0:
-            logger.debug(print(errors))
-            return JsonResponse({'message': 'Cannot edit exception'}, status=500)
-
-        return JsonResponse({'message': 'Exception updated successfully'})
-class UpdateExceptionView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super().dispatch(request, *args, **kwargs)
-
+class UpdateExceptionApi(APCDAdminAccessAPIMixin, BaseAPIView):
     def _err_msg(self, resp):
         if hasattr(resp, 'pgerror'):
             return resp.pgerror

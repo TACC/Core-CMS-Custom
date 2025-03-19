@@ -3,17 +3,17 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import {
   transformToRegistrationFormValues,
   RegistrationFormValues,
-  useAdminRegistration,
 } from 'hooks/registrations';
 import { RegistrationForm } from 'apcd-components/Forms/Registrations';
 
 const EditRegistrationModal: React.FC<{
   reg_id: number;
   isVisible: boolean;
+  useDataHook: any;
   status_options: string[];
   onClose: () => void;
-}> = ({ reg_id, isVisible, status_options, onClose }) => {
-  const { data, isLoading, error } = useAdminRegistration(reg_id);
+}> = ({ reg_id, isVisible, useDataHook, status_options, onClose }) => {
+  const { data, isLoading, error } = useDataHook(reg_id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

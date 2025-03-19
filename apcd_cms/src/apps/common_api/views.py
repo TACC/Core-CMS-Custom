@@ -1,56 +1,52 @@
-from django.http import HttpResponseRedirect, JsonResponse, Http404
-from django.views.generic import TemplateView
+from django.http import JsonResponse, Http404
 from apps.utils import apcd_database
-from apps.utils.apcd_groups import has_apcd_group, is_apcd_admin
+from apps.utils.apcd_groups import is_apcd_admin
 from apps.utils.utils import title_case
+from apps.base.base import BaseAPIView, APCDSubmitterAdminAccessAPIMixin, APCDGroupAccessAPIMixin
 from datetime import datetime
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
 
-class EntitiesView(TemplateView):
+class EntitiesView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
-        submitters = apcd_database.get_submitter_info(request.user.username)
+        from_admin = json.loads(request.GET.get('from_admin', False))  # for admin submissions page, need all submitters, not just for requesting user
+        if from_admin and not is_apcd_admin(request.user):
+            return JsonResponse({'error': 'Unauthorized'}, status=403)
+        user = request.user.username if not from_admin else None
+        submitters = apcd_database.get_submitter_info(user)
 
         submitter_info_json = self.get_submitter_info_json(submitters)
 
         context = {**submitter_info_json}
         return JsonResponse({'response': context})
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(EntitiesView, self).dispatch(request, *args, **kwargs)
-
     def get_submitter_info_json(self, submitters):
         context = {}
 
-        def _set_submitter(sub, data_periods):
+        def _set_submitter(sub):
             return {
                 "submitter_id": sub[0],
                 "submitter_code": sub[1],
                 "payor_code": sub[2],
                 "user_name": sub[3],
                 "entity_name": title_case(sub[4]),
-                "data_periods": data_periods
+                "org_name": sub[5]
             }
 
         context["submitters"] = []
 
         for submitter in submitters:
-            data_periods = _getApplicableDataPeriods(submitter[0])
-            context["submitters"].append(_set_submitter(submitter, data_periods))
+            checkForExistingCode = [submitter[2] == listed_submitter["payor_code"] for listed_submitter in context['submitters']]
+            if not any(checkForExistingCode):  # grab unique payor codes
+                context["submitters"].append(_set_submitter(submitter))
 
         return context
 
 
-class cdlsView(TemplateView):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not has_apcd_group(request.user):
-            return HttpResponseRedirect('/')
-        return super(cdlsView, self).dispatch(request, *args, **kwargs)
-
+class cdlsView(APCDGroupAccessAPIMixin, BaseAPIView):
     def get(self, request, *args, **kwargs):
         file_type = kwargs.get('file_type')
         
@@ -71,16 +67,21 @@ class cdlsView(TemplateView):
         return JsonResponse({"cdls": cdls_response})
 
 
-class DataPeriodsView(TemplateView):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or not is_apcd_admin(request.user):
-            return HttpResponseRedirect('/')
-        return super(DataPeriodsView, self).dispatch(request, *args, **kwargs)
-
+class DataPeriodsView(APCDSubmitterAdminAccessAPIMixin, BaseAPIView):
+    '''
+        Requires admin access to view data period for any given submitter.
+    '''
     def get(self, request, *args, **kwargs):
         submitter_id = request.GET.get('submitter_id', None)
         if submitter_id is None:
             raise Http404("Submitter Id not provided")
+        if not is_apcd_admin(request.user):
+            # if user is not apcd admin, then submitter admin
+            # should have access to the submitter
+            submitters = apcd_database.get_submitter_info(request.user.username)
+            if not any(submitter_id == str(submitter[0]) for submitter in submitters):
+                return JsonResponse({'error': f'Unauthorized for submitter id {submitter_id}'}, status=403)
+
         applicable_data_periods = _getApplicableDataPeriods(submitter_id)
 
         return JsonResponse({'response': {"data_periods": applicable_data_periods}})

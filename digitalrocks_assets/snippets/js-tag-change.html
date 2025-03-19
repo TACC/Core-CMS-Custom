@@ -1,0 +1,13 @@
+<script type="module" id="js-tag-change">
+    /* Dynamically change markup that Django CMS v3 does not support */
+    /* XXX: Delete script after markup manually uses desired tags */
+    /* FAQ: Django CMS v3 does not permit certain valid markup hierarchies */
+	const oldTagEls = document.querySelectorAll('[data-tag-change-to]');
+	oldTagEls.forEach(oldTagEl => {
+		const newTagEl = document.createElement(oldTagEl.dataset.tagChangeTo);
+		newTagEl.className = oldTagEl.className;
+		newTagEl.dataset.tagChangeFrom = oldTagEl.tagName.toLowerCase();
+		oldTagEl.replaceWith(newTagEl);
+		newTagEl.append(...oldTagEl.childNodes);
+	});
+</script>

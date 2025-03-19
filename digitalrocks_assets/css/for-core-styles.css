@@ -1,0 +1,121 @@
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/417 */
+
+/* html-elements.cms.css */
+/* p, */
+table {
+    margin-bottom: 2rem;
+}
+p + :is(ul, ol, dl) {
+    margin-top: -1rem;
+}
+
+/* To improve default underline style for inserted text */
+ins {
+    text-underline-position: under;
+    text-decoration-style: dotted;
+}
+
+/* To highlight blocks of inserted content */
+.ins-block {
+    /* To keep outline within a .container */
+    --offset: calc( var(--global-space--bootstrap-gap) * 0.375 );
+
+    border: 0.125em dotted currentcolor;
+    padding: var(--offset);
+
+    /* To keep outline within a .container */
+    margin-inline: calc( -1 * var(--offset));
+    /* To prevent outline from touching sibling content */
+    margin-block: 1em;
+
+    /* To create color that is between `x-light` and `xx-light` */
+    background: rgb( from var(--global-color-primary--x-light) r g b / 50% );
+}
+/* To remove likely extra space from final p */
+.ins-block > p:last-child {
+    margin-bottom: unset;
+}
+
+
+
+
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/418 */
+
+.s-references p + ol {
+    margin-top: unset; /* undo negative margin from TACC/Core-Styles#417 */
+}
+.s-references ol li {
+    margin-block: 1em;
+}
+
+
+
+
+/* TODO: Add to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/458 */
+
+/* to use one background color for all final rows */
+tr.c-data-list__row--start-final:nth-child(odd) :is(th, td),
+tr.c-data-list__row--start-final:nth-child(odd) ~ tr :is(th, td) {
+    background: var(--global-color-background--app);
+}
+tr.c-data-list__row--start-final:nth-child(even) :is(th, td),
+tr.c-data-list__row--start-final:nth-child(even) ~ tr :is(th, td) {
+    background: var(--global-color-primary--x-light);
+}
+
+
+
+
+
+/* TODO: Save changes to TACC/Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/459 */
+
+.c-card-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* change auto-fit to auto-fill */
+}
+
+/* TODO: Add to Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/460 */
+
+summary.u-summary-link-merged {
+    display: flex;
+}
+summary.u-summary-link-merged > a {
+    flex: 1;
+}
+/* To undo core-styles, which assumes href-less <a> is disabled */
+summary.u-summary-link-merged > a:not([href]) {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+/* To use text content instead of a ::marker */
+summary.u-summary-link-merged,
+summary.u-summary-fake-marker {
+   list-style: none;
+}
+summary.u-summary-link-merged::before,
+summary.u-summary-fake-marker::before {
+    content: '▸';
+}
+details[open] > summary.u-summary-link-merged::before,
+details[open] > summary.u-summary-fake-marker::before {
+    content: '▾';
+}
+
+
+/* TODO: Add to Core-Styles */
+/* https://github.com/TACC/Core-Styles/issues/481 */
+
+.dropdown-menu {
+  font-size: inherit;
+
+  padding-block: 5px;
+}
+.dropdown-item {
+  padding-block: 2.5px;
+  padding-inline: 15px;
+}

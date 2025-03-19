@@ -165,7 +165,7 @@ def get_submitter_users():
         roles.role_name,
         users.active,
         users.user_number,
-        submissions.payor_code,
+        submitters.payor_code,
         users.role_id,
         users.user_email,
         users.notes,
@@ -174,8 +174,6 @@ def get_submitter_users():
         JOIN users
             ON submitter_users.user_id = users.user_id
             AND submitter_users.user_number = users.user_number
-        JOIN submissions
-            ON submitter_users.submitter_id = submissions.submitter_id
         JOIN roles 
             ON roles.role_id = users.role_id
         JOIN submitters
@@ -195,7 +193,8 @@ def get_submitter_users():
         if conn is not None:
             conn.close()
 
-def get_registrations(reg_id=None, submitter_code=None):
+
+def get_registrations(reg_id=None, submitter_codes=None):
     cur = None
     conn = None
     try:
@@ -220,14 +219,14 @@ def get_registrations(reg_id=None, submitter_code=None):
                 registrations.zip,
                 registrations.registration_year
             FROM registrations
-            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_code is not None else ''}
+            {f"LEFT JOIN registration_submitters ON registrations.registration_id = registration_submitters.registration_id LEFT JOIN submitters ON registration_submitters.submitter_id = submitters.submitter_id" if submitter_codes is not None else ''}
             WHERE 1=1
             {f" AND registrations.registration_id = {str(reg_id)}" if reg_id is not None else ''}
-            {f" AND submitters.submitter_code = ANY(%s)" if submitter_code is not None else ''}
+            {f" AND submitters.submitter_code = ANY(%s)" if submitter_codes is not None else ''}
             ORDER BY registrations.registration_id"""
         cur = conn.cursor()
-        if submitter_code:
-            cur.execute(query, (submitter_code,))
+        if submitter_codes:
+            cur.execute(query, (submitter_codes,))
         else:
             cur.execute(query)
         return cur.fetchall()
@@ -843,7 +842,7 @@ def create_threshold_exception(form, exception, sub_data):
         conn.commit()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
         return error
 
     finally:
@@ -881,7 +880,7 @@ def get_cdl_exceptions(file_type):
         return cur.fetchall()
 
     except Exception as error:
-        logger.error(error)
+        logger.error(error, exc_info=True)
 
     finally:
         if cur is not None:
@@ -946,7 +945,8 @@ def get_user_submissions_and_logs(user):
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
-                'payor_code', submissions.payor_code,
+                'org_name', submitters.org_name,
+                'payor_code', submitters.payor_code,
                 'view_modal_content', (
                     SELECT COALESCE(json_agg(json_build_object(
                         'log_id', submission_logs.log_id,
@@ -980,7 +980,7 @@ def get_user_submissions_and_logs(user):
             IN (
                 SELECT submitter_users.submitter_id FROM submitter_users 
                 WHERE submitter_users.user_id = %s )
-            GROUP BY (submissions.submission_id, submitters.entity_name)
+            GROUP BY (submissions.submission_id, submitters.entity_name, submitters.org_name, submitters.payor_code)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1015,6 +1015,8 @@ def get_all_submissions_and_logs():
                 'outcome', submissions.outcome,
                 'received_timestamp', submissions.received_timestamp,
                 'updated_at', submissions.updated_at,
+                'payor_code', submitters.payor_code,
+                'org_name', submitters.org_name,
                 'view_modal_content', (
                     SELECT CASE
                             WHEN COUNT(submission_logs.log_id) = 0 THEN '[]'::json
@@ -1049,7 +1051,7 @@ def get_all_submissions_and_logs():
                 ON submitters.submitter_id = submissions.submitter_id
             LEFT JOIN submission_logs
                 ON submissions.submission_id = submission_logs.submission_id
-            GROUP BY (submissions.submission_id, submitters.entity_name)
+            GROUP BY (submissions.submission_id, submitters.submitter_id)
             ORDER BY submissions.received_timestamp DESC
         """
         cur = conn.cursor()
@@ -1061,6 +1063,7 @@ def get_all_submissions_and_logs():
             cur.close()
         if conn is not None:
             conn.close()
+
 
 def create_extension(form, extension, sub_data):
     cur = None
@@ -1171,6 +1174,7 @@ def update_extension(form):
 def get_submitter_info(user):
     cur = None
     conn = None
+    values = (user,) if user is not None else None
     try:
         conn = psycopg.connect(
             host=APCD_DB['host'],
@@ -1181,20 +1185,21 @@ def get_submitter_info(user):
             sslmode='require',
         )
         cur = conn.cursor()
-        query = """
+        query = f"""
                 SELECT 
                     submitter_users.submitter_id, 
                     submitters.submitter_code, 
                     submitters.payor_code, 
                     submitter_users.user_id, 
-                    submitters.entity_name
+                    submitters.entity_name,
+                    submitters.org_name
                 FROM submitter_users
                 JOIN submitters
-                    ON submitter_users.submitter_id = submitters.submitter_id and submitter_users.user_id = (%s)
+                    ON submitter_users.submitter_id = submitters.submitter_id {f"and submitter_users.user_id = (%s)" if user is not None else ''}
                 ORDER BY submitters.entity_name, submitter_users.submitter_id
             """
         cur = conn.cursor()
-        cur.execute(query, (user,))
+        cur.execute(query, values)
         return cur.fetchall()
 
     except Exception as error:
@@ -1205,6 +1210,10 @@ def get_submitter_info(user):
             cur.close()
         if conn is not None:
             conn.close()
+
+def _get_extension_where_clause():
+    # see wiki: https://tacc-main.atlassian.net/wiki/x/A4D4Aw?atlOrigin=eyJpIjoiNTNmNTgyZmUzMjk0NGUzZDllODVhOGQ4ZmQ3MzJmNGUiLCJwIjoiYyJ9
+    return "cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null"
 
 def get_applicable_data_periods(submitter_id):
     cur = None
@@ -1218,8 +1227,9 @@ def get_applicable_data_periods(submitter_id):
             port=APCD_DB['port'],
             sslmode='require',
         )
+        where_clause = _get_extension_where_clause()
         cur = conn.cursor()
-        query = """ SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is NOT NULL """
+        query = f""" SELECT distinct data_period_start FROM submitter_calendar WHERE submitter_id = (%s) AND {where_clause} """
         cur.execute(query, (submitter_id,))
         return cur.fetchall()
 
@@ -1244,8 +1254,9 @@ def get_current_exp_date(submitter_id, applicable_data_period):
             port=APCD_DB['port'],
             sslmode='require',
         )
+        where_clause = _get_extension_where_clause()
         cur = conn.cursor()
-        query = """ SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND cancelled = 'FALSE' AND granted_reprieve='FALSE' AND submission_id is Null """
+        query = f""" SELECT expected_submission_date FROM submitter_calendar WHERE submitter_id = (%s) AND data_period_start = (%s) AND {where_clause}"""
         cur.execute(query, (submitter_id, applicable_data_period,))
         return cur.fetchall()
 

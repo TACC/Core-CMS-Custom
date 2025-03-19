@@ -1,0 +1,36 @@
+<style id="html-projects-000--developer-notice">
+  #dev-warning {
+    margin-block: 20px;
+  }
+  #dev-warning details {
+    margin-bottom: 10px;
+  }
+  #dev-warning details :is(p, dt, dd) {
+    font-size: smaller;
+    margin-block: 0.5rem;
+  }
+  #dev-warning li + li {
+    margin-top: 10px;
+  }
+</style>
+<aside id="dev-warning" class="c-message c-message--scope-section c-message--type-success">
+  <h3>Developer Notice</h3>
+  <ul class="data-tree">
+    <li class="data-tree__item">
+      <details>
+        <summary>HTML is available via Developer Tools seeing live DOM (e.g. "Elements" tab, "Inspect" context menu option).</summary>
+        <p>
+          The <strong>sample HTML</strong> is added via <a href="/datasets/317/?structure" target="_blank">CMS <strong>plugin instances</strong></a> and <a href="/admin/djangocms_snippet/snippet/" target="_blank">CMS <strong>snippets</strong></a>.
+        </p>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>CSS already <strong>automatically</strong> loads on every page.</summary>
+        <p>
+          The <strong>working CSS</strong> is automatically loaded via <a href="https://github.com/TACC/Core-Portal-Deployments/blob/main/digitalrocks/camino/cms.settings_custom.py#L30-L39" target="_blank">Core-Portal-Deployments</a> and <a href="https://github.com/TACC/Core-CMS-Custom/tree/main/digitalrocks_assets/css">Core-CMS-Custom</a>. WMA shouldn't need to worry about it.
+        </p>
+      </details>
+    </li>
+  </ul>
+</aside>

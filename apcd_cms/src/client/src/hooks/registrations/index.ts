@@ -140,12 +140,14 @@ export function transformToRegistrationFormValues(
       types_of_plans_commercial: entity.plans_type['Commercial'],
       types_of_plans_medicare: entity.plans_type['Medicare'],
       types_of_plans_medicaid: entity.plans_type['Medicaid'],
+      types_of_plans_hidden: false,
       types_of_files_eligibility_enrollment:
         entity.files_type['Eligibility/Enrollment'],
       types_of_files_provider: entity.files_type['Provider'],
       types_of_files_medical: entity.files_type['Medical'],
       types_of_files_pharmacy: entity.files_type['Pharmacy'],
       types_of_files_dental: entity.files_type['Dental'],
+      types_of_files_hidden: false,
       total_covered_lives: entity.no_covered,
       claims_encounters_volume: entity.claim_and_enc_vol,
       total_claims_value: entity.claim_val,
@@ -165,5 +167,6 @@ export function transformToRegistrationFormValues(
 export {
   useAdminRegistrations,
   useSubmitterRegistrations,
+  useSubmitterRegistration,
   useAdminRegistration,
 } from './useRegistrations';

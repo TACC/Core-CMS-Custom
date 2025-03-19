@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { useAdminRegistration } from 'hooks/registrations';
 import styles from './ViewRegistrationModal.module.css';
 
 const ViewRegistrationModal: React.FC<{
   reg_id: number;
   isVisible: boolean;
+  useDataHook: any;
   onClose: () => void;
-}> = ({ reg_id, isVisible, onClose }) => {
-  const { data, isLoading, error } = useAdminRegistration(reg_id);
+}> = ({ reg_id, isVisible, useDataHook, onClose }) => {
+  const { data, isLoading, error } = useDataHook(reg_id);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

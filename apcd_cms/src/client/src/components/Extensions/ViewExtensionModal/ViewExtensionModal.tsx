@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
+import { formatDate, formatUTCDate } from 'utils/dateUtil';
 import { ExtensionRow } from 'hooks/admin';
-import styles from './ViewExtensionModal.module.css';
 
 const ViewExtensionModal: React.FC<{
   extension: ExtensionRow;
@@ -18,53 +18,87 @@ const ViewExtensionModal: React.FC<{
       <ModalHeader close={closeBtn}>
         Extension Details ID {extension.ext_id} for {extension.org_name}
       </ModalHeader>
-
       <ModalBody className="modal-body">
         <div>
           <h4>Details</h4>
           <div className="modal-section">
-            <dl className="c-data-list--is-vert c-data-list--is-wide">
-              <dt className="c-data-list__key">Created</dt>
-              <dd className="c-data-list__value">{extension.created}</dd>
-              <dt className="c-data-list__key">Entity Organization</dt>
-              <dd className="c-data-list__value">{extension.org_name}</dd>
-              <dt className="c-data-list__key">Requestor</dt>
-              <dd className="c-data-list__value">{extension.requestor}</dd>
-              <dt className="c-data-list__key">Requestor Email</dt>
-              <dd className="c-data-list__value">
-                {extension.requestor_email}
-              </dd>
-              <dt className="c-data-list__key">Extension Type</dt>
-              <dd className="c-data-list__value">{extension.type}</dd>
-              <dt className="c-data-list__key">Status</dt>
-              <dd className="c-data-list__value">{extension.ext_status}</dd>
-              <dt className="c-data-list__key">Outcome</dt>
-              <dd className="c-data-list__value">{extension.ext_outcome}</dd>
-              <dt className="c-data-list__key">Applicable Data Period</dt>
-              <dd className="c-data-list__value">
-                {extension.applicable_data_period}
-              </dd>
-              <dt className="c-data-list__key">Current Expected Date</dt>
-              <dd className="c-data-list__value">
-                {extension.current_expected_date}
-              </dd>
-              <dt className="c-data-list__key">Requested Target Date</dt>
-              <dd className="c-data-list__value">
-                {extension.requested_target_date}
-              </dd>
-              <dt className="c-data-list__key">Approved Expiration Date</dt>
-              <dd className="c-data-list__value">
-                {extension.approved_expiration_date}
-              </dd>
-              <dt className="c-data-list__key">Extension Justification</dt>
-              <dd className="c-data-list__value">
-                {extension.explanation_justification}
-              </dd>
-              <dt className="c-data-list__key">Extension Notes</dt>
-              <dd className="c-data-list__value">{extension.notes}</dd>
-              <dt className="c-data-list__key">Last Updated</dt>
-              <dd className="c-data-list__value">{extension.updated_at}</dd>
-            </dl>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Created</Col>
+              <Col md={7}>
+                {extension.created
+                  ? new Date(extension.created).toLocaleString()
+                  : 'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Entity Organization</Col>
+              <Col md={7}>{extension.org_name}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requestor</Col>
+              <Col md={7}>{extension.requestor}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requestor Email</Col>
+              <Col md={7}>{extension.requestor_email}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Extension Type</Col>
+              <Col md={7}>{extension.type}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Status</Col>
+              <Col md={7}>{extension.ext_status}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Outcome</Col>
+              <Col md={7}>{extension.ext_outcome}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Applicable Data Period</Col>
+              <Col md={7}>{extension.applicable_data_period}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Current Expected Date</Col>
+              <Col md={7}>
+                {extension.current_expected_date
+                  ? formatUTCDate(extension.current_expected_date)
+                  : 'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Requested Target Date</Col>
+              <Col md={7}>
+                {extension.requested_target_date
+                  ? formatUTCDate(extension.requested_target_date)
+                  : 'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Approved Expiration Date</Col>
+              <Col md={7}>
+                {extension.approved_expiration_date
+                  ? formatUTCDate(extension.approved_expiration_date)
+                  : 'None'}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Extension Justification</Col>
+              <Col md={7}>{extension.explanation_justification}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Extension Notes</Col>
+              <Col md={7}>{extension.notes}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
+              <Col md={7}>
+                {extension.updated_at
+                  ? formatDate(extension.updated_at)
+                  : 'None'}
+              </Col>
+            </Row>
+            <hr />
           </div>
         </div>
       </ModalBody>
