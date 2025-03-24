@@ -1,9 +1,11 @@
 const scriptUrl = document.currentScript.src;
 function getIconUrl(icon) { return new URL(icon, scriptUrl).href; }
 
-const alt = 'Register';
-const url = 'https://professionaled.utexas.edu/s/checkout-TACC';
-const icon = getIconUrl('../icons/shopping-cart.png');
+const iconAlt = 'Register';
+const linkHref = 'https://professionaled.utexas.edu/s/checkout-TACC';
+const iconPath = '../icons/shopping-cart.png';
+
+const iconSrc = getIconUrl(iconPath);
 
 // To mimic the login nav icon HTML, but as a shopping cart icon
 // https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/templates/nav_portal.html#L5-L10
@@ -11,8 +13,8 @@ const icon = getIconUrl('../icons/shopping-cart.png');
 const html = `
   <ul class="navbar-nav s-portal-nav">
     <li class="nav-item">
-      <a href="${url}" class="nav-link" target="_blank">
-        <img role="button" alt="${alt}" class="icon" src="${icon}">
+      <a href="${linkHref}" class="nav-link" target="_blank">
+        <img role="button" alt="${iconAlt}" class="icon" src="${iconSrc}">
       </a>
     </li>
   </ul>
