@@ -15,9 +15,9 @@ const html = `
   </ul>
 `;
 
-const searchBar = document.getElementById('s-cms-nav');
-if (searchBar) {
-  searchBar.parentElement.insertAdjacentHTML('beforeend', html);
+const cmsNav = document.querySelector('.s-cms-nav');
+if (cmsNav) {
+  cmsNav.parentElement.insertAdjacentHTML('beforeend', html);
 } else {
   console.error('No `.s-cms-nav` found, so uncertain where to render icon');
 }
