@@ -1,6 +1,9 @@
+const scriptUrl = document.currentScript.src;
+function getIconUrl(icon) { return new URL(icon, scriptUrl).href; }
+
 const alt = 'Register';
 const url = 'https://professionaled.utexas.edu/s/checkout-TACC';
-const icon = '../icons/shopping-cart.png';
+const icon = getIconUrl('../icons/shopping-cart.png');
 
 // To mimic the login nav icon HTML, but as a shopping cart icon
 // https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/templates/nav_portal.html#L5-L10
