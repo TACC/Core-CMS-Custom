@@ -1,6 +1,6 @@
 const alt = 'Register';
 const url = 'https://professionaled.utexas.edu/s/checkout-TACC';
-const icon = 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/wtcs-shopping-cart-icon/wtcs_assets/icons/shopping-cart.png';
+const icon = '../icons/shopping-cart.png';
 
 // To mimic the login nav icon HTML, but as a shopping cart icon
 // https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/templates/nav_portal.html#L5-L10
