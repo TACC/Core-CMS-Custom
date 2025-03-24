@@ -1,11 +1,6 @@
-const scriptUrl = document.currentScript.src;
-function getIconUrl(icon) { return new URL(icon, scriptUrl).href; }
-
-const iconAlt = 'Register';
+const imgSrc = 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@afbbae/wtcs_assets/icons/shopping-cart.png';
 const linkHref = 'https://professionaled.utexas.edu/s/checkout-TACC';
-const iconPath = '../icons/shopping-cart.png';
-
-const iconSrc = getIconUrl(iconPath);
+const imgAlt = 'Register';
 
 // To mimic the login nav icon HTML, but as a shopping cart icon
 // https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/templates/nav_portal.html#L5-L10
@@ -13,11 +8,20 @@ const iconSrc = getIconUrl(iconPath);
 const html = `
   <ul class="navbar-nav s-portal-nav">
     <li class="nav-item">
-      <a href="${linkHref}" class="nav-link" target="_blank">
-        <img role="button" alt="${iconAlt}" class="icon" src="${iconSrc}">
+      <a
+        class="nav-link"
+        href="${linkHref}"
+        target="_blank"
+      >
+        <img class="icon" alt="${imgAlt}" src="${imgSrc}" role="button">
       </a>
     </li>
   </ul>
 `;
 
-document.getElementById('s-search-bar').parentElement.insertAdjacentHTML('beforeend', html);
+const searchBar = document.getElementById('s-cms-nav');
+if (searchBar) {
+  searchBar.parentElement.insertAdjacentHTML('beforeend', html);
+} else {
+  console.error('No `.s-cms-nav` found, so uncertain where to render icon');
+}
