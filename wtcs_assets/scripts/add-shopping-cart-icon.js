@@ -8,11 +8,7 @@ const imgAlt = 'Register';
 const html = `
   <ul class="navbar-nav s-portal-nav">
     <li class="nav-item">
-      <a
-        class="nav-link"
-        href="${linkHref}"
-        target="_blank"
-      >
+      <a class="nav-link" href="${linkHref}" target="_blank">
         <img class="icon" alt="${imgAlt}" src="${imgSrc}" role="button">
       </a>
     </li>
