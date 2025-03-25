@@ -1,5 +1,5 @@
 # TACC/Core-CMS#926 (unreleased v4.26)
-FROM taccwma/core-cms:0197c773
+FROM taccwma/core-cms:fix-core-styles-v0-header-bugs
 
 WORKDIR /code
 
