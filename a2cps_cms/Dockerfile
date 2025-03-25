@@ -1,4 +1,4 @@
-FROM taccwma/core-cms:v4.25.4
+FROM taccwma/core-cms:fix-core-styles-v0-header-bugs # unreleased v4.26
 
 WORKDIR /code
 
