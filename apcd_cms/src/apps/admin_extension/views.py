@@ -34,7 +34,7 @@ class AdminExtensionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         context['outcome_options'] = []
         context['extensions'] = []
         context['action_options'] = ['Select Action', 'View Record', 'Edit Record']
-        context['status_edit_options'] = [{'key': 'complete', 'value': 'Complete'}, {'key': 'pending', 'value': 'Pending'}, {'key': 'none', 'value': 'None'}]
+        context['status_edit_options'] = [{'key': 'complete', 'value': 'Complete'}, {'key': 'pending', 'value': 'Pending'}]
         context['outcome_edit_options'] = [{'key': 'denied', 'value': 'Denied'}, {'key': 'granted', 'value':'Granted'}, {'key': 'none', 'value': 'None'}, {'key': 'withdrawn', 'value': 'Withdrawn'}]
 
 
