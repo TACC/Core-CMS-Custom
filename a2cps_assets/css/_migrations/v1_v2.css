@@ -12,10 +12,10 @@ SEE: https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/static/site_cms/
 
 
 
-
 /* ELEMENTS */
 
-/* Table Content */
+
+/* ELEMENTS: Tables */
 
 table,
 td,
@@ -34,9 +34,7 @@ td {
 
 
 
-
 /* COMPONENTS */
-
 
 
 /* COMPONENTS: Bootstrap */
@@ -88,6 +86,14 @@ td {
   /* SEE: https://a2cps.org/connect/ */
   border-color: #DFDFDF;
 }
+
+
+
+
+/* TRUMPS */
+
+
+/* TRUMPS: TACC & Bootstrap */
 
 /* Cards: "For ..." Pages */
 .s-page-cards .card,
