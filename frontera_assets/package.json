@@ -1,0 +1,26 @@
+{
+  "name": "@tacc/core-cms-custom.frontera",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "TACC ACI WMA <wma-portals@tacc.utexas.edu>",
+  "contributors": [
+    "TACC COA CMD <coa-cmd@tacc.utexas.edu>"
+  ],
+  "description": "The TACC ACI-WMA custom assets used by Frontera Portal.",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
+  "dependencies": {
+    "@tacc/core-styles": "^2.34.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TACC/Core-CMS-Custom.git",
+    "directory": "frontera_assets"
+  },
+  "scripts": {
+    "build": "./bin/build-css.js"
+  },
+  "homepage": "https://frontera-portal.tacc.utexas.edu"
+}
