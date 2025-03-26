@@ -1,6 +1,8 @@
 /*
 A2CPS Migration Styles
 HOW: Manually find discrepencies in UI that seem specific to A2CPS
+REL: Builds atop Core-CMS `_migrations/v1_v2.css`
+SEE: https://github.com/TACC/Core-CMS/blob/v4.25.4/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css
 */
 
 /*!
