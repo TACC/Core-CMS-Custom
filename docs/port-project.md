@@ -1,49 +1,48 @@
 # Port Project
 
-## Table of Contents
+Port an existing CMS project:
 
-- [From Core CMS Resources](#from-core-cms-resources)
-    1. [Overview](#overview)
-    2. [Create a New Project](#create-a-new-project)
-    3. [Migrate Project to Core CMS v3.12](#migrate-project-to-core-cms-v312)
-    4. [Known Gotchas](#known-gotchas)
-        - [Has a Core Portal](#has-a-core-portal)
-        - [Expects CSS Build Step](#expects-css-build-step)
-        - [Uses Custom CSS](#uses-custom-css)
-
-## From [Core CMS Resources]
-
-### Overview
+- [For a Core CMS with Custom Assets](#for-a-core-cms-with-custom-assets)
+- [For a Core CMS with Custom Functionality](#for-a-core-cms-with-custom-functionality)
 
 | from | to |
 | - | - |
-| [Core CMS Resources] | [Core CMS Custom] |
-| built into [Core CMS] image | built atop [Core CMS] image |
+| [Core CMS Resources]<br><sup>built **into** [Core CMS] image</sup> | [Core CMS Custom]<br><sup>built **atop** [Core CMS] image</sup> |
+
+## For a Core CMS with Custom Assets
+
+Follow [`./README_assets.md`](../README_assets.md).
+
+## For a Core CMS with Custom Functionality
+
+0. Reference [`./README_cms.md`](../README_cms.md).
+1. [Create a New Project](#create-a-new-project)
+2. [Migrate Project to Core CMS v3.12](#migrate-project-to-core-cms-v312)
+3. [Known Gotchas](#known-gotchas)
+    - [Has a Core Portal](#has-a-core-portal)
+    - [Expects CSS Build Step](#expects-css-build-step)
+    - [Uses Custom CSS](#uses-custom-css)
 
 ### Create a New Project
 
-Follow steps in [Create a New Project](./develop-project.md#create-a-new-project).
+Follow steps in [Develop Project: Create a New Project](./develop-project.md#create-a-new-project).
 
-<details><summary>Reminders</summary>
+| move | content |
+| - | - |
+| from | [Core CMS Resources]:<br><sup>`/taccsite_custom/custom_project_dir`</sup> |
+| to | <sub>`/custom_project_dir/src/taccsite_custom/custom_project_dir`</sub> |
 
-1. | Move | Content |
-    | - | - |
-    | From | [Core CMS Resources] `/taccsite_custom/custom_project_dir`. |
-    | To | `/custom_project_dir/src/taccsite_custom/custom_project_dir` |
+| copy | settings |
+| - | - |
+| from | [Core Portal Deployments]:<br><sup>`/project_dir/camino/settings_custom.py`</sup> |
+| to | <sub>`/custom_project_dir/src/taccsite_cms/settings_custom.py`[^1]</sub> |
 
-2. | Copy | Settings |
-    | - | - |
-    | From | [TACC/Core-Portal-Deployments][Core Portal Deployments]:`/project_dir/camino/settings_custom.py`. |
-    | To | `/custom_project_dir/src/taccsite_cms/settings_custom.py`.[^1] |
+| use | not |
+| - | - |
+| `custom`**`_`**`project`**`_`**`dir` | `custom`**`-`**`project`**`-`**`dir` |
 
-3. | Use | Not |
-    | - | - |
-    | `custom_project_dir` | `custom-project-dir` |
-
-    > **Important**
-    > A valid Python application uses underscores.
-
-</details>
+> [!IMPORTANT]
+> A valid Python application uses underscores.
 
 [^1]: The `cms.settings_custom.py` is committed in [Core Portal Deployments]. A `settings_custom.py` in [Core CMS Custom] is `.gitignore`'d.
 
