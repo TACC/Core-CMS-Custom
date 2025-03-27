@@ -41,7 +41,7 @@ Within a `/customproject_cms` can be:
 
 Set up a new local CMS instance.
 
-0. Duplicate & Rename the `example_cms` directory:
+0. Duplicate & Rename the [`example_cms`](./example_cms) directory:
 
     ```sh
     cp -r example_cms customproject_cms
