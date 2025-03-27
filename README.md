@@ -2,9 +2,6 @@
 
 [Core CMS] projects with custom functionality and/or assets
 
-- [Two Ways to Use](#two-ways-to-use)
-- [Related Repositories](#related-repositories)
-
 ## Two Ways to Use
 
 | guide | directory | contents |
