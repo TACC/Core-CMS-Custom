@@ -9,8 +9,8 @@
 
 | guide | directory | contents |
 | - | - | - |
-| [Projects with Custom Functionality](./README_cms.md) | `someproject`**`_cms`** | an instance of [Core CMS] with custom functionality |
-| [Projects with Only Custom Assets](./README_assets.md) | `someproject`**`_assets`** | custom assets for a [Core CMS] instance |
+| [Only Custom Assets](./README_assets.md) | `someproject`**`_assets`** | custom assets for a [Core CMS] instance |
+| [Custom Functionality](./README_cms.md) | `someproject`**`_cms`** | an instance of [Core CMS] with custom functionality |
 
 ## Related Repositories
 
