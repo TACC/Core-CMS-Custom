@@ -17,7 +17,7 @@ A [Core CMS] project with **custom functionality**
 
 ## Project Architecture
 
-Within a `/customproject_cms` can be:
+Within a `/customproject`**`_cms`** can be:
 
 | directory | contents |
 | - | - |
