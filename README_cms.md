@@ -49,7 +49,7 @@ Set up a new local CMS instance.
 
 1. Configure [Core CMS] instance:
 
-    In the `/customproject_cms/` you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
+    In the `/customproject`**`_cms/`** you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
 2. Start [Docker] Containers:
 
