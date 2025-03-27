@@ -1,3 +1,6 @@
+> [!CAUTION]
+> We do **not** maintain. Do **not** update CMS. Do **not** clean up code.
+
 # Democratizing Data
 
 https://democratizingdata.ai/

@@ -1,5 +1,4 @@
-# TACC/Core-CMS#v4.20.0 & TACC/Core-Styles#v2.37.0
-FROM taccwma/core-cms:v4.20.0
+FROM taccwma/core-cms:v4.26.1
 
 WORKDIR /code
 
