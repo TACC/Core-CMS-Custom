@@ -6,6 +6,7 @@ A [Core CMS] project with **custom functionality**
 
 - [Project Architecture](#project-architecture)
 - [Prerequisites](#prerequisites)
+- [Create Project](#create-project)
 - [Start Project](#start-project)
 - [Update Project](#update-project)
 - [Run Project](#run-project)
@@ -37,21 +38,25 @@ Within a `/customproject`**`_cms`** can be:
 > [!NOTE]
 > Reference [Core CMS](https://github.com/TACC/Core-CMS#prerequisites) for latest prerequisites.
 
-## Start Project
+## Create Project
 
-Set up a new local CMS instance.
-
-0. Duplicate & Rename the [`example_cms`](./example_cms) directory:
+1. Duplicate & Rename the [`example_cms`](./example_cms) directory:
 
     ```sh
     cp -r example_cms customproject_cms
     ```
 
-1. Configure [Core CMS] instance:
+2. Configure [Core CMS] instance:
 
-    In the `/customproject`**`_cms/`** you will run, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
+    In the new directory, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
-2. Start [Docker] Containers:
+3. [Start the project.](#start-project)
+
+## Start Project
+
+Set up a local CMS instance.
+
+1. Start [Docker] Containers:
 
     ```sh
     cd customproject_cms
@@ -63,7 +68,7 @@ Set up a new local CMS instance.
     # This opens a command prompt within the container.
     ```
 
-3. Prepare [Django] Application:
+2. Prepare [Django] Application:
 
     (Run these commands within the container.)
 
@@ -75,7 +80,7 @@ Set up a new local CMS instance.
     python manage.py collectstatic --no-input
     ```
 
-4. Enter [Django CMS]:
+3. Enter [Django CMS]:
     1. Open http://localhost:8000/.
     2. Login with the credentials you defined in step 2.
     3. Create one CMS page.\
