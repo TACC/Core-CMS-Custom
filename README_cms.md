@@ -50,8 +50,6 @@ Within a `/customproject`**`_cms`** can be:
 
     In the new directory, create a `./src/taccsite_cms/settings_local.py` with content from [Core-CMS `settings_local.example.py`](https://github.com/TACC/Core-CMS/blob/main/taccsite_cms/settings_local.example.py).
 
-3. [Start the project.](#start-project)
-
 ## Start Project
 
 Set up a local CMS instance.
@@ -88,10 +86,10 @@ Set up a local CMS instance.
         - This page will automatically be your local homepage.
 
 > [!IMPORTANT]
-> A local machine CMS will be empty. It will **not** have content from staging nor production. To have that, follow and adapt instructions to [copy a database](https://tacc-main.atlassian.net/wiki/x/GwBJAg).
+> A new local CMS will be empty. It will **not** have content from staging nor production. To have that, follow and adapt instructions to [copy a database](https://tacc-main.atlassian.net/wiki/x/GwBJAg).
 
 > [!IMPORTANT]
-> A local machine CMS does **not** include **nor** integrate with an instance of [Core Portal]. There are no reliable instructions to do either. **Help welcome.**
+> A new local CMS does **not** include **nor** integrate with an instance of [Core Portal]. There are no reliable instructions to do either. **Help welcome.**
 
 ## Update Project
 
