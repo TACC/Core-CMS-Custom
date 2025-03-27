@@ -14,7 +14,7 @@
 
 ## Quick Start
 
-1. Create a `/customproject`**`_assets`** directory.
+1. Duplicate & Rename the [example_assets](./example_assets) directory.
 2. Add your assets into that directory.
 3. Get paths to those assets [via a CDN](https://www.jsdelivr.com/?docs=gh).
 4. Find the project in [Core Portal Deployments].
@@ -22,7 +22,7 @@
 
 ## Project Architecture
 
-Within a `/customproject_cms` can be:
+Within a `/customproject`**`_assets`** can be:
 
 | directory | contents | notes |
 | - | - | - |
