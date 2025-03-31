@@ -16,9 +16,11 @@
 
 1. Duplicate & Rename the [example_assets](./example_assets) directory.
 2. Add your assets into that directory.
-3. Get paths to those assets [via a CDN](https://www.jsdelivr.com/?docs=gh).
+3. Get paths to those assets [via a CDN](https://www.jsdelivr.com/?docs=gh).[^1]
 4. Find the project in [Core Portal Deployments].
 5. Set those paths in its CMS settings file ([example](https://github.com/TACC/Core-Portal-Deployments/blob/2391315/digitalrocks/camino/cms.settings_custom.py)).
+
+[^1]: The assets might be made available via [GitHub Pages](https://tacc.github.io/core-cms-custom/) since [8da9a3b](https://github.com/TACC/Core-CMS-Custom/blob/8da9a3b/.github/workflows/static.yml).
 
 ## Project Architecture
 
