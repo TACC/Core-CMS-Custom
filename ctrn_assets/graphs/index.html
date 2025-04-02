@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <load-file replaceWith src="../snippets/iframe-graph-css.html"></load-file>
+    <script src="https://load-file.github.io/element.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.40.2/dist/components/cortal-icon.css">
+    <style>
+        iframe {
+            height: 40vw;
+        }
+        header nav {
+            font-size: 0.8em;
+        }
+        header nav,
+        header nav a:has(i) {
+            display: flex;
+            flex-direction: row;
+        }
+        header nav a:first-child:not(:only-child)::after {
+            content: ',';
+        }
+        header nav { gap: 1ch; }
+        header nav a { gap: 0.25ch; }
+        header:has(h2 + nav) h2 {
+            margin-bottom: 0.5em;
+        }
+        .icon {
+            font-size: 0.8em;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Graphs</h1>
+    <p>Direct access to the graphs provided via <a href="https://github.com/TACC/Core-CMS-Custom/pull/459" target="_blank">TACC/Core-CMS-Custom PR #459</a> used temporarily by <a href="https://ctrn-web.tacc.utexas.edu/" target="_blank">CTRN</a>.</p>
+    <section style="display: grid; grid-template-columns: 1fr 1fr;">
+        <article>
+            <header>
+                <h2>Regions</h2>
+                <nav>
+                    <a href="./graph-regions.html">direct link</a>
+                    <a
+                        href="https://tacc.github.io/Core-CMS-Custom/ctrn_assets/graphs/graph-regions.html"
+                        target="_blank"
+                    >
+                        GitHub Pages link
+                        <i class="icon icon-new-browser"></i>
+                    </a>
+                </nav>
+            </header>
+            <iframe src="https://tacc.github.io/Core-CMS-Custom/ctrn_assets/graphs/graph-regions.html"></iframe>
+        </article>
+        <article>
+            <header>
+                <h2>Participation</h2>
+                <nav>
+                    <a href="./graph-participation.html">direct link</a>
+                    <a
+                        href="https://tacc.github.io/Core-CMS-Custom/ctrn_assets/graphs/graph-participation.html"
+                        target="_blank"
+                    >
+                        GitHub Pages link
+                        <i class="icon icon-new-browser"></i>
+                    </a>
+                </nav>
+            </header>
+            <iframe src="https://tacc.github.io/Core-CMS-Custom/ctrn_assets/graphs/graph-participation.html"></iframe>
+        </article>
+    </section>
+</body>
+</html>
