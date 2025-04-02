@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Core-CMS-Custom: CTRN: Graphs</title>
+    <base href="/ctrn_assets/graphs/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <load-file replaceWith src="../snippets/iframe-graph-css.html"></load-file>
@@ -13,18 +15,21 @@
         header nav {
             font-size: 0.8em;
         }
-        header nav,
-        header nav a:has(i) {
+        header nav {
             display: flex;
             flex-direction: row;
+            gap: 1ch;
         }
         header nav a:first-child:not(:only-child)::after {
             content: ',';
         }
-        header nav { gap: 1ch; }
-        header nav a { gap: 0.25ch; }
         header:has(h2 + nav) h2 {
             margin-bottom: 0.5em;
+        }
+        a:has(.icon) {
+            display: inline-flex;
+            flex-direction: row;
+            gap: 0.25ch;
         }
         .icon {
             font-size: 0.8em;
@@ -34,7 +39,7 @@
 </head>
 <body>
     <h1>Graphs</h1>
-    <p>Direct access to the graphs provided via <a href="https://github.com/TACC/Core-CMS-Custom/pull/459" target="_blank">TACC/Core-CMS-Custom PR #459</a> used temporarily by <a href="https://ctrn-web.tacc.utexas.edu/" target="_blank">CTRN</a>.</p>
+    <p>Direct access to the graphs provided via <a href="https://github.com/TACC/Core-CMS-Custom/pull/459" target="_blank">PR #459 <i class="icon icon-new-browser"></i></a> used temporarily by <a href="https://ctrn-web.tacc.utexas.edu/" target="_blank">CTRN <i class="icon icon-new-browser"></i></a>.</p>
     <section style="display: grid; grid-template-columns: 1fr 1fr;">
         <article>
             <header>
