@@ -1,0 +1,1240 @@
+{
+    "props": {
+        "children": [
+            {
+                "props": {
+                    "id": "participation",
+                    "config": {
+                        "displayModeBar": false
+                    },
+                    "figure": {
+                        "data": [
+                            {
+                                "fillpattern": {
+                                    "shape": ""
+                                },
+                                "hovertemplate": "<extra></extra>",
+                                "legendgroup": "",
+                                "line": {
+                                    "color": "#636efa"
+                                },
+                                "marker": {
+                                    "symbol": "circle"
+                                },
+                                "mode": "lines",
+                                "name": "",
+                                "orientation": "v",
+                                "showlegend": false,
+                                "stackgroup": "1",
+                                "xaxis": "x",
+                                "yaxis": "y",
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#155f82",
+                                "mode": "none",
+                                "name": "Baseline",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "i2",
+                                    "bdata": "EABDAHYAqADvAEsBmwH7AVUCnQL8AjoDlAPGA/sDMQRoBKAE0gTuBBEFMAVRBXoFrgXOBfIFGQZOBoUGvwbpBh8HTgeGB8AHBwhFCG4IrAjvCCwJbwmmCeYJIgpeCqYK+ApFC4ULkQs="
+                                },
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#e0c1ad",
+                                "mode": "none",
+                                "name": "Month 1",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "f8",
+                                    "bdata": "AAAAAAAA+H8AAAAAAAAsQAAAAAAAAE5AAAAAAADAW0AAAAAAAIBiQAAAAAAAAGtAAAAAAAAQckAAAAAAAPB2QAAAAAAAMHxAAAAAAAC4gEAAAAAAAKiCQAAAAAAA4IRAAAAAAACYhkAAAAAAAPCIQAAAAAAAoIpAAAAAAAAIjEAAAAAAAOCMQAAAAAAAqI5AAAAAAAAIkEAAAAAAAKiQQAAAAAAAMJFAAAAAAACIkUAAAAAAAOiRQAAAAAAATJJAAAAAAADgkkAAAAAAAJiTQAAAAAAACJRAAAAAAACUlEAAAAAAAPSUQAAAAAAAyJVAAAAAAABMlkAAAAAAAASXQAAAAAAAjJdAAAAAAAAwmEAAAAAAAOyYQAAAAAAAhJlAAAAAAAA0mkAAAAAAAAybQAAAAAAA5JtAAAAAAACcnEAAAAAAAFidQAAAAAAALJ5AAAAAAAAIn0AAAAAAAOyfQAAAAAAARqBAAAAAAACyoEAAAAAAAAChQAAAAAAAWqFAAAAAAADEoUAAAAAAAD6iQAAAAAAAiqJAAAAAAACyokA="
+                                },
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#a3cbef",
+                                "mode": "none",
+                                "name": "Month 6",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "f8",
+                                    "bdata": "AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAAMEAAAAAAAIBGQAAAAAAAQFZAAAAAAABgYEAAAAAAAABpQAAAAAAAQG9AAAAAAADQc0AAAAAAAPB3QAAAAAAA4HpAAAAAAAAgfkAAAAAAAEiAQAAAAAAAyIFAAAAAAABog0AAAAAAAHiEQAAAAAAAoIVAAAAAAABYhkAAAAAAAJCHQAAAAAAAeIhAAAAAAAA4iUAAAAAAAEiKQAAAAAAAQItAAAAAAADQi0AAAAAAAFCMQAAAAAAAkI1AAAAAAAA4jkAAAAAAAAiPQAAAAAAAsI9AAAAAAABUkEAAAAAAAACRQAAAAAAAnJFAAAAAAAAwkkAAAAAAAJiSQAAAAAAAAJNAAAAAAACgk0AAAAAAAByUQAAAAAAAsJRAAAAAAABglUAAAAAAAPiVQAAAAAAAhJZAAAAAAADclkAAAAAAAKSXQAAAAAAAUJhAAAAAAAD8mEAAAAAAALCZQAAAAAAAMJpAAAAAAABQmkA="
+                                },
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#7f7f7f",
+                                "mode": "none",
+                                "name": "Month 12",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "f8",
+                                    "bdata": "AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAABAAAAAAAAAMUAAAAAAAABFQAAAAAAAAFVAAAAAAACAXEAAAAAAAABkQAAAAAAAQGpAAAAAAABAcUAAAAAAACB0QAAAAAAAsHZAAAAAAAAweUAAAAAAAIB7QAAAAAAAAH5AAAAAAAAwgEAAAAAAADiBQAAAAAAAwIFAAAAAAADIgkAAAAAAAKCDQAAAAAAAqIRAAAAAAABQhUAAAAAAANiFQAAAAAAAgIZAAAAAAABAh0AAAAAAABiIQAAAAAAA2IhAAAAAAACgiUAAAAAAAGCKQAAAAAAAEItAAAAAAADwi0AAAAAAADCNQAAAAAAAKI5AAAAAAAD4jkAAAAAAAASQQAAAAAAAcJBAAAAAAADQkEAAAAAAAFiRQAAAAAAAvJFAAAAAAAB4kkAAAAAAAByTQAAAAAAAeJNAAAAAAACck0A="
+                                },
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#bfbfbf",
+                                "mode": "none",
+                                "name": "Month 18",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "f8",
+                                    "bdata": "AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAABAAAAAAAAAJkAAAAAAAAA6QAAAAAAAgEdAAAAAAADAUUAAAAAAAABZQAAAAAAAQGFAAAAAAABgZ0AAAAAAAMBsQAAAAAAAoG9AAAAAAABwckAAAAAAAEB0QAAAAAAAQHZAAAAAAADQd0AAAAAAAJB5QAAAAAAA0HpAAAAAAABgfEAAAAAAADB+QAAAAAAA4H9AAAAAAACIgEAAAAAAACCBQAAAAAAAkIFAAAAAAABAgkAAAAAAADCDQAAAAAAAiINAAAAAAAAQhEAAAAAAANiEQAAAAAAAYIVAAAAAAAAohkAAAAAAADiHQAAAAAAA+IdAAAAAAADYiEAAAAAAAJCJQAAAAAAASIpAAAAAAACoikA="
+                                },
+                                "type": "scatter"
+                            },
+                            {
+                                "fill": "tozeroy",
+                                "fillcolor": "#e97132",
+                                "mode": "none",
+                                "name": "Month 24",
+                                "x": [
+                                    "2020-10-01",
+                                    "2020-11-01",
+                                    "2020-12-01",
+                                    "2021-01-01",
+                                    "2021-02-01",
+                                    "2021-03-01",
+                                    "2021-04-01",
+                                    "2021-05-01",
+                                    "2021-06-01",
+                                    "2021-07-01",
+                                    "2021-08-01",
+                                    "2021-09-01",
+                                    "2021-10-01",
+                                    "2021-11-01",
+                                    "2021-12-01",
+                                    "2022-01-01",
+                                    "2022-02-01",
+                                    "2022-03-01",
+                                    "2022-04-01",
+                                    "2022-05-01",
+                                    "2022-06-01",
+                                    "2022-07-01",
+                                    "2022-08-01",
+                                    "2022-09-01",
+                                    "2022-10-01",
+                                    "2022-11-01",
+                                    "2022-12-01",
+                                    "2023-01-01",
+                                    "2023-02-01",
+                                    "2023-03-01",
+                                    "2023-04-01",
+                                    "2023-05-01",
+                                    "2023-06-01",
+                                    "2023-07-01",
+                                    "2023-08-01",
+                                    "2023-09-01",
+                                    "2023-10-01",
+                                    "2023-11-01",
+                                    "2023-12-01",
+                                    "2024-01-01",
+                                    "2024-02-01",
+                                    "2024-03-01",
+                                    "2024-04-01",
+                                    "2024-05-01",
+                                    "2024-06-01",
+                                    "2024-07-01",
+                                    "2024-08-01",
+                                    "2024-09-01",
+                                    "2024-10-01",
+                                    "2024-11-01",
+                                    "2024-12-01",
+                                    "2025-01-01"
+                                ],
+                                "y": {
+                                    "dtype": "f8",
+                                    "bdata": "AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAA+H8AAAAAAAD4fwAAAAAAAPh/AAAAAAAAHEAAAAAAAAA3QAAAAAAAAEJAAAAAAACATEAAAAAAAMBUQAAAAAAAQF1AAAAAAACgY0AAAAAAACBnQAAAAAAAQG5AAAAAAAAAcUAAAAAAAOByQAAAAAAAIHRAAAAAAADAdUAAAAAAAEB3QAAAAAAAcHhAAAAAAABgekAAAAAAAMB7QAAAAAAAIH1AAAAAAAAgfkAAAAAAAMB+QAAAAAAAgH9AAAAAAABIgEAAAAAAAPCAQAAAAAAAeIFAAAAAAAAIgkAAAAAAAIiCQAAAAAAAAINAAAAAAAAog0A="
+                                },
+                                "type": "scatter"
+                            }
+                        ],
+                        "layout": {
+                            "template": {
+                                "data": {
+                                    "histogram2dcontour": [
+                                        {
+                                            "type": "histogram2dcontour",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            },
+                                            "colorscale": [
+                                                [
+                                                    0.0,
+                                                    "#0d0887"
+                                                ],
+                                                [
+                                                    0.1111111111111111,
+                                                    "#46039f"
+                                                ],
+                                                [
+                                                    0.2222222222222222,
+                                                    "#7201a8"
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    "#9c179e"
+                                                ],
+                                                [
+                                                    0.4444444444444444,
+                                                    "#bd3786"
+                                                ],
+                                                [
+                                                    0.5555555555555556,
+                                                    "#d8576b"
+                                                ],
+                                                [
+                                                    0.6666666666666666,
+                                                    "#ed7953"
+                                                ],
+                                                [
+                                                    0.7777777777777778,
+                                                    "#fb9f3a"
+                                                ],
+                                                [
+                                                    0.8888888888888888,
+                                                    "#fdca26"
+                                                ],
+                                                [
+                                                    1.0,
+                                                    "#f0f921"
+                                                ]
+                                            ]
+                                        }
+                                    ],
+                                    "choropleth": [
+                                        {
+                                            "type": "choropleth",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            }
+                                        }
+                                    ],
+                                    "histogram2d": [
+                                        {
+                                            "type": "histogram2d",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            },
+                                            "colorscale": [
+                                                [
+                                                    0.0,
+                                                    "#0d0887"
+                                                ],
+                                                [
+                                                    0.1111111111111111,
+                                                    "#46039f"
+                                                ],
+                                                [
+                                                    0.2222222222222222,
+                                                    "#7201a8"
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    "#9c179e"
+                                                ],
+                                                [
+                                                    0.4444444444444444,
+                                                    "#bd3786"
+                                                ],
+                                                [
+                                                    0.5555555555555556,
+                                                    "#d8576b"
+                                                ],
+                                                [
+                                                    0.6666666666666666,
+                                                    "#ed7953"
+                                                ],
+                                                [
+                                                    0.7777777777777778,
+                                                    "#fb9f3a"
+                                                ],
+                                                [
+                                                    0.8888888888888888,
+                                                    "#fdca26"
+                                                ],
+                                                [
+                                                    1.0,
+                                                    "#f0f921"
+                                                ]
+                                            ]
+                                        }
+                                    ],
+                                    "heatmap": [
+                                        {
+                                            "type": "heatmap",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            },
+                                            "colorscale": [
+                                                [
+                                                    0.0,
+                                                    "#0d0887"
+                                                ],
+                                                [
+                                                    0.1111111111111111,
+                                                    "#46039f"
+                                                ],
+                                                [
+                                                    0.2222222222222222,
+                                                    "#7201a8"
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    "#9c179e"
+                                                ],
+                                                [
+                                                    0.4444444444444444,
+                                                    "#bd3786"
+                                                ],
+                                                [
+                                                    0.5555555555555556,
+                                                    "#d8576b"
+                                                ],
+                                                [
+                                                    0.6666666666666666,
+                                                    "#ed7953"
+                                                ],
+                                                [
+                                                    0.7777777777777778,
+                                                    "#fb9f3a"
+                                                ],
+                                                [
+                                                    0.8888888888888888,
+                                                    "#fdca26"
+                                                ],
+                                                [
+                                                    1.0,
+                                                    "#f0f921"
+                                                ]
+                                            ]
+                                        }
+                                    ],
+                                    "contourcarpet": [
+                                        {
+                                            "type": "contourcarpet",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            }
+                                        }
+                                    ],
+                                    "contour": [
+                                        {
+                                            "type": "contour",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            },
+                                            "colorscale": [
+                                                [
+                                                    0.0,
+                                                    "#0d0887"
+                                                ],
+                                                [
+                                                    0.1111111111111111,
+                                                    "#46039f"
+                                                ],
+                                                [
+                                                    0.2222222222222222,
+                                                    "#7201a8"
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    "#9c179e"
+                                                ],
+                                                [
+                                                    0.4444444444444444,
+                                                    "#bd3786"
+                                                ],
+                                                [
+                                                    0.5555555555555556,
+                                                    "#d8576b"
+                                                ],
+                                                [
+                                                    0.6666666666666666,
+                                                    "#ed7953"
+                                                ],
+                                                [
+                                                    0.7777777777777778,
+                                                    "#fb9f3a"
+                                                ],
+                                                [
+                                                    0.8888888888888888,
+                                                    "#fdca26"
+                                                ],
+                                                [
+                                                    1.0,
+                                                    "#f0f921"
+                                                ]
+                                            ]
+                                        }
+                                    ],
+                                    "surface": [
+                                        {
+                                            "type": "surface",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            },
+                                            "colorscale": [
+                                                [
+                                                    0.0,
+                                                    "#0d0887"
+                                                ],
+                                                [
+                                                    0.1111111111111111,
+                                                    "#46039f"
+                                                ],
+                                                [
+                                                    0.2222222222222222,
+                                                    "#7201a8"
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    "#9c179e"
+                                                ],
+                                                [
+                                                    0.4444444444444444,
+                                                    "#bd3786"
+                                                ],
+                                                [
+                                                    0.5555555555555556,
+                                                    "#d8576b"
+                                                ],
+                                                [
+                                                    0.6666666666666666,
+                                                    "#ed7953"
+                                                ],
+                                                [
+                                                    0.7777777777777778,
+                                                    "#fb9f3a"
+                                                ],
+                                                [
+                                                    0.8888888888888888,
+                                                    "#fdca26"
+                                                ],
+                                                [
+                                                    1.0,
+                                                    "#f0f921"
+                                                ]
+                                            ]
+                                        }
+                                    ],
+                                    "mesh3d": [
+                                        {
+                                            "type": "mesh3d",
+                                            "colorbar": {
+                                                "outlinewidth": 0,
+                                                "ticks": ""
+                                            }
+                                        }
+                                    ],
+                                    "scatter": [
+                                        {
+                                            "fillpattern": {
+                                                "fillmode": "overlay",
+                                                "size": 10,
+                                                "solidity": 0.2
+                                            },
+                                            "type": "scatter"
+                                        }
+                                    ],
+                                    "parcoords": [
+                                        {
+                                            "type": "parcoords",
+                                            "line": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scatterpolargl": [
+                                        {
+                                            "type": "scatterpolargl",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "bar": [
+                                        {
+                                            "error_x": {
+                                                "color": "#2a3f5f"
+                                            },
+                                            "error_y": {
+                                                "color": "#2a3f5f"
+                                            },
+                                            "marker": {
+                                                "line": {
+                                                    "color": "#E5ECF6",
+                                                    "width": 0.5
+                                                },
+                                                "pattern": {
+                                                    "fillmode": "overlay",
+                                                    "size": 10,
+                                                    "solidity": 0.2
+                                                }
+                                            },
+                                            "type": "bar"
+                                        }
+                                    ],
+                                    "scattergeo": [
+                                        {
+                                            "type": "scattergeo",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scatterpolar": [
+                                        {
+                                            "type": "scatterpolar",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "histogram": [
+                                        {
+                                            "marker": {
+                                                "pattern": {
+                                                    "fillmode": "overlay",
+                                                    "size": 10,
+                                                    "solidity": 0.2
+                                                }
+                                            },
+                                            "type": "histogram"
+                                        }
+                                    ],
+                                    "scattergl": [
+                                        {
+                                            "type": "scattergl",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scatter3d": [
+                                        {
+                                            "type": "scatter3d",
+                                            "line": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            },
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scattermap": [
+                                        {
+                                            "type": "scattermap",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scattermapbox": [
+                                        {
+                                            "type": "scattermapbox",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scatterternary": [
+                                        {
+                                            "type": "scatterternary",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "scattercarpet": [
+                                        {
+                                            "type": "scattercarpet",
+                                            "marker": {
+                                                "colorbar": {
+                                                    "outlinewidth": 0,
+                                                    "ticks": ""
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "carpet": [
+                                        {
+                                            "aaxis": {
+                                                "endlinecolor": "#2a3f5f",
+                                                "gridcolor": "white",
+                                                "linecolor": "white",
+                                                "minorgridcolor": "white",
+                                                "startlinecolor": "#2a3f5f"
+                                            },
+                                            "baxis": {
+                                                "endlinecolor": "#2a3f5f",
+                                                "gridcolor": "white",
+                                                "linecolor": "white",
+                                                "minorgridcolor": "white",
+                                                "startlinecolor": "#2a3f5f"
+                                            },
+                                            "type": "carpet"
+                                        }
+                                    ],
+                                    "table": [
+                                        {
+                                            "cells": {
+                                                "fill": {
+                                                    "color": "#EBF0F8"
+                                                },
+                                                "line": {
+                                                    "color": "white"
+                                                }
+                                            },
+                                            "header": {
+                                                "fill": {
+                                                    "color": "#C8D4E3"
+                                                },
+                                                "line": {
+                                                    "color": "white"
+                                                }
+                                            },
+                                            "type": "table"
+                                        }
+                                    ],
+                                    "barpolar": [
+                                        {
+                                            "marker": {
+                                                "line": {
+                                                    "color": "#E5ECF6",
+                                                    "width": 0.5
+                                                },
+                                                "pattern": {
+                                                    "fillmode": "overlay",
+                                                    "size": 10,
+                                                    "solidity": 0.2
+                                                }
+                                            },
+                                            "type": "barpolar"
+                                        }
+                                    ],
+                                    "pie": [
+                                        {
+                                            "automargin": true,
+                                            "type": "pie"
+                                        }
+                                    ]
+                                },
+                                "layout": {
+                                    "autotypenumbers": "strict",
+                                    "colorway": [
+                                        "#636efa",
+                                        "#EF553B",
+                                        "#00cc96",
+                                        "#ab63fa",
+                                        "#FFA15A",
+                                        "#19d3f3",
+                                        "#FF6692",
+                                        "#B6E880",
+                                        "#FF97FF",
+                                        "#FECB52"
+                                    ],
+                                    "font": {
+                                        "color": "#2a3f5f"
+                                    },
+                                    "hovermode": "closest",
+                                    "hoverlabel": {
+                                        "align": "left"
+                                    },
+                                    "paper_bgcolor": "white",
+                                    "plot_bgcolor": "#E5ECF6",
+                                    "polar": {
+                                        "bgcolor": "#E5ECF6",
+                                        "angularaxis": {
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "ticks": ""
+                                        },
+                                        "radialaxis": {
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "ticks": ""
+                                        }
+                                    },
+                                    "ternary": {
+                                        "bgcolor": "#E5ECF6",
+                                        "aaxis": {
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "ticks": ""
+                                        },
+                                        "baxis": {
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "ticks": ""
+                                        },
+                                        "caxis": {
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "ticks": ""
+                                        }
+                                    },
+                                    "coloraxis": {
+                                        "colorbar": {
+                                            "outlinewidth": 0,
+                                            "ticks": ""
+                                        }
+                                    },
+                                    "colorscale": {
+                                        "sequential": [
+                                            [
+                                                0.0,
+                                                "#0d0887"
+                                            ],
+                                            [
+                                                0.1111111111111111,
+                                                "#46039f"
+                                            ],
+                                            [
+                                                0.2222222222222222,
+                                                "#7201a8"
+                                            ],
+                                            [
+                                                0.3333333333333333,
+                                                "#9c179e"
+                                            ],
+                                            [
+                                                0.4444444444444444,
+                                                "#bd3786"
+                                            ],
+                                            [
+                                                0.5555555555555556,
+                                                "#d8576b"
+                                            ],
+                                            [
+                                                0.6666666666666666,
+                                                "#ed7953"
+                                            ],
+                                            [
+                                                0.7777777777777778,
+                                                "#fb9f3a"
+                                            ],
+                                            [
+                                                0.8888888888888888,
+                                                "#fdca26"
+                                            ],
+                                            [
+                                                1.0,
+                                                "#f0f921"
+                                            ]
+                                        ],
+                                        "sequentialminus": [
+                                            [
+                                                0.0,
+                                                "#0d0887"
+                                            ],
+                                            [
+                                                0.1111111111111111,
+                                                "#46039f"
+                                            ],
+                                            [
+                                                0.2222222222222222,
+                                                "#7201a8"
+                                            ],
+                                            [
+                                                0.3333333333333333,
+                                                "#9c179e"
+                                            ],
+                                            [
+                                                0.4444444444444444,
+                                                "#bd3786"
+                                            ],
+                                            [
+                                                0.5555555555555556,
+                                                "#d8576b"
+                                            ],
+                                            [
+                                                0.6666666666666666,
+                                                "#ed7953"
+                                            ],
+                                            [
+                                                0.7777777777777778,
+                                                "#fb9f3a"
+                                            ],
+                                            [
+                                                0.8888888888888888,
+                                                "#fdca26"
+                                            ],
+                                            [
+                                                1.0,
+                                                "#f0f921"
+                                            ]
+                                        ],
+                                        "diverging": [
+                                            [
+                                                0,
+                                                "#8e0152"
+                                            ],
+                                            [
+                                                0.1,
+                                                "#c51b7d"
+                                            ],
+                                            [
+                                                0.2,
+                                                "#de77ae"
+                                            ],
+                                            [
+                                                0.3,
+                                                "#f1b6da"
+                                            ],
+                                            [
+                                                0.4,
+                                                "#fde0ef"
+                                            ],
+                                            [
+                                                0.5,
+                                                "#f7f7f7"
+                                            ],
+                                            [
+                                                0.6,
+                                                "#e6f5d0"
+                                            ],
+                                            [
+                                                0.7,
+                                                "#b8e186"
+                                            ],
+                                            [
+                                                0.8,
+                                                "#7fbc41"
+                                            ],
+                                            [
+                                                0.9,
+                                                "#4d9221"
+                                            ],
+                                            [
+                                                1,
+                                                "#276419"
+                                            ]
+                                        ]
+                                    },
+                                    "xaxis": {
+                                        "gridcolor": "white",
+                                        "linecolor": "white",
+                                        "ticks": "",
+                                        "title": {
+                                            "standoff": 15
+                                        },
+                                        "zerolinecolor": "white",
+                                        "automargin": true,
+                                        "zerolinewidth": 2
+                                    },
+                                    "yaxis": {
+                                        "gridcolor": "white",
+                                        "linecolor": "white",
+                                        "ticks": "",
+                                        "title": {
+                                            "standoff": 15
+                                        },
+                                        "zerolinecolor": "white",
+                                        "automargin": true,
+                                        "zerolinewidth": 2
+                                    },
+                                    "scene": {
+                                        "xaxis": {
+                                            "backgroundcolor": "#E5ECF6",
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "showbackground": true,
+                                            "ticks": "",
+                                            "zerolinecolor": "white",
+                                            "gridwidth": 2
+                                        },
+                                        "yaxis": {
+                                            "backgroundcolor": "#E5ECF6",
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "showbackground": true,
+                                            "ticks": "",
+                                            "zerolinecolor": "white",
+                                            "gridwidth": 2
+                                        },
+                                        "zaxis": {
+                                            "backgroundcolor": "#E5ECF6",
+                                            "gridcolor": "white",
+                                            "linecolor": "white",
+                                            "showbackground": true,
+                                            "ticks": "",
+                                            "zerolinecolor": "white",
+                                            "gridwidth": 2
+                                        }
+                                    },
+                                    "shapedefaults": {
+                                        "line": {
+                                            "color": "#2a3f5f"
+                                        }
+                                    },
+                                    "annotationdefaults": {
+                                        "arrowcolor": "#2a3f5f",
+                                        "arrowhead": 0,
+                                        "arrowwidth": 1
+                                    },
+                                    "geo": {
+                                        "bgcolor": "white",
+                                        "landcolor": "#E5ECF6",
+                                        "subunitcolor": "white",
+                                        "showland": true,
+                                        "showlakes": true,
+                                        "lakecolor": "white"
+                                    },
+                                    "title": {
+                                        "x": 0.05
+                                    },
+                                    "mapbox": {
+                                        "style": "light"
+                                    }
+                                }
+                            },
+                            "xaxis": {
+                                "anchor": "y",
+                                "domain": [
+                                    0.0,
+                                    1.0
+                                ],
+                                "dtick": "M3",
+                                "tickformat": "%b\n%Y"
+                            },
+                            "yaxis": {
+                                "anchor": "x",
+                                "domain": [
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            "legend": {
+                                "tracegroupgap": 0,
+                                "yanchor": "top",
+                                "y": 0.95,
+                                "xanchor": "left",
+                                "x": 0.05
+                            },
+                            "margin": {
+                                "t": 60
+                            },
+                            "title": {
+                                "text": "CTRN Participation"
+                            }
+                        }
+                    }
+                },
+                "type": "Graph",
+                "namespace": "dash_core_components"
+            }
+        ]
+    },
+    "type": "Div",
+    "namespace": "dash_html_components"
+}
