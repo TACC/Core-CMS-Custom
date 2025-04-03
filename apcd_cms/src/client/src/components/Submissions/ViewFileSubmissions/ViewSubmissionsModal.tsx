@@ -70,20 +70,6 @@ export const ViewSubmissionLogsModal: React.FC<
                           </Link>
                         )}
                       </dd>
-                      <dt className="c-data-list__key">JSON Log</dt>
-                      <dd className="c-data-list__value">
-                        {log.has_json_log === 1 && (
-                          <Link
-                            to={`${
-                              isAdminUser ? 'administration' : 'submissions'
-                            }/view_log?log_type=json&log_id=${log.log_id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Download
-                          </Link>
-                        )}
-                      </dd>
                     </dl>
                     <hr />
                   </div>
