@@ -16,8 +16,7 @@
     border-radius: 0.3rem;
 }
 
-/* TODO: Determine how to integrate this into Core */
 .modal-title {
-    margin-top: unset; /* overwrite site.css h4 */
+    margin-block: unset; /* IMPORTANT: Not necessary after v1.1.N-apcd */
     font-size: var(--global-font-size--large); /* revert to site.css h4 */
 }
