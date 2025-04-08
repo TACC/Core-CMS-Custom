@@ -1,0 +1,47 @@
+<!-- After v4.26.1 -->
+<style id="css-header-and-logo">
+/* To prevent logo overflowing header */
+/* HELP: This should not be needed (not should before v4.24.0 styles) */
+/* SEE: html-warning-about-cms-version.html */
+.s-header .navbar-brand {
+    height: unset;
+}
+</style>
+
+<!-- Before v4.24.0 -->
+<!--
+<style id="css-header-and-logo">
+/* To resize logo */
+.portal-logo {
+    height: 80px;
+}
+.s-header.navbar {
+    --nav-padding-vert: 10px;
+}
+
+/* To vertically align center if #s-header is .navbar-expand-md */
+@media (min-width: 768px) {
+    .s-header .nav-item {
+        display: flex;
+    }
+}
+
+/* To fix position (given header resize code that does not consider everything) */
+.s-header .nav-link {
+    top: unset;
+}
+
+/* To accomodate dark logo */
+/*
+:root {
+  --header-text-color: var(--global-color-primary--x-dark);
+  --header-bkgd-color: var(--global-color-primary--x-light);
+  --header-minor-border-color: var(--global-color-primary--normal);
+  --header-major-border-color: var(--global-color-primary--normal);
+  --header-search-brdr-color: #D8D8D8;
+  --header-search-bkgd-color: var(--global-color-primary--xx-light);
+  --menu-toggle-icon: invert(100%);
+}
+*/
+</style>
+-->
