@@ -1,18 +1,36 @@
 <style id="css-home-page" type="text/css">
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/utrc_assets/utrc_assets/css/s-focus-list.css");
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/utrc_assets/utrc_assets/css/s-icon-list.css");
+  @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/utrc_assets/utrc_assets/css/s-focus-list.css");
+  @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/utrc_assets/utrc_assets/css/s-icon-list.css");
 
-    #notice {
-        border-left: var(--global-border--normal);
-    }
+  .s-icon-list {
+    margin-block: 46px;
+  }
+  ul.s-icon-list {
+    padding-left: 0;
+  }
+  .s-icon-list li + li {
+    margin-top: 40px;
+  }
 
-    .s-icon-list {
-        margin-block: 46px;
-    }
-    ul.s-icon-list {
-        padding-left: 0;
-    }
-    .s-icon-list li + li {
-        margin-top: 40px;
-    }
+  #notice {
+    border-left: var(--global-border--normal);
+  }
+  @media (max-width: 575px) {
+    #notice.col-12 { border-left: none; }
+  }
+  @media (max-width: 575px) {
+    #notice.col-xs-12 { border-left: none; }
+  }
+  @media (min-width: 576px) and (max-width: 767px) {
+    #notice.col-sm-12 { border-left: none; }
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    #notice.col-md-12 { border-left: none; }
+  }
+  @media (min-width: 992px) and (max-width: 1199px) {
+    #notice.col-lg-12 { border-left: none; }
+  }
+  @media (min-width: 1200px) {
+    #notice.col-xl-12 { border-left: none; }
+  }
 </style>

@@ -23,17 +23,9 @@ A list with items that each has an icon. It should appear _more_ important than 
 }
 
 .s-icon-list li {
-  /* @mixin truncate--one-line; */
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  display: flex;
+  gap: 0.5em;
 }
 .s-icon-list a {
   color: inherit;
-}
-
-.s-icon-list .icon {
-  vertical-align: middle;
-
-  font-size: 3.5em;
 }
