@@ -4,18 +4,16 @@ Icon List
 A list with items that each has an icon. It should appear _more_ important than a regular list, but __not__ as important as a [Highlight List](https://tacc-main.atlassian.net/wiki/x/JQVv).
 
 <ul class="s-icon-list">
-	<li>
+  <li>
     <i class="icon icon-bulb"><!-- ... --></i>
     Getting Started Guide
   </li>
-	<li>
+  <li>
     <i class="icon icon-share"><!-- ... --></i>
     Allocation Overview
   </li>
 </ul>
 */
-
-
 
 .s-icon-list {
   font-weight: var(--bold);
