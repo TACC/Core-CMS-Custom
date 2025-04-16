@@ -1,0 +1,16 @@
+<style id="css-core-styles-fixes">
+/* TODO: Integrate into Core-Styles */
+/* to make space between list and heading match space between paragraph and heading */
+/* FAQ: added for coument pages, like original version of /about/ */
+:where(:is([role=main],main)) :is(dl,ol,ul,menu) {
+    margin-bottom: 2rem;
+}
+
+/* TODO: Integrate into Core-Styles */
+/* to remove extra space between breadcrumbs and section */
+.s-breadcrumbs + script + .o-section,
+/* FAQ: if in future, breadrcumb script is moved or absent */
+.s-breadcrumbs + .o-section {
+    margin-top: 0;
+}
+</style>
