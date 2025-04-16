@@ -1,0 +1,23 @@
+@import url("./_imports/trumps/s-focus-list.css");
+@import url("./_imports/trumps/s-icon-list.css");
+
+/* TODO: Move to Core-Styles `x-hero-banner` */
+@media (min-width: 768px) {
+  .s-hero-banner article {
+    --left-buffer: 48px;
+
+    margin-left: calc(
+      -1 * var(--left-buffer)
+    ); /* to align left side via text edge, not box edge */
+    margin-right: calc(
+      -1 *var(--left-buffer)
+    ); /* (on narrow window) to offset right of box same as left */
+  }
+}
+
+.s-icon-list {
+  margin-block: 46px;
+}
+.s-icon-list li + li {
+  margin-top: 40px;
+}

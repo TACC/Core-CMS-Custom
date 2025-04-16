@@ -1,0 +1,23 @@
+/*
+Focus List
+
+A list with text that should allow a user to focus on each line.
+
+Markup:
+<h2>UTRC works with researchers to:</h2>
+<ul class="s-focus-list">
+  <li>Develop Applications</li>
+  <li>Manage and Analyze Data</li>
+  <li>Integrate with the Decentralized Resources</li>
+</ul>
+*/
+
+.s-focus-list {
+  margin-block: 1.0em 1.5em;
+  padding-inline: 1.5em;
+
+  font-size: larger;
+  line-height: 1.75;
+
+  list-style: none;
+}
