@@ -15,9 +15,9 @@
   }
 }
 
-.s-icon-list {
+#page-home .s-icon-list {
   margin-block: 46px;
 }
-.s-icon-list li + li {
+#page-home .s-icon-list li + li {
   margin-top: 40px;
 }
