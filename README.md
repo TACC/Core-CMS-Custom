@@ -2,11 +2,13 @@
 
 [Core CMS] projects with custom functionality and/or assets
 
-## Table of Contents
+## Two Ways to Use
 
-- [Related Repositories](#related-repositories)
-- [Project Architecture](#project-architecture)
-- [Learn More](#learn-more)
+| guide | directory | contents |
+| - | - | - |
+| [Only Custom Assets](./README_assets.md) | `someproject`**`_assets`** | custom assets for a [Core CMS] instance |
+| [Custom Functionality](./README_cms.md) | `someproject`**`_cms`** | an instance of [Core CMS] with custom functionality |
+
 ## Related Repositories
 
 - [Camino], a Docker container-based deployment scheme
@@ -15,18 +17,6 @@
 - [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
 - [Core CMS Resources], the old solution for extensions of the [Core CMS] project
 - [Core Portal Deployments], private repository that facilitates deployments of [Core Portal] images via [Camino] and Jenkins
-
-## Project Architecture
-
-| directory | contents |
-| - | - |
-| `someproject_cms` | an instance of [Core CMS] with custom functionality |
-| `someproject_assets` | custom assets for a [Core CMS] instance |
-
-## Learn More
-
-- [Projects with Custom Functionality](./README_cms.md)
-- [Projects with Only Custom Assets](./README_assets.md)
 
 <!-- Link Aliases -->
 

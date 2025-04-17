@@ -70,9 +70,9 @@ tr.c-data-list__row--start-final:nth-child(even) ~ tr :is(th, td) {
 
 
 
-/* TODO: Save changes to TACC/Core-Styles */
+/* TODO: Load Core-CMS v4.27.1, then delete this */
 /* https://github.com/TACC/Core-Styles/issues/459 */
-
+/* https://github.com/TACC/Core-CMS/releases/tag/v4.27.1 */
 .c-card-list {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* change auto-fit to auto-fill */
 }

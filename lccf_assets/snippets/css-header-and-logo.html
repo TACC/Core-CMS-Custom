@@ -1,0 +1,26 @@
+<!-- After v4.26.1 -->
+<style id="css-header-and-logo">
+/* To prevent logo overflowing header */
+/* HELP: This should not be needed (not should before v4.24.0 styles) */
+/* SEE: html-warning-about-cms-version.html */
+.s-header .navbar-brand {
+    height: unset;
+}
+</style>
+
+<!-- Before v4.24.0 -->
+<!--
+<style id="css-header-and-logo">
+/* To vertically align center if #s-header is .navbar-expand-md */
+@media (min-width: 768px) {
+    .s-header .nav-item {
+        display: flex;
+    }
+}
+
+/* To fix position (given header resize code that does not consider everything) */
+.s-header .nav-link {
+    top: unset;
+}
+</style>
+-->
