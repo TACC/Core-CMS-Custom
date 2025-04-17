@@ -1,0 +1,19 @@
+<style id="css-portals-list">
+.c-card-list [class*="card--"] img {
+    padding: 20px;
+
+    /* to keep image box size equal */
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    /* to fill image box but not stretch image content */
+    object-fit: scale-down;
+}
+
+/* TODO: Apply this diff (carefully) to TACC/Core-Styles */
+/* FAQ: The selector is compiled; The use case might still exist*/
+/* https://github.com/TACC/Core-Styles/blob/v2.41.0/src/lib/_imports/objects/o-section.css#L198-L206 */
+main>.container:is(.o-section--style-dark,.section--dark):last-of-type, main>.container:is(.o-section--style-light,.section--dark):last-of-type, main>.container>:is(.o-section--style-dark,.section--dark):last-of-type, main>.container>:is(.o-section--style-light,.section--dark):last-of-type {
+    /* margin-bottom: calc(var(--global-space--section-gap)* -1); */
+    margin-bottom: unset;
+}
+</style>
