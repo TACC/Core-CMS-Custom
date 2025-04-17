@@ -1,0 +1,43 @@
+<script id="iframe-auto-height" type="module">
+const iframe = document.getElementsByTagName('iframe')[0];
+const isIframeLoaded = (iframe.contentWindow.document.readyState === 'complete');
+
+function resizeIframe(iframe) {
+  const scrollHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+  const bufferToAvoidScrollbar = 1;
+  iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
+}
+
+// to avoid both flicker effect and excessive calls when resizing iframe
+function debounce(fn, delay = 50) {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+const debouncedResizeIframe = debounce(resizeIframe);
+
+function setupResizeObserver(iframe) {
+  const iframeContent = iframe.contentWindow.document;
+  const resizeObserver = new ResizeObserver(() => debouncedResizeIframe(iframe));
+
+  resizeObserver.observe(iframeContent.body);
+  resizeIframe(iframe);
+}
+
+if (isIframeLoaded) {
+  setupResizeObserver(iframe);
+} else {
+  iframe.addEventListener('load', () => setupResizeObserver(iframe));
+}
+
+// Catching local events to trigger iframe resize.
+window.addEventListener('resize', () => debouncedResizeIframe(iframe));
+window.addEventListener('load', () => debouncedResizeIframe(iframe));
+//window.addEventListener('load', () => window.dispatchEvent(new Event('resize')));
+
+// Events bubbling up from Dash app to trigger iframe resize.
+window.addEventListener('IFrameInit', () => debouncedResizeIframe(iframe));
+window.addEventListener('IFrameLoaded', () => debouncedResizeIframe(iframe));
+</script>
