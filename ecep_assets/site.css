@@ -88,7 +88,7 @@ article.post-detail .byline {
   --border-color--active: var(--ecep-accent-gray);
 }
 
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/branding_logos.css */
-.portal-logo {
-  height: 70px;
+/* https://github.com/TACC/Core-Styles/blob/v2.38.0/src/lib/_imports/trumps/s-header.css#L24 */
+.s-header {
+  --height: 70px;
 }

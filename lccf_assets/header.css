@@ -1,5 +1,6 @@
-.portal-logo {
-    height: 80px;
+/* https://github.com/TACC/Core-Styles/blob/v2.38.0/src/lib/_imports/trumps/s-header.css#L24 */
+.s-header {
+    --height: 80px;
 }
 .s-header.navbar {
     --nav-padding-vert: 10px;
