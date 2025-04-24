@@ -24,3 +24,9 @@
 .verticalDataValue {
   padding-left: 2.5em;
 }
+
+h5,
+h6 {
+  font-size: var(--global-font-size--medium);
+  font-weight: var(--bold);
+}
