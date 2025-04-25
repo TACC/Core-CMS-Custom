@@ -6,7 +6,7 @@
 
 # [Icon-Works](http://icon-works.com/)
 
-This icon font is **not** used now. It was used for an old System Monitor plugin, via [Core CMS], which only Frontera had. The System Monitor may still have the classname `iconworks`, but Frontera injects different icons.
+This icon font is assumed by the System Monitor plugin. See https://github.com/TACC/Core-CMS-Plugin-System-Monitor/issues/2.
 
 <!-- Link Aliases -->
 
