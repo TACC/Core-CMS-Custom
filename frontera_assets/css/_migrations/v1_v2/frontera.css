@@ -12,17 +12,17 @@ SRC: https://bitbucket.org/taccaci/frontera/src/master/client/css/frontera.scss
 /* FAQ: Though CMS default font is `Benton Sans`, old content uses these */
 @font-face {
     font-family: BentonSansBold;
-    src: url("../../fonts/archive/BentonSans-Bold.otf");
+    src: url("../../../fonts/archive/BentonSans-Bold.otf");
 }
 
 @font-face {
     font-family: BentonSansMedium;
-    src: url("../../fonts/archive/BentonSans-Medium.otf");
+    src: url("../../../fonts/archive/BentonSans-Medium.otf");
 }
 
 @font-face {
     font-family: BentonSansItalic;
-    src: url("../../fonts/archive/BentonSans-MediumItalic.otf");
+    src: url("../../../fonts/archive/BentonSans-MediumItalic.otf");
 }
 
 /* IMPORTANT: Not used */
