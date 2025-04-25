@@ -6,5 +6,5 @@
 @import url("./_migrations/v1_v2/frontera.css") layer(project.migration);
 
 /* To import Font Awesome (which we do not use on new sites) */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/font-awesome.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/fontawesome.min.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/regular.min.css");
