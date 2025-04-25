@@ -4,7 +4,6 @@
 /* To apply "from v1 to v2" migration styles */
 @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS@v4.26.1/taccsite_cms/static/site_cms/css/src/_migrations/v1_v2.css") layer(project.migration);
 @import url("./_migrations/v1_v2/frontera.css") layer(project.migration);
-@import url("./_imports/settings/color.css") layer(project.migration);
 
 /* To import Font Awesome (which we do not use on new sites) */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/font-awesome.min.css");
