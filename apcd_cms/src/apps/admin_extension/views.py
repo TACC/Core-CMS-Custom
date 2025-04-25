@@ -45,7 +45,7 @@ class AdminExtensionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
 
         def getDate(row):
             date = row[9]
-            return date if date is not None else datetimeDate(1,1,1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
+            return date if date is not None else datetime(1,1,1) # put 'None' date entries all together at end of listing w/ date 1-1-0001
 
         extensions = sorted(extensions, key=lambda row:getDate(row), reverse=True)
 

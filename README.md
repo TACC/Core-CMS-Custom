@@ -4,7 +4,7 @@
 
 ## Two Ways to Use
 
-| guide | directory | contents |
+| method & instructions | directory name pattern | contents |
 | - | - | - |
 | [Only Custom Assets](./README_assets.md) | `someproject`**`_assets`** | custom assets for a [Core CMS] instance |
 | [Custom Functionality](./README_cms.md) | `someproject`**`_cms`** | an instance of [Core CMS] with custom functionality |

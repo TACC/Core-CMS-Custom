@@ -1,3 +1,6 @@
+@import url('./css/links.css');
+@import url('./css/djangocms-picture.css');
+
 /* Organize via ITCSS */
 /* SEE: https://tacc-main.atlassian.net/wiki/x/QQhv */
 
@@ -64,6 +67,16 @@
 
 
 
+/* ELEMENTS */
+
+figcaption {
+  font-size: small;
+}
+
+
+
+
+
 /* COMPONENTS */
 
 /* Blog */
@@ -84,11 +97,14 @@ article.post-detail .byline {
 .s-header .navbar-brand {
   min-width: unset;
 }
-.s-header .nav-link {
-  --border-color--active: var(--ecep-accent-gray);
+.s-header .nav-item.active .nav-link,
+.s-header .nav-link:active,
+.s-header .nav-link:focus,
+.s-header .nav-link:hover {
+  border-color: var(--ecep-accent-gray);
 }
 
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/branding_logos.css */
-.portal-logo {
-  height: 70px;
+/* https://github.com/TACC/Core-Styles/blob/v2.38.0/src/lib/_imports/trumps/s-header.css#L24 */
+.s-header {
+  --height: 70px;
 }
