@@ -1,0 +1,19 @@
+<style id="css-captions">
+    a:has(
+        figcaption,
+        p.caption
+    ) {
+        /* TODO: consider for Core-CMS */
+        text-decoration: none !important;
+    }
+    a :is(
+        figcaption,
+        p.caption
+     ) {
+        text-align: right;
+
+        /* to undo Core-Styles */
+        border-bottom: none;
+        margin-block: 5px 0;
+    }
+</style>
