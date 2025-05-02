@@ -21,9 +21,9 @@ import styles from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object().shape({
   reg_year: Yup.string()
-  .test('len', 'Year must be 4 digits', 
-    function (val) 
-      { val && val.toString().length === 4 }
+  .test('correctYear', `Year must be ${new Date().getFullYear()} or later`, 
+    (val) =>
+      { return Number(val) >= new Date().getFullYear() && Number(val) < 10000 }
   )
   .required('Registration year is required'),
   business_name: Yup.string().required('Business name is required'),
