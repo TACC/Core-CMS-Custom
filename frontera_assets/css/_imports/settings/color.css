@@ -1,4 +1,8 @@
-:root {
+/* To redefine all colors for specific templates */
+:is(
+  [data-page-template="home"],
+  [data-page-template="standard"]
+) {
   /* Accent Hues */
   --global-color-accent--x-light: #F2DFBD; /* originally #e3d7fd */
   --global-color-accent--light: #BDA374;   /* originally #a387ed */

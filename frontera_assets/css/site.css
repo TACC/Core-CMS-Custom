@@ -8,3 +8,13 @@
 /* To import Font Awesome (which we do not use on new sites) */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/fontawesome.min.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/regular.min.css");
+
+/* To apply template styles */
+/* IMPORTANT: All CSS in these must be scoped e.g. —
+
+              * `[data-page-template="..."] { ... }`
+              * `.s-class-name { ... }`
+
+              — so as to not affect other templates */
+@import url("./template.home.css");
+@import url("./template.standard.css");
