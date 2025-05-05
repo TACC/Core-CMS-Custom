@@ -1,0 +1,22 @@
+<style id="css-captions">
+    a:has(
+        figcaption,
+        p.caption
+    ) {
+        /* TODO: consider for Core-CMS */
+        text-decoration: none !important;
+    }
+    a figcaption,
+    p.caption {
+        text-align: right;
+
+        /* to undo Core-Styles */
+        border-bottom: none;
+        margin-block: 5px 0;
+    }
+    a img + p.caption {
+        /* so a click between text and image opens link */
+        margin-top: 0;
+        padding-top: 5px;
+    }
+</style>
