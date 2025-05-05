@@ -1,7 +1,7 @@
 /* To undo all styles in a layer for specific templates */
 /* WARNING: Use this only in the correct @layer */
 :is(
-    [data-page-template="home"],
+    #page-home,
     [data-page-template="standard"]
 )
 /* https://www.mayank.co/blog/revert-layer/#the-versioned-reset */

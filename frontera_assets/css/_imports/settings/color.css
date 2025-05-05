@@ -1,6 +1,6 @@
 /* To redefine all colors for specific templates */
 :is(
-  [data-page-template="home"],
+  #page-home,
   [data-page-template="standard"]
 ) {
   /* Accent Hues */
