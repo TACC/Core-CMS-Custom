@@ -145,7 +145,7 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
 
-        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
+        context['pagination_url_namespaces'] = 'admin_exception:list-exceptions'
 
         return context
 

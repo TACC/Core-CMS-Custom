@@ -45,7 +45,8 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
               <Col md={7}>
-                {(created_at && new Date(created_at).toLocaleString()) || 'None'}
+                {(created_at && new Date(created_at).toLocaleString()) ||
+                  'None'}
               </Col>
             </Row>
             <Row>
@@ -119,7 +120,8 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
               <Col md={7}>
-                {(updated_at && new Date(updated_at).toLocaleString()) || 'None'}
+                {(updated_at && new Date(updated_at).toLocaleString()) ||
+                  'None'}
               </Col>
             </Row>
             <hr />
