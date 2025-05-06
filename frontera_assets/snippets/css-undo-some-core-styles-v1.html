@@ -1,0 +1,18 @@
+<style id="css-undo-some-core-styles-v1">
+/* To undo table cell text truncation */
+table p {
+    display: revert; /* to undo site.css `display: -webkit-box` */
+}
+
+/* To undo form element width constraint */
+input:not(
+    [type=time],
+    [type=date],
+    [type=checkbox],
+    [type=radio]
+),
+select,
+textarea {
+    max-width: revert; /* to undo site.css `max-width: 50ch` */
+}
+</style>

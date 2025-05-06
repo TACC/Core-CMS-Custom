@@ -1,0 +1,19 @@
+/* DO NOT ADD STYLES HERE; ONLY IMPORT OTHER STYLESHEETS */
+
+/* IMPORTANT:
+All CSS in these must be scoped e.g. —
+
+* `[data-page-template="..."] { ... }`
+* `.s-class-name { ... }`
+
+— so as to not affect other templates
+*/
+
+/* To undo "from v1 to v2" migration styles */
+@import url("./_migrations/v1_v2/revert.css") layer(project.migration);
+
+/* To change color scheme */
+@import url("./_imports/settings/color.css");
+
+/* To supply patterns for homepage */
+@import url("./page.home.css");

@@ -1,0 +1,26 @@
+<style type="text/css" id="fp-1249-css-tweak-article-list-styles">
+/* (Any Layout) Not "Title" & Not "See More" */
+.s-article-list--layout-e > :not(h2):not(p:last-child) {
+  /* To reduce vertical space between items */
+  flex-grow: 0;
+}
+/* (Compact Layout) Not "Title" & Not "See More" & Not first item */
+.s-article-list--layout-e:not(.s-article-list--layout-divided) :not(h2):not(p:last-child):not(:first-of-type) {
+  /* To increase vertical space between items */
+    margin-top: 0.8rem;
+}
+
+/* ... */
+
+[class*="s-article-list--"] > p:last-child {
+    margin-top: auto; /* to move anchor to bottom of flex box */
+}
+
+/* … */
+
+/* DELETE THIS *//*
+.s-article-list--layout-compact > p:last-child {
+  margin-top: 0;
+}
+*/
+</style>
