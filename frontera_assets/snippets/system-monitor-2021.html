@@ -1,0 +1,182 @@
+<p class="u-empty"><style>
+  /* Container */
+
+  .s-sysmon {
+    font-size: 1.4rem;
+    min-width: 320px;
+  }
+
+  /* Table */
+
+  .s-sysmon table {
+    /* vert. `padding` + vert. `border-spacing` + `border-width` = 14px */
+    padding: 6px 0;
+
+    border: 1px solid var(--global-color-primary--xx-light);
+    border-radius: 9px;
+    border-spacing: 14px 7px; /* Overwrite Bootstrap 3 */
+    border-collapse: separate; /* Overwrite Bootstrap 4 */
+  }
+  .s-sysmon thead > tr {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .s-sysmon th {
+    font-weight: var(--bold);
+  }
+  .s-sysmon td {
+    font-weight: var(--medium);
+  }
+
+  /* Overwrite Bootstrap Class */
+  .s-sysmon .table {
+    margin-bottom: 0px;
+  }
+  .s-sysmon .table-dark {
+    color: var(--global-color-primary--normal);
+    background-color: var(--global-color-primary--xx-dark);
+  }
+  .s-sysmon .table thead th {
+    border-bottom: 1px solid var(--global-color-primary--dark);
+  }
+  .s-sysmon .table th,
+  .s-sysmon .table td {
+    vertical-align: middle;
+    border: none;
+    padding: 0 0 5px;
+  }
+  .s-sysmon .table td {
+    padding: 0;
+  }
+
+  /* Status Label */
+
+  .s-sysmon .badge {
+    font-family: Roboto;
+  }
+
+  /* Overwrite Bootstrap */
+  .s-sysmon .badge {
+    border-radius: 3px;
+    font-size: 1.3rem;
+    font-weight: normal;
+  }
+  .s-sysmon .badge-warning {
+    background-color: var(--global-color-warning--normal);
+    color: var(--global-color-primary--xx-light);
+  }
+
+  /* Overwrite IconWorks */
+  .s-sysmon .iconworks:before {
+    padding-right: 0.5em;
+  }
+</style></p>
+
+<div class="s-sysmon">
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">STATUS</th>
+        <th scope="col">LOAD</th>
+        <th scope="col">RUNNING</th>
+        <th scope="col">QUEUED</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="row">
+          <span
+            id="frontera_status"
+            class="iconworks  badge badge-success  d-none"
+            data-icon="&#217;"
+            >Operational</span
+          >
+        </td>
+        <td id="load_percentage">-</td>
+        <td id="jobs_running">-</td>
+        <td id="jobs_queued">-</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function loadSystemStatusJSON(path, success, error) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          if (success) success(JSON.parse(xhr.responseText));
+        } else {
+          if (error) error(xhr);
+        }
+      }
+    };
+    xhr.open('GET', path, true);
+    xhr.send();
+  }
+
+  function isOperational(system) {
+    if (system['load_percentage'] < 1 || system['load_percentage'] > 99) {
+      system['load_percentage'] = 0;
+      return system['jobs']['running'] > 1;
+    }
+    return true;
+  }
+
+  function setFronteraStatus(frontera_status) {
+    const isFound = frontera_status;
+    const isWorking = isOperational(frontera_status);
+
+    if (isFound && isWorking) {
+      document.getElementById('load_percentage').innerHTML =
+        frontera_status['load_percentage'] + '%';
+      document.getElementById('jobs_running').innerHTML =
+        frontera_status['jobs']['running'];
+      document.getElementById('jobs_queued').innerHTML =
+        frontera_status['jobs']['queued'];
+    } else {
+      document
+        .getElementById('frontera_status')
+        .classList.remove('badge-success');
+      document.getElementById('frontera_status').removeAttribute('data-icon');
+      document.getElementById('frontera_status').innerHTML = 'Maintenance';
+      document.getElementById('frontera_status').classList.add('badge-warning');
+      if (frontera_status) {
+        document.getElementById('load_percentage').innerHTML =
+          frontera_status['load_percentage'] + '%';
+        document.getElementById('jobs_running').innerHTML =
+          frontera_status['jobs']['running'];
+        document.getElementById('jobs_queued').innerHTML =
+          frontera_status['jobs']['queued'];
+      }
+    }
+    document.getElementById('frontera_status').classList.remove('d-none');
+  }
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+      loadSystemStatusJSON(
+        '/api/system-monitor',
+        function (data) {
+          var frontera_status;
+          data.forEach(function (system) {
+            if (system['hostname'] == 'frontera.tacc.utexas.edu') {
+              frontera_status = system;
+              return false;
+            }
+          });
+
+          setFronteraStatus(frontera_status);
+        },
+        function (xhr) {
+          console.error(xhr);
+        }
+      );
+
+      console.log('done with sysmon load');
+    },
+    false
+  );
+</script>
