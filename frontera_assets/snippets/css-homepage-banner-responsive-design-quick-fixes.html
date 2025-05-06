@@ -1,0 +1,12 @@
+<style id="css-homepage-banner-responsive-design-quick-fixes">
+/* Fix second banner article escaping banner overlay on wide screens */
+.s-home__banner .o-section__banner-overlay section {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+@media (max-width: 575px) {
+    .s-home__banner .o-section__banner-overlay section {
+        grid-template-columns: auto;
+    }
+}
+</style>

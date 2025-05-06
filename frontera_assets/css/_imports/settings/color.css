@@ -1,0 +1,15 @@
+/* To redefine all colors for specific templates */
+:is(
+  #page-home,
+  [data-page-template="standard"]
+) {
+  /* Accent Hues */
+  --global-color-accent--x-light: #F2DFBD; /* originally #e3d7fd */
+  --global-color-accent--light: #BDA374;   /* originally #a387ed */
+  --global-color-accent--normal: #877453;  /* originally #784fe8 */
+  --global-color-accent--dark: #64563E;    /* originally #6039cc */
+  --global-color-accent--x-dark: #403014;  /* originally #3d189b */
+
+  --global-color-accent--alt: #E0D8C9;     /* originally #d2cce7 */
+  --global-color-accent--weak: #9D702140;  /* originally #6039cc40 */
+}
