@@ -6,16 +6,25 @@ def _get_orgtypes():
     }
 
 
-def _set_registration_for_listing(reg):
+def _set_registration_for_listing(reg, reg_ents=None):
     org_types = _get_orgtypes()
+
+    entity_name = None
+    if reg_ents:
+        entities = [_set_entities(ent) for ent in reg_ents]
+        if entities:
+            entity_name = entities[0]['ent_name']
+
     return {
         'biz_name': reg[5],
         'type': org_types[reg[4]] if (reg[4] and reg[4] in org_types.keys()) else None,
-        'location': '{city}, {state}'.format(city=reg[7], state=reg[8]),
         'reg_status': reg[3].title() if reg[3] else None,
         'reg_id': reg[0],
         'year': reg[10],
+        'posted_date': reg[1],
+        'ent_name': entity_name,
     }
+
 
 
 def _set_entities(reg_ent):
