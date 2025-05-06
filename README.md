@@ -1,7 +1,5 @@
 # Core-CMS-Custom
 
-> I am test. Hear me roar.
-
 [Core CMS] projects with custom functionality and/or assets
 
 ## Two Ways to Use
@@ -19,6 +17,7 @@
 - [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
 - [Core CMS Resources], the old solution for extensions of the [Core CMS] project
 - [Core Portal Deployments], private repository that facilitates deployments of [Core Portal] images via [Camino] and Jenkins
+
 
 <!-- Link Aliases -->
 
