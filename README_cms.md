@@ -163,7 +163,6 @@ To port a project from [Core CMS Resources], read [Port Project].
 
 To upgrade an existing project, read [Upgrade Project].
 
-
 <!-- Link Aliases -->
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
