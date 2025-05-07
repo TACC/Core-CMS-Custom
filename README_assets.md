@@ -103,7 +103,6 @@ To upgrade the [Core CMS] of an existing project:
 
 - Update its CMS image tag in [Core Portal Deployments] ([example](https://github.com/TACC/Core-Portal-Deployments/blob/23913151/digitalrocks/camino/prod.env#L24)).
 
-
 <!-- Link Aliases -->
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
