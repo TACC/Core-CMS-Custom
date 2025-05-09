@@ -132,7 +132,6 @@ class SubmissionsLogView():
 
             content_types = {
                 'html': "text/html",
-                'json': "application/json",
             }
 
             if log_type not in content_types:
