@@ -40,9 +40,6 @@ jobs:
           tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}
   sync:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apcd_cms
     steps:
       - name: Checkout
         uses: actions/checkout@v4
