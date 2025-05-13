@@ -51,10 +51,7 @@ jobs:
 
       - name: Update develop-apcd Branch when changes to main are made
         run: |
-          git checkout main
-          git fetch origin
           git checkout develop-apcd
-          git pull
           git merge origin/main
           git push origin develop-apcd
 
