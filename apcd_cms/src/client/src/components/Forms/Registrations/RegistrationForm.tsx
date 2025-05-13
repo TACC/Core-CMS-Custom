@@ -186,6 +186,8 @@ const initialTouched = {
 };
 
 const dateThreshold = () => {
+  // UTHealth's registration year begins Oct 1 of the previous year
+  // ex. reg year 2026 will begin 10/01/2025, so allow 2026 starting that day
   const today = new Date();
   const curYear = today.getFullYear()
   const oct1 = new Date(`${curYear}-10-1 0:00:00`);
