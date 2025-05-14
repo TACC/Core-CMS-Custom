@@ -36,8 +36,4 @@ jobs:
         with:
           context: apcd_cms
           push: true
-<<<<<<< Updated upstream
           tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}
-=======
-          tags: taccwma/apcd-cms:${{ steps.vars.outputs.SHORT_SHA }},taccwma/apcd-cms:${{ steps.vars.outputs.BRANCH_NAME }}
->>>>>>> Stashed changes
