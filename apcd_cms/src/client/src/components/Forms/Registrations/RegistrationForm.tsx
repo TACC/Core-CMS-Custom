@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { FormGroup, Label } from 'reactstrap';
@@ -21,10 +21,11 @@ import styles from './RegistrationForm.module.css';
 
 const validationSchema = Yup.object().shape({
   reg_year: Yup.string()
-    .matches(/^(202[3-9]|20[3-9][0-9]|2100)$/, {
-      message: 'Registration year must be 2023 or later',
-    })
-    .required('Registration year is required'),
+  .test('correctYear', `Year must be ${new Date().getFullYear()} or later`, 
+    (val) =>
+      { return Number(val) >= new Date().getFullYear() && Number(val) < 10000 }
+  )
+  .required('Registration year is required'),
   business_name: Yup.string().required('Business name is required'),
   mailing_address: Yup.string().required('Mailing address is required'),
   city: Yup.string().required('City is required'),
@@ -184,6 +185,19 @@ const initialTouched = {
   ],
 };
 
+const dateThreshold = () => {
+  // UTHealth's registration year begins Oct 1 of the previous year
+  // ex. reg year 2026 will begin 10/01/2025, so allow 2026 starting that day
+  const today = new Date();
+  const curYear = today.getFullYear()
+  const oct1 = new Date(`${curYear}-10-1 0:00:00`);
+  if (today >= oct1) {
+    return curYear + 1;
+  }
+  return null;
+}
+
+
 export const RegistrationForm: React.FC<{
   isEdit?: boolean;
   inputValues?: RegistrationFormValues;
@@ -198,6 +212,8 @@ export const RegistrationForm: React.FC<{
   onSuccessCallback = () => {},
 }) => {
   const [searchParams] = useSearchParams();
+  const [lastSubmitCount] = useState(0);
+  const [formErrorMessage, setFormErrorMessage] = useState('');
   const { data, isLoading, isError } = useRegFormData(
     searchParams.get('reg_id')
   );
@@ -273,7 +289,7 @@ export const RegistrationForm: React.FC<{
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, resetForm, setValues, dirty }) => (
+          {({ values, setFieldValue, resetForm, setValues, dirty, isValid, submitCount }) => (
             useEffect(() => {
               if (isSuccess) {
                 resetForm();
@@ -288,6 +304,11 @@ export const RegistrationForm: React.FC<{
               }
             }, [data, isEdit, setValues]), // set form values via setValues method instead of initialValues prop 
                                            // for reg renewal to pass formik's dirty test and enable submit button on form load
+            useEffect(() => {
+              if (submitCount > lastSubmitCount && !isValid) {
+                setFormErrorMessage('All required fields must be valid');
+              }
+            }, [submitCount, isValid, lastSubmitCount, handleSubmit]),
             isSuccess ? (
               <>
                 <div style={{ marginTop: '16px', marginBottom: '16px' }}>
@@ -368,7 +389,8 @@ export const RegistrationForm: React.FC<{
                 <TextFormField
                   name="reg_year"
                   label="Registration Year"
-                  helpText="Enter the registration year. Must be 2023 or later."
+                  helpText={`Enter the registration year. Must be ${new Date().getFullYear()} or later. 
+                    ${dateThreshold() ? `Registrations for ${dateThreshold()} are now open.` : ''}`}
                   required={true}
                 />
                 <FieldWrapper name="type" label="Type" required={true}>
@@ -526,6 +548,13 @@ export const RegistrationForm: React.FC<{
                     Submit
                   </Button>
                 </div>
+                {formErrorMessage && (
+                  <div className={styles.fieldRows}>
+                    <SectionMessage type="error">
+                      {formErrorMessage}
+                    </SectionMessage>
+                  </div>
+                )}
                 {registrationError && (
                   <div>
                     <SectionMessage type="error">
