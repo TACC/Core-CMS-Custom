@@ -26,7 +26,7 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
     def get_exception_list_json(self, exception_content, *args, **kwargs):
         context = {}
 
-        context['header'] = ['Created', 'Entity Organization', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
+        context['header'] = ['Created', 'Payor Code', 'Requestor Name', 'Exception Type', 'Outcome', 'Status', 'Actions']
         context['status_options'] = ['All']
         context['org_options'] = ['All']
         context['outcome_modal_options'] = ['None', 'Granted', 'Denied', 'Withdrawn']
@@ -135,7 +135,7 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
 
         context['query_str'] = queryStr
         page_info = paginator(page_num, exception_table_entries, limit)
-        context['page'] = [{'entity_name': obj['entity_name'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
+        context['page'] = [{'payor_code': obj['payor_code'], 'created_at': obj['created_at'], 'request_type': obj['request_type'], 
                             'requestor_name': obj['requestor_name'], 'outcome': obj['outcome'], 'status': obj['status'], 
                             'approved_threshold': obj['approved_threshold'],'approved_expiration_date': obj['approved_expiration_date'], 
                             'notes': obj['notes'], 'exception_id': obj['exception_id'], 'view_modal_content': obj['view_modal_content'],
@@ -145,7 +145,7 @@ class AdminExceptionsApi(APCDAdminAccessAPIMixin, BaseAPIView):
         context['page_num'] = page_num
         context['total_pages'] = page_info['page'].paginator.num_pages
 
-        context['pagination_url_namespaces'] = 'admin_submission:admin_submissions'
+        context['pagination_url_namespaces'] = 'admin_exception:list-exceptions'
 
         return context
 

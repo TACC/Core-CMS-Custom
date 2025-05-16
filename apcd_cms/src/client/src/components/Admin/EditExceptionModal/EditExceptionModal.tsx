@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader, Row, Col, Alert } from 'reactstrap';
 import { Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
 import * as Yup from 'yup';
 import { ExceptionRow } from 'hooks/admin';
+import { ExceptionForm } from 'apcd-components/Submitter/Exceptions';
 import { formatDate } from 'utils/dateUtil';
-import styles from './EditExceptionModal.module.css';
 import QueryWrapper from 'core-wrappers/QueryWrapper';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 import Button from 'core-components/Button';
@@ -26,6 +26,15 @@ interface FormValues {
   status: string;
   outcome: string;
   notes: string;
+  exceptions: Array<{
+    businessName: number;
+    fileType: string;
+    fieldCode: string;
+    expiration_date: string;
+    requested_threshold: number;
+    required_threshold: number;
+    justification: string;
+  }>;
 }
 
 const EditExceptionModal: React.FC<EditRecordModalProps> = ({
@@ -48,6 +57,24 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
     month: 'short',
     day: 'numeric',
   };
+  // maps file names from DB to values associated with form to populate edit fields
+  const mapFileTypeToCDL = (fileTypeName: string): string => {
+    const map: { [key: string]: string } = {
+      'dental claims': 'dc',
+      'medical claims': 'mc',
+      'member eligibility': 'me',
+      'pharmacy claims': 'pc',
+      'provider': 'pv',
+    };
+
+    const fileType = fileTypeName.toLowerCase();
+    for (const [key, value] of Object.entries(map)) {
+      if (fileType.includes(key)) {
+        return value;
+      }
+    }
+    return fileType.substring(0, 2);
+  };
 
   if (!exception) return null;
   if (isLoading) {
@@ -58,14 +85,49 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
   // Use the custom hook to get form fields and validation
   const useFormFields = () => {
     const initialValues: FormValues = {
-      ...exception,
-      notes: exception?.notes || 'None', // Set notes to 'None' if it is null
+      exception_id: exception?.exception_id || '',
+      approved_threshold: exception?.approved_threshold || '',
+      approved_expiration_date: exception?.approved_expiration_date || '',
+      status: exception?.view_modal_content?.status || '',
+      outcome: exception?.view_modal_content?.outcome || '',
+      notes: exception?.notes || 'None',
+      // Adds an exceptions array that ExceptionForm expects
+      exceptions: [
+        {
+          businessName: exception?.submitter_id,
+          fileType: mapFileTypeToCDL(
+            exception?.view_modal_content?.data_file_name || ''
+          ),
+          fieldCode: exception?.view_modal_content?.field_number || '',
+          expiration_date:
+            exception?.view_modal_content?.requested_expiration_date,
+          requested_threshold: parseFloat(
+            exception?.view_modal_content?.requested_threshold || '0'
+          ),
+          required_threshold: parseFloat(
+            exception?.view_modal_content?.required_threshold || '0'
+          ),
+          justification:
+            exception?.view_modal_content?.explanation_justification || '',
+        },
+      ],
     };
 
     const validationSchema = Yup.object({
       notes: Yup.string()
         .max(2000, 'Notes cannot exceed 2000 characters')
         .nullable(),
+      exceptions: Yup.array().of(
+        Yup.object().shape({
+          businessName: Yup.number(),
+          fileType: Yup.string(),
+          fieldCode: Yup.string(),
+          expiration_date: Yup.date(),
+          requested_threshold: Yup.number(),
+          required_threshold: Yup.number(),
+          explanation_justification: Yup.string(),
+        })
+      ),
     });
 
     return { initialValues, validationSchema };
@@ -184,7 +246,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
       }
     } catch (error: any) {
       console.error('Error saving data:', error);
-      console.log(url);
       if (error.response && error.response.data) {
         // Use error message from the server response
         setErrorMessage(
@@ -233,18 +294,26 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
           Edit Exception ID {exception.exception_id} for {exception.entity_name}
         </ModalHeader>
         <ModalBody>
-          <h4 className="modal-header">Edit Selected Exception</h4>
-
           <QueryWrapper isLoading={false} error={loadingError}>
             <FormikProvider value={formik}>
               <form onSubmit={formik.handleSubmit}>
+                {formik.values &&
+                  formik.values.exceptions.map((item, index) => (
+                    <ExceptionForm
+                      key={index}
+                      index={index}
+                      isModal={true}
+                      exceptionType={exception.request_type}
+                    />
+                  ))}
+                {/* admin only fields not in exception form */}
                 <Row>
-                  {exception.request_type == 'Threshold' && (
+                  {exception.request_type.toLowerCase() == 'threshold' && (
                     <Col md={3}>
                       <FieldWrapper
                         name="approved_threshold"
                         label="Approved Threshold"
-                        required={true}
+                        required={false}
                       >
                         <Field
                           type="text"
@@ -258,12 +327,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                         />
-                        <small
-                          className="form-text text-muted"
-                          style={{ fontStyle: 'italic' }}
-                        >
-                          Requested: {exception.requested_threshold}%
-                        </small>
                       </FieldWrapper>
                     </Col>
                   )}
@@ -285,25 +348,10 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        Requested Expy Date:{' '}
-                        {exception.view_modal_content.requested_expiration_date
-                          ? new Date(
-                              exception.view_modal_content.requested_expiration_date
-                            ).toLocaleDateString()
-                          : 'None'}
-                      </small>
                     </FieldWrapper>
                   </Col>
                   <Col md={3}>
-                    <FieldWrapper
-                      name="status"
-                      label="Exception Status"
-                      required={false}
-                    >
+                    <FieldWrapper name="status" label="Exception Status">
                       <Field
                         as="select"
                         name="status"
@@ -354,6 +402,27 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     </FieldWrapper>
                   </Col>
                   <Col md={6}>
+                    <FieldWrapper
+                      name="explanation_justification"
+                      label="Justification"
+                    >
+                      {formik.values.exceptions.map((item, index) => (
+                        <Field
+                          key={item}
+                          as="textarea"
+                          name={`exceptions[${index}].justification`}
+                          id={`explanation_justification_${index}`}
+                          rows="5"
+                          cols="40"
+                          maxLength="2000"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                      ))}
+                      <div className="help-text">2000 character limit</div>
+                    </FieldWrapper>
+                  </Col>
+                  <Col md={6}>
                     <FieldWrapper name="notes" label="Notes" required={false}>
                       <Field
                         as="textarea"
@@ -365,12 +434,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      <small
-                        className="form-text text-muted"
-                        style={{ fontStyle: 'italic' }}
-                      >
-                        2000 character limit
-                      </small>
+                      <div className="help-text">2000 character limit</div>
                     </FieldWrapper>
                   </Col>
                 </Row>
@@ -390,16 +454,6 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                 </Button>
               </form>
             </FormikProvider>
-            <hr />
-            <h4 className="modal-header">Current Exception Information</h4>
-            <div>
-              {currentException.map((field, index) => (
-                <Row key={index}>
-                  <Col md={{ size: 4, offset: 1 }}>{field.label}:</Col>
-                  <Col md={7}>{field.value}</Col>
-                </Row>
-              ))}
-            </div>
           </QueryWrapper>
         </ModalBody>
       </Modal>

@@ -125,7 +125,7 @@ export const AdminExceptions: React.FC = () => {
             data?.page.map((row: ExceptionRow, rowIndex: number) => (
               <tr key={rowIndex}>
                 <td>{formatDate(row.created_at)}</td>
-                <td>{row.entity_name}</td>
+                <td>{row.payor_code}</td>
                 <td>{row.requestor_name}</td>
                 <td>{row.request_type}</td>
                 <td>{row.outcome}</td>

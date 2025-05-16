@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
+import { cdl, useCDLs } from 'hooks/cdls';
 import { ExceptionRow } from 'hooks/admin';
 import { formatUTCDate } from 'utils/dateUtil';
-import styles from './ViewExceptionModal.module.css';
 
 export const ViewExceptionModal: React.FC<{
   exception: ExceptionRow;
@@ -35,6 +35,39 @@ export const ViewExceptionModal: React.FC<{
     updated_at,
   } = exception.view_modal_content;
 
+  // Use data_file_name from form to find cdl field_list_code and cdl field_list_value
+  const mapFileTypeToCDL = (data_file_name: string): string => {
+    const map: { [key: string]: string } = {
+      'dental claims': 'dc',
+      'medical claims': 'mc',
+      'member eligibility': 'me',
+      'pharmacy claims': 'pc',
+      'provider': 'pv',
+    };
+    const fileType = data_file_name.toLowerCase();
+    for (const [key, value] of Object.entries(map)) {
+      if (fileType.includes(key)) {
+        return value;
+      }
+    }
+    return fileType.substring(0, 2);
+  };
+
+const cdl = (data_file_name: string): cdl => {
+  const fileTypeCode = mapFileTypeToCDL(data_file_name);
+  const {
+    data: fetchedCDLData,
+    isLoading: cdlLoading,
+    isError: cdlError,
+  } = useCDLs(fileTypeCode);
+  
+  const cdls = fetchedCDLData?.cdls.find(
+    (cdl) => cdl.field_list_code === field_number
+  );
+  
+  return cdls as cdl;
+}
+
   return (
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
       <ModalHeader close={closeBtn}>Exception Detail</ModalHeader>
@@ -45,7 +78,8 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Created</Col>
               <Col md={7}>
-                {(created_at && new Date(created_at).toLocaleString()) || 'None'}
+                {(created_at && new Date(created_at).toLocaleString()) ||
+                  'None'}
               </Col>
             </Row>
             <Row>
@@ -78,7 +112,16 @@ export const ViewExceptionModal: React.FC<{
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Field Number</Col>
-              <Col md={7}>{field_number || 'None'}</Col>
+              {field_number && data_file_name ? (
+                <Col md={7}>
+                  {(() => {
+                    const cdlValue = cdl(data_file_name);
+                    return cdlValue?.field_list_code + ' - ' + cdlValue?.field_list_value;
+                  })()}
+                </Col>
+              ) : (
+                <Col md={7}>{'Unavailable'}</Col>
+              )}
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Required Threshold</Col>
@@ -119,7 +162,8 @@ export const ViewExceptionModal: React.FC<{
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Last Updated</Col>
               <Col md={7}>
-                {(updated_at && new Date(updated_at).toLocaleString()) || 'None'}
+                {(updated_at && new Date(updated_at).toLocaleString()) ||
+                  'None'}
               </Col>
             </Row>
             <hr />
