@@ -1033,7 +1033,7 @@ def get_all_submissions_and_logs():
                                     END,
                                 'has_html_log', CASE
                                         WHEN submission_logs.html_log IS NOT NULL THEN 1
-                                        ELSE 1
+                                        ELSE 0
                                         END,
                                 'file_type_name', (
                                     SELECT standard_codes.item_value 

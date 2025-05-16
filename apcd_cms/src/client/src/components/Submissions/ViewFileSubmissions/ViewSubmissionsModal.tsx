@@ -58,7 +58,7 @@ export const ViewSubmissionLogsModal: React.FC<
                       </dd>
                       <dt className="c-data-list__key">HTML Log</dt>
                       <dd className="c-data-list__value">
-                        {log.has_html_log === 1 && (
+                        {log.has_html_log === 1 ? (
                           <Link
                             to={`${
                               isAdminUser ? 'administration' : 'submissions'
@@ -68,7 +68,11 @@ export const ViewSubmissionLogsModal: React.FC<
                           >
                             Download
                           </Link>
-                        )}
+                        ) : (
+                            <div className="modal-section">
+                            No available logs
+                            </div>
+                            )}
                       </dd>
                     </dl>
                     <hr />
