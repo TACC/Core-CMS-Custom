@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader, Row, Col, Alert } from 'reactstrap';
 import { Field, useFormik, FormikHelpers, FormikProvider } from 'formik';
 import { fetchUtil } from 'utils/fetchUtil';
@@ -67,13 +67,13 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
       provider: 'pv',
     };
 
-    const lowerCaseName = fileTypeName.toLowerCase();
+    const fileType = fileTypeName.toLowerCase();
     for (const [key, value] of Object.entries(map)) {
-      if (lowerCaseName.includes(key)) {
+      if (fileType.includes(key)) {
         return value;
       }
     }
-    return lowerCaseName.substring(0, 2);
+    return fileType.substring(0, 2);
   };
 
   if (!exception) return null;
@@ -409,6 +409,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                     >
                       {formik.values.exceptions.map((item, index) => (
                         <Field
+                          key={item}
                           as="textarea"
                           name={`exceptions[${index}].justification`}
                           id={`explanation_justification_${index}`}

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useFormikContext, Field, ErrorMessage } from 'formik';
+import { useFormikContext, Field } from 'formik';
 import { cdlObject, useCDLs, cdl } from 'hooks/cdls';
 import { Entities, useEntities } from 'hooks/entities';
 import styles from './ExceptionForm.module.css';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import SectionMessage from 'core-components/SectionMessage';
-import { Link } from 'react-router-dom';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
 
 export const ExceptionForm: React.FC<{
