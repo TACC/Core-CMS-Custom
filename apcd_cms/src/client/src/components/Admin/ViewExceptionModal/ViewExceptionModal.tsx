@@ -42,7 +42,7 @@ export const ViewExceptionModal: React.FC<{
       'medical claims': 'mc',
       'member eligibility': 'me',
       'pharmacy claims': 'pc',
-      provider: 'pv',
+      'provider': 'pv',
     };
     const fileType = data_file_name.toLowerCase();
     for (const [key, value] of Object.entries(map)) {

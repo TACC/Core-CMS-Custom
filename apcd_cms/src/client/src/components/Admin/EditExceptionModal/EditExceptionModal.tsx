@@ -64,7 +64,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
       'medical claims': 'mc',
       'member eligibility': 'me',
       'pharmacy claims': 'pc',
-      provider: 'pv',
+      'provider': 'pv',
     };
 
     const fileType = fileTypeName.toLowerCase();
