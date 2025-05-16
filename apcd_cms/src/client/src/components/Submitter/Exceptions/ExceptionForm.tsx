@@ -212,7 +212,7 @@ export const ExceptionForm: React.FC<{
             <FieldWrapper
               name={`exceptions[${index}].required_threshold`}
               label="Required Threshold Percentage"
-              required={!isModal}
+              required={false}
             >
               <Field
                 className={styles.requiredThreshold}
@@ -225,7 +225,7 @@ export const ExceptionForm: React.FC<{
           </div>
         </>
       )}
-      {exceptionType === 'other' && (
+      {exceptionType.toLowerCase() === 'other' && (
         <div className={styles.fieldRows}>
           <FieldWrapper
             name={`exceptions[${index}].expiration_date`}

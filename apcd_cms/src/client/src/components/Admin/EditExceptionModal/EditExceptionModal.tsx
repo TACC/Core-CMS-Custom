@@ -120,15 +120,11 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
       exceptions: Yup.array().of(
         Yup.object().shape({
           businessName: Yup.number(),
-          fileType: Yup.string().required('File type is required'),
-          fieldCode: Yup.string().required('Field code is required'),
-          expiration_date: Yup.date().required('Expiration date is required'),
-          requested_threshold: Yup.number().required(
-            'Requested threshold is required'
-          ),
-          required_threshold: Yup.number()
-            .min(1, 'This field code does not require an exception submission.')
-            .required('Required'),
+          fileType: Yup.string(),
+          fieldCode: Yup.string(),
+          expiration_date: Yup.date(),
+          requested_threshold: Yup.number(),
+          required_threshold: Yup.number(),
           explanation_justification: Yup.string(),
         })
       ),
@@ -313,7 +309,7 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
                   ))}
                 {/* admin only fields not in exception form */}
                 <Row>
-                  {exception.request_type == 'Threshold' && (
+                  {exception.request_type.toLowerCase() == 'threshold' && (
                     <Col md={3}>
                       <FieldWrapper
                         name="approved_threshold"

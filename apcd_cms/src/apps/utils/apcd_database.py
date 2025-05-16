@@ -738,7 +738,7 @@ def delete_registration_contact(reg_id, cont_id):
             conn.close()
 
 
-def create_other_exception(form, sub_data):
+def create_other_exception(form, exception, sub_data):
     cur = None
     conn = None
     values = ()
@@ -765,14 +765,14 @@ def create_other_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["otherExceptionBusinessName"],
+            _clean_value(int(exception['businessName'])),
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestorName']),
             _clean_email(form['requestorEmail']),
-            "Other",
-            _clean_date(form['expirationDateOther']),
+            _clean_value(form['exceptionType']),
+            _clean_date(exception['expiration_date']),
             _clean_value(form['justification']),
             "Pending"
         )

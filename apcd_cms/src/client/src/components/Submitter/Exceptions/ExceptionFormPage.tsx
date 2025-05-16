@@ -25,8 +25,6 @@ interface FormValues {
   requestorName: string;
   requestorEmail: string;
   acceptTerms: boolean;
-  expirationDateOther: string;
-  otherExceptionBusinessName: string;
 }
 
 export const ExceptionFormPage: React.FC = () => {
@@ -57,42 +55,40 @@ export const ExceptionFormPage: React.FC = () => {
         )
         .typeError('Business name is required')
         .required('Business name is required'),
-      fileType: Yup.string().required('File type is required'),
-      fieldCode: Yup.string().required('Field code is required'),
       expiration_date: Yup.date()
         .required('Expiration date is required')
         .max('9999-12-31', 'Expiration date must be MM/DD/YYYY')
         .min('0001-01-01', 'Expiration date must be MM/DD/YYYY'),
-      requested_threshold: Yup.number().required(
-        'Requested threshold is required'
-      ),
-      required_threshold: Yup.number()
-        .min(1, 'This field code does not require an exception submission.')
-        .required('Required'),
+      // Fields conditionally required based on exception type
+      fileType: Yup.string().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('File type is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      fieldCode: Yup.string().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('Field code is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      requested_threshold: Yup.number().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('Requested threshold is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      required_threshold: Yup.number().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) =>
+          schema
+            .min(1, 'This field code does not require a submission.')
+            .required('Required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     })
   );
 
   const validationSchema = Yup.object().shape({
     ...baseSchema,
-    exceptions: Yup.mixed().when('exceptionType', {
-      is: 'threshold',
-      then: (schema) => exceptionSchema,
-      otherwise: (schema) => schema.strip(),
-    }),
-    expirationDateOther: Yup.mixed().when('exceptionType', {
-      is: 'other',
-      then: (schema) =>
-        Yup.date()
-          .required('Required')
-          .max('9999-12-31', 'Date must be MM/DD/YYYY')
-          .min('0001-01-01', 'Date must be MM/DD/YYYY'),
-      otherwise: (schema) => schema.strip(),
-    }),
-    otherExceptionBusinessName: Yup.mixed().when('exceptionType', {
-      is: 'other',
-      then: () => Yup.number().min(0, 'Required').required('Required'),
-      otherwise: () => Yup.mixed().strip(),
-    }),
+    exceptions: exceptionSchema,
   });
   const initialValues: FormValues = {
     exceptionType: selectedExceptionType ? selectedExceptionType : '',
@@ -108,8 +104,6 @@ export const ExceptionFormPage: React.FC = () => {
     requestorName: '',
     requestorEmail: '',
     acceptTerms: false,
-    expirationDateOther: '',
-    otherExceptionBusinessName: '',
   };
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -205,6 +199,7 @@ export const ExceptionFormPage: React.FC = () => {
           setFieldValue,
           resetForm,
           isValid,
+          errors,
           submitCount,
           handleSubmit,
           dirty,
@@ -364,37 +359,25 @@ export const ExceptionFormPage: React.FC = () => {
                         />
                       </FieldWrapper>
                     </div>
-                    {isSuccess ? (
-                      <>
-                        <Button
-                          type="primary"
-                          attr="submit"
-                          disabled={isSubmitting || !dirty}
-                          isLoading={isSubmitting}
-                          onClick={() => setIsSuccess(false)}
+                    <Button
+                      type="primary"
+                      attr="submit"
+                      disabled={isSubmitting || !dirty}
+                      isLoading={isSubmitting}
+                      onClick={() => setIsSuccess(false)}
+                    >
+                      Submit
+                    </Button>
+                    {isSuccess && (
+                      <div className={styles.fieldRows}>
+                        <SectionMessage
+                          type="success"
+                          canDismiss={true}
+                          onDismiss={() => setIsSuccess(false)}
                         >
-                          Submit Another Exception
-                        </Button>
-                        <div className={styles.fieldRows}>
-                          <SectionMessage
-                            type="success"
-                            canDismiss={true}
-                            onDismiss={() => setIsSuccess(false)}
-                          >
-                            Your exception request was successfully sent.
-                          </SectionMessage>
-                        </div>
-                      </>
-                    ) : (
-                      <Button
-                        type="primary"
-                        attr="submit"
-                        disabled={isSubmitting || !dirty}
-                        isLoading={isSubmitting}
-                        onClick={() => setIsSuccess(false)}
-                      >
-                        Submit
-                      </Button>
+                          Your exception request was successfully sent.
+                        </SectionMessage>
+                      </div>
                     )}
                     {errorMessage && (
                       <div className={styles.fieldRows}>
