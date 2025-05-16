@@ -233,6 +233,7 @@ export const ExceptionFormPage: React.FC = () => {
                       const selection = e.target.value;
                       setSelectedExceptionType(selection);
                       setFieldValue('exceptionType', selection);
+                      setFieldValue('exceptions', [...values.exceptions]);
                       setIsSuccess(false);
                     }}
                   >
