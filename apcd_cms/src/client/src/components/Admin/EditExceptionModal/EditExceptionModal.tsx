@@ -64,6 +64,8 @@ const EditExceptionModal: React.FC<EditRecordModalProps> = ({
       'medical claims': 'mc',
       'member eligibility': 'me',
       'pharmacy claims': 'pc',
+      // prettier removes ' around provider
+      // prettier-ignore
       'provider': 'pv',
     };
 

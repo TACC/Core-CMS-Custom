@@ -18,6 +18,7 @@ export const ViewExceptionModal: React.FC<{
   const {
     created_at,
     entity_name,
+    payor_code,
     requestor_name,
     requestor_email,
     request_type,
@@ -42,6 +43,8 @@ export const ViewExceptionModal: React.FC<{
       'medical claims': 'mc',
       'member eligibility': 'me',
       'pharmacy claims': 'pc',
+      // prettier removes ' around provider
+      // prettier-ignore
       'provider': 'pv',
     };
     const fileType = data_file_name.toLowerCase();
@@ -53,21 +56,19 @@ export const ViewExceptionModal: React.FC<{
     return fileType.substring(0, 2);
   };
 
-const cdl = (data_file_name: string): cdl => {
-  const fileTypeCode = mapFileTypeToCDL(data_file_name);
-  const {
-    data: fetchedCDLData,
-    isLoading: cdlLoading,
-    isError: cdlError,
-  } = useCDLs(fileTypeCode);
+  const cdl = (data_file_name: string): cdl => {
+    const fileTypeCode = mapFileTypeToCDL(data_file_name);
+    const {
+      data: fetchedCDLData,
+      isLoading: cdlLoading,
+      isError: cdlError,
+    } = useCDLs(fileTypeCode);
+    const cdls = fetchedCDLData?.cdls.find(
+      (cdl) => cdl.field_list_code === field_number
+    );
+    return cdls as cdl;
+  };
   
-  const cdls = fetchedCDLData?.cdls.find(
-    (cdl) => cdl.field_list_code === field_number
-  );
-  
-  return cdls as cdl;
-}
-
   return (
     <Modal title="View Exception" isOpen={isOpen} toggle={onClose} size="lg">
       <ModalHeader close={closeBtn}>Exception Detail</ModalHeader>
@@ -85,6 +86,10 @@ const cdl = (data_file_name: string): cdl => {
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Entity Organization</Col>
               <Col md={7}>{entity_name}</Col>
+            </Row>
+            <Row>
+              <Col md={{ size: 4, offset: 1 }}>Payor Code</Col>
+              <Col md={7}>{payor_code}</Col>
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 1 }}>Requestor</Col>
@@ -116,7 +121,11 @@ const cdl = (data_file_name: string): cdl => {
                 <Col md={7}>
                   {(() => {
                     const cdlValue = cdl(data_file_name);
-                    return cdlValue?.field_list_code + ' - ' + cdlValue?.field_list_value;
+                    return (
+                      cdlValue?.field_list_code +
+                      ' - ' +
+                      cdlValue?.field_list_value
+                    );
                   })()}
                 </Col>
               ) : (
