@@ -27,7 +27,7 @@ Custom assets for [Core CMS] projects
 
 - [Camino], a Docker container-based deployment scheme
 - [Core CMS], the base CMS code for TACC WMA CMS Websites
-- [Core CMS Template], a template for creating new TACC CMS projects
+- [Core CMS Template], a template for creating new TACC WMA CMS projects
 - [Core Portal], the base Portal code for TACC WMA CMS Websites
 - [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
 - [Core CMS Resources], the old solution for extensions of the [Core CMS] project
