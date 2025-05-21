@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Label } from 'reactstrap';
 import styles from './ExceptionForm.module.css';
 import { ExceptionForm } from './';
 import SectionMessage from 'core-components/SectionMessage';
 import { fetchUtil } from 'utils/fetchUtil';
-import { Link } from 'react-router-dom';
-import { Entities, useEntities } from 'hooks/entities';
+import { useEntities } from 'hooks/entities';
 import Button from 'core-components/Button';
 import LoadingSpinner from 'core-components/LoadingSpinner';
 import FieldWrapper from 'core-wrappers/FieldWrapperFormik';
@@ -26,8 +25,6 @@ interface FormValues {
   requestorName: string;
   requestorEmail: string;
   acceptTerms: boolean;
-  expirationDateOther: string;
-  otherExceptionBusinessName: string;
 }
 
 export const ExceptionFormPage: React.FC = () => {
@@ -58,42 +55,40 @@ export const ExceptionFormPage: React.FC = () => {
         )
         .typeError('Business name is required')
         .required('Business name is required'),
-      fileType: Yup.string().required('File type is required'),
-      fieldCode: Yup.string().required('Field code is required'),
       expiration_date: Yup.date()
         .required('Expiration date is required')
         .max('9999-12-31', 'Expiration date must be MM/DD/YYYY')
         .min('0001-01-01', 'Expiration date must be MM/DD/YYYY'),
-      requested_threshold: Yup.number().required(
-        'Requested threshold is required'
-      ),
-      required_threshold: Yup.number()
-        .min(1, 'This field code does not require an exception submission.')
-        .required('Required'),
+      // Fields conditionally required based on exception type
+      fileType: Yup.string().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('File type is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      fieldCode: Yup.string().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('Field code is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      requested_threshold: Yup.number().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) => schema.required('Requested threshold is required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      required_threshold: Yup.number().when('$exceptionType', {
+        is: 'threshold',
+        then: (schema) =>
+          schema
+            .min(1, 'This field code does not require a submission.')
+            .required('Required'),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     })
   );
 
   const validationSchema = Yup.object().shape({
     ...baseSchema,
-    exceptions: Yup.mixed().when('exceptionType', {
-      is: 'threshold',
-      then: (schema) => exceptionSchema,
-      otherwise: (schema) => schema.strip(),
-    }),
-    expirationDateOther: Yup.mixed().when('exceptionType', {
-      is: 'other',
-      then: (schema) =>
-        Yup.date()
-          .required('Required')
-          .max('9999-12-31', 'Date must be MM/DD/YYYY')
-          .min('0001-01-01', 'Date must be MM/DD/YYYY'),
-      otherwise: (schema) => schema.strip(),
-    }),
-    otherExceptionBusinessName: Yup.mixed().when('exceptionType', {
-      is: 'other',
-      then: () => Yup.number().min(0, 'Required').required('Required'),
-      otherwise: () => Yup.mixed().strip(),
-    }),
+    exceptions: exceptionSchema,
   });
   const initialValues: FormValues = {
     exceptionType: selectedExceptionType ? selectedExceptionType : '',
@@ -109,8 +104,6 @@ export const ExceptionFormPage: React.FC = () => {
     requestorName: '',
     requestorEmail: '',
     acceptTerms: false,
-    expirationDateOther: '',
-    otherExceptionBusinessName: '',
   };
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -206,6 +199,7 @@ export const ExceptionFormPage: React.FC = () => {
           setFieldValue,
           resetForm,
           isValid,
+          errors,
           submitCount,
           handleSubmit,
           dirty,
@@ -239,6 +233,7 @@ export const ExceptionFormPage: React.FC = () => {
                       const selection = e.target.value;
                       setSelectedExceptionType(selection);
                       setFieldValue('exceptionType', selection);
+                      setFieldValue('exceptions', [...values.exceptions]);
                       setIsSuccess(false);
                     }}
                   >
@@ -247,204 +242,124 @@ export const ExceptionFormPage: React.FC = () => {
                     <option value="other">Other Exception</option>
                   </Field>
                 </FieldWrapper>
-                {selectedExceptionType !== '' && (
-                  <div style={{ paddingTop: '10px' }}>
-                    <b>Note:</b> Your changes will not be saved if you change
-                    the exception type.
-                  </div>
-                )}
               </div>
-              {selectedExceptionType == 'threshold' && (
-                <div>
-                  {values.exceptions.map((exception, index) => (
-                    <ExceptionForm key={index} index={index} />
-                  ))}
-                  <div className={styles.fieldRows}>
-                    <Button
-                      type="primary"
-                      onClick={() =>
-                        setFieldValue('exceptions', [
-                          ...values.exceptions,
-                          {
-                            businessName: '',
-                            fileType: '',
-                            fieldCode: '',
-                            expiration_date: '',
-                            requested_threshold: 0,
-                            required_threshold: 0,
-                          },
-                        ])
-                      }
-                      disabled={values.exceptions.length >= 5}
-                    >
-                      + Add Another Threshold Exception
-                    </Button>
-                    <Button
-                      type="secondary"
-                      onClick={() =>
-                        values.exceptions.length > 1 &&
-                        setFieldValue(
-                          'exceptions',
-                          values.exceptions.slice(0, -1)
-                        )
-                      }
-                      disabled={values.exceptions.length === 1}
-                    >
-                      - Remove Last Threshold Exception
-                    </Button>
-                  </div>
-                </div>
-              )}
-              {selectedExceptionType === 'other' && (
-                <>
-                  <hr />
-                  <h4>Exception Details</h4>
-                  <div className={styles.fieldRows}>
-                    {submitterData && (
-                      <>
-                        <FieldWrapper
-                          name="otherExceptionBusinessName"
-                          label="Business Name"
-                          required={true}
-                        >
-                          <Field
-                            as="select"
-                            name={`otherExceptionBusinessName`}
-                            id={`otherExceptionBusinessName`}
+              {
+                /*Only show form when exception_type is selected */
+                selectedExceptionType && (
+                  <div>
+                    {values.exceptions.map((exception, index) => (
+                      <ExceptionForm
+                        key={index}
+                        index={index}
+                        isModal={false}
+                        exceptionType={selectedExceptionType}
+                      />
+                    ))}
+                    {
+                      /*Only show add/remove buttons for threshold*/
+                      selectedExceptionType === 'threshold' && (
+                        <div className={styles.fieldRows}>
+                          <Button
+                            type="primary"
+                            onClick={() =>
+                              setFieldValue('exceptions', [
+                                ...values.exceptions,
+                                {
+                                  businessName: '',
+                                  fileType: '',
+                                  fieldCode: '',
+                                  expiration_date: '',
+                                  requested_threshold: 0,
+                                  required_threshold: 0,
+                                },
+                              ])
+                            }
+                            disabled={values.exceptions.length >= 5}
                           >
-                            <option value="">-- Select a Business --</option>
-                            {submitterData?.submitters?.map(
-                              (submitter: Entities) => (
-                                <option
-                                  value={submitter.submitter_id}
-                                  key={submitter.submitter_id}
-                                >
-                                  {submitter.entity_name} - Payor Code:{' '}
-                                  {submitter.payor_code}
-                                </option>
+                            + Add Another Threshold Exception
+                          </Button>
+                          <Button
+                            type="secondary"
+                            onClick={() =>
+                              values.exceptions.length > 1 &&
+                              setFieldValue(
+                                'exceptions',
+                                values.exceptions.slice(0, -1)
                               )
-                            )}
-                          </Field>
-                        </FieldWrapper>
-                      </>
-                    )}
-                  </div>
-                  {entitiesError && (
-                    <SectionMessage type="error">
-                      There was an error finding your associated businesses.{' '}
-                      <Link
-                        to="/workbench/dashboard/tickets/create"
-                        className="wb-link"
-                      >
-                        Please submit a ticket.
-                      </Link>
-                    </SectionMessage>
-                  )}
-                  <div className={styles.fieldRows}>
+                            }
+                            disabled={values.exceptions.length === 1}
+                          >
+                            - Remove Last Threshold Exception
+                          </Button>
+                        </div>
+                      )
+                    }{' '}
+                    <hr />
+                    {/* on page rather than form to allow threshold to have add/remove buttons*/}
+                    <h4>Request and Justification</h4>
                     <FieldWrapper
-                      name="expirationDateOther"
-                      label="Requested Expiration Date"
-                      required={true}
-                    >
-                      <Field
-                        type="date"
-                        name="expirationDateOther"
-                        id="expirationDateOther"
-                        className={styles.expirationDate}
-                      ></Field>
-                    </FieldWrapper>
-                  </div>
-                </>
-              )}
-              {selectedExceptionType && (
-                <>
-                  <hr />
-                  <h4>Request and Justification</h4>
-                  <FieldWrapper
-                    name="justification"
-                    label="Provide rationale for the exception request, outlining the
+                      name="justification"
+                      label="Provide rationale for the exception request, outlining the
                       reasons why the organization is unable to comply with the
                       relevant requirements. Provide as much detail as possible
                       regarding the exception request, indicating the specific
                       submission requirements for which relief is being sought.
                       If applicable, indicate how the organization plans to
                       become compliant.**"
-                    required={true}
-                    description="2000 character limit"
-                  >
-                    <Field
-                      as="textarea"
-                      name="justification"
-                      id="justification"
-                      rows={5}
-                    />
-                  </FieldWrapper>
-                  <hr />
-                  <h4>Acknowledgment of Terms</h4>
-                  <Label className="form-wrapper">
-                    I understand and acknowledge that the Texas Department of
-                    Insurance (TDI) may review the validity of the information
-                    submitted on this form.
-                  </Label>
-                  <div className={styles.fieldRows}>
-                    <FieldWrapper
-                      name="requestorName"
-                      label="Requestor Name"
                       required={true}
+                      description="2000 character limit"
                     >
                       <Field
-                        type="text"
+                        as="textarea"
+                        name="justification"
+                        id="justification"
+                        rows={5}
+                      />
+                    </FieldWrapper>
+                    <hr />
+                    <h4>Acknowledgment of Terms</h4>
+                    <Label className="form-wrapper">
+                      I understand and acknowledge that the Texas Department of
+                      Insurance (TDI) may review the validity of the information
+                      submitted on this form.
+                    </Label>
+                    <div className={styles.fieldRows}>
+                      <FieldWrapper
                         name="requestorName"
-                        id="requestorName"
-                      ></Field>
-                    </FieldWrapper>
-                    <FieldWrapper
-                      name="requestorEmail"
-                      label="Requestor E-mail"
-                      required={true}
-                    >
-                      <Field
-                        type="email"
-                        name="requestorEmail"
-                        id="requestorEmail"
-                      />
-                    </FieldWrapper>
-                    <FieldWrapper
-                      name="acceptTerms"
-                      label="Accept"
-                      required={true}
-                      description=""
-                    >
-                      <Field
-                        type="checkbox"
-                        name="acceptTerms"
-                        id="acceptTerms"
-                        className={`form-control`}
-                      />
-                    </FieldWrapper>
-                  </div>
-                  {isSuccess ? (
-                    <>
-                      <Button
-                        type="primary"
-                        attr="submit"
-                        disabled={isSubmitting || !dirty}
-                        isLoading={isSubmitting}
-                        onClick={() => setIsSuccess(false)}
+                        label="Requestor Name"
+                        required={true}
                       >
-                        Submit Another Exception
-                      </Button>
-                      <div className={styles.fieldRows}>
-                        <SectionMessage
-                          type="success"
-                          canDismiss={true}
-                          onDismiss={() => setIsSuccess(false)}
-                        >
-                          Your exception request was successfully sent.
-                        </SectionMessage>
-                      </div>
-                    </>
-                  ) : (
+                        <Field
+                          type="text"
+                          name="requestorName"
+                          id="requestorName"
+                        ></Field>
+                      </FieldWrapper>
+                      <FieldWrapper
+                        name="requestorEmail"
+                        label="Requestor E-mail"
+                        required={true}
+                      >
+                        <Field
+                          type="email"
+                          name="requestorEmail"
+                          id="requestorEmail"
+                        />
+                      </FieldWrapper>
+                      <FieldWrapper
+                        name="acceptTerms"
+                        label="Accept"
+                        required={true}
+                        description=""
+                      >
+                        <Field
+                          type="checkbox"
+                          name="acceptTerms"
+                          id="acceptTerms"
+                          className={`form-control`}
+                        />
+                      </FieldWrapper>
+                    </div>
                     <Button
                       type="primary"
                       attr="submit"
@@ -454,27 +369,38 @@ export const ExceptionFormPage: React.FC = () => {
                     >
                       Submit
                     </Button>
-                  )}
-                  {errorMessage && (
-                    <div className={styles.fieldRows}>
-                      <SectionMessage type="error">
-                        {errorMessage}
-                      </SectionMessage>
+                    {isSuccess && (
+                      <div className={styles.fieldRows}>
+                        <SectionMessage
+                          type="success"
+                          canDismiss={true}
+                          onDismiss={() => setIsSuccess(false)}
+                        >
+                          Your exception request was successfully sent.
+                        </SectionMessage>
+                      </div>
+                    )}
+                    {errorMessage && (
+                      <div className={styles.fieldRows}>
+                        <SectionMessage type="error">
+                          {errorMessage}
+                        </SectionMessage>
+                      </div>
+                    )}
+                    <div>
+                      <hr />
+                      <small>
+                        * Exceptions cannot be granted for periods longer than a
+                        year.
+                        <br />
+                        ** Exceptions cannot be granted from any requirement in
+                        insurance code Chapter 38.
+                        <br />
+                      </small>
                     </div>
-                  )}
-                  <div>
-                    <hr />
-                    <small>
-                      * Exceptions cannot be granted for periods longer than a
-                      year.
-                      <br />
-                      ** Exceptions cannot be granted from any requirement in
-                      insurance code Chapter 38.
-                      <br />
-                    </small>
                   </div>
-                </>
-              )}
+                )
+              }
             </Form>
           );
         }}
