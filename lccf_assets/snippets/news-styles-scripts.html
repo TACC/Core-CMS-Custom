@@ -1,0 +1,27 @@
+{% load static %}
+<style id="news-styles-scripts--css">
+@import url("{% static "site_cms/css/build/app.blog.css" %}") layer(project);
+
+/* to hide "Back" link (which opens all TACC news) */
+.blog-back {
+    display: none;
+}
+
+/* to remove bottom border of last article if no pagination */
+.blog-list:not(
+    :has(.pagination)
+) article:last-of-type {
+    border-bottom: unset;
+}
+
+/* to hide the "— Lccf" in news list title */
+:is(.blog-list) h1 > strong::after, /* the "—" */
+:is(.blog-list) h1 > em /* the "Lccf" */ {
+    display: none;
+}
+</style>
+<script id="news-styles-scripts--js" type="module">
+import { changeHowExternalArticleOpens } from '{% static "site_cms/js/modules/manageExternalArticles.js" %}';
+
+changeHowExternalArticleOpens('external');
+</script>
