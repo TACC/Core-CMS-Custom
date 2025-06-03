@@ -26,10 +26,45 @@
     </li>
     <li class="data-tree__item">
       <details>
-        <summary>CSS already <strong>automatically</strong> loads on every page.</summary>
+        <summary>If render will be built via CMS, CSS already <strong>automatically</strong> loads on every page.</summary>
         <p>
           The <strong>working CSS</strong> is automatically loaded via <a href="https://github.com/TACC/Core-Portal-Deployments/blob/main/digitalrocks/camino/cms.settings_custom.py#L30-L39" target="_blank">Core-Portal-Deployments</a> and <a href="https://github.com/TACC/Core-CMS-Custom/tree/main/digitalrocks_assets/css">Core-CMS-Custom</a>. WMA shouldn't need to worry about it.
         </p>
+      </details>
+    </li>
+    <li class="data-tree__item">
+      <details>
+        <summary>If render will be built via Portal, app <strong>must</strong> load specific stylesheets.</summary>
+        <p>
+          <strong>Either</strong> <em>only</em> for the rendering component, <strong>maybe like</strong>:
+          <br><sub><strong>Warning:</strong> Other Portal styles (on <code>anonymous</code> layer) could break these.</sub>
+          <br><sub><strong>Ideas:</strong> (A) Scope this CSS <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scoping" target="_blank">using new tech</a>. (B) Only load the styles required (e.g. <code>o-section</code>, <code>c-card</code>).</sub>
+        </p>
+        <pre><code>
+&lt;style&gt;
+  @layer base, project;
+  @import url(&quot;/static/site_cms/css/build/core-styles.base.css&quot;) layer(base);
+  @import url(&quot;/static/site_cms/css/build/core-styles.cms.css&quot;) layer(base);
+  @import url(&quot;/static/site_cms/css/build/core-cms.css&quot;) layer(project);
+
+  @import url(&quot;https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@5717c8d/digitalrocks_assets/css/cms.css&quot;);
+  @import url(&quot;https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@5717c8d/digitalrocks_assets/css/for-core-styles.css&quot;);
+&lt;style&gt;
+        </code></pre>
+        <p>
+          <strong>Or</strong> for <em>entire</em> portal via <code>settings</code>:
+          <br><sub><strong>Warning:</strong> This could break other styles on Portal.</sub>
+          <br><sub><strong>Idea:</strong> (A) <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scoping" target="_blank">Scope Core-Portal CSS via <code>@layer</code>s.</a> (B) Allow scoping <code>_PORTAL_CSS_FILENAMES</code> via <code>@layer</code>s.</a></sub>
+        </p>
+        <pre><code>
+_PORTAL_CSS_FILENAMES = [
+    &quot;/static/site_cms/css/build/core-styles.base.css&quot;,
+    &quot;/static/site_cms/css/build/core-styles.cms.css&quot;,
+    &quot;/static/site_cms/css/build/core-cms.css&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@5717c8d/digitalrocks_assets/css/cms.css&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@5717c8d/digitalrocks_assets/css/for-core-styles.css&quot;,
+]
+        </code></pre>
       </details>
     </li>
   </ul>
