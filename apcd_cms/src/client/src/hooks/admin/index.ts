@@ -67,6 +67,8 @@ export type ExtensionResult = {
 export type ExceptionModalContent = {
   created_at: string;
   entity_name: string;
+  submitter_id: string;
+  payor_code: string;
   requestor_name: string;
   requestor_email: string;
   request_type: string;
@@ -88,6 +90,8 @@ export type ExceptionModalContent = {
 export type ExceptionRow = {
   created_at: string;
   entity_name: string;
+  submitter_id: number;
+  payor_code: string;
   requestor_name: string;
   request_type: string;
   requested_threshold: string;

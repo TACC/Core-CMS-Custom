@@ -738,7 +738,7 @@ def delete_registration_contact(reg_id, cont_id):
             conn.close()
 
 
-def create_other_exception(form, sub_data):
+def create_other_exception(form, exception, sub_data):
     cur = None
     conn = None
     values = ()
@@ -765,14 +765,14 @@ def create_other_exception(form, sub_data):
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         values = (
-            form["otherExceptionBusinessName"],
+            _clean_value(int(exception['businessName'])),
             sub_data[1],
             sub_data[2],
             sub_data[3],
             _clean_value(form['requestorName']),
             _clean_email(form['requestorEmail']),
-            "Other",
-            _clean_date(form['expirationDateOther']),
+            _clean_value(form['exceptionType']),
+            _clean_date(exception['expiration_date']),
             _clean_value(form['justification']),
             "Pending"
         )
@@ -1395,13 +1395,28 @@ def update_exception(form):
             'status': 'status',
             'outcome': 'outcome',
         }
+        # Add mappings for the nested exception fields
+        # Form field name on left, db column on right
+        exception_columns = {
+            'fieldCode': 'field_number',
+            'expiration_date': 'requested_expiration_date',
+            'requested_threshold': 'requested_threshold',
+            'required_threshold': 'required_threshold',
+            'justification': 'explanation_justification',
+            'fileType': 'data_file'
+        }
         # To make sure fields are not blank. 
         # If they aren't, add column to update operation
         for field, column_name in columns.items():
             value = form.get(field)
             if value not in (None, ""):
                 set_values.append(f"{column_name} = %s")
-# to allow notes to be cleared, need to move notes out of the loop that ignores none
+        if form.get('exceptions') and len(form['exceptions']) > 0:
+            exception = form['exceptions'][0]  # Get the first exception
+            for field, column_name in exception_columns.items():
+                value = exception.get(field)
+                if value not in (None, ""):
+                    set_values.append(f"{column_name} = %s")
         operation += ", ".join(set_values) + ", notes = %s WHERE exception_id = %s"
         ## add last update time to all exceptions updates
         values = [
@@ -1416,6 +1431,14 @@ def update_exception(form):
                     values.append(int(value.replace('-', '')))
                 # server side clean values
                 else:
+                    values.append(_clean_value(value))
+
+        # Add values for exception fields
+        if form.get('exceptions') and len(form['exceptions']) > 0:
+            exception = form['exceptions'][0]
+            for field, column_name in exception_columns.items():
+                value = exception.get(field)
+                if value not in (None, ""):
                     values.append(_clean_value(value))
 
         # to allow notes to be cleared, need to move notes out of the loop that ignores none
