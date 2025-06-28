@@ -140,7 +140,7 @@ export const RegistrationList: React.FC<{
                 <td>{row.biz_name}</td>
                 <td>{row.year ? row.year : 'None'}</td>
                 <td>{row.type}</td>
-                <td>{row.location}</td>
+                <td>{row.posted_date ? new Date(row.posted_date).toLocaleString() : '—'}</td>
                 <td>{row.reg_status ? row.reg_status : 'None'}</td>
                 <td>
                   <select
