@@ -26,7 +26,7 @@ ul.data-tree {
 .data-tree__item summary {
     margin-left: calc( -1 * var(--indent) );
 }
-.data-tree__item summary.u-summary-link-merged::before,
+.data-tree__item summary.u-summary-with-a-link::before,
 .data-tree__item summary.u-summary-fake-marker::before {
     width: var(--indent);
     display: inline-block;
