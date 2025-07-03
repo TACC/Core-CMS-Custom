@@ -1,3 +1,6 @@
+/* !!!: Clones Core-Portal internal stylesheet, except at pagination */
+/* SEE: https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@6491af61/digitalrocks_assets/css/cms.css */
+
 /* CORE PATTERNS */
 
 @import url('https://cdn.jsdelivr.net/npm/@tacc/core-styles@2/dist/components/bootstrap.pagination.css');
