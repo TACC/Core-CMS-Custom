@@ -1,0 +1,5 @@
+@import url('https://cdn.jsdelivr.net/npm/@tacc/core-styles@2/dist/components/bootstrap.pagination.css');
+
+/* https://github.com/TACC/Core-CMS-Custom/pull/494 */
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Portal@aef0da5a/client/src/components/DataFiles/DataFilesForDPM/styles/css/components.global.css');
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Portal@aef0da5a/client/src/components/DataFiles/DataFilesForDPM/styles/css/customize-core-styles.global.css');
