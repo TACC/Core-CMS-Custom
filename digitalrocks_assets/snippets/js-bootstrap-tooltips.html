@@ -1,0 +1,9 @@
+<script type="module" id="js-bootstrap-tooltips">
+let tooltipInstances = [];
+if (window.bootstrap && window.bootstrap.Tooltip) {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipInstances = [...tooltipTriggerList].map(
+    (el) => new window.bootstrap.Tooltip(el)
+    );
+}
+</script>
