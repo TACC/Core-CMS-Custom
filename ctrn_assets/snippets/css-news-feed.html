@@ -1,0 +1,17 @@
+<!-- https://github.com/TACC/Core-Styles/pull/515 -->
+<link id="css-news-feed" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@ba0f108/src/lib/_imports/djangocms-blog/blog-latest-entries.css" />
+<style id="css-news-feed--for-ctrn">
+    /* to style h3 like an h4 */
+    .blog-latest-entries article header h3 {
+        margin-top: unset;
+        margin-bottom: 0.5rem; /* Bootstrap _type.css */
+
+        font-size: var(--global-font-size--medium);
+        font-weight: var(--bold);
+    }
+
+    /* to style article border like <hr> */
+    .blog-latest-entries article + article {
+        border-top-color: var(--global-color-primary--light);
+    }
+</style>
