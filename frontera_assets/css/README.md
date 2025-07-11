@@ -42,7 +42,6 @@ Add a snippet to the website that imports the stylesheet from a CDN e.g. `<link 
 
 ## When to Build Stylesheets
 
-- If you use CSS with future or non-native features via [PostCSS].
 - If you change `.postcss` files.
 
 ## How to Build Stylesheets
