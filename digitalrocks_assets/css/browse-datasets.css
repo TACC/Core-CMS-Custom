@@ -1,0 +1,8 @@
+@import url('https://cdn.jsdelivr.net/npm/@tacc/core-styles@2/dist/components/bootstrap.pagination.css');
+
+/* https://github.com/TACC/Core-Portal/pull/1127 */
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Portal@b49998b/client/src/styles/components/bootstrap.tooltip.css');
+
+/* https://github.com/TACC/Core-Portal/pull/1135 */
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Portal@8ecac65/client/src/components/DataFiles/DataFilesForDPM/styles/components.global.css');
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Portal@8ecac65/client/src/components/DataFiles/DataFilesForDPM/styles/customize-core-styles.global.css');
