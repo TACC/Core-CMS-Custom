@@ -3,6 +3,10 @@
     :root {
         --tc-near-white-l: 0.95;
         --tc-near-black-l: 0.1;
+
+        --global-color-accent--normal: var(--tc-color-1);
+        --global-color-secondary--normal: var(--tc-color-2);
+        --global-color-tertiary--normal: var(--tc-color-3);
     }
     /*! :--light-context-safe */
     :root, /* cuz websites default to "light" */
