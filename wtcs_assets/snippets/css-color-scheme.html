@@ -1,6 +1,11 @@
 <style id="css-color-scheme">
 :root {
+    /* To change color of header and section headings */
+    /* !!!: Clashes with section bug fixes from Core-Styles */
+    /* !!!: Would cause a Dark Section (none used) to be orange */
+    /* WARNING: "primary" is a misnomer; it should have been named "neutral" */
     --global-color-primary--xx-dark: #bf5700;
+
     --global-color-accent--normal:#265e83;
     --global-color-accent--secondary: #265e83;
     --global-color-tertiary--normal: #aecb62;
@@ -15,4 +20,21 @@
 .s-header .nav-item.active .nav-link {
     --border-color: #aeca62;
 }
+
+/* To replicate buggy coloring that Core-Styles v2.42.0 fixed */
+/* FAQ: WTCS custom colors accidentally relied on Core-Styles bug */
+:is(
+    .o-section--style-light, .section--light,
+    .o-section--style-dark, .section--dark
+) :is(h1,h3,h4,h5,h6) {
+    color: inherit;
+}
+/* To replicate buggy coloring that Core-Styles v2.42.1 fixed */
+/* FAQ: WTCS custom colors accidentally relied on Core-Styles bug */
+:is(
+    .o-section--style-muted, .section--muted
+) :is(h2) {
+    color: var(--color--text-strong);
+}
+
 </style>
