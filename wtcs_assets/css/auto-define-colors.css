@@ -7,7 +7,7 @@
     /*! :--light-context-safe */
     :root, /* cuz websites default to "light" */
     :is(:where(:is(.c-recognition--style-dark,:is(.o-section--style-dark,.section--dark),.col-dark,.s-footer) :is(.c-recognition--style-light,:is(.o-section--style-muted,.section--muted),:is(.o-section--style-light,.section--light),:is(.c-card--standard,.card--standard),:is(.c-card--standard-1,.c-card--standard-2,.c-card--standard-3),:is(.c-card--plain,.card--plain,[class*=card--plain-])))) {
-        --global-color-accent--xxx-light: oklab(from var(--global-color-accent--normal) var(--L-near-white) a b);
+        --global-color-accent--xxx-light: oklab(from var(--global-color-accent--normal) var(--L-near-white) a b); /* DECPRECATED */
         --global-color-accent--xx-light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 3/4) a b);
         --global-color-accent--x-light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 2/4) a b);
         --global-color-accent--light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 1/4) a b);
@@ -15,20 +15,7 @@
         --global-color-accent--x-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 2/4) a b);
         --global-color-accent--xx-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 3/4) a b);
         --global-color-accent--xxx-dark: oklab(from var(--global-color-accent--normal) var(--L-near-black) a b);
-    }
-    /*! :--dark-context-safe */
-    :is(:where(:is(.c-recognition--style-dark,:is(.o-section--style-dark,.section--dark),.col-dark,.s-footer):not(:is(.c-recognition--style-light,:is(.o-section--style-muted,.section--muted),:is(.o-section--style-light,.section--light),:is(.c-card--standard,.card--standard),:is(.c-card--standard-1,.c-card--standard-2,.c-card--standard-3),:is(.c-card--plain,.card--plain,[class*=card--plain-])) *))) {
-        --global-color-accent--xx-light: oklab(from var(--global-color-accent--normal) var(--L-near-white) a b);
-        --global-color-accent--x-light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 3/4) a b);
-        --global-color-accent--light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 2/4) a b);
-        --global-color-accent--normal: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 1/4) a b);
-        --global-color-accent--dark: var(--global-color-accent--normal);
-        --global-color-accent--x-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 1/4) a b);
-        --global-color-accent--xx-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 2/4) a b);
-        --global-color-accent--xxx-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 3/4) a b);
-    }
-    /*! every context */
-    :root {
+
         --global-color-secondary--xx-light: oklab(from var(--global-color-secondary--normal) var(--L-near-white) a b);
         --global-color-secondary--x-light: oklab(from var(--global-color-secondary--normal) calc(l + (var(--L-near-white) - l) * 2/3) a b);
         --global-color-secondary--light: oklab(from var(--global-color-secondary--normal) calc(l + (var(--L-near-white) - l) * 1/3) a b);
@@ -42,5 +29,33 @@
         --global-color-tertiary--dark: oklab(from var(--global-color-tertiary--normal) calc(l - (l - var(--L-near-black)) * 1/3) a b);
         --global-color-tertiary--x-dark: oklab(from var(--global-color-tertiary--normal) calc(l - (l - var(--L-near-black)) * 2/3) a b);
         --global-color-tertiary--xx-dark: oklab(from var(--global-color-tertiary--normal) var(--L-near-black) a b);
+    }
+    /*! :--dark-context-safe */
+    :is(:where(:is(.c-recognition--style-dark,:is(.o-section--style-dark,.section--dark),.col-dark,.s-footer):not(:is(.c-recognition--style-light,:is(.o-section--style-muted,.section--muted),:is(.o-section--style-light,.section--light),:is(.c-card--standard,.card--standard),:is(.c-card--standard-1,.c-card--standard-2,.c-card--standard-3),:is(.c-card--plain,.card--plain,[class*=card--plain-])) *))) {
+        --global-color-accent--xxx-light: white; /* DECPRECATED */
+        --global-color-accent--xx-light: oklab(from var(--global-color-accent--normal) var(--L-near-white) a b);
+        --global-color-accent--x-light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 3/4) a b);
+        --global-color-accent--light: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 2/4) a b);
+        --global-color-accent--normal: oklab(from var(--global-color-accent--normal) calc(l + (var(--L-near-white) - l) * 1/4) a b);
+        --global-color-accent--dark: var(--global-color-accent--normal);
+        --global-color-accent--x-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 1/4) a b);
+        --global-color-accent--xx-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 2/4) a b);
+        --global-color-accent--xxx-dark: oklab(from var(--global-color-accent--normal) calc(l - (l - var(--L-near-black)) * 3/4) a b);
+
+        --global-color-secondary--xx-light: white;
+        --global-color-secondary--x-light: oklab(from var(--global-color-secondary--normal) var(--L-near-white) a b);
+        --global-color-secondary--light: oklab(from var(--global-color-secondary--normal) calc(l + (var(--L-near-white) - l) * 2/3) a b);
+        --global-color-secondary--normal: oklab(from var(--global-color-secondary--normal) calc(l + (var(--L-near-white) - l) * 1/3) a b);
+        --global-color-secondary--dark: var(--global-color-secondary--normal);
+        --global-color-secondary--x-dark: oklab(from var(--global-color-secondary--normal) calc(l - (l - var(--L-near-black)) * 1/3) a b);
+        --global-color-secondary--xx-dark: oklab(from var(--global-color-secondary--normal) calc(l - (l - var(--L-near-black)) * 2/3) a b);
+
+        --global-color-tertiary--xx-light: white;
+        --global-color-tertiary--x-light: oklab(from var(--global-color-tertiary--normal) var(--L-near-white) a b);
+        --global-color-tertiary--light: oklab(from var(--global-color-tertiary--normal) calc(l + (var(--L-near-white) - l) * 2/3) a b);
+        --global-color-tertiary--normal: oklab(from var(--global-color-tertiary--normal) calc(l + (var(--L-near-white) - l) * 1/3) a b);
+        --global-color-tertiary--dark: var(--global-color-tertiary--normal);
+        --global-color-tertiary--x-dark: oklab(from var(--global-color-tertiary--normal) calc(l - (l - var(--L-near-black)) * 1/3) a b);
+        --global-color-tertiary--xx-dark: oklab(from var(--global-color-tertiary--normal) calc(l - (l - var(--L-near-black)) * 2/3) a b);
     }
 }
