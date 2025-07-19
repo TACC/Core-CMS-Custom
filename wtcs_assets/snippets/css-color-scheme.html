@@ -1,40 +1,31 @@
+<link id="css-color-scheme--auto" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@001f1c1/dist/settings/color--cms.auto.css" rel="stylesheet" />
 <style id="css-color-scheme">
+/* GLOBAL */
 :root {
-    /* To change color of header and section headings */
-    /* !!!: Clashes with section bug fixes from Core-Styles */
-    /* !!!: Would cause a Dark Section (none used) to be orange */
-    /* WARNING: "primary" is a misnomer; it should have been named "neutral" */
-    --global-color-primary--xx-dark: #bf5700;
+    --tc-color-1: #265e83;
+    --tc-color-2: #265e83;
+    --tc-color-3: #aecb62;
+}
 
-    --global-color-accent--normal:#265e83;
-    --global-color-accent--secondary: #265e83;
-    --global-color-tertiary--normal: #aecb62;
-
-    --header-text-color: var(--global-color-primary--xx-light);
-    --header-bkgd-color: var(--global-color-primary--xx-dark);
-    --header-minor-border-color: var(--global-color-primary--normal);
-    --header-major-border-color: var(--header-bkgd-color);
-    --header-search-brdr-color: var(--global-color-primary--dark);
+/* HEADER */
+:root {
+    --header-bkgd-color: #bf5700;
     --header-search-bkgd-color: #313131;
 }
+.branding-header {
+    background-color: #bf5700;
+}
 .s-header .nav-item.active .nav-link {
-    --border-color: #aeca62;
+    border-color: #aeca62;
 }
 
-/* To replicate buggy coloring that Core-Styles v2.42.0 fixed */
-/* FAQ: WTCS custom colors accidentally relied on Core-Styles bug */
-:is(
-    .o-section--style-light, .section--light,
-    .o-section--style-dark, .section--dark
-) :is(h1,h3,h4,h5,h6) {
-    color: inherit;
+/* SECTIONS */
+:is(.o-section--style-light, .section--light)
+> :is(h1,h2,h3,h4,h5,h6) {
+    color: #265e83;
 }
-/* To replicate buggy coloring that Core-Styles v2.42.1 fixed */
-/* FAQ: WTCS custom colors accidentally relied on Core-Styles bug */
-:is(
-    .o-section--style-muted, .section--muted
-) :is(h2) {
-    color: var(--color--text-strong);
+:is(.o-section--style-muted, .section--muted)
+> :is(h1,h2,h3,h4,h5,h6) {
+    color: #bf5700;
 }
-
 </style>
