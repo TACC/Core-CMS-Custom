@@ -1,1 +1,1 @@
-import './ad-hoc/add-shopping-cart-icon.js';
+import './add-shopping-cart-icon.js';
