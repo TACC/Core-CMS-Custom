@@ -1,0 +1,33 @@
+/*
+For:
+- https://weteachcs.org/cs-data-reports/epic-annual-report/
+- https://weteachcs.org/about/goals-and-outcomes/
+*/
+
+/* FAQ: The `main:not(:has(.blog-content))` excludes News articles */
+
+main:not(:has(.blog-content))
+a:has(
+    figcaption,
+    p.caption
+) {
+    /* TODO: consider for Core-CMS */
+    text-decoration: none !important;
+}
+main:not(:has(.blog-content))
+:is(
+    a figcaption,
+    p.caption
+) {
+    text-align: right;
+
+    /* to undo Core-Styles */
+    border-bottom: none;
+    margin-block: 5px 0;
+}
+main:not(:has(.blog-content))
+a img + p.caption {
+    /* so a click between text and image opens link */
+    margin-top: 0;
+    padding-top: 5px;
+}
