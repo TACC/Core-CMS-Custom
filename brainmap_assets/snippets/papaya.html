@@ -1,0 +1,23 @@
+{# https://stackoverflow.com/a/31513163/11817077 #}
+{# FAQ: manual height is a placeholder, onload sets dynamic height (plus 1px), overflow hiding hides scrollbar #}
+{# HELP: How to stop "scroll chaining" for an iframe? #}
+<script>
+const mainWindow = window;
+
+function sizeToFit( iframe ) {
+    resize( iframe );
+    mainWindow.addEventListener('resize', () => {
+        resize( iframe );
+    });
+}
+
+function resize( iframe ) {
+    iframe.style.height = 'unset';
+    iframe.style.width = '100%';
+    iframe.style.height = iframe.contentDocument.body.scrollHeight + 1 + 'px';
+    iframe.style.width = iframe.contentDocument.body.scrollWidth + 1 + 'px';
+}
+</script>
+<iframe src="/papaya/"
+        onload="javascript:sizeToFit(this)"
+        style="width:100%; height:700px; border:none;"></iframe>
