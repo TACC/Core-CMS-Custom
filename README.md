@@ -5,6 +5,10 @@ Custom assets for [Core CMS] projects
 > [!TIP]
 > To customize a [Core CMS] project beyond assets, [create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) via [Core CMS Template].
 
+> [!CAUTION]
+> - If you change a file path, update [Core Portal Deployments], because it reads this `main` branch.
+> - If you do **not** have access to [Core Portal Deployments], then maybe do **not** change a file path.
+
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
