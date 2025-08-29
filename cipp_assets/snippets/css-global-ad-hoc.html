@@ -1,0 +1,17 @@
+<style id="css-global-ad-hoc">
+/* CORE-STYLES */
+/* TODO: Change this in Core-Styles */
+:where(:is([role="main"], main)) :is(dl, ol, ul, menu) {
+    margin-bottom: 2rem; /* to override Core-Styles 1rem */
+    /* ... */
+}
+
+/* CIPP */
+/* to replicate <h1><small> style on an <h2> */
+h2.h1-small {
+    color: unset;
+    font-size: calc(.875 * var(--global-font-size--xx-large));
+    font-weight: 400;
+    text-transform: uppercase;
+}
+</style>
