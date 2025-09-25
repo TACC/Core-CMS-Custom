@@ -1,0 +1,79 @@
+<link id="css-colors--auto-assign" href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@a2edf64/dist/settings/color--cms.auto.css" rel="stylesheet" />
+<style id="css-colors">
+:root {
+    /* CTRN */
+    --ctrn-red: #e23c30;
+    --ctrn-blue: #1969b3;
+    --ctrn-blue-dark: #156082;
+    --ctrn-tan: #877453;
+    --ctrn-tan-light: #dbb48a;
+
+    /* TACC/CORE-STYLES (Auto-Assign) */
+    --tc-color-1: #1969b3;
+    --tc-color-2: #877453;
+    --tc-color-3: #92ccc5;
+}
+</style>
+<link id="css-fonts--font-faces" rel="stylesheet" href="https://use.typekit.net/zde8uun.css" title="CTRN">
+<style id="css-global--not-homepage">
+    /* MISCELLANEOUS */
+
+    main {
+        font-family: aptos, sans-serif;
+        font-size: 1.6rem;
+    }
+    hr {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+
+
+    /* HEADINGS */
+
+    h1 {
+        font-size: 3rem;
+        line-height: 1.5;
+        text-transform: uppercase;
+    }
+    /* To style right-hand column <h1> like stakeholder had done inline */
+    .ctrn-small-title {
+        font-size: 1.8rem;
+        font-weight: var(--bold);
+        line-height: 2.5;
+        text-transform: uppercase;
+
+        margin-bottom: 10px;
+    }
+
+    /* To style right-hand column headings like stakeholder had done inline */
+    h2, h3, h4, h5, h6 {
+        font-weight: var(--bold);
+    }
+    h2 {
+        font-size: 1.8rem;
+
+        margin-bottom: 10px;
+    }
+    h3 {
+        font-size: 1.6rem;
+
+        margin-bottom: 10px;
+    }
+
+
+
+    /* CARDS */
+
+    .card--plain {
+        color: var(--ctrn-blue-dark);
+    }
+    :is([class*="card--"], .card)
+    h1 {
+        margin-bottom: 5px;
+    }
+    :is([class*="card--"], .card)
+    li:not(td li) {
+        line-height: normal; /* TODO: Move this change to Core-Styles */
+    }
+</style>
