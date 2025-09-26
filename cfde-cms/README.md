@@ -1,4 +1,4 @@
-# Example
+# Common Fund Data Ecosystem
 
 Custom assets for a [Core CMS](https://github.com/TACC/Core-CMS) project
 
