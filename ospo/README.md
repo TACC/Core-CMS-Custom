@@ -1,4 +1,4 @@
-# Common Fund Data Ecosystem
+# The University of Texas Open Source Public Office
 
 Custom assets for a [Core CMS](https://github.com/TACC/Core-CMS) project
 
