@@ -4,6 +4,7 @@
     container-type: size; /* to let `::before` use `cqw` unit */
     aspect-ratio: 1;
     height: 100%;
+    width: 100%;
 }
 .icon-fill::before {
     font-size: 100cqw;
