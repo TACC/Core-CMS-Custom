@@ -38,7 +38,7 @@ Scope global styles.
 > [!WARNING]
 > Do this **only** during development. Styles cannot be as well versioned controlled via a snippet.
 
-Add a snippet to the website that imports the stylesheet from a CDN e.g. `<link id="css-___" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@123...ABC/frontera_assets/css/___.css" />`.
+Via the CMS, add a snippet that links the stylesheet from a CDN e.g. `<link id="css-___" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@123...ABC/frontera_assets/css/___.css" />`.
 
 ## When to Build Stylesheets
 
