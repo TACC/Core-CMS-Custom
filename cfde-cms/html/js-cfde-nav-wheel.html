@@ -1,16 +1,25 @@
 <aside id="cfde-wheel-js">
-
     <!-- dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mui/material@7/umd/material-ui.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emotion/react@11/dist/emotion-react.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emotion/styled@11/dist/emotion-styled.umd.min.js"></script>
-
-    <!-- build -->
-    <script class="cfde-wheel-js-init" defer src="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/cfde-nav-wheel/cfde-cms/js/cfde-wheel/dist/index.browser.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react-dom": "https://esm.sh/react-dom@18.3.1",
+        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+        "@mui/material": "https://esm.sh/@mui/material@7",
+        "@emotion/react": "https://esm.sh/@emotion/react@11",
+        "@emotion/styled": "https://esm.sh/@emotion/styled@11"
+      }
+    }
+    </script>
 
     <!-- initialize -->
-    <script class="cfde-wheel-js-init" defer src="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@feat/cfde-nav-wheel/cfde-cms/js/cfde-wheel.js"></script>
-
+    <script type="module">
+        import CFDEWheel from 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@YOUR_COMMIT_HASH/cfde-cms/js/cfde-wheel/dist/index.browser.js';
+        import { createElement } from 'react';
+        import { createRoot } from 'react-dom';
+        
+        const root = createRoot(document.getElementById('root'));
+        root.render(createElement(CFDEWheel));
+    </script>
 </aside>
