@@ -14439,42 +14439,42 @@ var dccs = [
   {
     id: "65af85ae-82d5-5b81-bc66-6bddaa6420ce",
     short_label: "Kids First",
-    homepage: "https://info.cfde.cloud/dccs/Kids First",
+    homepage: "https://info.cfde.cloud/dcc/Kids First",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/Kids First.png",
     description: "Data, tools, and resources empowering pediatric research"
   },
   {
     id: "e332dadd-8084-5fbc-be41-29d75775aab3",
     short_label: "A2CPS",
-    homepage: "https://info.cfde.cloud/dccs/A2CPS",
+    homepage: "https://info.cfde.cloud/dcc/A2CPS",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/A2CPS.png",
     description: "Understanding the complex biological processes underlying chronic pain"
   },
   {
     id: "803ad44d-e7a2-550a-95c6-57855bf06be8",
     short_label: "HuBMAP",
-    homepage: "https://info.cfde.cloud/dccs/HuBMAP",
+    homepage: "https://info.cfde.cloud/dcc/HuBMAP",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/HuBMAP.png",
     description: "Cellular spatial atlas of the human body"
   },
   {
     id: "d6bb00c3-7224-5001-b9c5-9838622fba40",
     short_label: "4DN",
-    homepage: "https://info.cfde.cloud/dccs/4DN",
+    homepage: "https://info.cfde.cloud/dcc/4DN",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/4DN.png",
     description: "Nuclear organization in space and time"
   },
   {
     id: "f3f490cf-fd69-579c-8ea3-472c7cf3fb59",
     short_label: "LINCS",
-    homepage: "https://info.cfde.cloud/dccs/LINCS",
+    homepage: "https://info.cfde.cloud/dcc/LINCS",
     icon: "https://cfde-drc.s3.amazonaws.com/assets/img/LINCS-logo.png",
     description: "Omics signatures for drug & target discovery"
   },
   {
     id: "a1289ebb-0306-59a1-b0fc-e4d03a4790d7",
     short_label: "IDG",
-    homepage: "https://info.cfde.cloud/dccs/IDG",
+    homepage: "https://info.cfde.cloud/dcc/IDG",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/IDG.png",
     description: "Illuminating GPCRs, kinases, ion channels, & other drug targets"
   },
@@ -14488,28 +14488,28 @@ var dccs = [
   {
     id: "e31052b0-ac50-5ede-9828-698ff3610427",
     short_label: "GlyGen",
-    homepage: "https://info.cfde.cloud/dccs/GlyGen",
+    homepage: "https://info.cfde.cloud/dcc/GlyGen",
     icon: "https://cfde-drc.s3.amazonaws.com/assets/img/glygen.png",
     description: "Computational and informatics resources for glycoscience"
   },
   {
     id: "75b3be39-a021-5d80-b7e2-2a7938a1e11a",
     short_label: "Bridge2AI",
-    homepage: "https://info.cfde.cloud/dccs/Bridge2AI",
+    homepage: "https://info.cfde.cloud/dcc/Bridge2AI",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/Bridge2AI.png",
     description: "Biomedical AI \u2194 people, data & ethics"
   },
   {
     id: "a9aeab22-4fbc-5329-aef6-21110f463c23",
     short_label: "MoTrPAC",
-    homepage: "https://info.cfde.cloud/dccs/MoTrPAC",
+    homepage: "https://info.cfde.cloud/dcc/MoTrPAC",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/MoTrPAC.png",
     description: "The molecular map of exercise"
   },
   {
     id: "089d8d63-3364-526f-9706-80d62d0ec88c",
     short_label: "Metabolomics",
-    homepage: "https://info.cfde.cloud/dccs/Metabolomics",
+    homepage: "https://info.cfde.cloud/dcc/Metabolomics",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/Metabolomics.png",
     description: "Metabolomics"
   },
@@ -14523,7 +14523,7 @@ var dccs = [
   {
     id: "2399794e-74c6-5735-a039-0782cdeeb1e2",
     short_label: "SPARC",
-    homepage: "https://info.cfde.cloud/dccs/SPARC",
+    homepage: "https://info.cfde.cloud/dcc/SPARC",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/SPARC.svg",
     description: "Bridging the body and brain"
   },
@@ -14537,28 +14537,28 @@ var dccs = [
   {
     id: "cbfd44b8-684d-56b9-bfd4-45c0e259f896",
     short_label: "HMP",
-    homepage: "https://info.cfde.cloud/dccs/HMP",
+    homepage: "https://info.cfde.cloud/dcc/HMP",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/HMP.png",
     description: "Human microbiome in health and disease"
   },
   {
     id: "b3028db2-209c-5862-8f4d-33c5b312332e",
     short_label: "GTEx",
-    homepage: "https://info.cfde.cloud/dccs/GTEx",
+    homepage: "https://info.cfde.cloud/dcc/GTEx",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/GTEx.png",
     description: "Gene expression and regulation across human tissues"
   },
   {
     id: "dd66e8a5-0e05-5a43-a0ca-18cc3698bb36",
     short_label: "SenNet",
-    homepage: "https://info.cfde.cloud/dccs/SenNet",
+    homepage: "https://info.cfde.cloud/dcc/SenNet",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/SenNet.png",
     description: "Mapping senescent cells"
   },
   {
     id: "f65babf7-2875-5725-9635-210d654533f1",
     short_label: "ExRNA",
-    homepage: "https://info.cfde.cloud/dccs/ExRNA",
+    homepage: "https://info.cfde.cloud/dcc/ExRNA",
     icon: "https://cfde-drc.s3.us-east-2.amazonaws.com/assets/img/exRNA.png",
     description: "Extracellular RNA communication"
   }
