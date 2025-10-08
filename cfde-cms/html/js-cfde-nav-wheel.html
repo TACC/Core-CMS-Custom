@@ -1,25 +1,27 @@
-<aside id="cfde-wheel-js">
-    <!-- dependencies -->
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.3.1",
-        "react-dom": "https://esm.sh/react-dom@18.3.1",
-        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
-        "@mui/material": "https://esm.sh/@mui/material@7",
-        "@emotion/react": "https://esm.sh/@emotion/react@11",
-        "@emotion/styled": "https://esm.sh/@emotion/styled@11"
-      }
-    }
-    </script>
+{% load sekizai_tags %}
+{% addtoblock "css" %}
+{# HACK: Using "css" because it loads in head ("js" does not) #}
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "@mui/material": "https://esm.sh/@mui/material@7",
+    "@mui/material/": "https://esm.sh/@mui/material@7/",
+    "@emotion/react": "https://esm.sh/@emotion/react@11",
+    "@emotion/styled": "https://esm.sh/@emotion/styled@11"
+  }
+}
+</script>
+{% endaddtoblock %}
+{% addtoblock "js" %}
+<script type="module" class="js-cfde-nav-wheel">
+    import CFDEWheel from 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@65096b59/cfde-cms/js/cfde-wheel/dist/index.browser.js';
+    import { createElement } from 'react';
+    import { createRoot } from 'react-dom';
 
-    <!-- initialize -->
-    <script type="module">
-        import CFDEWheel from 'https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@65096b59/cfde-cms/js/cfde-wheel/dist/index.browser.js';
-        import { createElement } from 'react';
-        import { createRoot } from 'react-dom';
-        
-        const root = createRoot(document.getElementById('root'));
-        root.render(createElement(CFDEWheel));
-    </script>
-</aside>
+    const root = createRoot(document.getElementById('root'));
+    root.render(createElement(CFDEWheel));
+</script>
+{% endaddtoblock %}
