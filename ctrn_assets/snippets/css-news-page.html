@@ -12,4 +12,12 @@
         "head attr"
         "subh tags";
 }
+/* To hide missing gap when article lacks visual */
+{# TODO: Update Core-CMS to use `:has` logic, then remove this #}
+.blog-list article:not(:has(.blog-visual > *)) {
+    grid-template-areas:
+        "head"
+        "desc";
+    column-gap: unset;
+}
 </style>
