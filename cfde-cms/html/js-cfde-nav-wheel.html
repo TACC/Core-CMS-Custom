@@ -1,8 +1,8 @@
 {% load sekizai_tags %}
 <div id="cfde-nav-wheel" class="js-cfde-nav-wheel"></div>
 
-{% addtoblock "css" %}
 {# HACK: Using "css" because it loads in head ("js" does not) #}
+{% addtoblock "css" %}
 <script type="importmap" class="js-cfde-nav-wheel">
 {
   "imports": {
@@ -17,7 +17,7 @@
 
 {% addtoblock "js" %}
 <script type="module" class="js-cfde-nav-wheel">
-    import CFDEWheel from 'https://cdn.jsdelivr.net/gh/wesleyboar/cfde-wheel@tacc/dist/index.browser.js';
+    import CFDEWheel from 'https://cdn.jsdelivr.net/gh/MaayanLab/cfde-wheel@c768d79/dist/index.browser.js';
     import { createElement } from 'react';
     import { createRoot } from 'react-dom/client';
 
