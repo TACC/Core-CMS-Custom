@@ -1,0 +1,3 @@
+.s-header .navbar-brand {
+  flex-basis: 0; /* to pull CMS nav close to logo */
+}
