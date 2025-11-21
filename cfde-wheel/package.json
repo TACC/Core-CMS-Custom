@@ -15,10 +15,12 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
+    "shx": "latest",
     "vite": "^5.4.0"
   },
   "scripts": {
     "build": "vite build",
+    "prepreview": "shx sed -i 's/__DIST__/./g' index.html && shx cp index.html dist/",
     "preview": "vite preview"
   },
   "repository": {
@@ -27,4 +29,3 @@
     "directory": "cfde-wheel"
   }
 }
-
