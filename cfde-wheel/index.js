@@ -22,7 +22,7 @@ function initCFDEWheel(containerIdOrElement) {
 
 // Auto-initialize if container with default ID exists
 function autoInit() {
-  const defaultContainer = document.getElementById('cfde-nav-wheel');
+  const defaultContainer = document.getElementById('cfde-wheel');
   if (defaultContainer) {
     initCFDEWheel(defaultContainer);
   }

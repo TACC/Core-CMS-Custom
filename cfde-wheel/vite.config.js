@@ -12,10 +12,10 @@ export default defineConfig({
       name: 'CFDEWheel',
       fileName: 'cfde-wheel',
       formats: ['iife'],
-    },
+    }
     rollupOptions: {
       output: {
-        // Bundle all dependencies
+        // To bundle all dependencies
         inlineDynamicImports: true,
       },
     },
