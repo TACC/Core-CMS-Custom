@@ -9,7 +9,7 @@
     "npm": ">=8"
   },
   "dependencies": {
-    "cfde-wheel": "git+ssh://git@github.com/wesleyboar/cfde-wheel.git#tacc",
+    "cfde-wheel": "git+ssh://git@github.com/MaayanLab/cfde-wheel.git",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
