@@ -1,0 +1,13 @@
+/* To make <h3> look like an <h2> */
+.blog-list h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+/* To avoid empty space in article headers */
+/* FAQ: CTRN sets categories (cats) but no author (attr) */
+.blog-list article header {
+    grid-template-areas:
+        "cats date"
+        "head attr"
+        "subh tags";
+}

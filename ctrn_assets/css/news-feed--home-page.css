@@ -1,0 +1,13 @@
+/* to style h3 like an h4 */
+.blog-latest-entries article header h3 {
+    margin-top: unset;
+    margin-bottom: 0.5rem; /* Bootstrap _type.css */
+
+    font-size: var(--global-font-size--medium);
+    font-weight: var(--bold);
+}
+
+/* to style article border like <hr> */
+.blog-latest-entries article + article {
+    border-top-color: var(--global-color-primary--light);
+}
