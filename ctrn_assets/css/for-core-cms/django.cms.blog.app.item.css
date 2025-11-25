@@ -1,5 +1,5 @@
 /* To hide missing gap when article lacks visual */
-{# TODO: Update Core-CMS to use `:has` logic, then remove this #}
+/* TODO: Update Core-CMS to use `:has` logic, then remove this */
 .blog-list article:not(:has(.blog-visual > *)) {
     grid-template-areas:
         "head"
@@ -8,7 +8,7 @@
 }
 
 /* To clearly render which thumbnails are made from too small an image */
-{# TODO: Update Core-CMS to do this, then remove this #}
+/* TODO: Update Core-CMS to do this, then remove this */
 .blog-visual {
     overflow: hidden;
 }
