@@ -20,4 +20,28 @@
         "desc";
     column-gap: unset;
 }
+/* To reduce margin top and bottom */
+{# TODO: After TACC/Core-CMS#1037, delete this #}
+:is(article.post-detail) :is(.blog-lead,.blog-visual,.blog-content) {
+    margin-block: var(--blog-item-media-buffer);
+}
+/* To let image fill screen */
+{# TODO: After TACC/Core-CMS#1037, delete this #}
+@media (max-width: 575.98px) {
+    :is(article.post-detail) .blog-visual {
+        margin-inline: auto;
+        width: fit-content;
+    }
+}
+/* To float auto-image right, not left */
+/* To limit auto-image width */
+{# TODO: After TACC/Core-CMS#1037, delete this #}
+@media (min-width: 576px) {
+    :is(article.post-detail) .blog-visual {
+        max-width: 50%;
+        float: right;
+        margin-left: 20px;
+        margin-right: unset;
+    }
+}
 </style>
