@@ -6,3 +6,9 @@
         "desc";
     column-gap: unset;
 }
+
+/* To clearly render which thumbnails are made from too small an image */
+{# TODO: Update Core-CMS to do this, then remove this #}
+.blog-visual {
+    overflow: hidden;
+}
