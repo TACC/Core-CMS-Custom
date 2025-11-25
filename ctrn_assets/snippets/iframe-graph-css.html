@@ -1,4 +1,6 @@
-<style id="iframe-graph-css">
+{% load sekizai_tags %}
+{% addtoblock "css" %}
+<style id="css-iframe">
     iframe {
         --body-margin: 8px;
 
@@ -7,10 +9,19 @@
     }
     iframe[id*="iframe-graph-regions"] {
         min-width: calc(450px + var(--body-margin) * 2);
-        min-height: calc(385px + var(--body-margin) * 2);
+        min-height: calc(470px + var(--body-margin) * 2);
     }
     iframe[id*="iframe-graph-participation"] {
         min-width: calc(625px + var(--body-margin) * 2);
         min-height: calc(450px + var(--body-margin) * 2);
     }
+    iframe[id*="iframe-graph-trauma"] {
+        min-width: calc(690px + var(--body-margin) * 2);
+        min-height: calc(650px + var(--body-margin) * 2);
+    }
+    iframe[id*="iframe-graph-age-and-sex"] {
+        min-width: calc(625px + var(--body-margin) * 2);
+        min-height: calc(450px + var(--body-margin) * 2);
+    }
 </style>
+{% endaddtoblock %}
