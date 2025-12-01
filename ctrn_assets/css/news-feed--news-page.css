@@ -2,21 +2,8 @@
 /* FAQ: CTRN sets categories (cats) but no author (attr) */
 .blog-list article header {
     grid-template-areas:
-        'cats     attr'
-        'title    title'
-        'subtitle subtitle'
-        'tags     tags';
-}
-/* TODO: After TACC/Core-CMS#1041, use this instead */
-/*
-.blog-list article header {
-    grid-template-areas:
         'cats     dates'
         'title    title'
         'subtitle subtitle'
         'tags     tags';
 }
-.post-detail.attrs {
-    display: none;
-}
-*/
