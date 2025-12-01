@@ -7,3 +7,7 @@
         'subtitle subtitle'
         'tags     tags';
 }
+.post-detail.dates {
+    /* FAQ: Because CTRN grid-template-areas moves date position in header */
+    text-align: right;
+}
