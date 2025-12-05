@@ -70,6 +70,10 @@ h1 {
 h2 {
   color: var(--ecep-accent-gray);
 }
+.o-section--style-muted h2,
+.section--muted h2 {
+  color: unset;
+}
 
 figcaption {
   font-size: small;
