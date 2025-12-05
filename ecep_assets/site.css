@@ -73,6 +73,7 @@ h2 {
 .o-section--style-muted h2,
 .section--muted h2 {
   color: unset;
+  opacity: 0.75;
 }
 
 figcaption {
