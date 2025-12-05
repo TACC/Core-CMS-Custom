@@ -1,9 +1,7 @@
 @import url('./css/links.css');
-@import url('./css/djangocms-picture.css');
 
 /* Organize via ITCSS */
 /* SEE: https://tacc-main.atlassian.net/wiki/x/QQhv */
-
 
 
 
@@ -21,8 +19,6 @@
   --ecep-font-title: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
   --ecep-font-content: Arial, sans-serif;
 }
-
-
 
 /* Translate ECEP Branding to Core-Styles */
 :root {
@@ -66,13 +62,18 @@
 
 
 
-
 /* ELEMENTS */
+
+h1 {
+  text-transform: none;
+}
+h2 {
+  color: var(--ecep-accent-gray);
+}
 
 figcaption {
   font-size: small;
 }
-
 
 
 
@@ -89,18 +90,15 @@ article.post-detail .byline {
 
 
 
-
 /* TRUMPS */
 
 /* Header */
-/* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/trumps/s-header.css */
-.s-header .navbar-brand {
-  min-width: unset;
-}
-.s-header .nav-item.active .nav-link,
-.s-header .nav-link:active,
+
+/* https://github.com/TACC/Core-Styles/blob/v2.51.0/src/lib/_imports/trumps/s-header.css#L156-L161 */
+.s-header .nav-link:hover,
 .s-header .nav-link:focus,
-.s-header .nav-link:hover {
+.s-header .nav-link:active,
+.s-header .nav-item.active .nav-link {
   border-color: var(--ecep-accent-gray);
 }
 
