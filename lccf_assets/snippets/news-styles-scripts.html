@@ -1,5 +1,7 @@
 {% load static %}
 <style id="news-styles-scripts--css">
+{# IMPORTANT: After Core-CMS#1060, load "app.blog.pages.css" instead #}
+{# https://github.com/TACC/Core-CMS/pull/1060 #}
 @import url("{% static "site_cms/css/build/app.blog.css" %}") layer(project);
 
 /* to hide "Back" link (which opens all TACC news) */
