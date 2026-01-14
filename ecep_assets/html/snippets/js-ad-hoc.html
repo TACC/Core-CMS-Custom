@@ -1,0 +1,10 @@
+{% load sekizai_tags %}
+
+{% addtoblock "js" %}
+{% with local_commit="main" %}
+
+{# One <script> to load script that 'import's many is faster than many <script>s. #}
+<script src="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{ local_commit }}/ecep_assets/js/ad-hoc.js" type="module"></script>
+
+{% endwith %}
+{% endaddtoblock %}
