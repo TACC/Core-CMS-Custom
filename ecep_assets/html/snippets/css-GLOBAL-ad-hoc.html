@@ -1,0 +1,26 @@
+{% load sekizai_tags %}
+
+{% comment %}
+Many <link>s is faster than one <link> with many '@import's.
+{% endcomment %}
+
+{% addtoblock "css" %}
+{# TODO: Load updated `site.css` via deploy or here (remove via deploy) #}
+{# https://github.com/TACC/Core-CMS-Custom/pull/525 #}
+<style>
+:root {
+    /* Color */
+    /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
+    --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 96.875% c h );
+}
+:is([class*="btn-"], [class*="button-"]):not(.btn-link, [class*="button--as-link"]) {
+    text-decoration-line: none;
+}
+.btn-center {
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+}
+</style>
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@4c0d2297/ecep_assets/css/hide-article-main-image.css" rel="stylesheet" />
+{% endaddtoblock %}
