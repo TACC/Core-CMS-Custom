@@ -24,7 +24,7 @@
 :root {
   /* Color */
   /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
-  --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 87.5% c h );
+  --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 96.875% c h );
   --global-color-primary--light: oklch( from var(--ecep-accent-gray) 75% c h );
   --global-color-primary--normal: var(--ecep-accent-gray );
   --global-color-primary--dark: oklch( from var(--ecep-accent-gray) 40% c h );
