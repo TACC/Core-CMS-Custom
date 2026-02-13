@@ -1,11 +1,18 @@
 /* To apply IRREGULAR LINK styles */
 /* TODO: Do this the right way:
-    1. Add "s-irregular-links" class to a root element.
-    2. Delete this stylesheet.
+    1. Update Core-Styles:
+        - `:not(.blog-list article .read-more a)`
+        - `text-decoration-thickness: from-font;`
+    2. Add "s-irregular-links" class to a root element.
+    3. Delete this stylesheet.
 */
 :is(main, .c-footer) :where(
   a,
   .c-button--as-link
+):not(
+  /* TODO: Think how/whether to add to Core-Styles */
+  /* to prevent line at top right of news feed images */
+  .blog-list article .read-more a
 ) {
     text-decoration-line: underline;
 }
