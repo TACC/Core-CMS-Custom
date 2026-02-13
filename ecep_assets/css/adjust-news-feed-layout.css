@@ -1,0 +1,11 @@
+/* To limit media width differently than Core-CMS */
+/* https://github.com/TACC/Core-CMS/blob/v4.37.1/taccsite_cms/static/site_cms/css/src/_imports/tools/x-news.css#L163-L164 */
+.blog-list:not(.as-grid) article {
+    /* To set min width of 255px (the width that News Feed images SHOULD be) */
+    grid-template-columns: minmax(255px, auto) 1fr;
+}
+/* https://github.com/TACC/Core-CMS/blob/v4.37.1/taccsite_cms/static/site_cms/css/src/_imports/tools/x-news.css#L254-L255 */
+.blog-list article .blog-visual img {
+    /* So image does not stretch (so image dimensions are respected) */
+    width: auto;
+}
