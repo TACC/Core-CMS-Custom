@@ -5,6 +5,8 @@
 
 {# One <script> to load script that 'import's many is faster than many <script>s. #}
 <script src="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{ local_commit }}/ecep_assets/js/ad-hoc.js" type="module"></script>
+{# TODO: After deploy of TACC/Core-CMS#1088, delete apply-Core-CMS-1088-early.js #}
+{# <script src="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{ local_commit }}/ecep_assets/js/ad-hoc/apply-Core-CMS-1088-early.js" type="module"></script> #}
 
 {% endwith %}
 {% endaddtoblock %}
