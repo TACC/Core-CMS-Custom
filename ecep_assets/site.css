@@ -40,6 +40,9 @@
   --global-color-accent--alt: oklch( from var(--ecep-purple) 82.8% c h );
   --global-color-accent--weak: oklch( from var(--ecep-purple) 40% c h );
 
+  --global-color-secondary--normal: var(--ecep-green);
+  --global-color-tertiary--normal: var(--ecep-green);
+
   /* Font */
   /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/settings/font.css#L27 */
   --sans--cms: var(--ecep-font-content);
