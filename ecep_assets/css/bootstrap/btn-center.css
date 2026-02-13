@@ -1,0 +1,16 @@
+/* Add Bootstrap-esque `btn-center` class to center button within its parent */
+/* TODO: Add to Core-Styles */
+:is(
+    [class*="btn-"],
+    [class*="button-"]
+):not(
+    .btn-link,
+    [class*="button--as-link"]
+) {
+    text-decoration-line: none;
+}
+.btn-center {
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+}
