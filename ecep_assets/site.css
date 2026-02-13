@@ -23,7 +23,7 @@
 /* Translate ECEP Branding to Core-Styles */
 :root {
   /* Color */
-  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/color.css */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/settings/color--cms.auto.css */
   --global-color-primary--x-light: oklch( from var(--ecep-accent-gray) 96.875% c h );
   --global-color-primary--light: oklch( from var(--ecep-accent-gray) 75% c h );
   --global-color-primary--normal: var(--ecep-accent-gray );
@@ -43,16 +43,18 @@
   --global-color-accent--weak: oklch( from var(--ecep-purple) 40% c h );
 
   /* Font */
-  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/settings/font.css */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/settings/font.css#L27 */
   --sans--cms: var(--ecep-font-content);
-  /* HACK: Distinguish heading font via style instead of variable */
+
+  /* HACK: Distinguish heading font via style instead of standard variable */
   /* FAQ: Because Core-Styles assumes the same font for headings */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/elements/headings--cms.css#L12 */
   & :is(h1, h2, h3, h4, h5, h6) {
     font-family: var(--ecep-font-title);
   }
 
   /* Header */
-  /* https://github.com/TACC/Core-Styles/blob/v0.13.0/src/lib/_imports/theme.default.css */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/core-styles.theme.default.css */
   --header-bkgd-color: var(--ecep-purple);
   --header-minor-border-color: var(--global-color-accent--xxx-light);
   --header-search-brdr-color: var(--global-color-accent--x-light);
