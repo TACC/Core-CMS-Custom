@@ -2,10 +2,12 @@
 
 {% comment %}
 Many <link>s is faster than one <link> with many '@import's.
-{% endcomment %}
+{% endcomment %}26aed03c
 
 {% addtoblock "css" %}
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@main/ecep_assets/css/bootstrap/btn-center.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@626ec7e5/ecep_assets/css/adjust-news-feed-layout.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@4c0d2297/ecep_assets/css/hide-article-main-image.css" rel="stylesheet" />
+{% with local_commit="26aed03c" %}
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/bootstrap/btn-center.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/adjust-news-feed-layout.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/hide-article-main-image.css" rel="stylesheet" />
+{% endwith %}
 {% endaddtoblock %}
