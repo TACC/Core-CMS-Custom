@@ -10,6 +10,8 @@
   a,
   .c-button--as-link
 ):not(
+  /* to prevent underline in buttons */
+  .btn:not(.btn-link),
   /* TODO: Think how/whether to add to Core-Styles */
   /* to prevent line at top right of news feed images */
   .blog-list article .read-more a
