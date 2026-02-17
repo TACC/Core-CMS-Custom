@@ -1,0 +1,4 @@
+/* TODO: After deploying Core-CMS v4.37.3, delete this */
+:is(.c-button, [class*="button--"], .btn), :is(:is(.c-form__button), :is(:where(.s-form button)), :is(.form-button)), :is(:is(.c-form__buttons), :is(:where(.s-form > footer)), :is(.button-wrapper)) button:not(:is(:is(.c-form__button), :is(:where(.s-form button)), :is(.form-button))) {
+    line-height: 1.5;
+}
