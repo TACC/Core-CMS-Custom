@@ -34,8 +34,8 @@
   --global-color-accent--x-light: oklch( from var(--ecep-purple) 82.8% c h );
   --global-color-accent--light: oklch( from var(--ecep-purple) 54.5% c h );
   --global-color-accent--normal: var(--ecep-purple);
-  --global-color-accent--dark: oklch( from var(--ecep-purple) 28% c h );
-  --global-color-accent--x-dark: oklch( from var(--ecep-purple) 19% c h );
+  --global-color-accent--dark: oklch( from var(--ecep-purple) 20% c h );
+  --global-color-accent--x-dark: oklch( from var(--ecep-purple) 0% c h );
 
   --global-color-accent--alt: oklch( from var(--ecep-purple) 82.8% c h );
   --global-color-accent--weak: oklch( from var(--ecep-purple) 40% c h );
