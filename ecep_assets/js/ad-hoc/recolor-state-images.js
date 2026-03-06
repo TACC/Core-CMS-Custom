@@ -30,16 +30,7 @@ function recolor(img) {
     canvas.style.height = img.offsetHeight + 'px';
   }
 
-  canvas.style.opacity = '0';
-  canvas.style.transition = 'opacity 0.4s ease';
-
   img.replaceWith(canvas);
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      canvas.style.opacity = '1';
-    });
-  });
 }
 
 imgs.forEach(img => {
