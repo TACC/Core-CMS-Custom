@@ -1,0 +1,9 @@
+/* To recolor pale purple images to be --ecep-purple */
+img[src*="ecep_states_"][src$=".jpg"] {
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+    /* !!!: image not transparent, so "turn black" fails */
+    filter:
+        /* brightness(0) saturate(100%) *//* to turn black */
+        invert(7%) sepia(62%) saturate(6764%) hue-rotate(275deg) brightness(107%) contrast(113%) /* to colorize */
+    ;
+}
