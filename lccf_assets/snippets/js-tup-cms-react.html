@@ -1,7 +1,10 @@
+{% load sekizai_tags %}
 {# Supports loading React components from TACC #}
 
 {# FAQ: Style loading spinner #}
-<link type="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/tup-ui@v1.1.20/libs/core-components/src/lib/LoadingSpinner/LoadingSpinner.global.css">
+{% addtoblock "css" %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/tup-ui@v1.1.20/libs/core-components/src/lib/LoadingSpinner/LoadingSpinner.global.css">
+{% endaddtoblock %}
 
 {# FAQ: Set API URL #}
 <script>window.__TUP_CONFIG__ = { baseUrl: 'https://tup-services.tacc.utexas.edu' }</script>
