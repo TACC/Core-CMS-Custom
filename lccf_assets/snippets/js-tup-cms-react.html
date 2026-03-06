@@ -1,5 +1,12 @@
 {# Supports loading React components from TACC #}
+
+{# FAQ: Style loading spinner #}
+<link type="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/tup-ui@v1.1.20/libs/core-components/src/lib/LoadingSpinner/LoadingSpinner.global.css">
+
+{# FAQ: Set API URL #}
 <script>window.__TUP_CONFIG__ = { baseUrl: 'https://tup-services.tacc.utexas.edu' }</script>
+
+{# FAQ: Load compiled script #}
 {% comment %}
 <script type="module" crossorigin="" src="https://dev.tup.tacc.utexas.edu/static/cms-react/assets/imports-W4caSo00.js"></script>
 {% endcomment %}
