@@ -1,3 +1,4 @@
+/* https://claude.ai/share/6812514c-0389-4ee1-848e-58c7670e2e63 */
 const imgs = document.querySelectorAll('img[src*="ecep_states_"][src$=".jpg"]');
 
 const targetR = 77, targetG = 0, targetB = 140; // #4D008C
