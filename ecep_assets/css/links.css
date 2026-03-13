@@ -7,7 +7,7 @@
     3. Delete this stylesheet.
 */
 :is(main, .c-footer) :where(
-  a,
+  a[href],
   .c-button--as-link
 ):not(
   /* to prevent underline in buttons */
@@ -15,8 +15,6 @@
   /* TODO: Think how/whether to add to Core-Styles */
   /* to prevent line at top right of news feed images */
   .blog-list article .read-more a
-):has(
-  href
 ) {
     text-decoration-line: underline;
 }
