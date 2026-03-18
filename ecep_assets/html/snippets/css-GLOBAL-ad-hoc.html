@@ -5,7 +5,10 @@ Many <link>s is faster than one <link> with many '@import's.
 {% endcomment %}
 
 {% addtoblock "css" %}
+
+{# TODO: Delete after deploy of Core-CMS v4.39 #}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/bootstrap5/utilities/link.css" rel="stylesheet" />
+
 {% with local_commit="6ab94596" %}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/bootstrap/btn-center.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/adjust-news-feed-layout.css" rel="stylesheet" />
