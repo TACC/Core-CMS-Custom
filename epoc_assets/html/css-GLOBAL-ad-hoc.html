@@ -1,0 +1,12 @@
+{% load sekizai_tags %}
+
+{% comment %}
+Many <link>s is faster than one <link> with many '@import's.
+{% endcomment %}
+
+{% addtoblock "css" %}
+
+{% with local_commit="74f54903" %}
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/epoc_assets/css/header.css" rel="stylesheet" />
+{% endwith %}
+{% endaddtoblock %}
