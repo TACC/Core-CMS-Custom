@@ -1,0 +1,5 @@
+/* To pull nav to the left (so it does not overflow) */
+.s-header .navbar-brand {
+    /* To reduce excess space to the right of the logo in header */
+    flex-basis: unset;
+}
