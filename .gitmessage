@@ -1,0 +1,20 @@
+
+
+# type(scope)!: short summary
+#
+# Types: feat, fix, docs, style, refactor, perf, test, chore, build, ci
+# Scope (optional): describes area, e.g. api, ui, auth, deps
+# ! (optional): marks breaking changes
+#
+# Examples:
+#   feat(api)!: add user search endpoint
+#   chore(deps): update
+#   style: delete excess whitespace
+#
+# Body (optional):
+#   What changed and why
+#   Important design decisions or context
+#
+# Footer (optional):
+#   BREAKING CHANGE: describe breaking change
+#   Closes #123, Relates-to #456
