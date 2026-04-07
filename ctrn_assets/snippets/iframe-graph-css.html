@@ -2,30 +2,36 @@
 {% addtoblock "css" %}
 <style id="css-iframe">
     iframe {
+        /* Found as (default) margin of the <body> element in the graphs */
         --body-margin: 8px;
+        --extra-space: calc(var(--body-margin) * 2);
 
         border: 0;
         width: 100%;
+
+        /* To horizontally center any iframe with a width less than 100% */
+        margin-inline: auto;
+        display: block;
     }
     iframe[id*="iframe-graph-regions"] {
-        /* FAQ: No need min-width since 2026-04; charts now responsive enough */
-        /* min-width: calc(450px + var(--body-margin) * 2); */
-        min-height: calc(470px + var(--body-margin) * 2);
+        /* The graphs have a default width of 472px, so we add the extra space to that */
+        min-height: calc(450px + var(--extra-space));
+    }
+    iframe[id*="iframe-graph-sex"],
+    iframe[id*="iframe-graph-age"] {
+        min-height: calc(480px + var(--extra-space));
+        /* */
+        max-width: calc(472px + var(--extra-space));
     }
     iframe[id*="iframe-graph-participation"] {
-        /* FAQ: No need min-width since 2026-04; charts now responsive enough */
-        /* min-width: calc(625px + var(--body-margin) * 2); */
-        min-height: calc(450px + var(--body-margin) * 2);
+        max-width: calc(992px + var(--extra-space));
+        min-height: calc(424px + var(--extra-space));
     }
     iframe[id*="iframe-graph-trauma"] {
-        /* FAQ: No need min-width since 2026-04; charts now responsive enough */
-        /* min-width: calc(690px + var(--body-margin) * 2); */
-        min-height: calc(650px + var(--body-margin) * 2);
+        min-height: calc(650px + var(--extra-space));
     }
     iframe[id*="iframe-graph-age-and-sex"] {
-        /* FAQ: No need min-width since 2026-04; charts now responsive enough */
-        /* min-width: calc(625px + var(--body-margin) * 2); */
-        min-height: calc(450px + var(--body-margin) * 2);
+        min-height: calc(450px + var(--extra-space));
     }
 </style>
 {% endaddtoblock %}
