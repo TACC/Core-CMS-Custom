@@ -1,4 +1,4 @@
-# Art Sci Vis Interactions
+# Purpose
 
 Custom assets for a [Core CMS](https://github.com/TACC/Core-CMS) project
 
