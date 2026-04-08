@@ -1,0 +1,15 @@
+/* For ECEP variables, see ./ecep.css */
+
+/* Translate ECEP Branding to Core-Styles */
+:root {
+  /* Font */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/settings/font.css#L27 */
+  --sans--cms: var(--ecep-font-content);
+
+  /* HACK: Distinguish heading font via style instead of standard variable */
+  /* FAQ: Because Core-Styles assumes the same font for headings */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/elements/headings--cms.css#L12 */
+  & :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--ecep-font-title);
+  }
+}
