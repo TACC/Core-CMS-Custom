@@ -9,26 +9,29 @@ Many <link>s is faster than one <link> with many '@import's.
 {# TODO: Delete after deploy of Core-CMS v4.39 #}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/bootstrap5/utilities/link.css" rel="stylesheet" />
 
-{% with local_commit="41328c4" %}
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@00ae8b17/ecep_assets" %}
+
 <!-- Ad Hoc Styles: (SETTINGS) Colors & Fonts -->
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/ecep-branding.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/colors.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/fonts.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/ecep-branding.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/colors.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/fonts.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (GENERICS) HTML Elements -->
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/html-elements.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/html-elements.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (COMPONENTS) Header & Footer -->
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/header.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/header.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (COMPONENTS) News -->
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/adjust-news-feed-layout.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/hide-news-byline.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/hide-article-main-image.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/adjust-news-feed-layout.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/hide-news-byline.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/hide-article-main-image.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (MISC.) Buttons & Links -->
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/bootstrap/btn-center.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/fix-button-height.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/ecep_assets/css/links.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/bootstrap/btn-center.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/fix-button-height.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/css/links.css" rel="stylesheet" />
+
 {% endwith %}
+
 {% endaddtoblock %}
