@@ -1,0 +1,11 @@
+/* ECEP Branding */
+:root {
+  --ecep-purple: #4D008C;
+  --ecep-green: #8FC01C;
+  --ecep-accent-blue: #0177A9;
+  --ecep-accent-red: #C5103D;
+  --ecep-accent-gray: #888C8D;
+
+  --ecep-font-title: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
+  --ecep-font-content: Arial, sans-serif;
+}

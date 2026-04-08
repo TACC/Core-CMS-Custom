@@ -1,0 +1,15 @@
+h1 {
+  text-transform: none;
+}
+h2 {
+  color: inherit;
+}
+.o-section--style-muted h2,
+.section--muted h2 {
+  color: unset;
+  opacity: 0.75;
+}
+
+figcaption {
+  font-size: small;
+}
