@@ -18,7 +18,7 @@ Delete the bullets you don't need. Any ticket / cross-repo links go here. Exampl
 - required by https://github.com/TACC/Other-Repo/pull/NNN
 -->
 
-…
+- …
 
 ## Changes
 
@@ -31,6 +31,7 @@ Use short bullets. Add bold verb as prefix to help scanning; example:
 - **fixed** typo
 -->
 
+- …
 
 ## Testing
 
