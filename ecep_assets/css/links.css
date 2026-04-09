@@ -8,6 +8,7 @@
 */
 :is(main, .c-footer) :where(
   a[href],
+  summary,
   .c-button--as-link
 ):not(
   /* to prevent underline in buttons */
@@ -20,6 +21,7 @@
 }
 :is(main, .c-footer) :where(
   a:hover,
+  summary:hover,
   .c-button--as-link:hover
 ) {
     text-decoration-style: dashed;
@@ -27,6 +29,7 @@
 }
 :is(main, .c-footer) :where(
   a:active,
+  summary:active,
   .c-button--as-link:active
 ) {
     text-decoration-style: dotted;
