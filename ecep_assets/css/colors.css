@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@fix/no-light-alt-in-auto-colors/dist/settings/color--cms.auto.css');
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@f2125cc1/dist/settings/color--cms.auto.css');
 :root {
   /* GLOBAL */
   --tc-color-1: var(--ecep-purple); /* --global-color "accent" */
