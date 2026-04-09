@@ -1,3 +1,7 @@
 .s-footer {
-    --header-bkgd-color: var(--global-color-primary--xx-dark);
+    color: var(--global-color-primary--light);
+
+    a:not(.c-button,[class*=button--],.btn) {
+        color: inherit;
+    }
 }
