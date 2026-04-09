@@ -1,22 +1,11 @@
-/* Translate ECEP Branding to Core-Styles */
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/settings/color--cms.auto.css');
 :root {
-  /* Global */
-  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/settings/color--cms.auto.css */
-  --global-color-accent--xxx-light: oklch( from var(--ecep-purple) 93.5% c h );
-  --global-color-accent--xx-light: oklch( from var(--ecep-purple) 89.4% c h );
-  --global-color-accent--x-light: oklch( from var(--ecep-purple) 82.8% c h );
-  --global-color-accent--light: oklch( from var(--ecep-purple) 55% c h );
-  --global-color-accent--normal: var(--ecep-purple);
-  --global-color-accent--dark: oklch( from var(--ecep-purple) 20% c h );
-  --global-color-accent--x-dark: oklch( from var(--ecep-purple) 0% c h );
+  /* GLOBAL */
+  --tc-color-1: var(--ecep-purple); /* --global-color "accent" */
+  --tc-color-2: var(--ecep-green); /* --global-color "secondary" */
+  --tc-color-3: var(--ecep-green); /* --global-color "tertiary" */
 
-  --global-color-accent--alt: oklch( from var(--ecep-purple) 82.8% c h );
-  --global-color-accent--weak: oklch( from var(--ecep-purple) 40% c h );
-
-  --global-color-secondary--normal: var(--ecep-green);
-  --global-color-tertiary--normal: var(--ecep-green);
-
-  /* Header */
+  /* HEADER */
   /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/core-styles.theme.default.css */
   --header-bkgd-color: var(--ecep-purple);
   --header-minor-border-color: var(--global-color-accent--xxx-light);
