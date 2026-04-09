@@ -1,0 +1,10 @@
+@import '@tacc/core-styles/src/lib/_imports/settings/color--cms.auto.css';
+
+:root {
+  /* To manually skin header using ECEP branding */
+  /* https://github.com/TACC/Core-Styles/blob/v2.53.1/src/lib/_imports/core-styles.theme.default.css */
+  --header-bkgd-color: var(--ecep-purple);
+  --header-minor-border-color: var(--global-color-accent--xxx-light);
+  --header-search-brdr-color: var(--global-color-accent--x-light);
+  --header-search-bkgd-color: var(--global-color-accent--dark);
+}

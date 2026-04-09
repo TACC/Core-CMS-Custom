@@ -6,14 +6,13 @@ Many <link>s is faster than one <link> with many '@import's.
 
 {% addtoblock "css" %}
 
-{# TODO: Delete after deploy of Core-CMS v4.39 #}
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/bootstrap5/utilities/link.css" rel="stylesheet" />
-
-{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@00ae8b17/ecep_assets/css" %}
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@6091a6e0/ecep_assets/css" %}
 
 <!-- Ad Hoc Styles: (SETTINGS) Colors & Fonts -->
 <link href="{{CDN_URL}}/ecep-branding.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/colors.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--accent-auto.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--accent-user.min.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--header.css" rel="stylesheet" />
 <link href="{{CDN_URL}}/fonts.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (GENERICS) HTML Elements -->
@@ -21,6 +20,7 @@ Many <link>s is faster than one <link> with many '@import's.
 
 <!-- Ad Hoc Styles: (COMPONENTS) Header & Footer -->
 <link href="{{CDN_URL}}/header.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/footer.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (COMPONENTS) News -->
 <link href="{{CDN_URL}}/adjust-news-feed-layout.css" rel="stylesheet" />

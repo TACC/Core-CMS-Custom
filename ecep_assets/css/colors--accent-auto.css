@@ -1,0 +1,8 @@
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/settings/color--cms.auto.css');
+
+:root {
+  /* To automatically generate accent colors from ECEP branding */
+  --tc-color-1: var(--ecep-purple); /* --global-color "accent" */
+  --tc-color-2: var(--ecep-green); /* --global-color "secondary" */
+  --tc-color-3: var(--ecep-green); /* --global-color "tertiary" */
+}
