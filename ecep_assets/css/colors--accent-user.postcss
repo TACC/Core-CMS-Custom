@@ -6,8 +6,10 @@
 }
 :root, /* cuz websites default to "light" */
 :--light-context-safe {
-    --global-color-accent--light: #8947EB;
+    /* FAQ: Link/Text color contrast not required cuz links are underlined */
+    --global-color-accent--light: var(--ecep-purple);
 }
 :--dark-context-safe {
+    /* FAQ: This purple too dark on dark sections (test with btn btn-primary) */
     --global-color-accent--normal: #8947EB;
 }
