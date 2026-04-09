@@ -6,7 +6,7 @@
 .s-header .nav-link:focus,
 .s-header .nav-link:active,
 .s-header .nav-item.active .nav-link {
-  border-color: var(--ecep-accent-gray);
+  border-color: var(--ecep-gray);
 }
 
 /* https://github.com/TACC/Core-Styles/blob/v2.38.0/src/lib/_imports/trumps/s-header.css#L24 */
