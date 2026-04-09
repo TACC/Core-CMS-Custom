@@ -5,6 +5,7 @@
   --ecep-blue: #0177A9;
   --ecep-red: #C5103D;
   --ecep-gray: #888C8D;
+  --ecep-yellow: #ffeca5; /* WARNING: Unofficial (ask H.P. for its origin) */
 
   --ecep-font-title: 'Open Sans', 'Segoe UI', Tahoma, sans-serif;
   --ecep-font-content: Arial, sans-serif;
@@ -15,3 +16,4 @@
 .ecep-blue { color: var(--ecep-blue); }
 .ecep-red { color: var(--ecep-red); }
 .ecep-gray { color: var(--ecep-gray); }
+.ecep-yellow { color: var(--ecep-yellow); }

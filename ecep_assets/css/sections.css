@@ -1,0 +1,4 @@
+.section--accent,
+.o-section--style-accent {
+  --color--bkgd: var(--ecep-yellow);
+}
