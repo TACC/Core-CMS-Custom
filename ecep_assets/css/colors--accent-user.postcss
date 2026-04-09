@@ -1,0 +1,13 @@
+@import '@tacc/core-styles/src/lib/_imports/settings/color--cms.selectors.css';
+
+/* To manually override colors--auto.css to have accessible color contrast */
+:root {
+    --global-color-accent--light-alt: var(--global-color-accent--x-light);
+}
+:root, /* cuz websites default to "light" */
+:--light-context-safe {
+    --global-color-accent--light: #8D5EC9;
+}
+:--dark-context-safe {
+    --global-color-accent--normal: #8D5EC9;
+}

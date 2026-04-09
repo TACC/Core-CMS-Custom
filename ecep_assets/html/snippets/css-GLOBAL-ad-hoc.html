@@ -9,11 +9,13 @@ Many <link>s is faster than one <link> with many '@import's.
 {# TODO: Delete after deploy of Core-CMS v4.39 #}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/bootstrap5/utilities/link.css" rel="stylesheet" />
 
-{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@b16da141/ecep_assets/css" %}
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@fix/a11y-issues/ecep_assets/css" %}
 
 <!-- Ad Hoc Styles: (SETTINGS) Colors & Fonts -->
 <link href="{{CDN_URL}}/ecep-branding.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/colors.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--accent-auto.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--accent-user.min.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/colors--header.css" rel="stylesheet" />
 <link href="{{CDN_URL}}/fonts.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (GENERICS) HTML Elements -->
