@@ -1,0 +1,33 @@
+{
+  "name": "@tacc/ecep-assets",
+  "description": "The TACC CMD custom assets used by ECEP website.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TACC/Core-CMS-Custom.git",
+    "directory": "ecep_assets"
+  },
+  "license": "MIT",
+  "author": "TACC COA CMD <coa-cmd@tacc.utexas.edu>",
+  "contributors": [
+    "TACC ACI WMA <wma-portals@tacc.utexas.edu>"
+  ],
+  "homepage": "https://ecepalliance.org",
+  "engines": {
+    "node": ">=25.X",
+    "npm": ">=11.X"
+  },
+  "scripts": {
+    "version": "echo $(git describe --tags)",
+    "build": "npm run build:css",
+    "build:css": "export BUILD_ID=\"${BUILD_ID:-$(git describe --tags)}\" && ./bin/build-css.js",
+    "watch:build": "npm run watch:build:css",
+    "watch:build:css": "onchange 'css/**/*.postcss' -- npm run build:css"
+  },
+  "dependencies": {
+    "@tacc/core-styles": "^2.55.0"
+  },
+  "devDependencies": {
+    "onchange": "^7.1.0",
+    "prettier": "^3.8.1"
+  }
+}
