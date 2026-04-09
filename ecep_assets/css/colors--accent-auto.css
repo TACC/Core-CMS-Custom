@@ -1,4 +1,4 @@
-@import '@tacc/core-styles/src/lib/_imports/settings/color--cms.auto.css';
+@import url('https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/settings/color--cms.auto.css');
 
 :root {
   /* To automatically generate accent colors from ECEP branding */
