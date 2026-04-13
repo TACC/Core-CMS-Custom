@@ -1,7 +1,0 @@
-.s-footer {
-    color: var(--global-color-primary--light);
-
-    a:not(.c-button,[class*=button--],.btn) {
-        color: inherit;
-    }
-}
