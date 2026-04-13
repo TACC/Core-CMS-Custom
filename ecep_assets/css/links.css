@@ -6,7 +6,7 @@
     2. Add "s-irregular-links" class to a root element.
     3. Delete this stylesheet.
 */
-:is(main, .c-footer) :where(
+main :where(
   a[href],
   summary,
   .c-button--as-link
@@ -15,11 +15,11 @@
   .btn:not(.btn-link),
   /* TODO: Think how/whether to add to Core-Styles */
   /* to prevent line at top right of news feed images */
-  .blog-list article .read-more a
+  .blog-list article .read-more *
 ) {
     text-decoration-line: underline;
 }
-:is(main, .c-footer) :where(
+main :where(
   a:hover,
   summary:hover,
   .c-button--as-link:hover
@@ -27,7 +27,7 @@
     text-decoration-style: dashed;
     text-decoration-thickness: from-font; /* TODO: Add to Core-Styles */
 }
-:is(main, .c-footer) :where(
+main :where(
   a:active,
   summary:active,
   .c-button--as-link:active
