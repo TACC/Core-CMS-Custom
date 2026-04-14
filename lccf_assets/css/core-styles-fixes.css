@@ -1,4 +1,3 @@
-<style id="css-core-styles-fixes">
 /* TODO: Integrate into Core-Styles */
 /* to make space between list and heading match space between paragraph and heading */
 /* FAQ: added for coument pages, like original version of /about/ */
@@ -13,4 +12,3 @@
 .s-breadcrumbs + .o-section {
     margin-top: 0;
 }
-</style>
