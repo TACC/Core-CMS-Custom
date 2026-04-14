@@ -8,8 +8,29 @@ Many <link>s is faster than one <link> with many '@import's.
 
 {# TODO: Delete after deploy of Core-CMS v4.39.2 #}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/bootstrap5/utilities/link.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/objects/o-section.css" rel="stylesheet" />
 
 {% with local_commit="main" %}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/lccf_assets/css/core-styles-fixes.css" rel="stylesheet" />
 {% endwith %}
+
+<style>
+    /* Elements that should have as much space beneath them as a <p> would */
+    details:has(+ :not(details)) /* <details> with a non-<details> after it */,
+    .c-message--scope-section {
+        margin-bottom: 2em;
+    }
+
+    /* Exepcted alignment for images in long-form text e.g. /allocations/ */
+    .align-right {
+        float: right;
+    }
+    .align-center {
+        display: block;
+        margin-inline:auto;
+    }
+    .align-left {
+        float: right;
+    }
+</style>
 {% endaddtoblock %}
