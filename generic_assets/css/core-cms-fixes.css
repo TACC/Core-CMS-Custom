@@ -1,5 +1,9 @@
 /* TODO: Integrate into Core-CMS */
-/* to make focus visible on category links */
-:is(.app-blog .categories) a:focus {
+/* to make focus visible on blog links: */
+/*     category */
+:is(.app-blog .categories) a:focus,
+/*     read more (shown as box around image) */
+.blog-list article .read-more a,
+.blog-list article .read-more:is(a) {
     outline-offset: 5px;
 }
