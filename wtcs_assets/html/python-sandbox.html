@@ -1,0 +1,797 @@
+<!--
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python Sandbox · WeTeach_CS</title>
+-->
+
+<!-- CodeMirror 5 (syntax highlighting + Python indent) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+
+<!-- Pyodide -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+
+<style>
+  :root {
+    --orange: #BF5700;
+    --orange-dark: #9a4500;
+    --orange-soft: #fff4ec;
+    --orange-ring: rgba(191, 87, 0, 0.25);
+    --ink: #2a2422;
+    --ink-soft: #6b6360;
+    --paper: #fffaf6;
+    --card: #ffffff;
+    --border: #ecdfd3;
+    --border-strong: #d9c7b6;
+    --output-bg: #1f1a17;
+    --output-ink: #f4ece4;
+    --output-dim: #b8a99c;
+    --output-err: #ff8b6b;
+    --output-prompt: #ffc890;
+    --good: #2f8a4f;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(60, 30, 10, 0.04), 0 6px 18px rgba(60, 30, 10, 0.06);
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: ui-rounded, "SF Pro Rounded", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 320px;
+  }
+
+  /* Header */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .logo {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: var(--orange);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(191, 87, 0, 0.3);
+  }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+  .brand-title { font-weight: 700; font-size: 14px; color: var(--ink); }
+  .brand-sub { font-size: 11px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 4px 10px;
+    background: var(--orange-soft);
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #d9b48a;
+    box-shadow: 0 0 0 0 rgba(217,180,138,0.6);
+  }
+  .status[data-state="loading"] .status-dot { animation: pulse 1.4s ease-in-out infinite; }
+  .status[data-state="ready"] .status-dot { background: var(--good); }
+  .status[data-state="running"] .status-dot { background: var(--orange); animation: pulse 0.8s ease-in-out infinite; }
+  .status[data-state="error"] .status-dot { background: #c8443a; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(1.25); }
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .btn {
+    appearance: none;
+    border: 1px solid var(--border-strong);
+    background: var(--card);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: #fff; border-color: var(--orange); color: var(--orange-dark); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn:disabled:hover { background: var(--card); border-color: var(--border-strong); color: var(--ink); }
+
+  .btn.primary {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+    box-shadow: 0 2px 6px rgba(191, 87, 0, 0.25);
+  }
+  .btn.primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); color: white; }
+  .btn.primary:disabled { background: #d9b48a; border-color: #d9b48a; box-shadow: none; }
+
+  .btn .icon {
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+  }
+
+  .toolbar .spacer { flex: 1; }
+
+  .toast {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--ink);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 50;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Stacked split */
+  .stack {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pane-editor { flex: 1.2; }
+  .pane-output { flex: 1; border-top: 1px solid var(--border); }
+
+  .pane-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .pane-label .hint { font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--ink-soft); opacity: 0.7; }
+
+  /* Editor */
+  .editor-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--card);
+    position: relative;
+  }
+  .CodeMirror {
+    height: 100% !important;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.55;
+    background: var(--card);
+    color: var(--ink);
+  }
+  .CodeMirror-gutters {
+    background: var(--paper);
+    border-right: 1px solid var(--border);
+  }
+  .CodeMirror-linenumber { color: #c2b3a5; }
+  .CodeMirror-cursor { border-left: 2px solid var(--orange); }
+  .cm-s-default .cm-keyword { color: #b8336a; font-weight: 600; }
+  .cm-s-default .cm-builtin { color: #6a4cb6; }
+  .cm-s-default .cm-string { color: #2e7a4f; }
+  .cm-s-default .cm-number { color: var(--orange-dark); }
+  .cm-s-default .cm-comment { color: #a89a8b; font-style: italic; }
+  .cm-s-default .cm-def { color: #2c5fa3; font-weight: 600; }
+  .cm-s-default .cm-variable { color: var(--ink); }
+  .cm-s-default .cm-operator { color: #6b6360; }
+
+  /* Output */
+  .output-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    background: var(--output-bg);
+    color: var(--output-ink);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.5;
+    padding: 12px 14px;
+  }
+  .output-wrap .placeholder {
+    color: var(--output-dim);
+    font-style: italic;
+  }
+  .out-line { white-space: pre-wrap; word-break: break-word; }
+  .out-err { color: var(--output-err); }
+  .out-prompt { color: var(--output-prompt); }
+  .out-sys { color: var(--output-dim); font-style: italic; }
+  .out-ok { color: #9bd6a8; }
+
+  /* Input prompt row */
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .input-row .prompt-marker {
+    color: var(--output-prompt);
+    flex-shrink: 0;
+  }
+  .input-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: var(--output-ink);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .input-row input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px var(--orange-ring);
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* Footer */
+  .footer {
+    padding: 6px 14px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .footer .kbd {
+    display: inline-block;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink);
+  }
+  .footer-right { display: flex; align-items: center; gap: 6px; }
+  .heart { color: var(--orange); }
+
+  /* Narrow viewport tweaks (Canvas iframe friendly) */
+  @media (max-width: 520px) {
+    .brand-sub { display: none; }
+    .toolbar { padding: 8px 10px; }
+    .btn { padding: 6px 11px; font-size: 12px; }
+    .pane-label { padding: 5px 10px; }
+    .footer { font-size: 10.5px; padding: 5px 10px; }
+    .footer .footer-hint { display: none; }
+  }
+  @media (max-width: 380px) {
+    .status { display: none; }
+    .topbar { padding: 8px 10px; }
+  }
+
+  /* Print: keep it tidy if a teacher prints the page */
+  @media print {
+    .toolbar, .footer, .topbar { display: none; }
+    .output-wrap { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">L</div>
+      <div class="brand-text">
+        <div class="brand-title">Python Sandbox</div>
+        <div class="brand-sub">Launch_MS · WeTeach_CS</div>
+      </div>
+    </div>
+    <div class="status" id="status" data-state="loading" role="status" aria-live="polite">
+      <span class="status-dot"></span>
+      <span class="status-label">Loading Python…</span>
+    </div>
+  </header>
+
+  <!-- Toolbar -->
+  <div class="toolbar" role="toolbar" aria-label="Code actions">
+    <button class="btn primary" id="run-btn" disabled aria-keyshortcuts="Control+Enter">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5L8 5.5z" fill="currentColor"/>
+      </svg>
+      Run
+    </button>
+    <button class="btn" id="stop-btn" disabled>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>
+      </svg>
+      Stop
+    </button>
+    <button class="btn" id="reset-btn" title="Clear code and output">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+        <path d="M3 4v5h5"/>
+      </svg>
+      Reset
+    </button>
+    <div class="spacer"></div>
+    <button class="btn" id="copy-btn" title="Copy code to clipboard">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="11" height="11" rx="2"/>
+        <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+      </svg>
+      Copy code
+    </button>
+  </div>
+
+  <!-- Stacked editor + output -->
+  <main class="stack">
+    <section class="pane pane-editor" aria-label="Code editor">
+      <div class="pane-label">
+        <span>main.py</span>
+        <span class="hint" id="line-info">line 1, col 1</span>
+      </div>
+      <div class="editor-wrap">
+        <textarea id="editor"></textarea>
+      </div>
+    </section>
+
+    <section class="pane pane-output" aria-label="Program output">
+      <div class="pane-label">
+        <span>Output</span>
+        <span class="hint" id="output-hint">— press Run to start</span>
+      </div>
+      <div class="output-wrap" id="output" tabindex="0" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-hint">
+      <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> to run · <span class="kbd">Tab</span> indents
+    </div>
+    <div class="footer-right">
+      Made for Launch_MS <span class="heart">♥</span>
+    </div>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+<script>
+/* ----------------------- Editor setup (CodeMirror) ----------------------- */
+const STARTER = `# Welcome to Python! Edit this code, then press Run.
+# Try changing the message or the numbers below.
+
+print("Hello, coder!")
+
+name = input("What's your name? ")
+print("Nice to meet you,", name + "!")
+
+# A tiny calculation
+total = 0
+for i in range(1, 6):
+    total = total + i
+print("1 + 2 + 3 + 4 + 5 =", total)
+`;
+
+const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+  mode: 'python',
+  lineNumbers: true,
+  indentUnit: 4,
+  tabSize: 4,
+  indentWithTabs: false,
+  smartIndent: true,
+  matchBrackets: true,
+  autoCloseBrackets: true,
+  lineWrapping: false,
+  extraKeys: {
+    Tab: (cm) => {
+      if (cm.somethingSelected()) cm.indentSelection('add');
+      else cm.replaceSelection('    ', 'end');
+    },
+    'Shift-Tab': (cm) => cm.indentSelection('subtract'),
+    'Ctrl-Enter': () => runCode(),
+    'Cmd-Enter': () => runCode(),
+  },
+});
+editor.setValue(STARTER);
+editor.setCursor({ line: 0, ch: 0 });
+
+const lineInfo = document.getElementById('line-info');
+editor.on('cursorActivity', () => {
+  const c = editor.getCursor();
+  lineInfo.textContent = `line ${c.line + 1}, col ${c.ch + 1}`;
+});
+
+/* ----------------------- Output helpers ----------------------- */
+const outEl = document.getElementById('output');
+const outputHint = document.getElementById('output-hint');
+const placeholder = () => {
+  outEl.innerHTML = '<span class="placeholder">Output will appear here. Press Run to execute your code.</span>';
+};
+placeholder();
+
+function appendOut(text, cls) {
+  if (!text) return;
+  // Remove placeholder if present
+  if (outEl.querySelector('.placeholder')) outEl.innerHTML = '';
+  const span = document.createElement('span');
+  span.className = 'out-line' + (cls ? ' ' + cls : '');
+  span.textContent = text;
+  outEl.appendChild(span);
+  outEl.scrollTop = outEl.scrollHeight;
+}
+function appendSys(text) { appendOut(text + '\n', 'out-sys'); }
+function appendErr(text) { appendOut(text, 'out-err'); }
+function appendOk(text) { appendOut(text + '\n', 'out-ok'); }
+
+function clearOutput() { outEl.innerHTML = ''; placeholder(); }
+
+/* ----------------------- Status pill ----------------------- */
+const statusEl = document.getElementById('status');
+const statusLabel = statusEl.querySelector('.status-label');
+function setStatus(state, label) {
+  statusEl.dataset.state = state;
+  statusLabel.textContent = label;
+}
+
+/* ----------------------- Toast ----------------------- */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1500);
+}
+
+/* ----------------------- Pyodide bootstrap ----------------------- */
+const runBtn = document.getElementById('run-btn');
+const stopBtn = document.getElementById('stop-btn');
+const resetBtn = document.getElementById('reset-btn');
+const copyBtn = document.getElementById('copy-btn');
+
+let pyodide = null;
+let running = false;
+let stopRequested = false;
+let pendingInput = null; // {resolve, reject, inputEl}
+
+async function bootPyodide() {
+  try {
+    setStatus('loading', 'Loading Python…');
+    pyodide = await loadPyodide({
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/',
+      stdout: (s) => appendOut(s + '\n'),
+      stderr: (s) => appendOut(s + '\n', 'out-err'),
+    });
+    // Hook input() through JS so we can prompt inline
+    pyodide.globals.set('__js_input__', async (prompt) => {
+      return await askInput(prompt ?? '');
+    });
+    // Replace builtins.input with an async-aware version
+    await pyodide.runPythonAsync(`
+import builtins
+from pyodide.ffi import to_js
+async def _async_input(prompt=""):
+    # Show the prompt in output (mimic CPython's print-without-newline behavior)
+    if prompt:
+        print(prompt, end="")
+    val = await __js_input__(prompt)
+    return val
+# We override input with a sync wrapper that uses the running event loop
+def input(prompt=""):
+    import asyncio
+    # In Pyodide, top-level await is allowed via runPythonAsync; here we
+    # rely on the fact that user code is executed via runPythonAsync below,
+    # which lets us use asyncio.ensure_future + run_until... — but the
+    # simplest path is to leverage pyodide.ffi: we just await the JS coroutine.
+    raise RuntimeError("Internal: input() should be patched at runtime")
+builtins.input = input
+`);
+    setStatus('ready', 'Ready');
+    runBtn.disabled = false;
+  } catch (e) {
+    console.error(e);
+    setStatus('error', 'Failed to load');
+    appendErr('Could not load Python runtime. Check your internet connection and reload.\n');
+  }
+}
+
+/* ----------------------- input() bridge -----------------------
+   We render an inline input row in the output pane and resolve a Promise
+   when the student presses Enter. The Python side awaits this Promise.
+------------------------------------------------------------------- */
+function askInput(prompt) {
+  return new Promise((resolve) => {
+    if (outEl.querySelector('.placeholder')) outEl.innerHTML = '';
+    // Render the prompt text inline (before the input row) so it appears
+    // BEFORE the answer, like a normal terminal.
+    const promptText = (prompt == null ? '' : String(prompt));
+    if (promptText) {
+      const p = document.createElement('span');
+      p.className = 'out-line out-prompt';
+      p.textContent = promptText;
+      outEl.appendChild(p);
+    }
+    const row = document.createElement('div');
+    row.className = 'input-row';
+    const marker = document.createElement('span');
+    marker.className = 'prompt-marker';
+    marker.textContent = '›';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.spellcheck = false;
+    inp.autocomplete = 'off';
+    inp.setAttribute('aria-label', prompt || 'Input');
+    row.appendChild(marker);
+    row.appendChild(inp);
+    outEl.appendChild(row);
+    outEl.scrollTop = outEl.scrollHeight;
+    inp.focus();
+
+    pendingInput = { resolve, inp, row };
+
+    function submit() {
+      const value = inp.value;
+      // Echo the typed answer as a normal output line (terminal-style).
+      const echo = document.createElement('span');
+      echo.className = 'out-line';
+      echo.textContent = value + '\n';
+      row.replaceWith(echo);
+      pendingInput = null;
+      resolve(value);
+    }
+
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submit();
+      }
+    });
+  });
+}
+
+/* ----------------------- Run / Stop ----------------------- */
+async function runCode() {
+  if (!pyodide || running) return;
+  running = true;
+  stopRequested = false;
+  runBtn.disabled = true;
+  stopBtn.disabled = false;
+  setStatus('running', 'Running…');
+  outputHint.textContent = '— running';
+  clearOutput();
+
+  // Inject an async input shim into the user's namespace so plain `input(...)`
+  // works with `await` semantics under runPythonAsync.
+  const setup = `
+import builtins
+async def __ainput(prompt=""):
+    # Prompt is rendered by the JS bridge directly to avoid stdout-buffer ordering issues.
+    return await __js_input__(prompt)
+# Monkey-patch so that user code calling input(...) works in async context.
+# Pyodide's runPythonAsync auto-awaits top-level coroutines, so we expose
+# input as a coroutine and let it be awaited via the AST transform below.
+`;
+
+  // We use a trick: wrap user code so each top-level call to input() is awaited.
+  // Pyodide's runPythonAsync supports top-level await but only for explicit awaits
+  // — it does NOT auto-transform `input()` into `await input()`. We patch by
+  // replacing builtins.input with a sync function that uses Atomics... but Atomics
+  // requires SharedArrayBuffer + COOP/COEP headers which Canvas iframes won't have.
+  //
+  // Simpler approach: do an AST-level rewrite in Python to turn calls to `input(`
+  // into `await __ainput(`. This is robust enough for the beginner curriculum.
+
+  const userCode = editor.getValue();
+
+  const wrapper = `
+${setup}
+import ast, textwrap
+__src = ${JSON.stringify(userCode)}
+
+class _InputRewriter(ast.NodeTransformer):
+    def visit_Call(self, node):
+        self.generic_visit(node)
+        if isinstance(node.func, ast.Name) and node.func.id == "input":
+            new = ast.Await(value=ast.Call(
+                func=ast.Name(id="__ainput", ctx=ast.Load()),
+                args=node.args, keywords=node.keywords))
+            return ast.copy_location(new, node)
+        return node
+
+try:
+    __tree = ast.parse(__src, mode="exec", type_comments=False)
+except SyntaxError as __e:
+    raise
+
+__tree = _InputRewriter().visit(__tree)
+ast.fix_missing_locations(__tree)
+
+# Wrap into an async function so we can use await freely
+__wrapper = ast.AsyncFunctionDef(
+    name="__user_main",
+    args=ast.arguments(posonlyargs=[], args=[], kwonlyargs=[], kw_defaults=[], defaults=[]),
+    body=__tree.body if __tree.body else [ast.Pass()],
+    decorator_list=[],
+    returns=None,
+    type_comment=None,
+)
+__module = ast.Module(body=[__wrapper], type_ignores=[])
+ast.fix_missing_locations(__module)
+exec(compile(__module, "<student>", "exec"), globals())
+await __user_main()
+`;
+
+  try {
+    await pyodide.runPythonAsync(wrapper);
+    if (!stopRequested) {
+      appendOk('\n— Program finished —');
+      setStatus('ready', 'Ready');
+      outputHint.textContent = '— finished';
+    }
+  } catch (e) {
+    if (stopRequested) {
+      appendSys('\n— Stopped —');
+      setStatus('ready', 'Ready');
+      outputHint.textContent = '— stopped';
+    } else {
+      // Pyodide errors include a Python traceback; surface it cleanly.
+      const msg = (e && e.message) ? e.message : String(e);
+      appendErr('\n' + msg + '\n');
+      setStatus('error', 'Error');
+      outputHint.textContent = '— error';
+    }
+  } finally {
+    running = false;
+    runBtn.disabled = false;
+    stopBtn.disabled = true;
+    // If status still says running for some reason, drop it back to ready
+    if (statusEl.dataset.state === 'running') setStatus('ready', 'Ready');
+    // Clean up any orphaned input row
+    if (pendingInput) {
+      pendingInput.row.remove();
+      pendingInput = null;
+    }
+  }
+}
+
+function stopCode() {
+  if (!running) return;
+  stopRequested = true;
+  // Resolve any pending input with empty so the await unblocks; then we throw.
+  if (pendingInput) {
+    pendingInput.row.remove();
+    pendingInput.resolve('');
+    pendingInput = null;
+  }
+  // Pyodide doesn't support hard interrupts without SharedArrayBuffer; we rely
+  // on the running coroutine completing the next step. We also overwrite the
+  // event loop's microtask by raising via interruptBuffer if available.
+  try {
+    if (pyodide && pyodide.runPython) {
+      pyodide.runPython('raise KeyboardInterrupt()');
+    }
+  } catch (_) { /* ignore — we handle this in runCode's catch */ }
+}
+
+/* ----------------------- Reset / Copy ----------------------- */
+function resetAll() {
+  if (running) stopCode();
+  editor.setValue(STARTER);
+  editor.setCursor({ line: 0, ch: 0 });
+  editor.focus();
+  clearOutput();
+  outputHint.textContent = '— press Run to start';
+  setStatus(pyodide ? 'ready' : 'loading', pyodide ? 'Ready' : 'Loading Python…');
+}
+
+async function copyCode() {
+  const code = editor.getValue();
+  try {
+    await navigator.clipboard.writeText(code);
+    toast('Code copied to clipboard');
+  } catch (e) {
+    // Fallback for iframe environments where Clipboard API is blocked
+    const ta = document.createElement('textarea');
+    ta.value = code;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); toast('Code copied to clipboard'); }
+    catch (_) { toast('Couldn\u2019t copy — select & ⌘/Ctrl+C'); }
+    ta.remove();
+  }
+}
+
+/* ----------------------- Wire up ----------------------- */
+runBtn.addEventListener('click', runCode);
+stopBtn.addEventListener('click', stopCode);
+resetBtn.addEventListener('click', resetAll);
+copyBtn.addEventListener('click', copyCode);
+
+// Boot
+bootPyodide();
+</script>
+
+<!--
+</body>
+</html>
+-->
