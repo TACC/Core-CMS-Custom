@@ -6,6 +6,12 @@ Many <link>s is faster than one <link> with many '@import's.
 
 {% addtoblock "css" %}
 
+<!-- Ad Hoc Styles: Core-CMS Fixes & Features -->
+<style>
+    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/elements/headings--cms.css") layer(base);
+    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@main/generic_assets/css/core-cms-fixes.css") layer(base);
+</style>
+
 {% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@166ca8df/ecep_assets/css" %}
 
 <!-- Ad Hoc Styles: (SETTINGS) Colors & Fonts -->
@@ -20,7 +26,6 @@ Many <link>s is faster than one <link> with many '@import's.
 
 <!-- Ad Hoc Styles: (COMPONENTS) Header & Footer -->
 <link href="{{CDN_URL}}/header.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/footer.css" rel="stylesheet" />
 <link href="{{CDN_URL}}/sections.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (COMPONENTS) News -->
@@ -34,8 +39,5 @@ Many <link>s is faster than one <link> with many '@import's.
 <link href="{{CDN_URL}}/links.css" rel="stylesheet" />
 
 {% endwith %}
-
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@main/generic_assets/css/core-cms-fixes.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@feat/bootstrap-headings-classes/dist/bootstrap4/content/typography-headings/typography-headings--cms.css" rel="stylesheet" />
 
 {% endaddtoblock %}
