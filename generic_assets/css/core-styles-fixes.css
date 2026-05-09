@@ -12,6 +12,3 @@
 .s-breadcrumbs + .o-section {
     margin-top: 0;
 }
-
-/* TODO: Delete this after Core-CMS uses Core-Styles v2.57 */
-@import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/bootstrap4/components/headings.css");
