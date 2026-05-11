@@ -1,0 +1,13 @@
+<style id="css-news-feed">
+:is(.blog-latest-entries,.blog-featured-posts) {
+    gap: 10px;
+}
+:is(.blog-latest-entries,.blog-featured-posts) article:not(:last-child) {
+    padding-bottom: 10px;
+    margin-bottom: unset;
+    border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--light);
+}
+:is(.blog-latest-entries,.blog-featured-posts) .blog-visual {
+    display: none;
+}
+</style>
