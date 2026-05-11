@@ -8,5 +8,11 @@
     outline-offset: 5px;
 }
 
+/* TODO: Integrate into Core-CMS */
+/* to make line-height of news feed match body */
+:is(.blog-latest-entries,.blog-featured-posts) .blog-lead {
+    line-height: unset;
+}
+
 /* TODO: Delete this after Core-CMS uses Core-Styles v2.57 */
 @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/bootstrap4/content/typography-headings/typography-headings--cms.css");
