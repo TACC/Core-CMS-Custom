@@ -1,0 +1,7 @@
+/* Will be replaced by:
+   new TACC/Core-CMS setting `PORTAL_BLOG_SHOW_MAIN_IMAGE`
+*/
+/* Originally came from:
+   https://github.com/TACC/Core-CMS/blob/v4.35.15/taccsite_cms/templates/snippets/news/hide-article-main-image.html
+*/
+article.post-detail .blog-visual { display: none }

@@ -10,6 +10,7 @@ Many <link>s is faster than one <link> with many '@import's.
 <style>
     @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/elements/headings--cms.css") layer(base);
     @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@main/generic_assets/css/core-cms-fixes.css") layer(base);
+    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@e7e4bf18/generic_assets/css/hide-news-main-image.css") layer(base);
 </style>
 
 {% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@166ca8df/ecep_assets/css" %}
@@ -31,7 +32,6 @@ Many <link>s is faster than one <link> with many '@import's.
 <!-- Ad Hoc Styles: (COMPONENTS) News -->
 <link href="{{CDN_URL}}/adjust-news-feed-layout.css" rel="stylesheet" />
 <link href="{{CDN_URL}}/hide-news-byline.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/hide-article-main-image.css" rel="stylesheet" />
 
 <!-- Ad Hoc Styles: (MISC.) Buttons & Links -->
 <link href="{{CDN_URL}}/bootstrap/btn-center.css" rel="stylesheet" />
