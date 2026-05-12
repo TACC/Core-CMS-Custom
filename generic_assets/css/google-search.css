@@ -1,0 +1,155 @@
+/* From Core-CMS PR from which CDN errs when loading latest code */
+/* https://github.com/TACC/Core-CMS/pull/1129 */
+
+#google-search {
+
+  &:is(#cms-content-container > *:last-child) {
+    margin-bottom: var(--global-space--section-gap, 60px);
+  }
+
+  /* SEARCH CONTAINER */
+
+  /* To remove padding from search container */
+  & .gsc-control-cse {
+    padding: unset;
+  }
+
+
+
+  /* TABLE OF SEARCH STATS & SORTING OPTIONS */
+
+  /* To remove border from search analytics, add gray background */
+  & .gsc-above-wrapper-area {
+    --bkgd-color: var(--global-color-primary--x-light);
+
+    background-color: var(--bkgd-color);
+    box-shadow: 40vw 0 var(--bkgd-color), -40vw 0 var(--bkgd-color);
+    border-bottom: unset;
+  }
+
+  & .gsc-above-wrapper-area-container {
+    border-bottom: unset;
+  }
+
+  /* To override Core-Styles tables */
+  & tbody > tr:first-child > :is(td, th) {
+    border: unset;
+    padding-inline: unset;
+    background: unset;
+    vertical-align: middle;
+  }
+
+  & .gsc-selected-option-container {
+    background: var(--global-color-primary--xx-light);
+    border: var(--global-border--normal);
+  }
+
+  & .gsc-result-info {
+    padding: unset;
+    font-size: var(--global-font-size--medium);
+  }
+
+
+
+  /* SUGGESTION PHRASE (after "Did you mean:") */
+
+  & .gs-spelling {
+    padding: unset;
+  }
+  & .gs-spelling a {
+    color: var(--global-color-accent--light);
+
+    /* to undo core-styles.base */
+    /* https://github.com/TACC/Core-Styles/blob/8ab89d3/src/lib/_imports/elements/links.css */
+    &:not([href]) {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+
+
+  /* SEARCH RESULTS */
+
+  /* (search result body text) */
+  & .gs-snippet {
+    color: var(--global-color-primary--dark);
+  }
+
+  /* (url under search result title) */
+  & .gs-webResult div.gs-visibleUrl {
+    color: var(--global-color-secondary--normal);
+  }
+
+  /* (search result titles) */
+  & a.gs-title:link {
+    color: var(--global-color-accent--light);
+    text-decoration: none;
+    text-decoration-thickness: var(--global-border-width--normal);
+    text-underline-offset: 0.2em;
+  }
+  & a.gs-title:link:hover {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+  }
+  & a.gs-title b {
+    color: currentColor;
+  }
+  & .gs-result .gs-title:not(a):hover {
+    /* to remove duplicate underline */
+    /* (fix Google's default_v6+en.css bug `.gs-result .gs-title:hover`) */
+    text-decoration: auto;
+  }
+
+  /* (push search-result description to right) */
+  & .gs-image-box {
+    margin-right: 10px;
+  }
+
+
+
+  /* GOOGLE PAGE NAVIGATION (at bottom) */
+
+  & .gsc-cursor-box {
+    display: flex;
+    justify-content: center;
+    margin-block: var(--global-space--large);
+  }
+
+  & .gsc-cursor-current-page {
+    color: var(--global-color-accent--light);
+    text-decoration: none;
+    text-decoration-thickness: var(--global-border-width--normal);
+    text-underline-offset: 0.2em;
+  }
+
+  & .gsc-cursor-current-page:hover {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+  }
+
+
+
+  /* GOOGLE BRANDING */
+
+  & .gcsc-find-more-on-google {
+    color: var(--global-color-accent--light);
+    text-decoration: none;
+    text-decoration-thickness: var(--global-border-width--normal);
+    text-underline-offset: 0.2em;
+  }
+  svg.gcsc-find-more-on-google-magnifier {
+    fill: currentColor;
+  }
+
+  & .gcsc-find-more-on-google:hover {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+  }
+
+  & .gcsc-branding-img-noclear {
+    vertical-align: unset;
+    top: 1px;
+  }
+
+}
