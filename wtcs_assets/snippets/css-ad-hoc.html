@@ -8,13 +8,23 @@ Many <link>s is faster than one <link> with many '@import's.
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@3ecf278a/wtcs_assets/css/captions.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@e7e4bf18/generic_assets/css/hide-news-main-image.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/components/c-island.css" rel="stylesheet" />
+{% load sekizai_tags %}
+
+{% comment %}
+Many <link>s is faster than one <link> with many '@import's.
+{% endcomment %}
+
+{% addtoblock "css" %}
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@3ecf278a/wtcs_assets/css/captions.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@e7e4bf18/generic_assets/css/hide-news-main-image.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2/dist/components/c-island.css" rel="stylesheet" />
 {# HELP: Was this used to prevent truncation of news article leads? On news page or news feed? #}
-{#
+{% comment %}
 <style>
 .x-truncate--many-lines:hover {
     overflow: visible;
     -webkit-line-clamp: inherit;
 }
 </style>
-#}
+{% endcomment %}
 {% endaddtoblock %}
