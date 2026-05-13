@@ -22,8 +22,9 @@ Many <link>s is faster than one <link> with many '@import's.
 {% comment %}
 <style>
 .x-truncate--many-lines:hover {
-    overflow: visible;
     -webkit-line-clamp: inherit;
+    overflow: visible;
+    max-height: unset;
 }
 </style>
 {% endcomment %}
