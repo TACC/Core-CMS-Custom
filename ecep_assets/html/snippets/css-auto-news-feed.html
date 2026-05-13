@@ -1,13 +1,22 @@
 <style id="css-auto-news-feed">
 :is(.blog-latest-entries,.blog-featured-posts) {
     gap: 10px;
-}
-:is(.blog-latest-entries,.blog-featured-posts) article:not(:last-child) {
-    padding-bottom: 10px;
-    margin-bottom: unset;
-    border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--light);
-}
-:is(.blog-latest-entries,.blog-featured-posts) .blog-visual {
-    display: none;
-}
+
+    /* To change space and add border between articles */
+    /* WARNING: Only looks rihgt if articles are vertical */
+    article:not(:last-child) {
+        padding-bottom: 10px;
+        margin-bottom: unset;
+        border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--light);
+    }
+    /* To hide image (cuz manual home page news feed had no images) */
+    .blog-visual {
+        display: none;
+    }
+    /* To undo truncation */
+    .blog-lead {
+        -webkit-line-clamp: inherit;
+        overflow: visible;
+        max-height: unset;
+    }
 </style>
