@@ -1,0 +1,4 @@
+/* To hide "2026 > " from events/ breadcrumbs */
+#cms-breadcrumbs li:has([href="/events/2026/"]) {
+    display: none;
+}
