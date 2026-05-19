@@ -1,3 +1,4 @@
+/* TODO: Delete after project uses TACC/Core-CMS PR #1156 (v4.40?) */
 /* https://github.com/TACC/Core-CMS/blob/v4.17.1/taccsite_cms/templates/djangocms_blog/includes/blog_meta.html#L11-L20 */
 .blog-list article .byline,
 article.post-detail .byline {

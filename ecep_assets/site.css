@@ -89,18 +89,6 @@ figcaption {
 
 
 
-/* COMPONENTS */
-
-/* Blog */
-/* https://github.com/TACC/Core-CMS/blob/v4.17.1/taccsite_cms/templates/djangocms_blog/includes/blog_meta.html#L11-L20 */
-.blog-list article .byline,
-article.post-detail .byline {
-  display: none;
-}
-
-
-
-
 /* TRUMPS */
 
 /* Header */
