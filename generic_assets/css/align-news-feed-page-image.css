@@ -1,0 +1,6 @@
+/* To center images that are too short or too narrow */
+.blog-list article .blog-visual {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
