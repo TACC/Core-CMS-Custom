@@ -14,7 +14,7 @@
     line-height: unset;
 }
 
-/* TODO: Integrate into Core-CMS */
+/* TODO: Integrate into Core-CMS v4.40.0 */
 /* to not show empty block when editing */
 /* https://github.com/TACC/Core-CMS/blob/v4.40.0-rc1/taccsite_cms/static/site_cms/css/src/_imports/tools/x-news.css#L381-L384 */
 /* https://github.com/TACC/Core-CMS/blob/v4.40.0-rc1/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.page.css#L82-L83 */
