@@ -14,5 +14,15 @@
     line-height: unset;
 }
 
+/* TODO: Integrate into Core-CMS */
+/* to not show empty block when editing */
+/* https://github.com/TACC/Core-CMS/blob/v4.40.0-rc1/taccsite_cms/static/site_cms/css/src/_imports/tools/x-news.css#L381-L384 */
+/* https://github.com/TACC/Core-CMS/blob/v4.40.0-rc1/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.page.css#L82-L83 */
+.blog-visual {
+    &:has(.cms-placeholder:first-child:empty) {
+        display: none;
+    }
+}
+
 /* TODO: Delete this after Core-CMS uses Core-Styles v2.57 */
 @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/bootstrap4/content/typography-headings/typography-headings--cms.css");
