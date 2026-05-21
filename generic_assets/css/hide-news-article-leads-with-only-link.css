@@ -1,0 +1,6 @@
+/* To hide news article lead/abstract that only contains a bare external link */
+/* (e.g. newsletter archive entries where the link is the entire abstract) */
+.blog-lead:has(> a:only-child),
+.blog-lead:has(> p:only-child > a:only-child) {
+  display: none;
+}
