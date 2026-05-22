@@ -2,20 +2,19 @@
 /* (e.g. list of external links with no abstract content besides URL) */
 .blog-lead:has(> a:only-child),
 .blog-lead:has(> p:only-child > a:only-child) {
-  display: none;
+  font-size: 0;
 
   /* To restore lead/abstract, with custom text, during Edit mode */
-  /* So editor can hover over to "Double click to edit" */
+  /* (so editor can hover over to "Double click to edit") */
   &:is([class*="cms-structure-mode-"] *) {
-    display: unset;
+    font-size: var(--global-font-size--medium);
+  
+    & > * {
+      opacity: 0.75;
 
-    /* To replace link text */
-    & a {
-      font-size: 0;
       &::before {
         content: 'Edit blog article';
-        font-size: var(--global-font-size--medium);
-      }
+        margin-right: 1em;
     }
-  } 
+  }
 }
