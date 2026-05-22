@@ -1,6 +1,21 @@
-/* To hide news article lead/abstract that only contains a bare external link */
-/* (e.g. newsletter archive entries where the link is the entire abstract) */
+/* To hide news lead/abstract that only contains an external link */
+/* (e.g. list of external links with no abstract content besides URL) */
 .blog-lead:has(> a:only-child),
 .blog-lead:has(> p:only-child > a:only-child) {
   display: none;
+
+  /* To restore lead/abstract, with custom text, during Edit mode */
+  /* So editor can hover over to "Double click to edit" */
+  &:is([class*="cms-structure-mode-"] *) {
+    display: unset;
+
+    /* To replace link text */
+    & a {
+      font-size: 0;
+      &::before {
+        content: 'Edit blog article';
+        font-size: var(--global-font-size--medium);
+      }
+    }
+  } 
 }
