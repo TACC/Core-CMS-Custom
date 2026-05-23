@@ -1,8 +1,11 @@
 /* TODO: Integrate into Core-Styles */
 /* to make space between list and heading match space between paragraph and heading */
 /* FAQ: added for coument pages, like original version of /about/ */
-:where(:is([role=main],main)) :is(dl,ol,ul,menu) {
-    margin-bottom: 2rem;
+:where([role=main], main) {
+    &:not(:has(.app-blog))
+    :is(dl,ol,ul,menu) {
+        margin-bottom: 2rem;
+    }
 }
 
 /* TODO: Integrate into Core-Styles */
