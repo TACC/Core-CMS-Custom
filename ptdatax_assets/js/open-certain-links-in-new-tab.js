@@ -16,13 +16,17 @@ function initLinks() {
 const portalCMSNav = document.getElementById('s-cms-nav');
 const isPortalCMSNavAvailable = (
   // Was nav populated before this script ran?
-  portalCMSNav && portalCMSNav.dataset
+  portalCMSNav.dataset
   && portalCMSNav.dataset[NAV_READY_ATTR] === 'true'
 )
-const isCMS = (! portalCMSNav);
+const isCMS = (! portalNavForCMS);
+const isCMSNavAvailable = (
+  isCMS // It is safe to assume nav is availabile
+  && isPortalCMSNavAvailable
+);
 
-if (isCMS) {
-  initLinks(); // It is safe to assume nav is availabile
-} else if (isPortalCMSNavAvailable) {
+if (isCMSNavAvailable) {
+  initLinks();
+} else {
   portalCMSNav.addEventListener(NAV_READY_EVENT, initLinks, { once: true });
 }
