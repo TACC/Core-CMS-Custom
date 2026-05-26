@@ -13,20 +13,14 @@ function initLinks() {
   });
 }
 
-const portalCMSNav = document.getElementById('s-cms-nav');
-const isPortalCMSNavAvailable = (
-  // Was nav populated before this script ran?
-  portalCMSNav.dataset
-  && portalCMSNav.dataset[NAV_READY_ATTR] === 'true'
-)
-const isCMS = (! portalNavForCMS);
-const isCMSNavAvailable = (
-  isCMS // It is safe to assume nav is availabile
-  && isPortalCMSNavAvailable
-);
+const container = document.getElementById('s-cms-nav');
 
-if (isCMSNavAvailable) {
+if (!container) {
+  // Plain CMS page — no Portal nav injection
+  initLinks();
+} else if (container.dataset[NAV_READY_ATTR] === 'true') {
+  // Nav already populated before this script ran
   initLinks();
 } else {
-  portalCMSNav.addEventListener(NAV_READY_EVENT, initLinks, { once: true });
+  container.addEventListener(NAV_READY_EVENT, initLinks, { once: true });
 }
