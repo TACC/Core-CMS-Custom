@@ -1,0 +1,84 @@
+{# https://consult.tacc.utexas.edu/Ticket/Display.html?id=117131 #}
+<script id="replace-broken-youtube-videos-js">
+    function insertYouTubePlayButton(link) {
+        const btn = document.createElement('span');
+        btn.className = 'yt-play';
+        btn.setAttribute('aria-hidden', 'true');
+        btn.innerHTML = `<svg viewBox="0 0 68 48" width="68" height="48">
+    <path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C56 0 34 0 34 0S12 0 7.5 1.7a8.5 8.5 0 0 0-6 6C0 14.3 0 24 0 24s0 9.7 1.5 16.3a8.5 8.5 0 0 0 6 6C12 48 34 48 34 48s22 0 26.5-1.7a8.5 8.5 0 0 0 6-6C68 33.7 68 24 68 24s0-9.7-1.5-16.3z" />
+    <path d="M27 34l18-10-18-10v20z" fill="#fff"/>
+    </svg>`;
+        link.append(btn);
+    }
+
+    function replaceEmbedWithLinkedImage(iframe, videoId) {
+        const a = document.createElement('a');
+        a.href = `https://www.youtube.com/watch?v=${videoId}`;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        const img = document.createElement('img');
+        img.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+        img.alt = 'Watch on YouTube';
+        img.width = iframe.width || 480;
+        img.height = iframe.height || 270;
+        img.loading = 'lazy';
+
+        a.append(img);
+        insertYouTubePlayButton(a);
+        iframe.replaceWith(a);
+
+        const container = a.closest('[class*="embed-responsive"]');
+        if (container) {
+            container.classList.forEach(cls => {
+                if (cls.startsWith('embed-responsive')) {
+                    container.classList.replace(cls, '__DISABLED__' + cls);
+                }
+            });
+        }
+    }
+
+    /* To turn broken YouTube video iframes into linked images */
+    const embeds = document.querySelectorAll('iframe[src*="youtube.com/embed"]');
+    embeds.forEach(iframe => {
+        const match = iframe.src.match(/embed\/([\w-]+)/);
+        if (!match) return;
+
+        const videoId = match[1];
+
+        if (!iframe.src.includes('enablejsapi')) {
+            iframe.src += (iframe.src.includes('?') ? '&' : '?') + 'enablejsapi=1';
+        }
+
+        replaceEmbedWithLinkedImage(iframe, videoId);
+    });
+</script>
+<style id="replace-broken-youtube-videos-css">
+    /* To style fake YouTube buttons */
+    a[href*="youtube.com/watch"] {
+        display: inline-block;
+        position: relative;
+        line-height: 0;
+
+        & .yt-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+            & path:first-child {
+                fill: #212121;
+                fill-opacity: 0.8;
+            }
+        }
+        &:hover .yt-play {
+            & path:first-child {
+                fill: #f03;
+                fill-opacity: 1.0;
+            }
+        }
+    }
+</style>
