@@ -1,0 +1,15 @@
+{# IMPORTANT: Required for sub-sites #}
+{# IDEA: Deploy sub-sites since DesignSafe-CI/portal#1666 was merged #}
+{# SEE: RT #112250, RT #117131 #}
+{# TODO: WC-455, WP-1311 #}
+<script type="module" id="js-fix-youtube-video-embeds-rt-112250">
+const videoEmbeds = document.querySelectorAll('iframe[src*="youtube"]');
+videoEmbeds.forEach(function fixVideoEmbed(videoEmbed, index) {
+    const videoSource = videoEmbed.getAttribute('src');
+
+    videoEmbed.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    setTimeout(() => {
+        videoEmbed.setAttribute('src', videoSource);
+    }, index * 50); // staggered delay for each video, so browser can keep up
+});
+</script>
