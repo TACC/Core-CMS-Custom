@@ -1,24 +1,16 @@
-<style id="page-css-members--grid-min-width">
 /* To control grid item minimum width */
 .o-grid {
     --width: 450px;
     grid-auto-rows: unset; /* overwrite site.css .o-grid */
 }
-</style>
 
-
-<style id="page-css-members--grid-cell-overflow-better-fix">
 /* To remove solution (to problem this page doesn't have) and its side effect */
 /* TODO: Remove this after deploy of TACC/Core-Styles v2 (commit bd1b007) */
 .o-grid > * {
     overflow: unset;
 }
-</style>
 
-
-<style id="page-css-members--contact-button-alignment">
 /* To center contact button at bottom of card, regardless of image height */
 center:has(.c-button) {
     clear: both;
 }
-</style>
