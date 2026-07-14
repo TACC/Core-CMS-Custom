@@ -6,7 +6,7 @@
 
 ## Architecture
 
-This is a **static asset library**, not an application. There is no build step, lint, or test suite here — files are served directly to sites' CDNs (via [jsDelivr](https://www.jsdelivr.com/?docs=gh)) and referenced by URL from each project's settings in [Core Portal Deployments] (private repo).
+This is a **static asset library**, not an application. Most projects have no build step, lint, or test suite — files are served directly to sites' CDNs (via [jsDelivr](https://www.jsdelivr.com/?docs=gh)) and referenced by URL from each project's settings in [Core Portal Deployments] (private repo).
 
 ### Structure
 
@@ -26,7 +26,7 @@ See [example_assets](./example_assets) for a template, and `README.md` for full 
 
 - **File paths are load-bearing.** Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. Check there (or ask, if you lack access) before changing a path.
 - **`html/snippets/` is not loaded by the CMS.** Those files are just version-controlled copies of snippets maintained independently in the CMS admin interface (djangocms-snippet). After editing one, update its snippet's "Name" field in the admin UI with the latest commit hash so the two stay traceable to each other.
-- **No local build/test tooling.** Verify a change by confirming the asset resolves correctly at its CDN URL once merged (or note manual verification steps in the PR's Testing section).
+- **A few projects (`ecep_assets`, `frontera_assets`) compile their CSS.** Each has its own `package.json` and `bin/build-css.js` that build `css/*.postcss` against `@tacc/core-styles` — run `npm run build` there before committing CSS changes. Everywhere else, verify a change by confirming the asset resolves correctly at its CDN URL once merged (or note manual verification steps in the PR's Testing section).
 
 ## Commits
 
