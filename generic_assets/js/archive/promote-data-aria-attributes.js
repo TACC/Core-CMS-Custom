@@ -1,3 +1,4 @@
+/* IMPORTANT: Unnecessary since CoreCMS v4.40.0 */
 /**
  * Copy `data-aria-*` attributes to matching `aria-*` on the same nodes.
  * For HTML saved through WYSIWYG editors that strip unprefixed ARIA on publish.
