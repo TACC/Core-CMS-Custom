@@ -6,13 +6,13 @@ Custom assets for [Core CMS] projects
 > To customize a [Core CMS] project beyond assets, [create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) via [Core CMS Template].
 
 > [!CAUTION]
-> - If you change a file path, update [Core Portal Deployments], because it reads this `main` branch.
-> - If you do **not** have access to [Core Portal Deployments], then maybe do **not** change a file path.
+> Read [Gotchas](#gotchas) before you change a file path.
 
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
 - [Project Architecture](#project-architecture)
+- [Gotchas](#gotchas)
 - [Create Project](#create-project)
 - [Asset Management](#asset-management)
 - [Build Project](#build-project)
@@ -32,17 +32,21 @@ Custom assets for [Core CMS] projects
 
 ## Project Architecture
 
-Within a `/customproject`**`_assets`** can be:
+Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template.
 
-| directory | contents | notes |
-| - | - | - |
-| `favicon.svg` | current favicon | `.svg` preferred |
-| `favicon` | other favicons |
-| `logo.svg` | current logo | `.svg` preferred |
-| `logo` | other logos |
-| `css` | custom styles |
-| `js` | custom scripts |
-| [`snippets`](https://github.com/django-cms/djangocms-snippet) | reusable markup | [manually saved](#save-snippets) |
+## Gotchas
+
+### File Paths Are Load-Bearing
+
+Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. If you change a file path, update [Core Portal Deployments] to match, because it reads this `main` branch. If you do **not** have access to [Core Portal Deployments], then maybe do **not** change a file path — ask first.
+
+### Snippets Are Not Loaded by the CMS
+
+See [Save Snippets](#save-snippets).
+
+### Some Projects Compile Their Assets
+
+Some projects have their own `package.json` and build script. See [Custom Styles](#custom-styles).
 
 ## Create Project
 
@@ -73,17 +77,19 @@ Changes **only** header on **both** CMS pages **and** Portal interface.
 
 These will load on **every page**.
 
+> [!IMPORTANT]
+> Some projects (e.g. [`ecep`](https://github.com/TACC/Core-CMS-Custom/tree/v1.2.0/ecep_assets), [`frontera`](https://github.com/TACC/Core-CMS-Custom/tree/v1.2.0/frontera_assets)) compile their CSS via their own `package.json`. If both a `.css` and `.postcss` exist with the same name, then edit the `.postcss` file **and** — before you commit — run `npm run build`.
+
 1. **Upload** CSS to folder. Examples:
 
-    - [one short stylesheet](https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ctrn_assets/site.cms.css "https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ctrn_assets/site.cms.css")
-    - [one long stylesheet](https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ecep_assets/css/site.css "https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ecep_assets/css/site.css")
-    - [multiple stylesheets](https://github.com/TACC/Core-CMS-Custom/tree/4bff8af/digitalrocks_assets/css "https://github.com/TACC/Core-CMS-Custom/tree/4bff8af/digitalrocks_assets/css")
+    - [one short stylesheet](https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ctrn_assets/site.cms.css "e70089f:/ctrn_assets/site.cms.css")
+    - [one long stylesheet](https://github.com/TACC/Core-CMS-Custom/blob/e70089f/ecep_assets/css/site.css "e70089f:/ecep_assets/css/site.css")
+    - [multiple stylesheets](https://github.com/TACC/Core-CMS-Custom/tree/4bff8af/digitalrocks_assets/css "4bff8af:/digitalrocks_assets/css")
 
 2. In [Core Portal Deployments],\
     **set** path(s) to stylesheet(s) [via CDN](https://www.jsdelivr.com/?docs=gh "https://www.jsdelivr.com/?docs=gh"). Examples:
 
     - [one stylesheet](https://github.com/TACC/Core-Portal-Deployments/blob/2391315/ecep/camino/cms.settings_custom.py#L53-L56 "https://github.com/TACC/Core-Portal-Deployments/blob/2391315/ecep/camino/cms.settings_custom.py#L53-L56")
-
     - [multiple stylesheets](https://github.com/TACC/Core-Portal-Deployments/blob/2391315/digitalrocks/camino/cms.settings_custom.py#L30-L39 "https://github.com/TACC/Core-Portal-Deployments/blob/2391315/digitalrocks/camino/cms.settings_custom.py#L30-L39")
 
 3. **[Deploy](#deploy-project)** the change.
