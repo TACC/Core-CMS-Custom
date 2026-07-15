@@ -6,17 +6,17 @@
 
 ## Architecture
 
-This is a **static asset library**, not an application. Most projects have no build step, lint, or test suite — files are served directly to sites' CDNs (via [jsDelivr](https://www.jsdelivr.com/?docs=gh)) and referenced by URL from each project's settings in [Core Portal Deployments] (private repo).
+This is a **static asset library**, not an application. Most projects have no build step, lint, nor test suite. Files are served directly to sites from CDN URLs (e.g. [jsDelivr](https://www.jsdelivr.com/?docs=gh)) in project's settings in [Core Portal Deployments] (private repo).
 
 ### Structure
 
-Each project has its own `<project>_assets` directory (a few legacy directories omit the `_assets` suffix). See [STRUCTURE.md](./STRUCTURE.md) for the target internal layout, [example_assets](./example_assets) for a template, and `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
+Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template. Read `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
 
 ### Gotchas
 
 - **File paths are load-bearing.** Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. Check there (or ask, if you lack access) before changing a path.
-- **`html/snippets/` is not loaded by the CMS.** Those files are just version-controlled copies of snippets maintained independently in the CMS admin interface (djangocms-snippet). After editing one, update its snippet's "Name" field in the admin UI with the latest commit hash so the two stay traceable to each other.
-- **A few projects (`ecep_assets`, `frontera_assets`) compile their CSS.** Each has its own `package.json` and `bin/build-css.js` that build `css/*.postcss` against `@tacc/core-styles` — run `npm run build` there before committing CSS changes. Everywhere else, verify a change by confirming the asset resolves correctly at its CDN URL once merged (or note manual verification steps in the PR's Testing section).
+- **Files in `html/` are NOT loaded by the CMS.** They are just version-controlled copies of snippets maintained independently in the CMS admin interface (via [djangocms-snippet]). After editing one, update its snippet's "Name" field in CMS admin UI with commit/PR reference.
+- **A few projects (e.g. `ecep`, `frontera`) compile their CSS.** Each has its own `package.json` and build script. Run `npm run build` there before committing CSS changes. Everywhere else, verify a change by confirming the asset resolves correctly at its CDN URL.
 
 ## Commits
 
@@ -32,3 +32,4 @@ Each project has its own `<project>_assets` directory (a few legacy directories 
   - When updating, first re-read the current description, because it may have been edited.
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
+[django-snippet]: https://github.com/django-cms/djangocms-snippet
