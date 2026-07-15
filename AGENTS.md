@@ -10,17 +10,7 @@ This is a **static asset library**, not an application. Most projects have no bu
 
 ### Structure
 
-Each project has its own `<project>_assets` directory (a few legacy directories omit the `_assets` suffix) containing some subset of:
-
-| directory/file | contents | notes |
-| --- | --- | --- |
-| `favicon.svg` / `favicon/` | favicon(s) | `.svg` preferred |
-| `logo.svg` / `logo/` | logo(s) | `.svg` preferred |
-| `css/` | custom stylesheets | loads on every page |
-| `js/` | custom scripts |
-| `html/snippets/` | reusable markup | version-controlled copies only, see Gotchas |
-
-See [example_assets](./example_assets) for a template, and `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
+Each project has its own `<project>_assets` directory (a few legacy directories omit the `_assets` suffix). See [STRUCTURE.md](./STRUCTURE.md) for the target internal layout, [example_assets](./example_assets) for a template, and `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
 
 ### Gotchas
 
