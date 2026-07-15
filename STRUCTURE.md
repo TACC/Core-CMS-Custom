@@ -1,6 +1,6 @@
 # Structure
 
-Target layout for every `PROJECTNAME_assets` directory, per [#537](https://github.com/TACC/Core-CMS-Custom/issues/537):
+Target layout for every project directory ([#537](https://github.com/TACC/Core-CMS-Custom/issues/537)):
 
 ```
 .
@@ -14,13 +14,13 @@ Target layout for every `PROJECTNAME_assets` directory, per [#537](https://githu
 │   └── utaustin-white.png
 └── PROJECTNAME_assets
     ├── README.md
-    ├── package-lock.json
-    ├── package.json
+    ├── package-lock.json    # as needed
+    ├── package.json         # as needed
     ├── css
-    │     ├── cms.css    # as needed
-    │     ├── header.css # as needed
-    │     ├── portal.css # as needed
-    │     └── _imports/*.css    # to @import
+    │     ├── cms.css        # as needed
+    │     ├── header.css     # as needed
+    │     ├── portal.css     # as needed
+    │     └── _imports/*.css # to @import
     ├── favicon
     │     ├── README.md
     │     ├── […]
@@ -36,8 +36,5 @@ Target layout for every `PROJECTNAME_assets` directory, per [#537](https://githu
     │     ├── scriptA.js
     │     └── scriptB.js
     └── ref
-          ├── for related work that does not have a type yet.
-          └── for related work that has a type.png
+          └── for project assets that do not fit the layout
 ```
-
-Not every project has migrated to this layout yet, and `package.json`/`package-lock.json` only exist where a project has a build step (see [AGENTS.md](./AGENTS.md) Gotchas).
