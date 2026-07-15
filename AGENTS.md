@@ -14,11 +14,7 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 
 ### Gotchas
 
-See README.md's [Gotchas](./README.md#gotchas):
-
-- [File Paths Are Load-Bearing](./README.md#file-paths-are-load-bearing)
-- [Snippets Are Not Loaded by the CMS](./README.md#snippets-are-not-loaded-by-the-cms)
-- [Some Projects Compile Their CSS](./README.md#some-projects-compile-their-css)
+Read [README.md "Gotchas"](./README.md#gotchas).
 
 ## Commits
 
