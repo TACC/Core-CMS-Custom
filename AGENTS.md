@@ -10,7 +10,7 @@ This is a **static asset library**, not an application. Most projects have no bu
 
 ### Structure
 
-Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template. Read `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
+Read [README.md "Project Architecture"](./README.md#project-architecture) for introduction. Read all of `README.md` for full conventions (Create Project, Asset Management, Deploy Project).
 
 ### Gotchas
 
