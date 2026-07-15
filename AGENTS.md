@@ -14,17 +14,11 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 
 ### Gotchas
 
-#### File Paths Are Load-Bearing
+See README.md's [Gotchas](./README.md#gotchas):
 
-Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. Check there (or ask, if you lack access) before changing a path.
-
-#### Files in `html/` Are NOT Loaded by the CMS
-
-They are just version-controlled copies of snippets maintained independently in the CMS admin interface (via [djangocms-snippet]). After editing one, update its snippet's "Name" field in CMS admin UI with commit/PR reference.
-
-#### A Few Projects (e.g. `ecep`, `frontera`) Compile Their CSS
-
-Each has its own `package.json` and build script. Run `npm run build` there before committing CSS changes. Everywhere else, verify a change by confirming the asset resolves correctly at its CDN URL.
+- [File Paths Are Load-Bearing](./README.md#file-paths-are-load-bearing)
+- [Snippets Are Not Loaded by the CMS](./README.md#snippets-are-not-loaded-by-the-cms)
+- [Some Projects Compile Their CSS](./README.md#some-projects-compile-their-css)
 
 ## Commits
 
@@ -40,4 +34,3 @@ Each has its own `package.json` and build script. Run `npm run build` there befo
   - When updating, first re-read the current description, because it may have been edited.
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
-[django-snippet]: https://github.com/django-cms/djangocms-snippet

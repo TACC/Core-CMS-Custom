@@ -6,13 +6,13 @@ Custom assets for [Core CMS] projects
 > To customize a [Core CMS] project beyond assets, [create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template) via [Core CMS Template].
 
 > [!CAUTION]
-> - If you change a file path, update [Core Portal Deployments], because it reads this `main` branch.
-> - If you do **not** have access to [Core Portal Deployments], then maybe do **not** change a file path.
+> See [Gotchas](#gotchas) before you change a file path.
 
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
 - [Project Architecture](#project-architecture)
+- [Gotchas](#gotchas)
 - [Create Project](#create-project)
 - [Asset Management](#asset-management)
 - [Build Project](#build-project)
@@ -44,6 +44,20 @@ Within a `/customproject`**`_assets`** can be:
 | `js` | custom scripts |
 | [`snippets`](https://github.com/django-cms/djangocms-snippet) | reusable markup | [manually saved](#save-snippets) |
 
+## Gotchas
+
+### File Paths Are Load-Bearing
+
+Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. If you change a file path, update [Core Portal Deployments] to match, because it reads this `main` branch. If you do **not** have access to [Core Portal Deployments], then maybe do **not** change a file path — ask first.
+
+### Snippets Are Not Loaded by the CMS
+
+See [Save Snippets](#save-snippets).
+
+### Some Projects Compile Their CSS
+
+`ecep_assets` and `frontera_assets` have their own `package.json` and build script. See [Custom Styles](#custom-styles).
+
 ## Create Project
 
 1. Duplicate & Rename the [example_assets](./example_assets) directory.
@@ -72,6 +86,9 @@ Changes **only** header on **both** CMS pages **and** Portal interface.
 ### Custom Styles
 
 These will load on **every page**.
+
+> [!NOTE]
+> `ecep_assets` and `frontera_assets` compile their CSS via their own `package.json`. Run `npm run build` there before uploading, instead of hand-editing the built output.
 
 1. **Upload** CSS to folder. Examples:
 
