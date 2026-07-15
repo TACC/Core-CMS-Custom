@@ -32,17 +32,7 @@ Custom assets for [Core CMS] projects
 
 ## Project Architecture
 
-Within a `/customproject`**`_assets`** can be:
-
-| directory | contents | notes |
-| - | - | - |
-| `favicon.svg` | current favicon | `.svg` preferred |
-| `favicon` | other favicons |
-| `logo.svg` | current logo | `.svg` preferred |
-| `logo` | other logos |
-| `css` | custom styles |
-| `js` | custom scripts |
-| [`snippets`](https://github.com/django-cms/djangocms-snippet) | reusable markup | [manually saved](#save-snippets) |
+Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template.
 
 ## Gotchas
 
