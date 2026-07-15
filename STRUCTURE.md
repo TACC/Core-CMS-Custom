@@ -5,14 +5,14 @@ Target layout for every project directory ([#537](https://github.com/TACC/Core-C
 ```
 .
 ├── README.md
-├── generic_assets
+├── generic
 │   ├── README.md
 │   ├── favicon.ico
 │   ├── nsf-white.png
 │   ├── portal_logo.png
 │   ├── tacc-white.png
 │   └── utaustin-white.png
-└── PROJECTNAME_assets
+└── PROJECTNAME
     ├── README.md
     ├── package-lock.json    # as needed
     ├── package.json         # as needed
