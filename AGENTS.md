@@ -14,15 +14,15 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 
 ### Gotchas
 
-#### File paths are load-bearing
+#### File Paths Are Load-Bearing
 
 Renaming or moving a file breaks the CDN URL referenced in [Core Portal Deployments]. Check there (or ask, if you lack access) before changing a path.
 
-#### Files in `html/` are NOT loaded by the CMS
+#### Files in `html/` Are NOT Loaded by the CMS
 
 They are just version-controlled copies of snippets maintained independently in the CMS admin interface (via [djangocms-snippet]). After editing one, update its snippet's "Name" field in CMS admin UI with commit/PR reference.
 
-#### A few projects (e.g. `ecep`, `frontera`) compile their CSS
+#### A Few Projects (e.g. `ecep`, `frontera`) Compile Their CSS
 
 Each has its own `package.json` and build script. Run `npm run build` there before committing CSS changes. Everywhere else, verify a change by confirming the asset resolves correctly at its CDN URL.
 
