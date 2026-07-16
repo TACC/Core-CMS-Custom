@@ -23,3 +23,13 @@
 
 /* TODO: Delete this after deploy of Core-CMS v4.40.0 */
 @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/bootstrap4/content/typography-headings/typography-headings--cms.css");
+
+/* TODO: Delete this after deploy of Core-CMS v4.41.0 */
+/* to let user know when they hover over file inputs */
+input[type="file"] {
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--global-color-accent--x-light);
+    }
+}
