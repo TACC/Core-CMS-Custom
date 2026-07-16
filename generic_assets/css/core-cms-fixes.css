@@ -23,10 +23,3 @@
 
 /* TODO: Delete this after deploy of Core-CMS v4.40.0 */
 @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/bootstrap4/content/typography-headings/typography-headings--cms.css");
-
-/* TODO: Delete this after deploy of Core-CMS that uses Core-Styles v2.57.4 */
-/* to not cut off UI of file inputs */
-input[type="file"] {
-    box-sizing: border-box;
-    height: unset;
-}

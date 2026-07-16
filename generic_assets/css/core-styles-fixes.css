@@ -15,3 +15,10 @@
 .s-breadcrumbs + .o-section {
     margin-top: 0;
 }
+
+/* TODO: Delete this after deploy of Core-CMS that uses Core-Styles v2.57.4 */
+/* to not cut off UI of file inputs */
+input[type="file"] {
+    box-sizing: border-box;
+    height: unset;
+}
