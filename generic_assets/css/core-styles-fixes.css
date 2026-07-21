@@ -1,6 +1,6 @@
 /* TODO: Integrate into Core-Styles */
 /* to make space between list and heading match space between paragraph and heading */
-/* FAQ: added for coument pages, like original version of /about/ */
+/* FAQ: added for document pages, like original version of /about/ */
 :where([role=main], main) {
     &:not(:has(.app-blog))
     :is(dl,ol,ul,menu) {
@@ -14,4 +14,11 @@
 /* FAQ: if in future, breadrcumb script is moved or absent */
 .s-breadcrumbs + .o-section {
     margin-top: 0;
+}
+
+/* TODO: Delete this after deploy of Core-CMS that uses Core-Styles v2.57.4 */
+/* to not cut off UI of file inputs */
+input[type="file"] {
+    box-sizing: border-box;
+    height: unset;
 }
