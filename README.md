@@ -11,8 +11,8 @@ Custom assets for [Core CMS] projects
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
-- [Portals](#portals)
 - [Project Architecture](#project-architecture)
+- [Project List](#project-list)
 - [Gotchas](#gotchas)
 - [Create Project](#create-project)
 - [Asset Management](#asset-management)
@@ -31,9 +31,11 @@ Custom assets for [Core CMS] projects
 - [Core CMS Resources], the old solution for extensions of the [Core CMS] project
 - [Core Portal Deployments], private repository that facilitates deployments of [Core Portal] images via [Camino] and Jenkins
 
-## Portals
+## Project Architecture
 
-Each portal has a project directory here (e.g. `digitalrocks_assets`) and a matching one in [Core Portal Deployments].
+Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template.
+
+## Project List
 
 - [3DEM](https://3dem.org)
 - [A2CPS](https://a2cps.org)
@@ -55,10 +57,6 @@ Each portal has a project directory here (e.g. `digitalrocks_assets`) and a matc
 - [Tapis Project](https://tapis-project.org)
 - [UTRC](https://utrc.tacc.utexas.edu)
 - [WeTeach_CS](https://weteachcs.org)
-
-## Project Architecture
-
-Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for internal directory layout and file naming or [example_assets](./example_assets) for a template.
 
 ## Gotchas
 
