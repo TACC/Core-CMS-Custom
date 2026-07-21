@@ -37,26 +37,7 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 
 ## Project List
 
-- [3DEM](https://3dem.org)
-- [A2CPS](https://a2cps.org)
-- [AMI](https://ami.tacc.utexas.edu)
-- [BrainMap](https://portal.brainmap.org)
-- [CIPP](https://cipacific.org)
-- [CTRN](https://ctrn-web.tacc.utexas.edu)
-- DAC (not yet deployed)
-- [DesignSafe](https://www.designsafe-ci.org)
-- [DPM](https://digitalporousmedia.org) (`digitalrocks_assets`)
-- [ECEP](https://ecepalliance.org)
-- [EPOC](https://epoc.global)
-- [Frontera](https://frontera-portal.tacc.utexas.edu)
-- [LCCF](https://lccf.tacc.utexas.edu)
-- [MATCSSI](https://matcssi.tacc.utexas.edu)
-- [NetSage](https://netsage.io)
-- [PTdatax](https://ptdatax.tacc.utexas.edu)
-- [SciVisColor](https://sciviscolor.org)
-- [Tapis Project](https://tapis-project.org)
-- [UTRC](https://utrc.tacc.utexas.edu)
-- [WeTeach_CS](https://weteachcs.org)
+[3DEM](https://3dem.org), [A2CPS](https://a2cps.org), [AMI](https://ami.tacc.utexas.edu), [BrainMap](https://portal.brainmap.org), [CIPP](https://cipacific.org), [CTRN](https://ctrn-web.tacc.utexas.edu), DAC (not yet deployed), [DesignSafe](https://www.designsafe-ci.org), [DPM](https://digitalporousmedia.org) (`digitalrocks_assets`), [ECEP](https://ecepalliance.org), [EPOC](https://epoc.global), [Frontera](https://frontera-portal.tacc.utexas.edu), [LCCF](https://lccf.tacc.utexas.edu), [MATCSSI](https://matcssi.tacc.utexas.edu), [NetSage](https://netsage.io), [PTdatax](https://ptdatax.tacc.utexas.edu), [SciVisColor](https://sciviscolor.org), [Tapis Project](https://tapis-project.org), [UTRC](https://utrc.tacc.utexas.edu), [WeTeach_CS](https://weteachcs.org)
 
 ## Gotchas
 
