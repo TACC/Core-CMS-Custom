@@ -11,6 +11,7 @@ Custom assets for [Core CMS] projects
 ## Table of Contents
 
 - [Related Repositories](#related-repositories)
+- [Portals](#portals)
 - [Project Architecture](#project-architecture)
 - [Gotchas](#gotchas)
 - [Create Project](#create-project)
@@ -29,6 +30,31 @@ Custom assets for [Core CMS] projects
 - [Core Styles], the shared UI pattern code for TACC WMA CMS Websites
 - [Core CMS Resources], the old solution for extensions of the [Core CMS] project
 - [Core Portal Deployments], private repository that facilitates deployments of [Core Portal] images via [Camino] and Jenkins
+
+## Portals
+
+Each portal has a project directory here (e.g. `digitalrocks_assets`) and a matching one in [Core Portal Deployments].
+
+- [3DEM](https://3dem.org)
+- [A2CPS](https://a2cps.org)
+- [AMI](https://ami.tacc.utexas.edu)
+- [BrainMap](https://portal.brainmap.org)
+- [CIPP](https://cipacific.org)
+- [CTRN](https://ctrn-web.tacc.utexas.edu)
+- DAC (not yet deployed)
+- [DesignSafe](https://www.designsafe-ci.org)
+- [DPM](https://digitalporousmedia.org) (`digitalrocks_assets`)
+- [ECEP](https://ecepalliance.org)
+- [EPOC](https://epoc.global)
+- [Frontera](https://frontera-portal.tacc.utexas.edu)
+- [LCCF](https://lccf.tacc.utexas.edu)
+- [MATCSSI](https://matcssi.tacc.utexas.edu)
+- [NetSage](https://netsage.io)
+- [PTdatax](https://ptdatax.tacc.utexas.edu)
+- [SciVisColor](https://sciviscolor.org)
+- [Tapis Project](https://tapis-project.org)
+- [UTRC](https://utrc.tacc.utexas.edu)
+- [WeTeach_CS](https://weteachcs.org)
 
 ## Project Architecture
 
