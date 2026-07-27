@@ -1,7 +1,13 @@
 {% load sekizai_tags %}
 {% addtoblock "css" %}
-<!-- Requires generic_assets/html/iframe-graph-css-base.html to also be included on the page -->
 <style id="iframe-graph-css">
+    iframe {
+        /* Found as (default) margin of the <body> element in the graphs */
+        --body-margin: 8px;
+        --extra-space: calc(var(--body-margin) * 2);
+
+        width: 100%;
+    }
     iframe[id*="iframe-graph-regions"] {
         /* The graphs have a default width of 472px, so we add the extra space to that */
         min-height: calc(450px + var(--extra-space));
