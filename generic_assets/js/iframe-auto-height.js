@@ -1,4 +1,3 @@
-<script id="iframe-auto-height" type="module">
 const iframe = document.getElementsByTagName('iframe')[0];
 const isIframeLoaded = (iframe.contentWindow.document.readyState === 'complete');
 
@@ -40,4 +39,3 @@ window.addEventListener('load', () => debouncedResizeIframe(iframe));
 // Events bubbling up from Dash app to trigger iframe resize.
 window.addEventListener('IFrameInit', () => debouncedResizeIframe(iframe));
 window.addEventListener('IFrameLoaded', () => debouncedResizeIframe(iframe));
-</script>
