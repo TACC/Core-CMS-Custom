@@ -1,0 +1,10 @@
+iframe {
+    border: 0;
+
+    /* if user not editing page */
+    &:last-child,
+    /* if user is editing page */
+    html.cms-ready &:has(~ script[data-cms]:last-child) {
+        margin-bottom: var(--global-space--section-gap);
+    }
+}
