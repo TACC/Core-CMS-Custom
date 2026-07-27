@@ -1,4 +1,3 @@
-<script id="iframe-auto-height" type="module">
 const iframe = document.getElementsByTagName('iframe')[0];
 const isIframeLoaded = (iframe.contentWindow.document.readyState === 'complete');
 
@@ -8,7 +7,7 @@ function resizeIframe(iframe) {
   iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
 }
 
-// to avoid both flicker effect and excessive calls when resizing iframe
+/* to avoid both flicker effect and excessive calls when resizing iframe */
 function debounce(fn, delay = 50) {
   let timeoutId;
   return (...args) => {
@@ -40,4 +39,3 @@ window.addEventListener('load', () => debouncedResizeIframe(iframe));
 // Events bubbling up from Dash app to trigger iframe resize.
 window.addEventListener('IFrameInit', () => debouncedResizeIframe(iframe));
 window.addEventListener('IFrameLoaded', () => debouncedResizeIframe(iframe));
-</script>
