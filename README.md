@@ -56,6 +56,7 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 • [NetSage](https://netsage.io)
 • [PTDataX](https://ptdatax.tacc.utexas.edu)
 • [SciVisColor](https://sciviscolor.org)
+• [TACC](https://tacc.utexas.edu)
 • [Tapis Project](https://tapis-project.org)
 • [UTRC](https://utrc.tacc.utexas.edu)
 • [WeTeach_CS](https://weteachcs.org)
