@@ -1,0 +1,46 @@
+{% comment %}
+<!-- TO DYNAMICALL REDUCE HEIGHT OF BANNER: NO NEED to edit this stylesheet. Edit banner "Picture / Image" on CMS. Set `style="height: 60vh; max-height: 550px; min-height: 230px;"`. To use static height, set `style="height: 550px"` instead. -->
+{% endcomment %}
+<style id="css-banner-tacc">
+/* To limit width of title on wide screens */
+@media (width >= 992px) {
+    .banner-cell--major container { padding-right: 35%; }
+}
+@media (width >= 768px) {
+    .banner-cell--major container { padding-right: 20%; }
+}
+/* To limit break in title on narrow screens */
+/* WARNING: Only for "TEXASCALE DAYS WITH FRONTERA…" story */
+@media (width < 768px) {
+    .banner-cell--major br { display: none; }
+}
+
+/* To make hover states more obvious */
+.banner-cell--minor a:hover::after {
+    outline-color: var(--global-color-accent--normal);
+}
+.banner-cell--minor a:hover::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    left: 0; top: 0; bottom: 0; right: 0;
+    background-color: var(--global-color-primary--x-light);
+}
+.banner-cell--major a:hover :is(.u-highlight, .highlight) {
+    background-color: var(--global-color-accent--normal);
+}
+
+/* To reduce small image size when they are in a single column */
+/* CAVEAT: Match with with Bootstrap col breakpoint e.g. 768px w/ .col-sm-12 */
+@media (width < 768px) {
+    .banner-row--minor {
+        padding-inline: 10vw;
+    }
+}
+
+/* To make image not look cut-off on wide screen __IF__ it is too narrow */
+.banner-cell--major figure { background-color: black; }
+
+/* To undo Core-CMS assumption of simple muted figure captions (tup-ui#537) */
+:is(.banner-cell--major, .banner-cell--minor) figcaption { opacity: 1; }
+</style>

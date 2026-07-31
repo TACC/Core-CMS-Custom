@@ -1,0 +1,13 @@
+<script id="pages-vislab-reservations-scripts--time-constraints">
+/* SEE: https://tickets.tacc.utexas.edu/Ticket/Display.html?id=25733 */
+/* TODO: Limit to M–F. Limit to 15m increments. */
+/* IDEA: Consider type="week" and type=""range". */
+
+dateStartField = document.querySelector('[name="date"]');
+dateEndField = document.querySelector('[name="date_end"]');
+timeStartField = document.querySelector('[name="time_start"]');
+timeEndField = document.querySelector('[name="time_end"]');
+
+timeStartField.setAttribute('min', '09:00');
+timeEndField.setAttribute('max', '17:00');
+</script>
