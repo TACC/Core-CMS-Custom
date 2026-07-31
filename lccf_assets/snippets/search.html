@@ -1,7 +1,13 @@
-<!-- a manual alternative to TACC/Core-CMS#1216 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS@8b59bd38/apps/search_page/static/search_page/css/google-search.css">
-<script async src="https://cse.google.com/cse.js?cx=677920328e26d46c0">
+<script id="search">
+  (function() {
+    var cx = '677920328e26d46c0';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
 </script>
-<section id="google-search">
-    <div class="gcse-searchresults-only"></div>
-</section>
+<p><gcse:searchresults-only></gcse:searchresults-only></p>
