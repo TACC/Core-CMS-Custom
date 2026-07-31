@@ -15,16 +15,15 @@
 
   /* SEARCH WRAPPERS */
 
-  /* To not shrink content width */
-  /* To avoid gaps in fake background on wide screen */
-  .gsc-wrapper,
-  .gsc-above-wrapper-area {
-    max-width: unset;
+  /* To mirror centered layout of CMS News */
+  & .gsc-above-wrapper-area,
+  & .gsc-wrapper {
+    max-width: 775px;
+    margin-inline: auto;
   }
 
 
-
-  /* TABLE OF SEARCH STATS & SORTING OPTIONS */
+  /* HEADER/TABLE OF SEARCH STATS & SORTING OPTIONS */
 
   /* To replace border with fake background */
   & .gsc-above-wrapper-area {
@@ -82,6 +81,11 @@
 
 
   /* SEARCH RESULTS */
+
+  /* (search result wrapper) */
+  & .gsc-result {
+    padding-inline: unset;
+  }
 
   /* (search result body text) */
   & .gs-snippet {
