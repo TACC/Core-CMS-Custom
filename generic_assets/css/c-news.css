@@ -1,0 +1,124 @@
+/* TODO: When integrated into Core-Styles, import these */
+/* @tacc/core-styles/src/lib/_imports/components/c-tag.css */
+
+@import url("./c-news--read.css");
+@import url("./c-news--list.css");
+
+
+
+
+
+/* Variables */
+
+.c-news {
+  --article-buffer: 20px;
+}
+
+
+
+/* Generic */
+
+.c-news {
+  /* To control absolute position of descendants e.g. `.blog-visual` */
+  position: relative;
+}
+
+/* TODO: Share styles between c-news and c-feed-list (`time:not(…)`) */
+.c-news article time:not(:is(h1, h2, h3, h4, h5, h6) *) {
+  color: var(--global-color-secondary--normal);
+  font-weight: var(--medium);
+  text-transform: uppercase;
+}
+
+
+
+
+
+/* Header */
+
+.c-news__header {
+  display: grid;
+  grid-template-areas:
+    'cats'
+    'tags'
+    'attr'
+    'head'
+    'subh';
+}
+.c-news__title    { grid-area: head }
+.c-news__subtitle { grid-area: subh }
+.c-news__attr     { grid-area: attr }
+.c-news__cats     { grid-area: cats }
+.c-news__tags     { grid-area: tags }
+
+.c-news__data {
+  list-style: none;
+
+  padding-left: 0; /* overwrite html-elements.css */
+  margin-bottom: 0.25em; /* overwrite html-elements.css */
+
+  font-size: var(--global-font-size--medium);
+}
+
+
+
+/* Metadata */
+
+/* To layout data */
+.c-news__attr,
+.c-news__tags,
+.c-news__cats {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+.c-news__attr {
+  justify-content: space-between;
+}
+.c-news__date {
+  order: -1
+}
+
+/* To conditionally hide tags & categories */
+.c-news.no-tags .c-news__tags,
+.c-news.no-categories .c-news__cats {
+  display: none;
+}
+
+/* To hide empty tags & categories */
+.c-news__tags:empty,
+.c-news__cats:empty {
+  display: none;
+}
+
+/* To style categories as "tags" (the UI pattern) */
+.c-news__cats a {
+  /* TODO: When integrated into Core-Styles, uncomment this */
+  /* @extend :--c-tag; */
+
+  display: inline-block;
+
+  color: var(--global-color-primary--xx-light);
+  background-color: var(--global-color-primary--xx-dark);
+
+  font-size: var(--global-font-size--x-small);
+}
+
+/* To style tags as "pills" (the UI pattern) */
+.c-news__tags a {
+  /* TODO: When available in Core-Styles, uncomment this */
+  /* @extend :--c-pill; */
+
+  background-color: var(--global-color-primary--light);
+}
+
+/* So byline text is all on one line */
+.c-news__data address {
+  display: inline;
+}
+
+/* To style a pill (e.g. "Update" pill in a title) */
+.c-news .c-pill {
+  vertical-align: middle;
+  transform: translateY(-0.125em);
+}
