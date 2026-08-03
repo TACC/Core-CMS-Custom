@@ -1,0 +1,171 @@
+/* TODO: When integrated into Core-Styles, import these */
+/* @tacc/core-styles/src/lib/_imports/objects/o-offset-content.css */
+/* @tacc/core-styles/src/lib/_imports/tools/x-figure.css */
+/* @tacc/core-styles/src/lib/_imports/tools/x-blockquote.css */
+
+
+
+
+
+/* Root */
+
+.c-news--read article {
+  --header-buffer: calc( var(--global-space--grid-gap) / 2 );
+
+  max-width: 775px;
+  margin-inline: auto;
+}
+
+
+
+
+
+/* Header (Structure) */
+
+.c-news--read .c-news__header {
+  grid-template-areas:
+    'head head'
+    'subh subh'
+    'cats link'
+    'tags tags'
+    'attr attr';
+}
+.c-news--read .c-news__title,
+.c-news--read .c-news__subtitle {
+  margin-bottom: var(--header-buffer);
+}
+.c-news--read .c-news__title {
+  font-size: var(--global-font-size--xxx-large);
+
+  border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+}
+.c-news--read .c-news__subtitle {
+  font-weight: normal;
+  font-size: var(--global-font-size--large);
+}
+
+
+
+
+
+/* Media & Content */
+
+.c-news--read .c-news__media,
+.c-news--read .c-news__content {
+  --news-read-media-buffer: 45px;
+
+  margin-block: var(--news-read-media-buffer) 60px;
+}
+
+/* To undo inline content styles */
+/* FAQ: In case author pasted such markup from another source */
+.c-news--read .c-news__content [style]:not(
+    [data-style="admin"], /* HACK: So CMS admin can override this */
+) {
+    all: revert !important; /* force undo all inline styles */
+}
+
+
+
+/* Media & Content - Media */
+
+/* To mimic Bootstrap `.img-fluid` */
+.c-news--read img.c-news__media /* WARNING: Untested */,
+.c-news--read .c-news__media img {
+  max-width: 100%;
+  height: auto;
+}
+/* To support vertical layouts at narrow viewports */
+@media (width < 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--read .c-news__media {
+    display: grid;
+    justify-content: center;
+    margin-bottom: var(--news-read-media-buffer);
+  }
+}
+/* To support horizontal layouts at wide viewports */
+@media (width >= 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--read .c-news__media {
+    float: left;
+    margin-right: var(--news-read-media-buffer);
+  }
+}
+
+/* To prevent footer on right side of page */
+/* FAQ: Because of `.c-news--read .c-news__media`'s `float: left` */
+.c-news--read .c-news__media + .c-news__content::after {
+  /* from Bootstrap `clearfix` */
+  display: block;
+  content: "";
+  clear: both;
+}
+
+
+
+/* Media & Content - Content */
+
+/* FAQ: Read page CAN have abstract */
+/* https://github.com/TACC/Core-CMS/pull/594 */
+.c-news--read .c-news__abstract,
+.c-news--read .c-news__content {
+  font-size: var(--global-font-size--medium);
+  line-height: 2;
+}
+/* Add space between all list items */
+/* FAQ: Use case is list items with as much text as a paragraph */
+.c-news--read .c-news__abstract li + li,
+.c-news--read .c-news__content li + li {
+  margin-top: 0.5em;
+}
+
+/* To reduce space between "Original Message" and its content */
+.c-update__header + .c-news__content {
+  margin-top: unset; /* ovewrite c-news--read.css */
+}
+
+
+
+/* Media & Content - Alignment */
+/* FAQ: The .align-... classes come from Bootstrap Picture */
+/* FAQ: The .blockquote.text-... classes come from Bootstrap Blockquote */
+
+.c-news--read .c-news__content .align-left {
+  /* TODO: When in Core, use @extend */
+  /* @extend .o-offset-content--left; */
+  /* NOTE: Ignore in TUP-CMS, cuz c-news only for User Updates (no images) */
+}
+.c-news--read .c-news__content .align-right {
+  /* TODO: When in Core, use @extend */
+  /* @extend .o-offset-content--right; */
+  /* NOTE: Ignore in TUP-CMS, cuz c-news only for User Updates (no images) */
+}
+
+/* To remove margin on narrow screens */
+/* To overwrite @tacc/core-styles/…/components/align.css */
+@media (width < 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--read .c-news__content .align-center,
+  .c-news--read .c-news__content .align-right,
+  .c-news--read .c-news__content .align-left {
+    max-width: unset;
+  }
+  .c-news--read .c-news__content .align-right,
+  .c-news--read .c-news__content .align-left {
+    float: unset;
+    margin-bottom: unset;
+  }
+  .c-news--read .c-news__content .align-right {
+    margin-left: unset;
+  }
+  .c-news--read .c-news__content .align-left {
+    margin-right: unset;
+  }
+}
+
+/* To reduce image width on medium screens */
+@media (width < 768px) and (width < 992px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--read .c-news__content .align-center,
+  .c-news--read .c-news__content .align-right,
+  .c-news--read .c-news__content .align-left {
+    max-width: 50%;
+  }
+}
