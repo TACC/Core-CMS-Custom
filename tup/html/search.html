@@ -1,13 +1,10 @@
-<script id="search">
-  (function() {
-    var cx = '010583783262229824170:kh-wedau_ha';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
+{# Dev: "…?cx=5420571223a134464" #}
+{# Prod: "…?cx=655726dd57a3f4e62" #}
+
+<!-- a manual alternative to TACC/Core-CMS#1216 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1/generic_assets/css/google-search.css">
+<script async src="https://cse.google.com/cse.js?cx=655726dd57a3f4e62">
 </script>
-<p><gcse:searchresults-only></gcse:searchresults-only></p>
+<section id="google-search">
+    <div class="gcse-searchresults-only"></div>
+</section>
