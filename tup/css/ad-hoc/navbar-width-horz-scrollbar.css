@@ -1,0 +1,8 @@
+/* TO AVOID HORIZONTAL SCROLLBAR */
+
+/* To hide username on Portal dropdown when it shrinks the rest of the header "too much" */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .s-portal-nav .dropdown-toggle span {
+        display: none;
+    }
+}

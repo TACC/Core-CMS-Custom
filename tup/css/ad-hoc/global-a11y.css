@@ -1,0 +1,19 @@
+/* FOR HOMEPAGE AS OF 2024-02 */
+
+/* 1. To dynamically reduce height of banner */
+/* Change —
+    style="height: 550px"
+    — on banner image to —
+    style="height: 60vh; max-height: 550px; min-height: 230px;"
+*/
+
+/* 2. To make mobile menu button stand out */
+.navbar-dark .navbar-toggler {
+    border-color: var(--global-color-primary--normal);
+}
+
+/* 3. Unset color that is so light it makes links in a lead undistinguishable */
+/* TODO: Delete this after TUP-CMS uses Core-CMS since TACC/Core-CMS#1141 */
+:is(:is(.blog-list) article) .blog-lead {
+  color: unset;
+}
