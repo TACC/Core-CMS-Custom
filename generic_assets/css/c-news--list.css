@@ -1,0 +1,239 @@
+/* TODO: When integrated into Core-Styles, import these */
+/* @tacc/core-styles/src/lib/_imports/tools/x-article-link.css */
+/* @tacc/core-styles/src/lib/_imports/tools/x-truncate.css */
+/* _imports/tools/media-queries.css */
+
+
+
+
+
+/* List */
+
+/* To support rendering list as a grid */
+.c-news--list.as-grid {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(350px, 1fr) );
+  column-gap: var(--global-space--pattern-pad);
+}
+/* So page title spans all columns */
+.c-news--list.as-grid > .c-news__name {
+  grid-column: 1 / -1;
+}
+
+
+
+
+
+/* Item */
+
+
+
+/* Item (Structure) */
+
+/* For basic layout */
+.c-news--list article {
+  display: grid;
+
+  border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+  margin-bottom: var(--article-buffer);
+  padding-bottom: var(--article-buffer);
+}
+.c-news--list .c-news__header  { grid-area: head }
+.c-news--list .c-news__visual  { grid-area: media }
+.c-news--list .c-news__abstract { grid-area: desc }
+
+/* For conditional layouts */
+.c-news--list:not(.has-media) article {
+  --grid-item-areas:
+    'head'
+    'desc';
+
+  --list-item-areas:
+    'head'
+    'desc';
+  /* Do not manage what is irrelevant in this layout */
+  --list-item-columns: none;
+}
+.c-news--list.has-media article {
+  --grid-item-areas:
+    'media'
+    'head'
+    'desc';
+
+  --list-item-areas:
+    'media head'
+    'media desc';
+  /* To shrinkwrap media and flexible text content */
+  --list-item-columns: minmax(0, max-content) 1fr;
+
+  column-gap: 50px; /* for horz. space between image and content */
+}
+
+/* For layout options */
+.x-news-grid-item {
+    grid-template-areas: var(--grid-item-areas);
+    /* To prevent content from overflowing cell */
+    grid-template-columns: minmax(0, 1fr);
+    /* To prevent vertical stretch of rows */
+    grid-auto-rows: min-content;
+}
+.x-news-list-item {
+    grid-template-areas: var(--list-item-areas);
+    grid-template-columns: var(--list-item-columns);
+    /* To let 'desc' take remaining space (removes gap between head and desc) */
+    grid-template-rows: min-content 1fr;
+}
+@media (width < 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--list article {
+    /* TODO: When in Core, use @extend */
+    /* @extend .x-news-grid-item; */
+    grid-template-areas: var(--grid-item-areas);
+    /* To prevent content from overflowing cell */
+    grid-template-columns: minmax(0, 1fr);
+    /* To prevent vertical stretch of rows */
+    grid-auto-rows: min-content;
+  }
+}
+@media (width >= 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--list:not(.as-grid) article {
+    /* TODO: When in Core, use @extend */
+    /* @extend .x-news-list-item; */
+    grid-template-areas: var(--list-item-areas);
+    grid-template-columns: var(--list-item-columns);
+    /* To let 'desc' take remaining space (removes gap between head and desc) */
+    grid-template-rows: min-content 1fr;
+  }
+  .c-news--list.as-grid article {
+    /* TODO: When in Core, use @extend */
+    /* @extend .x-news-grid-item; */
+    grid-template-areas: var(--grid-item-areas);
+    /* To prevent content from overflowing cell */
+    grid-template-columns: minmax(0, 1fr);
+    /* To prevent vertical stretch of rows */
+    grid-auto-rows: min-content;
+  }
+}
+
+
+
+
+
+/* Header */
+
+
+
+/* Header (Structure) */
+
+.c-news--list .c-news__header {
+  margin-bottom: 5px;
+}
+
+
+
+/* Header - Title */
+
+.c-news--list .c-news__title {
+  margin-bottom: unset; /* overwrite Core-Styles headings--cms.css */
+}
+.c-news--list .c-news__subtitle {
+  display: none;
+}
+
+/* To style a pill (e.g. "Update" pill in a title) */
+.c-news--list .c-pill:not(:first-child) {
+  margin-left: 0.5ch;
+}
+
+
+
+/* Header - Metadata (Skin) */
+
+.c-news--list .c-news__data li {
+  line-height: unset; /* overwrite html-elements.css */
+}
+
+.c-news--list .c-news__attr {
+  color: var(--global-color-primary--dark);
+}
+.c-news--list .c-news__attr a {
+  color: inherit;
+}
+
+
+
+
+
+/* Visual */
+
+.c-news--list .c-news__media:empty {
+  display: none;
+}
+
+/* To support vertical article layouts */
+/* FAQ: In simple layouts, the media element is the grid cell */
+/* FAQ: In complex layouts, the media element is within the grid cell */
+.x-news-grid-item-media-cell {
+  margin-bottom: 15px; /* to add space between image and content */
+}
+.x-blog-grid-item-media-element-in-cell {
+  max-width: 100%; /* to prevent overflow if column is narrower than image */
+  height: auto; /* to preserve ratio if width is reduced (by max-width: 100%) */
+}
+@media (width < 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--list .c-news__media {
+    /* TODO: When in Core, use @extend */
+    /* @extend .x-blog-grid-item-media-cell; */
+    margin-bottom: 15px; /* to add space between image and content */
+    & img {
+      /* TODO: When in Core, use @extend */
+      /* @extend .x-blog-grid-item-media-element-in-cell; */
+      max-width: 100%; /* to prevent overflow if column is narrower than image */
+      height: auto; /* to preserve ratio if width is reduced (by max-width: 100%) */
+    }
+  }
+}
+@media (width >= 768px) /* TODO: When in Core, use @custom-media */ {
+  .c-news--list.as-grid .c-news__media {
+    /* TODO: When in Core, use @extend */
+    /* @extend .x-blog-grid-item-media-cell; */
+    margin-bottom: 15px; /* to add space between image and content */
+    & img {
+      /* TODO: When in Core, use @extend */
+      /* @extend .x-blog-grid-item-media-element-in-cell; */
+      max-width: 100%; /* to prevent overflow if column is narrower than image */
+      height: auto; /* to preserve ratio if width is reduced (by max-width: 100%) */
+    }
+  }
+}
+
+
+
+
+
+/* Content */
+
+.c-news--list .c-news__abstract {
+  /* TODO: When in Core, use @extend */
+  /* @extend %x-truncate--many-lines; */
+  --lines: 2;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+  -webkit-line-clamp: var(--lines);
+
+  --lines: 4;
+
+  line-height: 1.5;
+  color: var(--global-color-primary--dark);
+}
+.c-news--list .c-news__abstract p:last-child {
+  margin-bottom: 0 /* overwrite core-styles.cms */
+}
+
+/* To undo inline content styles */
+/* FAQ: In case author pasted such markup from another source */
+.c-news--list .c-news__abstract [style] {
+    all: revert !important; /* force undo all inline styles */
+}
