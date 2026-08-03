@@ -1,0 +1,30 @@
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<style>
+  body:not(:has(#cms-content)) { margin-block: 0; }
+  #calendar { max-width: 1000px; margin-inline: auto; }
+</style>
+<div id="calendar"></div>
+
+<script>
+  // Hand-edit this array (or replace with an export of your own data).
+  // No backend, no API key, no live connection to anything.
+  const events = [
+    { title: 'Sample Tour A', start: '2026-08-03T10:00:00', end: '2026-08-03T11:00:00', color: '#47B876' },
+    { title: 'Sample Tour B', start: '2026-08-05T13:00:00', end: '2026-08-05T14:30:00', color: '#7647b8' }
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        start: 'prev,next today',
+        center: 'title',
+        end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      events: events
+    });
+    calendar.render();
+  });
+</script>
