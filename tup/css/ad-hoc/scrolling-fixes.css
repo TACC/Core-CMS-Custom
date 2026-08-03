@@ -1,0 +1,22 @@
+/* To prevent horz. body scroll because of header nav too wide, 1092px—1066px */
+/* WARNING: In Safari 16.2–16.3, this hides header dropdown behind content */
+/* HELP: Fix the bug, instead of just hiding the bug */
+/*
+header {
+    overflow-x: clip;
+}
+*/
+
+/* To prevent horz. body scroll because of offset SVG Icons */
+/* HELP: Fix the bug, instead of just hiding the bug */
+/* FAQ: 290px is our body min. width; narrower than that, user must scroll */
+/* SEE: /use-tacc/evaluation-services/ */
+/* SEE: /partnerships/star-industry-program/ */
+/* SEE: / (home page) */
+@media (width >= 290px) {
+    /* FAQ: News articles may have images that overflow */
+    /* SEE: /news/latest-news/2023/04/18/welcome-new-tacc-website/ */
+    html:not(#page-news) main {
+        overflow-x: clip;
+    }
+}
