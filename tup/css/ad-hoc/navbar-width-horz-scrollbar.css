@@ -6,24 +6,3 @@
         display: none;
     }
 }
-/* To align first CMS nav with "Dashbaord" heading in Portal */
-.s-header .navbar-brand {
-    flex-basis: 138px;
-}
-/* To give CMS nav more room by reducing size of logo */
-.portal-logo {
-    height: 30px;
-}
-/* To vertically center the logo which was shrunk */
-.s-header .navbar-brand {
-    display: grid;
-    align-items: center;
-}
-
-
-/* TO MAKE HEADER FONT CONSISTENT ON CMS & PORTAL */
-
-/* TODO: Remove after TACC/Core-CMS#v4.25.1 */
-.s-header {
-    font-family: var(--global-font-family--sans--portal);
-}
