@@ -1,0 +1,239 @@
+/* BUTTONS */
+
+/* To style buttons differently than in body */
+.c-footer .c-button,
+.c-footer [class*="button--"] {
+    & small {
+        font-size: var(--global-font-size--x-small);
+    }
+}
+
+
+
+
+
+/* LOGOS */
+
+/* To set baseline styles for footer logos */
+/* TODO: Evaluate for tup-ui or core-cms CSS */
+.c-footer svg {
+    fill: var(--global-color-primary--xx-light);
+}
+.c-footer [class*="logos--"] {
+    display: grid;
+    gap: var(--gap, 0);
+    grid-auto-flow: column;
+    justify-content: center;
+}
+.c-footer .logos--branding {
+    --gap: 2rem;
+
+    /* NOTE: Test any changes on all browsers and screen sizes */
+    grid-template-columns: repeat( 3, minmax(0, 1fr) );
+}
+.c-footer .logos--branding a {
+    min-height: 60px;
+    max-height: 120px;
+}
+
+.c-footer [class*="logos--"] a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* horz align when image narrower than grid cell */
+}
+
+/* For independent logo sizes */
+.c-footer .logos--branding svg {
+  height: 55%;
+}
+.c-footer .logos__tacc svg {
+  /* To vertically align center as if small text was not present */
+  transform: translateY(5%);
+}
+.c-footer .logos__ut svg {
+  /* To vertically align center as if small text was not present */
+  transform: translateY(5%);
+}
+
+/* To create fake border between logos */
+.c-footer [class*="logos--"] a { position: relative }
+.c-footer .logos--branding a:not(:first-child)::before {
+  height: 75%;
+
+  position: absolute;
+  left: calc( -1 * var(--gap)/2 );
+
+  content: '';
+  display: block;
+  background-color: var(--global-color-primary--xx-light);
+  background-clip: content-box;
+  width: var(--global-border-width--normal);
+  box-sizing: content-box;
+
+  cursor: default;
+}
+
+/* To skin logo links */
+.c-footer [class*="logos--"] a {
+    &:hover {
+        color: inherit;
+    }
+    &:hover svg {
+        color: currentColor;
+        outline: var(--global-border-width--normal) solid currentColor;
+        outline-offset: 5px;
+        border-radius: var(--global-border-width--normal);
+    }
+    &:active svg {
+        outline-style: dotted;
+    }
+}
+.c-footer .logos--social a {
+    padding: 0.5em;
+}
+.c-footer .logos--social svg {
+    font-size: 2.5rem;
+}
+
+
+/* HACK: To undo tricky Instagram hover color */
+.c-footer .logos--social a.logos__instagram:hover {
+    mask: unset;
+    background: unset;
+}
+.c-footer .logos--social a.logos__instagram:hover svg {
+  visibility: visible;
+}
+
+
+
+
+
+/* LAYOUT */
+
+
+
+/* LAYOUT - All Screens */
+
+.c-footer {
+  --pad-vert: 36px;
+  --pad-horz: 36px;
+}
+
+
+/* LAYOUT - Narrow Screen */
+
+/* Move all panes to one column */
+@media (width < 380px) {
+  #cms-footer .col {
+    /* FAQ: I copied Bootstrap .col-6 styles and changed 50% to 100% */
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+
+
+/* LAYOUT - Wide Screen */
+
+/* To draw a line between "Quick Links" and regular links */
+@media (width > 380px) {
+    #cms-footer .c-pane--aside {
+        border-left: var(--global-border-width--normal) solid var(--global-color-primary--xx-light);
+    }
+}
+
+/* To draw a box behind common footer content */
+/* FAQ: The box stretches to cover the height and right side of the footer */
+@media (width >= 992px) {
+    #cms-footer .c-pane--common {
+        /* To move c-footer vertical padding into this pane */
+        margin-block: calc( -1 * var(--pad-vert) );
+        padding-block: var(--pad-vert);
+
+        background-color: var(--global-color-primary--x-dark);
+    }
+    html:not(#page-portal) .c-footer {
+        padding-right: revert; /* undo core-styles.cms.css */
+    }
+    #cms-footer .c-pane--common {
+        padding-inline: var(--pad-horz);
+    }
+    #cms-footer.row:not(.no-gutters) {
+        margin-right: 0;
+    }
+}
+
+
+
+
+
+/* PER CLIENT */
+
+
+/* PER CLIENT - HIDE/SHOW */
+
+/* To hide/show CMS/Portal footer */
+html#page-portal #cms-footer, /* new id */
+html:not(#page-portal) #portal-footer /* trans id */ {
+    display: none;
+}
+
+/* PER CLIENT - PORTAL */
+
+html:not(#page-portal) .c-footer {
+    /* To add a full-width border above CMS footer */
+    /* TODO: Evaluate for tup-ui or Core-CMS CSS */
+    border-width: var(--global-border-width--thick) 0 0 0;
+    border-style: solid;
+    border-color: var(--global-color-secondary--light);
+
+    /* To remove padding-block on CMS footer */
+    padding-block: unset;
+}
+
+/* To reduce size of Portal footer */
+html#page-portal .c-footer {
+    --pad-vert: 0;
+    --pad-horz: 15px; /* WARNING: any less causes unexplained scrollbar */
+}
+html#page-portal .c-footer p {
+    margin-bottom: revert; /* undo Bootstrap */
+}
+
+/* To vertically center text */
+#portal-footer p {
+    margin-block: revert; /* undo Bootstrap */
+}
+
+
+
+/* PER CLIENT - CMS */
+
+/* To move footer padding into CMS footer */
+#cms-footer {
+    padding-block: var(--pad-vert);
+}
+
+/* Add vertical space between panes, except for aside when it is below others */
+/* FAQ: Bootstrap 4 grid does not have a way to do so */
+#cms-footer .col.c-pane--nav {
+    margin-bottom: 2rem;
+}
+
+/* To make text color match on regular text and hyperlinks */
+#cms-footer .c-pane--common,
+#cms-footer .c-pane--common a {
+    color: var(--global-color-primary--xx-light);
+}
+#cms-footer .c-pane--common a {
+    text-decoration-line: underline;
+    text-decoration-color: var(--global-color-primary--dark);
+
+    &:hover {
+      text-decoration-color: inherit;
+    }
+}

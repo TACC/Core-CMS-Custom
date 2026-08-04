@@ -1,0 +1,27 @@
+/* FIX RAW IMAGE SIZE */
+/* FAQ: This is specific to TACC, not for Core */
+
+/* All images are uploaded at @2x */
+/* HELP: How can we use @2x and @4x to support retina displays */
+:is(.layered-image, [class*="layered-image--"])
+> :is(.align-left, .align-left--oversized, .align-right, .align-center) {
+    /* transform: scale(50%); *//* To fix image size */
+    transform: scale(40%); /* To fix then tweak image size */
+}
+/* FAQ: Some images are off by a different size than the others... */
+:is(.layered-image, [class*="layered-image--"]) > img[src*="/paperclip"],
+:is(.layered-image, [class*="layered-image--"]) > img[src*="/spiral"] {
+    transform: scale(75%);
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    :is(.layered-image, [class*="layered-image--"])
+    > :is(.align-left, .align-left--oversized, .align-right, .align-center) {
+        transform: scale(31.25%);
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    :is(.layered-image, [class*="layered-image--"])
+    > :is(.align-left, .align-left--oversized, .align-right, .align-center) {
+        transform: scale(37.5%);
+    }
+}
