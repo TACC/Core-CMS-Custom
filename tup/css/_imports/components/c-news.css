@@ -1,0 +1,14 @@
+/* To adjust display of metadata (given what .c-update shows) */
+.c-news--read article.has-update .c-news__data {
+  display: none;
+}
+.c-news--read article.has-update .c-news__title {
+  /* Overwrites c-news--read.css */
+  border-bottom: unset;
+  margin-bottom: 6.5rem;
+}
+
+/* To hide byline on User Updates */
+.c-news__byline:not(.app-blog *) {
+  display: none;
+}

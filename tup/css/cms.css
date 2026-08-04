@@ -1,0 +1,33 @@
+/* Organize via ITCSS */
+/* SEE: https://confluence.tacc.utexas.edu/x/IAA9Cw */
+
+/* SETTINGS */
+/* ... */
+
+/* GENERICS */
+/* ... */
+
+/* ELEMENTS */
+@import url("./_imports/elements/headings--cms.css") layer(project);
+
+/* OBJECTS */
+@import url("./_imports/objects/o-section.css") layer(project);
+@import url("./_imports/objects/people-grid.css") layer(project);
+
+/* COMPONENTS */
+@import url("./_imports/components/agenda-table.css") layer(project);
+@import url("./_imports/components/banner.css") layer(project);
+@import url("./_imports/components/c-data-list.css") layer(project);
+@import url("./_imports/components/c-footer.css") layer(project);
+@import url("./_imports/components/c-news.css") layer(project);
+@import url("./_imports/components/c-tag.css") layer(project);
+@import url("./_imports/components/c-update.css") layer(project);
+@import url("./_imports/components/c-widget.css") layer(project);
+@import url("./_imports/components/content-block.css") layer(project);
+@import url("./_imports/components/django-cms-forms.css") layer(project);
+@import url("./_imports/components/django.cms.blog.app.page.css") layer(project);
+@import url("./_imports/components/layered-image.css") layer(project);
+
+/* TRUMPS */
+@import url("./_imports/trumps/s-abbr-list.css") layer(project);
+@import url("./_imports/trumps/s-breadcrumbs.css") layer(project);

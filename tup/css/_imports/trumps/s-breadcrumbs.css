@@ -1,0 +1,9 @@
+/* To overwrite core-styles.base.css href-less link styles */
+/* TODO: Integrate into Core-CMS (not Core-Styles):
+        - …/css/src/imports/trumps/s-breadcrumbs.css
+        - …/js/modules/breadcrumbs.js
+*/
+.s-breadcrumbs:is(nav) a:not([href]) {
+    opacity: 1;
+    color: unset;
+}
