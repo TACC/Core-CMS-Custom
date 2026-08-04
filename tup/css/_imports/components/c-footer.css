@@ -218,11 +218,6 @@ html#page-portal .c-footer p {
     padding-block: var(--pad-vert);
 }
 
-/* To tweak minor styles */
-#cms-footer {
-    color: var(--global-color-primary--light);
-}
-
 /* Add vertical space between panes, except for aside when it is below others */
 /* FAQ: Bootstrap 4 grid does not have a way to do so */
 #cms-footer .col.c-pane--nav {
