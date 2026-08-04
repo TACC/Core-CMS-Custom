@@ -1,0 +1,10 @@
+/* An automatric grid layout intended for people headshots */
+/* FAQ: This pattern was nitially similar to `.o-grid--col-min-width` */
+/* TODO: Consider this pattern for Core-Styles */
+.people-grid {
+  --width: 192px;
+
+  display: grid;
+  gap: var(--global-space--grid-gap);
+  grid-template-columns: repeat( auto-fill, minmax( var(--width), 1fr ) );
+}

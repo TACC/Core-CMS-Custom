@@ -1,0 +1,190 @@
+/* TODO: Support .c-banner-cell */
+
+
+
+
+/* Banner Cell */
+
+[class*="banner-cell--"] {
+  --tag-padding: 0.5rem; /* manually copied from .c-tag styles */
+}
+
+/* Elements */
+
+[class*="banner-cell--"] :where(h1, h2, h3, h4) {
+  margin-bottom: 0;
+}
+
+/* So image caption heights are equal (not an issue on narrow screen) */
+@media (width >= 576px) {
+  [class*="banner-cell--"] > a {
+    height: 100%;
+    display: block;
+  }
+}
+
+/* FAQ: Using after so outline is on top of mix-blend-mode (see .o-colorize) */
+[class*="banner-cell--"] > a { position: relative; }
+[class*="banner-cell--"] > a:hover::after {
+  --border-width: var(--global-border-width--thick);
+
+  /* FAQ: Using `border` shrinks content while `outline` does not */
+	outline-width: var(--border-width);
+  outline-style: solid;
+  outline-color: var(--global-color-primary--xxx-dark);
+	outline-offset: calc( -1 * var(--border-width) );
+
+  /* So ::after stretches to fill parent */
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0; top: 0; bottom: 0; right: 0;
+}
+[class*="banner-cell--"] > a:active {
+	--border-width: var(--global-border-width--normal);
+}
+
+[class*="banner-cell--"] figure {
+  margin-bottom: unset; /* undo core-cms.css and Bootstrap */
+}
+
+[class*="banner-cell--"] figcaption {
+  padding-inline: 3.0rem;
+}
+
+/* To remove standard link text docoration */
+[class*="banner-cell--"] > a {
+  text-decoration: none;
+}
+
+/* To cover a re-sized image box with the full-size image (like a bkgd image) */
+/* FAQ: If user sets dimension via style, we assume they want this feature */
+[class*="banner-cell--"] figure:where([style*="height"], [style*="width"]) img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/* Components */
+
+[class*="banner-cell--"] .c-tag,
+[class*="banner-cell--"] [class*="tag--"] {
+  display: block;
+  margin-bottom: 2.0rem;
+}
+
+[class*="banner-cell--"] .u-highlight {
+	padding-inline: var(--tag-padding);
+
+	color: var(--global-color-primary--xx-light);
+  background-color: var(--global-color-primary--xxx-dark);
+
+	line-height: 1;
+}
+
+
+/* Banner Cell (Major) */
+
+/* To allow image to be underneath text */
+.banner-cell--major figure {
+  display: grid;
+
+  /* To force % image height to match its container (i.e. <figure>) */
+  /* https://stackoverflow.com/a/52137966/11817077 */
+  grid-template-rows: minmax( 0, 1fr );
+}
+
+.banner-cell--major h2 {
+	font-size: var(--global-font-size--xxx-large);
+  font-weight: var(--bold);
+
+	text-transform: uppercase;
+}
+
+/* To move text atop image */
+.banner-cell--major img,
+.banner-cell--major figcaption {
+  grid-row: 1;
+  grid-column: 1;
+}
+.banner-cell--major figcaption {
+  align-self: end; /* to align text to bottom */
+}
+
+/* To showcase image more on mobile and not let tag be flush against header */
+@media (width < 576px) {
+    .banner-cell--major figcaption {
+        margin-top: 6rem;
+        margin-bottom: 8rem;
+    }
+}
+@media (width >= 576px) {
+    .banner-cell--major figcaption {
+        margin-top: 3.5rem;
+        margin-bottom: 5rem;
+    }
+}
+
+
+
+/* Banner Cell (Minor) */
+
+/* To space out cells */
+@media (width < 576px) {
+  .banner-cell--minor {
+    margin-top: calc( var(--global-space--bootstrap-gap) / 2 );
+  }
+  .banner-cell--minor:last-child {
+    margin-bottom: calc( var(--global-space--bootstrap-gap) / 2 );
+  }
+}
+@media (width >= 576px) {
+  .banner-cell--minor {
+    margin-block: var(--global-space--bootstrap-gap);
+  }
+}
+
+/* To allow image to be underneath text */
+.banner-cell--minor figure {
+  display: grid;
+
+  /* To make image and caption fill, but also fit within, grid */
+  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax( 0, 1fr );
+}
+
+/* To add space under caption text within container */
+.banner-cell--minor figcaption {
+  padding-bottom: 3.0rem;
+}
+
+.banner-cell--minor h2 {
+  color: var(--global-color-primary--xxx-dark); /* undo core-styles.cms */
+  font-weight: revert;
+}
+
+/* To move text atop image */
+.banner-cell--minor figcaption {
+  /* To move by half the height of the .c-tag */
+  /* FAQ: Not using `translateY(-50%)` because h2 must move same amount */
+  --offset: calc( var(--tag-padding) + ( var(--global-font-size--small) / 2 ) );
+
+  /* FAQ: Using variable so styles that extend this can use the value */
+  margin-top: calc( -1 * var(--offset) );
+}
+
+
+
+
+
+/* Conflicts with Core-CMS */
+
+/* Overwrite Core-CMS core-cms.css */
+/* HELP: How can all CMS sites avoid this? */
+[class*="banner-cell--"] figcaption {
+    border-bottom: unset;
+    color: unset;
+    font-size: unset;
+    font-style: normal;
+    line-height: inherit;
+}

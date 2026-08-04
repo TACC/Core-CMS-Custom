@@ -1,0 +1,26 @@
+/* ???: What do these do or fail to do?
+        Is it related to this from W.B. in Slack?
+        "Not showing drop-cap in Drafts is a bug."
+*/
+
+/* TUP-730 */
+/*
+@supports (-webkit-initial-letter: 3) {
+    .has-blog-tag-no-drop-cap .s-drop-cap > p:first-of-type:first-letter {
+        -webkit-initial-letter: unset;
+    }
+}
+@supports (initial-letter: 3) {
+    .has-blog-tag-no-drop-cap .s-drop-cap > p:first-of-type:first-letter {
+        initial-letter: unset;
+    }
+}
+*/
+
+/* 2024-09-23 (After TUP-730) *//*
+@supports (-webkit-initial-letter: 3) {
+  .has-blog-tag-no-drop-cap .s-drop-cap > p:first-of-type:first-letter {
+    -webkit-initial-letter: unset;
+  }
+}
+*/

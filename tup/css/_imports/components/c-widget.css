@@ -1,0 +1,20 @@
+/* FAQ: Used on homepage to mimic `c-feed` style (User Updates) heading */
+/* SEE: https://dev.tup.tacc.utexas.edu/ */
+
+/* TODO: Consider 1 pattern for styles shared between c-feed-list & c-widget */
+
+/* !!!: Clones corresponding .c-feed-list syle */
+.c-widget > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0;
+  margin-bottom: 10px;
+
+  /* TODO: When migrated to core-styles, use @extend instead */
+  /* @extend .x-truncate--one-line; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.c-widget > div {
+    border-top: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+}

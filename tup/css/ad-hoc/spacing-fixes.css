@@ -1,0 +1,23 @@
+/* To add extra space under columns on specific pages */
+/* HELP: How can we apply and maintian this better? */
+/* FAQ: Columns that explcitely or automatically span 12, get margin bottom */
+.col-12:not(
+  :last-child,
+  [class*="banner-cell"],
+  #page-scivis-gallery *,
+  #page-all-systems *,
+  #page-stampede2 *, /* 2023-10-13 *//* /systems/stampede2/ */
+  :has(h1:only-child), /* /research/tacc-software/, /use-tacc/software-list/ */
+  #page-weteachcs *, /* 2024-10-03 *//* /education/educators/weteachcs/ */
+  #page-training *, /* 2025-04-02 *//* /use-tacc/training/ */
+  #page-about-tours *, /* 2026-03-16 *//* /about/tours/ */
+  #page-request-tour * /* 2026-03-16 *//* /about/tours/request/ */
+  #page-acsc *, /* 2026-04-21 *//* /education/undergraduates-graduates/acsc/ */
+),
+.col:not(
+  [class*="col-"],
+  [class*="banner-cell"], /* homepage banner */
+  :last-child
+) {
+  margin-bottom: 4rem;
+}
