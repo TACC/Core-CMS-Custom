@@ -1,0 +1,11 @@
+/* to crop any "Meet the Interns" to match "Cohort 1" */
+/* https://tacc.utexas.edu/about/internships/lccf/ */
+img.u-image--meet-the-interns,
+/* FAQ: Core-CMS Django CMS template can move image class to image container */
+/* https://github.com/TACC/Core-CMS/blob/v4.33.0/taccsite_cms/templates/djangocms_picture/default/picture.html#L18-L37 */
+.u-image--meet-the-interns > img {
+    width: 100%;
+    aspect-ratio: 5 / 1;
+    object-fit: cover;
+    object-position: center 30%;
+}

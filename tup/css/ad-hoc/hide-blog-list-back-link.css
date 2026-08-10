@@ -1,0 +1,4 @@
+/* TODO: Remove when TUP CMS uses Core-CMS with PORTAL_BLOG_SHOW_BACK_LINK (default false). */
+.blog-list .blog-back {
+    visibility: hidden;
+}

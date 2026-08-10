@@ -1,0 +1,28 @@
+/* To add space beneath image whose <p> trapped inside it the text beneath */
+/* NOTE: W.B. does NOT know how the text gets trapped with image in one <p> */
+/* HELP: Do not integrate into Core unless the use case is real and clarified */
+article.post-detail .blog-content > p:first-child > img:not(:only-child) {
+    margin-bottom: 2rem; /* mimic core-styles.cms <p> margin-bottom */
+}
+
+/* On article page, to hide automatic main image */
+/* TODO: Consider CMS setting to hide `.blog-visual` */
+article.post-detail .blog-visual {
+    display: none;
+}
+@media (width < 576px) {
+    /* To continue hiding news article image on mobile */
+    /* TODO: Determine how best to hide on TUP, but not every site */
+    /* FAQ: Core-CMS (in dev/tup-cms) sets .blog-visual to `display: grid` */
+    /* SEE: https://github.com/TACC/Core-CMS/blob/v3.12.0-alpha.9/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.page.css#L86-L93 */
+    /* SEE: https://github.com/TACC/tup-ui/pull/218#issuecomment-1669960294 */
+    article.post-detail .blog-visual {
+        display: none !important; /* HACK: heavy-handed override of core-cms */
+    }
+}
+
+/* On article page, to hide "RELATED POSTS:" */
+/* TODO: Style "RELATED POSTS:" output */
+article.post-detail .post-detail-list {
+    display: none;
+}

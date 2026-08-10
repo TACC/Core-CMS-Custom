@@ -1,0 +1,8 @@
+/* To align first CMS nav with "Dashbaord" heading in Portal */
+.s-header .navbar-brand {
+    flex-basis: 138px;
+}
+/* To give CMS nav more room by reducing size of logo */
+.portal-logo {
+    height: 30px;
+}
