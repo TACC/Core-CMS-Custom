@@ -1,0 +1,21 @@
+/* To style "Update" pill in title */
+.c-update__title .c-pill {
+  vertical-align: middle;
+  transform: translateY(-0.125em);
+}
+.c-update__title .c-pill:not([class*="c-pill--"]) {
+  background-color: var(--global-color-primary--light);
+}
+
+/* To reduce space between "Original Update" and its content */
+.c-update__header + .c-news__content {
+  margin-top: unset; /* ovewrite c-news--read.css */
+}
+
+/* To tweak hr appearance and layout */
+.c-update + hr {
+  border-top-color: var(--global-color-priamry--dark);
+
+  /* To make line between updates darker and have equal space above and below */
+  margin-top: var(--global-space--hr-buffer-below);
+}
