@@ -23,10 +23,14 @@ Read [README.md "Gotchas"](./README.md#gotchas).
 ## Pull Requests
 
 - **Title:** `.gitmessage` (fallback: `~/.gitmessage`)
-- **Description:** `.github/PULL_REQUEST_TEMPLATE.md`
+- **Description:** `.github/PULL_REQUEST_TEMPLATE.md` (fallback: `~/.github/PULL_REQUEST_TEMPLATE.md`)
   - Be concise: plain language, simple sentences, present lists as bullets not prose.
   - When summarizing changeset, say what changed and (only if it matters) why, never how.
   - If listing a file change, then only describe change at a high level.
+  - Group related file changes into one bullet, not one per file.
+  - Overview: match the template's example length, not its max.
   - When updating, first re-read the current description, because it may have been edited.
+  - In "Related" section, links to PRs should instead just be raw URLs (because GitHub will auto-create rich links).
+  - If responding to a PR comment as the user instead of a bot, then quote and sign your entire reply.
 
 [Core Portal Deployments]: https://github.com/TACC/Core-Portal-Deployments
