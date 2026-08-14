@@ -1,0 +1,10 @@
+/* to hide SVG icons from everyone */
+& .has-svg use {
+    display: none !important;
+}
+/* to show SVG icons to editors */
+/*
+[class*="cms-structure-mode-"] {
+    & .has-svg use { display: revert !important; }
+}
+*/

@@ -1,0 +1,40 @@
+/* FAQ: Used on https://www.tacc.utexas.edu/events/institutues/sample/ */
+
+/* FAQ: To support <b> as Black */
+/* TODO: If this is needed, add each to Core Styles as appropriate */
+/* SEE: src/lib/_imports/settings/font.css Roboto @import */
+@import url('https://fonts.googleapis.com/css?family=Roboto:900&display=swap');
+.agenda-table { --black: 900; }
+
+/* TODO: Implement in core-styles.cms.css as s-agenda-table aka agenda-table */
+.agenda-table time {
+    font-family: var(--global-font-family--mono);
+    display: block; /* so text-align is effectual */
+    text-align: right;
+}
+.agenda-table p:not(:last-child) {
+    margin-bottom: 0.25em;
+}
+.agenda-table :is(td, th):first-child {
+    border-right: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+}
+.agenda-table :is(td, th):nth-child(2) {
+    text-align: center;
+}
+
+.agenda-table :is(td, th):not([class*="agenda-table__"]) {
+    background: transparent;
+}
+.agenda-table__neutral
+/* FAQ: Phasing out "primary" misnomer by not propogating it */ {
+    background: var(--global-color-primary--x-light);
+}
+.agenda-table__accent {
+    background: var(--global-color-accent--xxx-light);
+}
+[class*="agenda-table__secondary"] {
+    background: var(--global-color-secondary--xx-light);
+}
+.agenda-table__tertiary {
+    background: var(--global-color-tertiary--xx-light);
+}

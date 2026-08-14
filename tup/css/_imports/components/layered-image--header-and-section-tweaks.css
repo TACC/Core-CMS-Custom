@@ -1,0 +1,23 @@
+/* HEADER & SECTION TWEAKS */
+
+/* TODO: Integrate into Core-CMS */
+
+/* So <main> content (e.g. `.c-layered-image`) does not appear atop header */
+/* So `nav.breadcrumbs` do not appear atop header CMS nav */
+body > header {
+    position: relative;
+    z-index: 2;
+}
+
+/* So background image does NOT appear over ANY other section
+   (e.g. an `.align-center` "background image" of a layered image) */
+:is(.o-section, .section, [class*="section--"])
+/* FAQ: Only styled sections can use `position: relative` solution */
++ [class*="section--"] {
+    position: relative; /* so previous section is z-index below next section */
+}
+:is(.o-section, .section, [class*="section--"])
+/* FAQ: All sections can use `overflow-y` solution */
++ :is(.o-section, .section, [class*="section--"]) {
+    overflow-y: clip; /* so successive section can not bleed into any section */
+}

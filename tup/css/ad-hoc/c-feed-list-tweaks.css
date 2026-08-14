@@ -1,0 +1,6 @@
+/* TODO: Release TACC/Core-Styles#508. Update Core-CMS then TUP. Remove this… */
+.c-feed-list > :is(div, article) {
+    /* FAQ: The `flex-grow: 1` makes /use-tacc/training/ lists same height */
+    /* CAVEAT: The `flex-grow: 1` breaks max line height (user can see top of next line) */
+    flex-grow: unset;
+}

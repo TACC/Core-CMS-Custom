@@ -1,0 +1,10 @@
+/* So any section touching breadcrumbs has reduced top space */
+/* TODO: Consider for Core-CMS, not Core-Styles */
+nav.s-breadcrumbs + :is(.o-section, .section):not([class*="o-section--style-"], [class*="section--"]),
+nav.s-breadcrumbs + .container > :is(.o-section, .section):not([class*="o-section--style-"], [class*="section--"]):first-child {
+    margin-top: var(--global-space--under-breadcrumbs);
+}
+nav.s-breadcrumbs + :is([class*="o-section--style-"], [class*="section--"]),
+nav.s-breadcrumbs + .container > :is([class*="o-section--style-"], [class*="section--"]):first-child {
+    padding-top: var(--global-space--under-breadcrumbs);
+}

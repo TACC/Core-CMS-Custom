@@ -1,0 +1,63 @@
+.c-tag,
+[class*="tag--"] {
+  display: block;
+  margin-bottom: 2.0rem;
+
+  color: var(--global-color-primary--xx-light);
+
+  font-size: var(--global-font-size--small);
+}
+
+/* Press Release */
+[class*="tag--pr"],
+/* To overwrite core-cms django.cms.blog.app.css */
+.app-blog .categories a:is(
+  .blog-category-press-release
+) {
+  background: #723B0C;
+}
+
+/* Q&A, Human Interest */
+[class*="tag--qa"],
+/* To overwrite core-cms django.cms.blog.app.css */
+.app-blog .categories a:is(
+  .blog-category-qa,
+  .blog-category-welcome-profile,
+  .blog-category-staff-highlight
+) {
+  background: var(--global-color-accent--light);
+}
+
+/* Has Video, Audio, or other media beyond statc image */
+[class*="tag--media"],
+/* To overwrite core-cms django.cms.blog.app.css */
+.app-blog .categories a:is(
+  .blog-category-podcast,
+  .blog-category-multimedia
+) {
+  background: var(--global-color-primary--dark);
+}
+
+/* System Status Update */
+[class*="tag--system"] {
+  background: var(--global-color-tertiary--normal);
+}
+
+/* Feature Story (different than a "featured" article) */
+[class*="tag--feature"],
+/* To overwrite core-cms django.cms.blog.app.css */
+.app-blog .categories a:is(
+  .blog-category-feature-story
+) {
+  background: var(--global-color-accent--normal);
+}
+
+/* External Article */
+[class*="tag--external"] {
+  background: var(--global-color-secondary--normal);
+}
+
+/* Event */
+[class*="tag--event"] {
+  background: var(--global-color-tertiary--dark);
+}
