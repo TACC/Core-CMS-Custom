@@ -1,6 +1,7 @@
 # AGENTS.md
 
 - [Architecture](#architecture)
+- [Vocab](#vocab)
 - [Commits](#commits)
 - [Pull Requests](#pull-requests)
 
@@ -16,6 +17,10 @@ Read [README.md "Project Architecture"](./README.md#project-architecture) for in
 
 Read [README.md "Gotchas"](./README.md#gotchas).
 
+## Vocab
+
+- Use the word "deleted", not "removed".
+
 ## Commits
 
 - **Format:** `.gitmessage` (fallback: `~/.gitmessage`)
@@ -27,7 +32,7 @@ Read [README.md "Gotchas"](./README.md#gotchas).
   - Be concise: plain language, simple sentences, present lists as bullets not prose.
   - When summarizing changeset, say what changed and (only if it matters) why, never how.
   - If listing a file change, then only describe change at a high level.
-  - In "Changes" section, group into as few bullets as the logical changes require (never one per file) and default to zero explanation per bullet (e.g. `**added** logos`).
+  - In "Changes" section, group into as few bullets as the logical changes require (never one per file) and default to zero explanation per bullet (e.g. `**added** logos`). Leave the detail for the code diff itself — a bullet is not the place to restate what the diff already shows.
   - In "Overview" section, match the template's example length (1 sentence), not its stated max (1–3).
   - When updating, first re-read the current description, because it may have been edited.
   - In "Related" section, links to PRs should instead just be raw URLs (because GitHub will auto-create rich links).
