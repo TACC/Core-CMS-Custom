@@ -41,8 +41,10 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 
 [3DEM](https://3dem.org)
 • [A2CPS](https://a2cps.org)
+• [ArtSciVis](https://artscivis.tacc.utexas.edu)
 • [AMI](https://ami.tacc.utexas.edu)
 • [BrainMap](https://portal.brainmap.org)
+• [CraftLAB](https://craftlab.tacc.utexas.edu)
 • [CIPP](https://cipacific.org)
 • [CTRN](https://ctrn-web.tacc.utexas.edu)
 • DAC
