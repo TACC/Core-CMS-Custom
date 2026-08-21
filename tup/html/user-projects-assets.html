@@ -6,7 +6,7 @@
 {# TODO: Delete after we use Core-CMS v4.40 #}
 <link
   rel="stylesheet"
-  id="research-projects-assets-alert-css"
+  id="user-projects-assets-alert-css"
   href="https://cdn.jsdelivr.net/npm/@tacc/core-styles@v2.57.0/dist/bootstrap4/components/alert.css"
 />
 
@@ -14,17 +14,19 @@
 {# TODO: Delete after we use Core-CMS v4.41 #}
 <link
   rel="stylesheet"
-  id="research-projects-assets-table-css"
+  id="user-projects-assets-table-css"
   href="https://cdn.jsdelivr.net/npm/@tacc/html-filter-sort@0/src/filtersort.css"
 />
+
+{# To make tables interactive #}
+{# TODO: Delete after we use Core-CMS v4.40 #}
 <script
-  src="https://cdn.jsdelivr.net/npm/list.js@2.3.1/dist/list.min.js"
-  integrity="sha384-FhEOA/pIE4BfDuwGksHaZD8ms5j+dfB9QIWo7naDMzAVoCE1My4G2iu8/n/R3AAH"
+  src="https://cdn.jsdelivr.net/npm/list.js-fixed@2/dist/list.min.js"
   crossorigin="anonymous"
 ></script>
 <script
   type="module"
-  id="research-projects-assets-table-js"
+  id="user-projects-assets-table-js"
 >
   import filtersort from 'https://cdn.jsdelivr.net/npm/@tacc/html-filter-sort@0/src/filtersort.js';
 
@@ -35,7 +37,9 @@
     countClass: 'text-truncate',
   });
 </script>
-<style id="research-projects-assets-table-css">
+
+{# To specifically style User Projects #}
+<style id="user-projects-assets-table-css">
   @layer base {
     dt {
       font-weight: revert-layer;
