@@ -1,5 +1,6 @@
-/* TODO: When integrated into Core-Styles, import these */
-/* @tacc/core-styles/src/lib/_imports/components/c-tag.css */
+/* TODO: Import mixins from:
+- @tacc/core-styles/src/lib/_imports/tools/x-tag.css
+*/
 
 @import url("./c-news--read.css");
 @import url("./c-news--list.css");
@@ -93,8 +94,8 @@
 
 /* To style categories as "tags" (the UI pattern) */
 .c-news__cats a {
-  /* TODO: When integrated into Core-Styles, uncomment this */
-  /* @extend :--c-tag; */
+  /* TODO: Use Core-Styles @mixin */
+  /* @mixin tag; */
 
   display: inline-block;
 
@@ -106,8 +107,8 @@
 
 /* To style tags as "pills" (the UI pattern) */
 .c-news__tags a {
-  /* TODO: When available in Core-Styles, uncomment this */
-  /* @extend :--c-pill; */
+  /* TODO: Use Core-Styles @mixin */
+  /* @mixin pill; */
 
   background-color: var(--global-color-primary--light);
 }

@@ -1,7 +1,9 @@
-/* TODO: When integrated into Core-Styles, import these */
-/* @tacc/core-styles/src/lib/_imports/objects/o-offset-content.css */
-/* @tacc/core-styles/src/lib/_imports/tools/x-figure.css */
-/* @tacc/core-styles/src/lib/_imports/tools/x-blockquote.css */
+/* TODO: Import mixins from:
+- @tacc/core-styles/src/lib/_imports/objects/o-offset-content.css
+- @tacc/core-styles/src/lib/_imports/tools/x-figure.css
+- @tacc/core-styles/src/lib/_imports/tools/x-blockquote.css
+*/
+
 
 
 
@@ -130,13 +132,13 @@
 /* FAQ: The .blockquote.text-... classes come from Bootstrap Blockquote */
 
 .c-news--read .c-news__content .align-left {
-  /* TODO: When in Core, use @extend */
-  /* @extend .o-offset-content--left; */
+  /* TODO: In Core-Styles, @define-mixin offset-content--left */
+  /* @mixin offset-content--left */
   /* NOTE: Ignore in TUP-CMS, cuz c-news only for User Updates (no images) */
 }
 .c-news--read .c-news__content .align-right {
-  /* TODO: When in Core, use @extend */
-  /* @extend .o-offset-content--right; */
+  /* TODO: In Core-Styles, @define-mixin offset-content--right */
+  /* @mixin offset-content--right */
   /* NOTE: Ignore in TUP-CMS, cuz c-news only for User Updates (no images) */
 }
 
