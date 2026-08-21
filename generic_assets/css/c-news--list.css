@@ -85,8 +85,8 @@
 }
 @media (width < 768px) /* TODO: When in Core, use @custom-media */ {
   .c-news--list article {
-    /* TODO: When in Core, use @extend */
-    /* @extend .x-news-grid-item; */
+    /* TODO: .x-news-grid-item --> @define-mixin news-grid-item */
+    /* @mixin news-grid-item */
     grid-template-areas: var(--grid-item-areas);
     /* To prevent content from overflowing cell */
     grid-template-columns: minmax(0, 1fr);
@@ -96,16 +96,16 @@
 }
 @media (width >= 768px) /* TODO: When in Core, use @custom-media */ {
   .c-news--list:not(.as-grid) article {
-    /* TODO: When in Core, use @extend */
-    /* @extend .x-news-list-item; */
+    /* TODO: .x-news-list-item --> @define-mixin news-list-item */
+    /* @mixin news-list-item */
     grid-template-areas: var(--list-item-areas);
     grid-template-columns: var(--list-item-columns);
     /* To let 'desc' take remaining space (removes gap between head and desc) */
     grid-template-rows: min-content 1fr;
   }
   .c-news--list.as-grid article {
-    /* TODO: When in Core, use @extend */
-    /* @extend .x-news-grid-item; */
+    /* TODO: .x-news-grid-item --> @define-mixin news-grid-item */
+    /* @mixin news-grid-item; */
     grid-template-areas: var(--grid-item-areas);
     /* To prevent content from overflowing cell */
     grid-template-columns: minmax(0, 1fr);
@@ -182,12 +182,12 @@
 }
 @media (width < 768px) /* TODO: When in Core, use @custom-media */ {
   .c-news--list .c-news__media {
-    /* TODO: When in Core, use @extend */
-    /* @extend .x-blog-grid-item-media-cell; */
+    /* TODO: .x-news-grid-item-media-cell --> @define-mixin news-grid-item-media-cell */
+    /* @mixin news-grid-item-media-cell; */
     margin-bottom: 15px; /* to add space between image and content */
     & img {
-      /* TODO: When in Core, use @extend */
-      /* @extend .x-blog-grid-item-media-element-in-cell; */
+      /* TODO: .x-blog-grid-item-media-element-in-cell --> @define-mixin blog-grid-item-media-element-in-cell */
+      /* @mixin blog-grid-item-media-element-in-cell; */
       max-width: 100%; /* to prevent overflow if column is narrower than image */
       height: auto; /* to preserve ratio if width is reduced (by max-width: 100%) */
     }
@@ -195,12 +195,12 @@
 }
 @media (width >= 768px) /* TODO: When in Core, use @custom-media */ {
   .c-news--list.as-grid .c-news__media {
-    /* TODO: When in Core, use @extend */
-    /* @extend .x-blog-grid-item-media-cell; */
+    /* TODO: .x-news-grid-item-media-cell --> @define-mixin news-grid-item-media-cell */
+    /* @mixin news-grid-item-media-cell; */
     margin-bottom: 15px; /* to add space between image and content */
     & img {
-      /* TODO: When in Core, use @extend */
-      /* @extend .x-blog-grid-item-media-element-in-cell; */
+      /* TODO: .x-blog-grid-item-media-element-in-cell --> @define-mixin blog-grid-item-media-element-in-cell */
+      /* @mixin   blog-grid-item-media-element-in-cell; */
       max-width: 100%; /* to prevent overflow if column is narrower than image */
       height: auto; /* to preserve ratio if width is reduced (by max-width: 100%) */
     }
@@ -214,8 +214,8 @@
 /* Content */
 
 .c-news--list .c-news__abstract {
-  /* TODO: When in Core, use @extend */
-  /* @extend %x-truncate--many-lines; */
+  /* TODO: Use @mixin */
+  /* @mixin truncate--many-lines; */
   --lines: 2;
 
   display: -webkit-box;

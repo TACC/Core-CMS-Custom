@@ -8,8 +8,8 @@
   margin-top: 0;
   margin-bottom: 10px;
 
-  /* TODO: When migrated to core-styles, use @extend instead */
-  /* @extend .x-truncate--one-line; */
+  /* TODO: Use Core-Styles @mixin */
+  /* @mixin truncate--one-line; */
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
