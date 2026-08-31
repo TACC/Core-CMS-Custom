@@ -39,7 +39,7 @@ Read [README.md "Gotchas"](./README.md#gotchas).
     - Say what changed and (only if omitting it would leave a reviewer confused or suspicious) why, never how.
   - In "Related" section, links to PRs should instead just be raw URLs (because GitHub will auto-create rich links).
   - In "Changes" section:
-    - Group changes into as few bullets as the logical changes require (never one per file)
+    - Group changes into as few bullets as the logical changes require (never one per file).
     - Default to zero explanation per bullet (e.g. `**added** logos`). Leave the detail for the code diff itself — a bullet is not the place to restate what the diff already shows.
     - Name files/identifiers by their bare name (`x-button.css`), not full path, unless the bare name is ambiguous.
     - Describe even the "what" at the highest level that's still meaningful — prefer a general noun ("shared rules") to an enumeration of the specifics behind it ("the such-and-such code block").
