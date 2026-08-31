@@ -34,11 +34,14 @@
 .c-news--list article {
   display: grid;
 
-  border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--dark);
-  margin-bottom: var(--article-buffer);
   padding-bottom: var(--article-buffer);
 }
+.c-news--list article:not(:last-child) {
+  border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+  margin-bottom: var(--article-buffer);
+}
 .c-news--list .c-news__header  { grid-area: head }
+
 .c-news--list .c-news__visual  { grid-area: media }
 .c-news--list .c-news__abstract { grid-area: desc }
 
