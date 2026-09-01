@@ -25,6 +25,7 @@
 }
 
 /* TODO: Share styles between c-news and c-feed-list (`time:not(…)`) */
+.c-news__time,
 .c-news article time:not(:is(h1, h2, h3, h4, h5, h6) *) {
   color: var(--global-color-secondary--normal);
   font-weight: var(--medium);
