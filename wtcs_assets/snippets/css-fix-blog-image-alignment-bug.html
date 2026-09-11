@@ -1,9 +1,8 @@
-/* Stopgap until: https://github.com/TACC/Core-CMS/pull/1231 */
-/* TODO: Delete this after that PR is merged & deployed */
-
-/* Bug: blog/news image alignment classes stay on the wrapped `<img>`
-   (since TACC/Core-CMS#1127), so only the image floats/offsets,
-   not the whole `<figure>`/`<a>` box like CMS Picture. */
+{% load sekizai_tags %}
+{% addtoblock "css" %}
+<style id="css-fix-blog-image-alignment-bug">
+/* Hotfix for blog image alignment vs CMS Picture — see TACC/Core-CMS#1231 */
+/* Remove once that PR is merged & deployed */
 
 article.post-detail .blog-content :is(figure, a):has(> .align-left),
 article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
@@ -67,3 +66,5 @@ article.post-detail .blog-content :is(figure, a):has(> .align-center) {
     margin-inline: auto;
   }
 }
+</style>
+{% endaddtoblock %}
