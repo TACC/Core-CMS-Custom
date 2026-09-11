@@ -21,6 +21,15 @@ article.post-detail .blog-content :is(figure, a):has(> .align-center) {
   max-width: 100%;
 }
 
+/* Neutralize Core-Styles' `.align-*` float/margin still on the wrapped <img>, */
+/* else it double-floats inside its already-floated wrapper and keeps the */
+/* wrapper from shrinking to the image's width (e.g. breaks caption width) */
+article.post-detail .blog-content :is(figure, a) > .align-right,
+article.post-detail .blog-content :is(figure, a) > .align-left {
+  float: unset;
+  margin-inline: auto;
+}
+
 @media (min-width: 992px) {
   article.post-detail .blog-content :is(figure, a):has(> .align-left),
   article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
@@ -58,13 +67,6 @@ article.post-detail .blog-content :is(figure, a):has(> .align-center) {
   article.post-detail .blog-content :is(figure, a):has(> .align-left),
   article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
     margin-right: unset;
-  }
-
-  /* Neutralize Core-Styles' `.align-*` float/margin still on the wrapped <img> */
-  article.post-detail .blog-content :is(figure, a) > .align-right,
-  article.post-detail .blog-content :is(figure, a) > .align-left {
-    float: unset;
-    margin-inline: auto;
   }
 }
 </style>
