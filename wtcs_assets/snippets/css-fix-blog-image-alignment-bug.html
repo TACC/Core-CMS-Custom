@@ -5,16 +5,37 @@
 /* Hotfix for blog image alignment vs CMS Picture — see TACC/Core-CMS#1231 */
 /* Remove once that PR is merged & deployed */
 
+/* This CSS loads ON TOP of the currently-deployed (pre-fix) compiled CSS, */
+/* which still matches `.align-*` on whatever element carries the class — */
+/* the wrapped `<img>`, since TACC/Core-CMS#1127. Undo that old CSS's */
+/* effect on the wrapped `<img>` before applying the new rules below, */
+/* else its leftover float/clear/margin/max-width keeps showing through. */
+article.post-detail .blog-content .align-left,
+article.post-detail .blog-content .align-right {
+  float: unset;
+  clear: unset;
+  max-width: unset;
+  margin-left: unset;
+  margin-right: unset;
+}
+article.post-detail .blog-content .align-center {
+  /* FAQ: old rule only ever set `max-width`, never touched margin/float, */
+  /* so leave Core-Styles' own `.align-center { margin-inline: auto }` alone */
+  max-width: unset;
+}
+
 article.post-detail .blog-content :is(figure, a):has(> .align-left),
 article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
   float: left;
   clear: left;
+  max-width: 85%;
   margin-right: calc(2 * var(--global-space--grid-gap, 30px));
 }
 article.post-detail .blog-content :is(figure, a):has(> .align-right),
 article.post-detail .blog-content img.align-right:not(:is(figure, a) > *) {
   float: right;
   clear: right;
+  max-width: 85%;
   margin-left: calc(2 * var(--global-space--grid-gap, 30px));
 }
 article.post-detail .blog-content :is(figure, a):has(> .align-center),
@@ -28,6 +49,8 @@ article.post-detail .blog-content img.align-center:not(:is(figure, a) > *) {
 article.post-detail .blog-content :is(figure, a) > .align-right,
 article.post-detail .blog-content :is(figure, a) > .align-left {
   float: unset;
+  clear: unset;
+  max-width: unset;
   margin-inline: auto;
 }
 
