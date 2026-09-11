@@ -17,7 +17,8 @@ article.post-detail .blog-content img.align-right:not(:is(figure, a) > *) {
   clear: right;
   margin-left: calc(2 * var(--global-space--grid-gap, 30px));
 }
-article.post-detail .blog-content :is(figure, a):has(> .align-center) {
+article.post-detail .blog-content :is(figure, a):has(> .align-center),
+article.post-detail .blog-content img.align-center:not(:is(figure, a) > *) {
   max-width: 100%;
 }
 
@@ -43,9 +44,16 @@ article.post-detail .blog-content :is(figure, a) > .align-left {
 
 @media (max-width: 991.98px) {
   article.post-detail .blog-content :is(figure, a):has(> .align-center),
+  article.post-detail .blog-content img.align-center:not(:is(figure, a) > *),
+  article.post-detail .blog-content :is(figure, a):has(> .align-right),
+  article.post-detail .blog-content img.align-right:not(:is(figure, a) > *),
+  article.post-detail .blog-content :is(figure, a):has(> .align-left),
+  article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
+    max-width: 100%;
+  }
+  article.post-detail .blog-content :is(figure, a):has(> .align-center),
   article.post-detail .blog-content :is(figure, a):has(> .align-right),
   article.post-detail .blog-content :is(figure, a):has(> .align-left) {
-    max-width: 100%;
     margin-inline: auto;
   }
   article.post-detail .blog-content a:has(> .align-center),
@@ -55,8 +63,8 @@ article.post-detail .blog-content :is(figure, a) > .align-left {
     width: fit-content;
   }
   article.post-detail .blog-content :is(figure, a):has(> .align-right),
-  article.post-detail .blog-content :is(figure, a):has(> .align-left),
   article.post-detail .blog-content img.align-right:not(:is(figure, a) > *),
+  article.post-detail .blog-content :is(figure, a):has(> .align-left),
   article.post-detail .blog-content img.align-left:not(:is(figure, a) > *) {
     float: unset;
   }
