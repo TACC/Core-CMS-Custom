@@ -46,11 +46,15 @@ article.post-detail .blog-content img.align-center:not(:is(figure, a) > *) {
 /* Neutralize Core-Styles' `.align-*` float/margin still on the wrapped <img>, */
 /* else it double-floats inside its already-floated wrapper and keeps the */
 /* wrapper from shrinking to the image's width (e.g. breaks caption width) */
+/* FAQ: `max-width: 100%`, not `unset` — this stylesheet is unlayered, so it */
+/* beats Bootstrap's `.img-fluid { max-width: 100% }` (`layer(foundation)`) */
+/* regardless of specificity; `unset` would strip that cap entirely and let */
+/* the image render at its intrinsic (often huge) size, overflowing content */
 article.post-detail .blog-content :is(figure, a) > .align-right,
 article.post-detail .blog-content :is(figure, a) > .align-left {
   float: unset;
   clear: unset;
-  max-width: unset;
+  max-width: 100%;
   margin-inline: auto;
 }
 
