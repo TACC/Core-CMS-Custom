@@ -28,6 +28,7 @@ article.post-detail .post-detail-list {
 }
 
 /* To reorder article share icons to match footer's icon order */
+/* TODO: Delete after deploy of TACC/tup-ui#580 */
 article.post-detail .logos--social.socials a {
     &.logos__linkedin { order: 1 }
     &.logos__facebook { order: 2 }
