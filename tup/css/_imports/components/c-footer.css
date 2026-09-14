@@ -105,6 +105,27 @@
   visibility: visible;
 }
 
+/* To reorder footer icons and hide Threads */
+/* Snippet's default order: Facebook, YouTube, LinkedIn, Instagram, Threads, Bluesky */
+.c-footer .logos--social a.logos__threads {
+    display: none;
+}
+.c-footer .logos--social a.logos__linkedin {
+    order: 1;
+}
+.c-footer .logos--social a.logos__instagram {
+    order: 2;
+}
+.c-footer .logos--social a.logos__facebook {
+    order: 3;
+}
+.c-footer .logos--social a.logos__bluesky {
+    order: 4;
+}
+.c-footer .logos--social a.logos__youtube {
+    order: 5;
+}
+
 
 
 
