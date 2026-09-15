@@ -54,14 +54,15 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 • [EPOC](https://epoc.global)
 • [Frontera](https://frontera-portal.tacc.utexas.edu)
 • [LCCF](https://lccf.tacc.utexas.edu)
-• [MATCSSI](https://matcssi.tacc.utexas.edu)
+• [MatCSSI](https://matcssi.tacc.utexas.edu)
 • [NetSage](https://netsage.io)
 • [PTDataX](https://ptdatax.tacc.utexas.edu)
 • [SciVisColor](https://sciviscolor.org)
 • [TACC](https://tacc.utexas.edu)
-• [Tapis Project](https://tapis-project.org)
+• [Tapis-Project](https://tapis-project.org)
+• [TXOSPO](https://texas-opensource.org/)
 • [UTRC](https://utrc.tacc.utexas.edu)
-• [WeTeach_CS](https://weteachcs.org)
+• [WTCS](https://weteachcs.org)
 
 ## Gotchas
 
