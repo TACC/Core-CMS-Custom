@@ -12,7 +12,7 @@
     "npm": ">=8"
   },
   "dependencies": {
-    "@tacc/core-styles": "^2.34.0"
+    "@tacc/core-styles": "^2.58.0"
   },
   "repository": {
     "type": "git",
