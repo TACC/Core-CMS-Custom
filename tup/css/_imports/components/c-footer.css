@@ -106,6 +106,18 @@
 }
 
 
+/* To reorder footer icons and hide Threads */
+/* TODO: Delete after TACC/tup-ui uses TACC/Core-CMS#1232 */
+.c-footer .logos--social a {
+    &.logos__threads { display: none; }
+    &.logos__linkedin { order: 1 }
+    &.logos__instagram { order: 2 }
+    &.logos__facebook { order: 3 }
+    &.logos__bluesky { order: 4 }
+    &.logos__youtube { order: 5 }
+}
+
+
 
 
 

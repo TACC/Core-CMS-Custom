@@ -26,3 +26,12 @@ article.post-detail .blog-visual {
 article.post-detail .post-detail-list {
     display: none;
 }
+
+/* To reorder article share icons to match footer's icon order */
+/* TODO: Delete after deploy of TACC/tup-ui#580 */
+article.post-detail .logos--social.socials a {
+    &.logos__linkedin { order: 1 }
+    &.logos__facebook { order: 2 }
+    &.logos__bluesky { order: 3 }
+    &.logos__email { order: 4 }
+}
