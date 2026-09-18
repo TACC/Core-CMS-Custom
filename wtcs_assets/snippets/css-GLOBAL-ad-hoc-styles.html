@@ -1,0 +1,26 @@
+{% load sekizai_tags %}
+
+{% comment %}
+Many <link>s is faster than one <link> with many '@import's.
+{% endcomment %}
+
+{% addtoblock "css" %}
+
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1" %}
+
+<link href="{{CDN_URL}}/wtcs_assets/css/captions.css" rel="stylesheet" />
+
+{% endwith %}
+
+{# HELP: Was this used to prevent truncation of news article leads? On news page or news feed? #}
+{% comment %}
+<style>
+.x-truncate--many-lines:hover {
+    -webkit-line-clamp: inherit;
+    overflow: visible;
+    max-height: unset;
+}
+</style>
+{% endcomment %}
+
+{% endaddtoblock %}
