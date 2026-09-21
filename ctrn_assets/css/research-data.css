@@ -4,7 +4,7 @@ table:has([colspan]) th {
 }
 
 /* To undo accidental sticky column */
-/* TODO: Delete thiss after Core-CMS deployed with Core-Styles@v2.58.4 */
+/* TODO: Delete this after Core-CMS deployed with Core-Styles@v2.58.4 */
 th:not([colspan]):first-child {
     position: static;
 }
