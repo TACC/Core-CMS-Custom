@@ -1,0 +1,10 @@
+/* To undo Core-Styles in a way that matches stakeholder's original UI */
+table:has([colspan]) th {
+    font-weight: normal;
+}
+
+/* To undo accidental sticky column */
+/* TODO: Delete thiss after Core-CMS deployed with Core-Styles@v2.58.4 */
+th:not([colspan]):first-child {
+    position: static;
+}
