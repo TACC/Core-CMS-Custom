@@ -1,0 +1,12 @@
+/* TODO: Delete after Core-CMS uses Core-Styles v2.58.2 */
+figure.figure > a > img,
+figure.figure > img {
+  margin-bottom: unset;
+}
+
+figcaption.figure-caption {
+  color: unset;
+  font-size: unset;
+  border-top: unset;
+  padding-top: unset;
+}

@@ -6,42 +6,39 @@ Many <link>s is faster than one <link> with many '@import's.
 
 {% addtoblock "css" %}
 
-<!-- Ad Hoc Styles: Core-CMS Fixes & Features -->
-<style>
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-Styles@v2.57.0-rc1/dist/elements/headings--cms.css") layer(base);
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@main/generic_assets/css/core-cms-fixes.css") layer(base);
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@c5d1157b/generic_assets/css/align-news-feed-page-image.css") layer(project);
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1" %}
 
-    /* TODO: Delete this after TACC/Core-CMS#1154 (v4.40?) */
-    @import url("https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@e7e4bf18/generic_assets/css/hide-news-main-image.css") layer(base);
-</style>
+<!-- Ad Hoc Styles: ECEP (CORE) Fixes & Features -->
+<link href="{{CDN_URL}}/generic_assets/css/core-cms-fixes.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/generic_assets/css/align-news-feed-page-image.css" rel="stylesheet" />
 
-{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@166ca8df/ecep_assets/css" %}
+<!-- Ad Hoc Styles: ECEP (SETTINGS) Colors & Fonts -->
+<link href="{{CDN_URL}}/ecep_assets/css/ecep-branding.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/colors--accent-auto.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/colors--accent-user.min.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/colors--header.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/fonts.css" rel="stylesheet" />
 
-<!-- Ad Hoc Styles: (SETTINGS) Colors & Fonts -->
-<link href="{{CDN_URL}}/ecep-branding.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/colors--accent-auto.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/colors--accent-user.min.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/colors--header.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/fonts.css" rel="stylesheet" />
+<!-- Ad Hoc Styles: ECEP (GENERICS) HTML Elements -->
+<link href="{{CDN_URL}}/ecep_assets/css/html-elements.css" rel="stylesheet" />
 
-<!-- Ad Hoc Styles: (GENERICS) HTML Elements -->
-<link href="{{CDN_URL}}/html-elements.css" rel="stylesheet" />
+<!-- Ad Hoc Styles: ECEP (COMPONENTS) Header & Footer -->
+<link href="{{CDN_URL}}/ecep_assets/css/header.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/sections.css" rel="stylesheet" />
 
-<!-- Ad Hoc Styles: (COMPONENTS) Header & Footer -->
-<link href="{{CDN_URL}}/header.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/sections.css" rel="stylesheet" />
+<!-- Ad Hoc Styles: ECEP (COMPONENTS) News -->
+<link href="{{CDN_URL}}/ecep_assets/css/adjust-news-feed-layout.css" rel="stylesheet" />
 
-<!-- Ad Hoc Styles: (COMPONENTS) News -->
-<link href="{{CDN_URL}}/adjust-news-feed-layout.css" rel="stylesheet" />
-{# TODO: Delete after project uses TACC/Core-CMS PR #1156 (v4.40?) #}
-<link href="{{CDN_URL}}/hide-news-byline.css" rel="stylesheet" />
-
-<!-- Ad Hoc Styles: (MISC.) Buttons & Links -->
-<link href="{{CDN_URL}}/bootstrap/btn-center.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/fix-button-height.css" rel="stylesheet" />
-<link href="{{CDN_URL}}/links.css" rel="stylesheet" />
+<!-- Ad Hoc Styles: ECEP (MISC.) Buttons & Links -->
+<link href="{{CDN_URL}}/ecep_assets/css/bootstrap/btn-center.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/fix-button-height.css" rel="stylesheet" />
+<link href="{{CDN_URL}}/ecep_assets/css/links.css" rel="stylesheet" />
 
 {% endwith %}
+
+
+{# TODO: Delete after Core-CMS uses Core-Styles v2.58.2 #}
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@f372840/ecep_assets/css/fix-bootstrap-figure.css" rel="stylesheet" />
+
 
 {% endaddtoblock %}
