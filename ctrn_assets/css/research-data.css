@@ -5,6 +5,9 @@ table:has([colspan]) th {
 
 /* To undo accidental sticky column */
 /* TODO: Delete this after Core-CMS deployed with Core-Styles@v2.58.4 */
-th:not([colspan]):first-child {
-    position: static;
+table:has(
+  [colspan], [rowspan]
+) tr > :first-child:is(th) {
+  position: static;
+  left: auto;
 }
