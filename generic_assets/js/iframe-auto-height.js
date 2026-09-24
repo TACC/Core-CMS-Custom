@@ -62,18 +62,18 @@ function autoHeight(iframe) {
    Multiple iframes: only act on ones opted in via `js-iframe-auto-height`,
    so unrelated iframes/content on the page are left alone. */
 const allIframes = Array.from(document.getElementsByTagName('iframe'));
-const iframes = allIframes.length > 1
+const knownIframes = allIframes.length > 1
   ? allIframes.filter((iframe) => iframe.classList.contains('js-iframe-auto-height'))
   : allIframes;
 
-const debouncedResizers = iframes.map(autoHeight);
+const debouncedResizers = knownIframes.map(autoHeight);
 
 function resizeAll() {
   debouncedResizers.forEach((fn) => fn());
 }
 
-function isPostMessageFromIframe(messageSource) {
-  return iframes.some((iframe) => iframe.contentWindow === messageSource);
+function isPostMessageFromKnownIframe(messageSource) {
+  return knownIframes.some((iframe) => iframe.contentWindow === messageSource);
 }
 
 // Catching local events to trigger iframe resize.
@@ -90,7 +90,7 @@ window.addEventListener('IFrameLoaded', resizeAll);
  * @param {MessageEvent<{ type: 'IFrameInit' | 'IFrameLoaded', height?: number }>} event
  */
 function handleIframePostMessage(event) {
-  if (!isPostMessageFromIframe(event.source)) {
+  if (!isPostMessageFromKnownIframe(event.source)) {
     return;
   }
 
@@ -106,7 +106,7 @@ function handleIframePostMessage(event) {
     return;
   }
 
-  for (const iframe of iframes) {
+  for (const iframe of knownIframes) {
     if (iframe.contentWindow !== event.source) {
       continue;
     }
