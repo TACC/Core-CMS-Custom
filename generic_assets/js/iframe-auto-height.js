@@ -1,20 +1,17 @@
-/* Cross-origin embeds (e.g. Tapis login) should postMessage to the parent:
-   { type: 'IFrameInit' | 'IFrameLoaded', height: <pixels> }
-   `height` is optional; without it we fall back to same-origin measurement. */
-const bufferToAvoidScrollbar = 1;
+const BUFFER_TO_AVOID_SCROLLBAR = 1;
 
 function setIframeHeight(iframe, height) {
   const parsed = Number(height);
   if (!Number.isFinite(parsed) || parsed <= 0) {
     return;
   }
-  iframe.style.height = parsed + bufferToAvoidScrollbar + 'px';
+  iframe.style.height = parsed + BUFFER_TO_AVOID_SCROLLBAR + 'px';
 }
 
 function resizeIframe(iframe) {
   try {
     const scrollHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-    iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
+    setIframeHeight(iframe, scrollHeight);
   } catch (e) {
     // Cross-origin iframe; height can't be read, so leave it alone.
   }
@@ -74,6 +71,10 @@ function resizeAll() {
   debouncedResizers.forEach((fn) => fn());
 }
 
+function isManagedIframeSource(source) {
+  return targetIframes.some((iframe) => iframe.contentWindow === source);
+}
+
 // Catching local events to trigger iframe resize.
 window.addEventListener('resize', resizeAll);
 window.addEventListener('load', resizeAll);
@@ -83,14 +84,22 @@ window.addEventListener('load', resizeAll);
 window.addEventListener('IFrameInit', resizeAll);
 window.addEventListener('IFrameLoaded', resizeAll);
 
+// To let cross domain origins trigger resize.
+// Child: postMessage({ type: 'IFrameInit' | 'IFrameLoaded', height?: number }, parentOrigin).
 function handleIframePostMessage(event) {
+  if (!isManagedIframeSource(event.source)) {
+    return;
+  }
+
   const data = event.data;
   if (!data || typeof data !== 'object') {
+    console.warn('iframe-auto-height: postMessage data missing or not an object', data);
     return;
   }
 
   const type = data.type;
   if (type !== 'IFrameInit' && type !== 'IFrameLoaded') {
+    console.warn('iframe-auto-height: unfamiliar postMessage type', type);
     return;
   }
 
@@ -107,5 +116,4 @@ function handleIframePostMessage(event) {
     return;
   }
 }
-
 window.addEventListener('message', handleIframePostMessage);
