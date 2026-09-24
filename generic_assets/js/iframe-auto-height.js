@@ -1,7 +1,19 @@
+/* Cross-origin embeds (e.g. Tapis login) should postMessage to the parent:
+   { type: 'IFrameInit' | 'IFrameLoaded', height: <pixels> }
+   `height` is optional; without it we fall back to same-origin measurement. */
+const bufferToAvoidScrollbar = 1;
+
+function setIframeHeight(iframe, height) {
+  const parsed = Number(height);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return;
+  }
+  iframe.style.height = parsed + bufferToAvoidScrollbar + 'px';
+}
+
 function resizeIframe(iframe) {
   try {
     const scrollHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-    const bufferToAvoidScrollbar = 1;
     iframe.style.height = scrollHeight + bufferToAvoidScrollbar + 'px';
   } catch (e) {
     // Cross-origin iframe; height can't be read, so leave it alone.
@@ -70,3 +82,30 @@ window.addEventListener('load', resizeAll);
 // Events bubbling up from Dash app to trigger iframe resize.
 window.addEventListener('IFrameInit', resizeAll);
 window.addEventListener('IFrameLoaded', resizeAll);
+
+function handleIframePostMessage(event) {
+  const data = event.data;
+  if (!data || typeof data !== 'object') {
+    return;
+  }
+
+  const type = data.type;
+  if (type !== 'IFrameInit' && type !== 'IFrameLoaded') {
+    return;
+  }
+
+  for (const iframe of targetIframes) {
+    if (iframe.contentWindow !== event.source) {
+      continue;
+    }
+
+    if (data.height != null) {
+      setIframeHeight(iframe, data.height);
+    } else {
+      resizeIframe(iframe);
+    }
+    return;
+  }
+}
+
+window.addEventListener('message', handleIframePostMessage);
