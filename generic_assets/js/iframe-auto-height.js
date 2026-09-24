@@ -1,4 +1,5 @@
 const BUFFER_TO_AVOID_SCROLLBAR = 1;
+const LOG_PREFIX = 'iframe-auto-height:';
 
 function setIframeHeight(iframe, height) {
   const parsed = Number(height);
@@ -61,18 +62,18 @@ function autoHeight(iframe) {
    Multiple iframes: only act on ones opted in via `js-iframe-auto-height`,
    so unrelated iframes/content on the page are left alone. */
 const allIframes = Array.from(document.getElementsByTagName('iframe'));
-const targetIframes = allIframes.length > 1
+const autoHeightIframes = allIframes.length > 1
   ? allIframes.filter((iframe) => iframe.classList.contains('js-iframe-auto-height'))
   : allIframes;
 
-const debouncedResizers = targetIframes.map(autoHeight);
+const debouncedResizers = autoHeightIframes.map(autoHeight);
 
 function resizeAll() {
   debouncedResizers.forEach((fn) => fn());
 }
 
-function isManagedIframeSource(source) {
-  return targetIframes.some((iframe) => iframe.contentWindow === source);
+function isPostMessageFromAutoHeightIframe(messageSource) {
+  return autoHeightIframes.some((iframe) => iframe.contentWindow === messageSource);
 }
 
 // Catching local events to trigger iframe resize.
@@ -84,26 +85,28 @@ window.addEventListener('load', resizeAll);
 window.addEventListener('IFrameInit', resizeAll);
 window.addEventListener('IFrameLoaded', resizeAll);
 
-// To let cross domain origins trigger resize.
-// Child: postMessage({ type: 'IFrameInit' | 'IFrameLoaded', height?: number }, parentOrigin).
+// To let cross-domain origins trigger resize.
+/**
+ * @param {MessageEvent<{ type: 'IFrameInit' | 'IFrameLoaded', height?: number }>} event
+ */
 function handleIframePostMessage(event) {
-  if (!isManagedIframeSource(event.source)) {
+  if (!isPostMessageFromAutoHeightIframe(event.source)) {
     return;
   }
 
   const data = event.data;
   if (!data || typeof data !== 'object') {
-    console.warn('iframe-auto-height: postMessage data missing or not an object', data);
+    console.warn(`${LOG_PREFIX} postMessage data missing or not an object`, data);
     return;
   }
 
   const type = data.type;
   if (type !== 'IFrameInit' && type !== 'IFrameLoaded') {
-    console.warn('iframe-auto-height: unfamiliar postMessage type', type);
+    console.warn(`${LOG_PREFIX} unfamiliar postMessage type`, type);
     return;
   }
 
-  for (const iframe of targetIframes) {
+  for (const iframe of autoHeightIframes) {
     if (iframe.contentWindow !== event.source) {
       continue;
     }
