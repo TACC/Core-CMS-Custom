@@ -6,10 +6,13 @@ Many <link>s is faster than one <link> with many '@import's.
 
 {% addtoblock "css" %}
 
-{% with local_commit="main" %}
+{% with local_commit="v1" %}
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/generic_assets/css/core-styles-fixes.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/generic_assets/css/core-cms-fixes.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/lccf_assets/css/hide-certain-breadcrumbs.css" rel="stylesheet" />
+
+{# TODO: Delete after deploy of TACC/Core-Portal-Deployments#223 #}
+<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{local_commit}}/lccf_assets/header.css" rel="stylesheet" />
 {% endwith %}
 
 {% endaddtoblock %}
