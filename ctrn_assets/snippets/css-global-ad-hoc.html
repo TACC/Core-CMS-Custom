@@ -1,9 +1,10 @@
 {% load sekizai_tags %}
 {% addtoblock "css" %}
-{% with local_commit="main" %}
+{% with CDN_URL="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1/" %}
 {# Many <link>s is faster than one <link> with many '@import's. #}
 
 {# News Article Page #}
-<link href="https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@{{ local_commit }}/ctrn_assets/css/news-feed-page.css" rel="stylesheet" />
+<link href="{{ CDN_URL }}ctrn_assets/css/news-feed-page.css" rel="stylesheet" />
+<link href="{{ CDN_URL }}ctrn_assets/css/research-data.css" rel="stylesheet" />
 {% endwith %}
 {% endaddtoblock %}
