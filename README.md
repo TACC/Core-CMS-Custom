@@ -56,6 +56,7 @@ Each project has its own root directory. Read [STRUCTURE.md](./STRUCTURE.md) for
 • [LCCF](https://lccf.tacc.utexas.edu)
 • [MatCSSI](https://matcssi.tacc.utexas.edu)
 • [NetSage](https://netsage.io)
+• NAIRR<!--[NAIRR](https://prod.nairr-co.tacc.utexas.edu)-->
 • [PTDataX](https://ptdatax.tacc.utexas.edu)
 • [SciVisColor](https://sciviscolor.org)
 • [TACC](https://tacc.utexas.edu)
