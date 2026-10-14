@@ -1,0 +1,58 @@
+{# To quickly mimic `.c-news` styles atop `.blog-…` plugins #}
+{# WARNING: This code is obtuse, cuz I have no time #}
+{# !!!: Do not re-use this code; it is a rushed abomination #}
+<style id="css-homepage-news-feed-like-tacc-user-updates">
+:is(.blog-latest-entries,.blog-featured-posts) {
+    & article {
+        grid-template-areas:
+            'head'
+            'media'
+            'lead'
+            'foot';
+        grid-template-rows: min-content 1fr;
+        padding-bottom: var(--global-space--bootstrap-gap);
+
+        & h3          { grid-area: title }
+        & h4          { grid-area: subtitle }
+        & .attrs      { grid-area: attr /* attribution */ }
+        & .dates      { grid-area: dates }
+        & .categories { grid-area: cats }
+        & .tags       { grid-area: tags }
+        & .socials    { grid-area: socials }
+
+        & header {
+            display: grid;
+            grid-template-areas:
+                'dates'
+                'title'
+                'subtitle'
+                'cats'
+                'tags'
+                'socials';
+        }
+        & h3 {
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+        & .post-detail.dates {
+            display: unset;
+            list-style-type: none;
+            padding-left: unset;
+            margin-bottom: unset;
+        }
+        & time {
+            color: var(--global-color-secondary--normal);
+            font-weight: var(--medium);
+            text-transform: uppercase;
+        }
+        & .read-more {
+            grid-area: foot;
+            display: none;
+        }
+    }
+    & article:not(:last-child) {
+        border-bottom: var(--global-border-width--normal) solid var(--global-color-primary--dark);
+        margin-bottom: unset;
+    }
+}
+</style>
