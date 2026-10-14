@@ -1,0 +1,9 @@
+/* Disable all drop-caps */
+/* TODO: Add Core-CMS setting to disable drop-caps */
+/* TODO: Make default value disable drop-caps (must update clients) */
+/* https://github.com/TACC/Core-CMS/blob/v4.40.2/taccsite_cms/static/site_cms/css/src/_imports/components/django.cms.blog.app.page.css#L143-L149 */
+.app-blog .s-drop-cap::first-letter,
+.app-blog .s-drop-cap > p:not(.s-drop-cap)::first-letter {
+  padding-right: unset;
+  initial-letter: unset;
+}
