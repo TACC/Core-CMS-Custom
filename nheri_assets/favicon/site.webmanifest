@@ -1,0 +1,21 @@
+{
+  "name": "NHERI",
+  "short_name": "NHERI",
+  "icons": [
+    {
+      "src": "https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1/nheri_assets/favicon/web-app-manifest-192x192.png?v=20261019",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://cdn.jsdelivr.net/gh/TACC/Core-CMS-Custom@v1/nheri_assets/favicon/web-app-manifest-512x512.png?v=20261019",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#cb453f",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

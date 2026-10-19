@@ -1,0 +1,3 @@
+{% load sekizai_tags %}
+{# CMS mockup of DRP-317. Point search engines at the real dataset landing page, which carries the dataset's JSON-LD and is listed in /published-datasets/sitemap.xml. Core-CMS base.html renders the "css" block inside <head>. #}
+{% addtoblock "css" %}<link rel="canonical" href="https://digitalporousmedia.org/published-datasets/drp.project.published.DRP-317">{% endaddtoblock %}
