@@ -1,4 +1,5 @@
 /* To support TACC/Core-CMS#1270 before it is available */
+/* TODO: Delete after all Core-CMS blog clients use TACC/Core-CMS#1270 grid */
 :is(article.post-detail) header {
     grid-template-areas:
       'cats     dates    dates'
