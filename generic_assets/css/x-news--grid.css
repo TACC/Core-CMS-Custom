@@ -1,0 +1,32 @@
+/* To support TACC/Core-CMS#___ before it is available */
+:is(article.post-detail) header {
+    grid-template-areas:
+      'cats     dates    dates'
+      'title    title    title'
+      'subtitle subtitle subtitle'
+      'attr     attr     socials'
+      'tags     tags     tags';
+
+    .app-blog.no-categories.no-tags & {
+        grid-template-areas:
+        'dates    dates    dates'
+        'title    title    title'
+        'subtitle subtitle subtitle'
+        'attr     attr     socials'
+    }
+    .app-blog:not(.no-categories).no-tags & {
+        grid-template-areas:
+        'cats     dates    dates'
+        'title    title    title'
+        'subtitle subtitle subtitle'
+        'attr     attr     socials'
+    }
+    .app-blog.no-categories:not(.no-tags) & {
+        grid-template-areas:
+        'dates    dates    dates'
+        'title    title    title'
+        'subtitle subtitle subtitle'
+        'attr     attr     socials'
+        'tags     tags     tags'
+    }
+}
