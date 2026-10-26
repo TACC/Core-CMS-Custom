@@ -1,4 +1,4 @@
-/* To support TACC/Core-CMS#___ before it is available */
+/* To support TACC/Core-CMS#1270 before it is available */
 :is(article.post-detail) header {
     grid-template-areas:
       'cats     dates    dates'
