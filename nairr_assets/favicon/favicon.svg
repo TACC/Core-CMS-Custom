@@ -1,5 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="322 33 38 36" role="img" aria-labelledby="title" width="38" height="36"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><title id="title">NAIRR yellow stars</title><g fill="#E3C62E">
-    <path d="M342.4 37.6c2 8.7 5.8 12.5 14.5 14.5.6.2.6 1.1 0 1.2-8.7 2-12.5 5.8-14.5 14.5-.1.7-1.1.7-1.2 0-2-8.7-5.8-12.5-14.5-14.5-.6-.2-.6-1.1 0-1.2 8.7-2 12.5-5.8 14.5-14.5.1-.7 1.1-.7 1.2 0Z"></path>
-    <path d="M333.7 33.7c.7 3.1 2.1 4.4 5.1 5.1.2 0 .2.4 0 .4-3.1.7-4.4 2.1-5.1 5.1 0 .2-.4.2-.4 0-.7-3.1-2.1-4.4-5.1-5.1-.2 0-.2-.4 0-.4 3.1-.7 4.4-2.1 5.1-5.1 0-.2.4-.2.4 0Z"></path>
-    <path d="M326 42c.4 1.7 1.2 2.5 2.9 2.9.1 0 .1.2 0 .2-1.7.4-2.5 1.2-2.9 2.9 0 .1-.2.1-.2 0-.4-1.7-1.2-2.5-2.9-2.9-.1 0-.1-.2 0-.2 1.7-.4 2.5-1.2 2.9-2.9 0-.1.2-.1.2 0Z"></path>
-  </g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="-2.82" y1="-2.91" x2="15.25" y2="15.16" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#357fa7"/>
+      <stop offset=".52" stop-color="#28314a"/>
+      <stop offset="1" stop-color="#1a1c2b"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="-.66" y1="-1.79" x2="12.64" y2="9.11" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#caba74"/>
+      <stop offset=".1" stop-color="#cbbc79"/>
+      <stop offset=".21" stop-color="#d1c388"/>
+      <stop offset=".34" stop-color="#d9cfa1"/>
+      <stop offset=".37" stop-color="#dcd2a8"/>
+      <stop offset=".53" stop-color="#d1c38a"/>
+      <stop offset=".72" stop-color="#c6b56a"/>
+      <stop offset=".89" stop-color="#bfac57"/>
+      <stop offset="1" stop-color="#bda951"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="-3.13" y1="1.22" x2="10.16" y2="12.12" xlink:href="#linear-gradient-2"/>
+    <linearGradient id="linear-gradient-4" x1="-2.01" y1="-.15" x2="11.29" y2="10.76" xlink:href="#linear-gradient-2"/>
+  </defs>
+  <rect class="cls-4" x="-.23" y="-.14" width="16.71" height="16.35"/>
+  <g>
+    <path class="cls-3" d="M5.27.8c.29,1.27.85,1.82,2.11,2.11.09.02.09.15,0,.18-1.27.29-1.82.85-2.11,2.11-.02.09-.15.09-.18,0-.29-1.27-.85-1.82-2.11-2.11-.09-.02-.09-.15,0-.18,1.27-.29,1.82-.85,2.11-2.11.02-.09.15-.09.18,0Z"/>
+    <path class="cls-2" d="M2.09,4.22c.16.72.48,1.03,1.2,1.2.05.01.05.09,0,.1-.72.16-1.03.48-1.2,1.2-.01.05-.09.05-.1,0-.16-.72-.48-1.03-1.2-1.2-.05-.01-.05-.09,0-.1.72-.16,1.03-.48,1.2-1.2.01-.05.09-.05.1,0Z"/>
+    <path class="cls-1" d="M8.88,2.38c.81,3.56,2.38,5.14,5.95,5.95.27.06.27.44,0,.5-3.56.81-5.14,2.38-5.95,5.95-.06.27-.44.27-.5,0-.81-3.56-2.38-5.14-5.95-5.95-.27-.06-.27-.44,0-.5,3.56-.81,5.14-2.38,5.95-5.95.06-.27.44-.27.5,0Z"/>
+  </g>
+</svg>
