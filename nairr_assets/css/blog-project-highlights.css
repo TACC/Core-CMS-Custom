@@ -1,12 +1,7 @@
 /* NAIRR Project Highlights */
 
-/* Project-highlight dates are not part of the public presentation. */
+/* To hide dates */
+/* FAQ: Dates are not relevant to public */
 html#page-nairr-projects-highlights .app-blog .dates {
     display: none;
-}
-
-/* The importer adds this tag to project-highlight posts with bordered media. */
-:is(.app-blog.has-blog-tag-image-border, .app-blog .has-blog-tag-image-border) .blog-visual img,
-.app-blog .has-blog-tag-image-border .blog-content img.img-border {
-    border: 1px solid var(--global-color-primary--normal);
 }
