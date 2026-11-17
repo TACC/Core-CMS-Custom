@@ -1,0 +1,17 @@
+{% load static sekizai_tags %}
+
+{% addtoblock "css" %}
+{# https://github.com/TACC/Core-CMS/blob/v4.40.2/taccsite_cms/templates/djangocms_blog/base.html#L23-L25 #}
+<style id="blog-app-assets-css">
+    {# IMPORTANT: After Core-CMS#1060, load "app.blog.pages.css" instead #}
+    {# https://github.com/TACC/Core-CMS/pull/1060 #}
+    @import url("{% static "site_cms/css/build/app.blog.css" %}") layer(project);
+</style>
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+<script id="blog-app-assets-js" type="module">
+import { changeHowExternalArticleOpens } from '{% static "site_cms/js/modules/manageExternalArticles.js" %}';
+changeHowExternalArticleOpens('external');
+</script>
+{% endaddtoblock %}

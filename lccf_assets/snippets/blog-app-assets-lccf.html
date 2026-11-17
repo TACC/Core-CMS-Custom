@@ -1,0 +1,16 @@
+{% load sekizai_tags %}
+
+{% addtoblock "css" %}
+<style id="blog-app-assets-lccf-css">
+/* to hide "Back" link (which opens all TACC news) */
+.blog-back {
+    display: none;
+}
+
+/* to hide the "— Lccf" in news list title */
+:is(.blog-list) h1 > strong::after, /* the "—" */
+:is(.blog-list) h1 > em /* the "Lccf" */ {
+    display: none;
+}
+</style>
+{% endaddtoblock %}
