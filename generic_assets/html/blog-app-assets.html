@@ -10,8 +10,10 @@
 {% endaddtoblock %}
 
 {% addtoblock "js" %}
-<script id="blog-app-assets-js" type="module">
+{# https://github.com/TACC/Core-CMS/blob/v4.40.2/taccsite_cms/templates/djangocms_blog/post_list.html#L96-L100 #}
+<script type="module" id="blog-app-assets-js">
 import { changeHowExternalArticleOpens } from '{% static "site_cms/js/modules/manageExternalArticles.js" %}';
-changeHowExternalArticleOpens('external');
+
+changeHowExternalArticleOpens('{{ settings.PORTAL_BLOG_TAG_FOR_EXTERNAL_ARTICLES }}');
 </script>
 {% endaddtoblock %}
