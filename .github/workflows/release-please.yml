@@ -4,12 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      release-as:
-        description: "Version to use when manually recovering a skipped release (for example, 1.17.0). Leave blank for normal automatic runs."
-        required: false
-        type: string
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -22,4 +17,3 @@ jobs:
       - uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-as: ${{ inputs.release-as }}
